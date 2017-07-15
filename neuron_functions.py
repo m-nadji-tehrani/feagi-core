@@ -1,0 +1,220 @@
+
+"""
+This Library contains various functions simulating human cortical behaviors
+Function list:
+neuron:           This function is triggered as a Neuron instance and stays up for period of time
+                  till Neuron is fired
+neuron_prop:      Returns the properties for a given neuron
+neuron_neighbors: Reruns the list of neighbors for a given neuron
+"""
+
+import json
+import datetime
+
+import visualizer
+import settings
+
+
+# Global variables
+burst_count = 0
+
+
+def burst(fire_list):
+    """This function behaves as instance of Neuronal activities"""
+    # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
+    # which would start a timer since the first input is received and keep collecting inputs till
+    # either the timeout is expired or the Firing threshold is met and neuron Fires
+
+    # todo: Consider to have burst instances so multiple burst can happen simultaneously
+
+    # Function Overview:
+    #     This function receives a collection of inputs from multiple neurons, performs processing and generate a new
+    #     output targeting other neurons which will be fed back to the same function for similar processing.
+    # Initial trigger:
+    #     This function can be initially called from the Input Processing Unit and will be recalled from within itself.
+    # Function input contents:
+    #     -List of Neurons which have fired
+    # Function processing:
+    #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
+    #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
+    # Exit condition:
+    #     -When Max number of hops has been reached which could be set to 100 simulating the Brain ~100 steps limit.
+    #     -When input vector is empty
+    # Important:
+    #     Need to account for recursive function call which could potentially be infinite.
+    # Todo_list:
+    #     -Figure the input format. Maybe a JSON
+
+    # Function exit Check on whether number of recursive calls has met or fire_candidate_list is empty.
+
+    # todo: figure burst count in this new model where burst is not limited to a single cortical area
+    global burst_count
+    global fire_candidate_list
+    fire_candidate_list = fire_list
+
+    if settings.verbose:
+        print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
+    if (fire_candidate_list == []) or (burst_count > settings.max_burst_count):
+        print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+        return
+
+    # >>> Question: How to have neurons who fire together wire together? <<<
+    for x in list(fire_candidate_list):
+        if settings.verbose:
+            print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
+        neuron_fire(x[0], x[1])
+
+    # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
+
+    burst_count += 1
+    print(settings.Bcolors.BURST + 'Burst count = %i' % burst_count + settings.Bcolors.ENDC)
+
+    # todo: figure how to visualize bursts across various cortical areas
+    # If visualization flag is set the visualization function will trigger
+    if settings.burst_show:
+        visualizer.burst_visualizer(fire_candidate_locations(fire_candidate_list))
+
+    # Initiate a new Burst
+    burst(fire_candidate_list)
+    return
+
+
+#  >>>>>> Review this function against what we had in past
+def fire_candidate_locations(fire_candidate_list):
+    """Extracts Neuron locations from the fire_candidate_list"""
+
+    print('***')
+    # print(fire_candidate_list)
+
+    neuron_locations = []
+    for item in fire_candidate_list:
+        neuron_locations.append(settings.brain[item[0]][item[1]]["location"])
+
+        #
+        # data = settings.brain[fire_candidate_list[fire_candidate_list.index(item)][0]]
+        # print(data)
+        # for key in data:
+        #     neuron_locations.append(data[key]["location"])
+        # print(neuron_locations)
+
+
+    # for item in fire_candidate_list:
+    #     if settings.read_data_from_memory:
+    #         data = main.brain
+    #     else:
+    #         with open(settings.connectome_path+fire_candidate_list[item][0]+'.json', "r") as data_file:
+    #             data = json.load(data_file)
+    #
+    #     neuron_locations.append(data[fire_candidate_list[item][0]]["location"])
+
+    return neuron_locations
+
+
+def neuron_fire(cortical_area, id):
+    """This function initiate the firing of Neuron in a given cortical area"""
+
+    data = settings.brain[cortical_area]
+
+    # Setting Destination to the list of Neurons connected to the firing Neuron
+    destination = data[id]["neighbors"]
+    if settings.verbose:
+        print(settings.Bcolors.FIRE + "Firing neuron %s using firing pattern %s"
+          % (id, json.dumps(data[id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)
+        print(settings.Bcolors.FIRE + "Neuron %s neighbors are %s" % (id, json.dumps(destination, indent=3)) +
+              settings.Bcolors.ENDC)
+
+    # After neuron fires all cumulative counters on Source gets reset
+    data[id]["cumulative_intake_sum_since_reset"] = 0
+    data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
+    data[id]["cumulative_fire_count"] += 1
+
+    # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
+    # Firing pattern to be accommodated here     <<<<<<<<<<  *****
+    for x in destination:
+        if settings.verbose:
+            print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
+        neuron_update(data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["connection_resistance"], x)
+        # Important: Currently calling the update function from Fire function has the potential of running into
+        #  recursive error. Need to address this. One solution is to count the number of recursive operations and
+        #  exit function when number of steps are beyond a specific point.
+        # Its worth noting that this situation is related to how system is architected as if 2 neuron are feeding
+        #  to each other there is a bigger chance of this happening.
+
+    global fire_candidate_list
+    fire_candidate_list.pop(fire_candidate_list.index([cortical_area, id]))
+    if settings.verbose:
+        print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+
+    return
+
+
+def neuron_update(cortical_area, connection_resistance, destination):
+    """This function updates the destination parameters upon upstream Neuron firing"""
+
+    data = settings.brain[cortical_area]
+
+    # update the cumulative_intake_total, cumulative_intake_count and connection_resistance between source and
+    # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
+    # destination is the dendrite of the neighbor.
+
+    if settings.verbose:
+        print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"
+          % (destination, data[destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
+
+    # Check if timer is expired on the destination Neuron and if so reset the counter
+    if (datetime.datetime.strptime(data[destination]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f") +
+            datetime.timedelta(0, data[destination]["timer_threshold"])) < datetime.datetime.now():
+        data[destination]["last_timer_reset_time"] = str(datetime.datetime.now())
+        data[destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
+        if settings.verbose:
+            print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + destination +
+                  ' got rest' + settings.Bcolors.ENDC)
+
+    # Increasing the cumulative counter on destination based on the received signal from upstream Axon
+    # The following is considered as LTP or Long Term Potentiation of Neurons
+    data[destination]["cumulative_intake_sum_since_reset"] += connection_resistance
+
+    if settings.verbose:
+        print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"
+          % (destination, data[destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
+
+    # Add code to start a timer when neuron first receives a signal and reset counters when its expired
+
+    # Need to call the Fire function if the threshold on the destination Neuron is met  <<<<<<<<<<<  ********
+    # Need to figure how to deal with Activation function and firing threshold
+    # Pass the cumulative_intake_total through the activation function and if pass the condition
+    # fire destination neuron
+
+    # The following will evaluate if the destination neuron is ready to fire and if so adds it to
+    # fire_candidate_list
+    global fire_candidate_list
+    if data[destination]["cumulative_intake_sum_since_reset"] > data[destination]["firing_threshold"]:
+        if fire_candidate_list.count([cortical_area, destination]) == 0:
+            fire_candidate_list.append([cortical_area, destination])
+            if settings.verbose:
+                print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+
+    return fire_candidate_list
+
+
+def neuron_prop(cortical_area, id):
+    """This function accepts neuron id and returns neuron properties"""
+
+    data = settings.brain[cortical_area]
+
+    if settings.verbose:
+        print('Listing Neuron Properties for %s:' % id)
+        print(json.dumps(data[id], indent=3))
+    return data[id]
+
+
+def neuron_neighbors(cortical_area, id):
+    """This function accepts neuron id and returns the list of Neuron neighbors"""
+
+    data = settings.brain[cortical_area]
+
+    if settings.verbose:
+        print('Listing Neuron Neighbors for %s:' % id)
+        print(json.dumps(data[id]["neighbors"], indent=3))
+    return data[id]["neighbors"]
+

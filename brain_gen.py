@@ -29,7 +29,7 @@ copyanything('../My_Brian', '../My_Brian_archive/My_Brain_'+str(datetime.datetim
 
 # Read Genome data, reset connectome and build it up
 data = settings.genome
-blueprint = settings.cortical_list()
+blueprint = settings.cortical_list() 
 
 print("Here is the list of all defined cortical areas: %s " % blueprint)
 

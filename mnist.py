@@ -11,7 +11,7 @@ import os
 import struct
 import numpy as np
 import sys
-sys.path.append('/usr/local/lib/python2.7/site-packages')
+sys.path.append('/usr/local/opt/opencv3/lib/python3.6/site-packages/')
 import cv2
 from matplotlib import pyplot as plt
 import IPU_vision
@@ -32,7 +32,7 @@ def read(dataset = "training", path = "../MNIST/"):
         fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
         fname_lbl = os.path.join(path, 't10k-labels.idx1-ubyte')
     else:
-        raise ValueError, "dataset must be 'testing' or 'training'"
+        raise Exception(ValueError, "dataset must be 'testing' or 'training'")
 
     # Load everything in some numpy arrays
     with open(fname_lbl, 'rb') as flbl:
@@ -46,7 +46,7 @@ def read(dataset = "training", path = "../MNIST/"):
     get_img = lambda idx: (lbl[idx], img[idx])
 
     # Create an iterator which returns each image in turn
-    for i in xrange(len(lbl)):
+    for i in range(len(lbl)):
         yield get_img(i)
 
 

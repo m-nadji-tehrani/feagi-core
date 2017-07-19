@@ -34,7 +34,7 @@ def init():
 
     # Flag to show bursts
     global burst_show
-    burst_show = True
+    burst_show = False
 
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory

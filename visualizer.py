@@ -21,7 +21,7 @@ init_status = False
 
 def init():
     plt.ion()
-    print("Initializing...")
+    print("Initializing plot...")
     global Arrow3D
     class Arrow3D(FancyArrowPatch):
         def __init__(self, xs, ys, zs, *args, **kwargs):

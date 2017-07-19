@@ -58,7 +58,7 @@ def show_cortical_heatmap(image_number):
 image_number = 12
 
 #show_cortical_areas()
-#trigger_first_burst(read_from_MNIST(image_number))
+trigger_first_burst(read_from_MNIST(image_number))
 #settings.save_brain_to_disk()
 
 

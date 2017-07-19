@@ -2,7 +2,7 @@
 """
 # This file acts as the Input Processing Unit (IPU) for the system.
 # Functions in this file will provide methods to pass raw data through basic filters and feed them to the
-# processing layers.
+# ocipital lobe processing layers such as V1, V2, V4 and IT
 
 # For test purposes only and need to see how it can be eliminated from code for efficiency
 """

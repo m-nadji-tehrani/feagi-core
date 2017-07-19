@@ -162,6 +162,7 @@ def neuron_update(cortical_area, connection_resistance, destination):
           % (destination, data[destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
 
     # Check if timer is expired on the destination Neuron and if so reset the counter
+    # Todo: Need to tune up the timer as depending on the application performance the timer could be always expired
     if (datetime.datetime.strptime(data[destination]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f") +
             datetime.timedelta(0, data[destination]["timer_threshold"])) < datetime.datetime.now():
         data[destination]["last_timer_reset_time"] = str(datetime.datetime.now())
@@ -189,7 +190,7 @@ def neuron_update(cortical_area, connection_resistance, destination):
     # fire_candidate_list
     global fire_candidate_list
     if data[destination]["cumulative_intake_sum_since_reset"] > data[destination]["firing_threshold"]:
-        if fire_candidate_list.count([cortical_area, destination]) == 0:
+#        if fire_candidate_list.count([cortical_area, destination]) == 0:   # ???? Why??
             fire_candidate_list.append([cortical_area, destination])
             if settings.verbose:
                 print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)

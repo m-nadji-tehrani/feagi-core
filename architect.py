@@ -44,7 +44,7 @@ def neuro_genesis(cortical_area, location):
     data[id]["status"] = "Passive"
     data[id]["activation_function_id"] = ""
     data[id]["timer_threshold"] = 500
-    data[id]["firing_threshold"] = 1
+    data[id]["firing_threshold"] = 5
     data[id]["cumulative_intake_sum_since_reset"] = 0
     data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
     data[id]["cumulative_fire_count"] = 0

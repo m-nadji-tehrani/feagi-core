@@ -124,6 +124,15 @@ def load_genome_in_memory():
     return genome
 
 
+# Resets the in-memory brain for each cortical area
+def reset_brain():
+    global brain
+    cortical_areas = cortical_list()
+    for item in cortical_areas:
+        brain[item] = {}
+    return brain
+
+
 def load_brain_in_memory():
     cortical_areas = cortical_list()
     brain = {}

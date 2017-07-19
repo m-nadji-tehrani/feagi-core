@@ -28,6 +28,9 @@ def copyanything(src, dst):
 copyanything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
 
 
+# Reset in-memory brain data
+settings.reset_brain()
+
 # Read Genome data, reset connectome and build it up
 data = settings.genome
 blueprint = settings.cortical_list()
@@ -56,7 +59,7 @@ for key in blueprint:
                                connection_resistance=data["blueprint"][key]["connection_resistance"])
     print("Synapse Creation for Cortical area %s is now complete." % key)
 
-# Build Synapses between various Cortical areas
+# Build Synapses across various Cortical areas
 for key in blueprint:
     for mapped_cortical_area in data["blueprint"][key]["cortical_mapping_dst"]:
         architect.neighbor_builder_ext(cortical_area_src=key,

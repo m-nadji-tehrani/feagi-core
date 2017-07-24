@@ -107,8 +107,8 @@ def kernel_direction(kernel_values):
         # print('***', tmpArray)
     # print("This is the end result: \n %s" % end_result)
     # print('tmp after appends %s' % tmpArray)
-    maxValue = max(zip(*tmpArray)[1])
-    maxValueIndex = zip(*tmpArray)[1].index(maxValue)
+    maxValue = max(list(zip(*tmpArray))[1])
+    maxValueIndex = list(zip(*tmpArray))[1].index(maxValue)
     direction = tmpArray[maxValueIndex][0]
     # direction = direction.replace('\\', '\')
     # print('max value is %s' % maxValue)

@@ -3,7 +3,7 @@
 This file contains all the Global settings and parameters used throughout the project
 """
 import json
-
+import os.path
 
 def init():
 
@@ -137,9 +137,10 @@ def load_brain_in_memory():
     cortical_areas = cortical_list()
     brain = {}
     for item in cortical_areas:
-        with open(connectome_path + item + '.json', "r") as data_file:
-            data = json.load(data_file)
-            brain[item] = data
+        if os.path.isfile(connectome_path + item + '.json'):
+            with open(connectome_path + item + '.json', "r") as data_file:
+                data = json.load(data_file)
+                brain[item] = data
     print("Brain has been successfully loaded into memory...")
     return brain
 

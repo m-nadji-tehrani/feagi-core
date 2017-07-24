@@ -1,12 +1,14 @@
 
 """
 This script is responsible for the creation of The Brain from scratch using Genome data
+* Added to test Git*
 """
 
 import json
 import shutil
 import errno
 import datetime
+
 
 import architect
 import visualizer

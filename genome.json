@@ -10,13 +10,17 @@
     }
   },
   "neighbor_locator_rule": {
+     "rule_0" : {
+       "param_1": 30,
+       "param_2": 0
+    },
     "rule_1" : {
        "param_1": 5,
        "param_2": 20
     },
     "rule_2" : {
        "param_1": 5,
-       "param_2": 20
+       "param_2": 5
     }
   },
    "IPU_vision_filters": {
@@ -878,8 +882,8 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
-       "neuron_density": 10,
-       "connection_resistance": 1,
+       "neuron_density": 5,
+       "connection_resistance": 0.5,
        "neighbor_locator_rule_id": "rule_1",
        "neighbor_locator_rule_param_id": "param_1",
        "cortical_mapping_dst": {
@@ -910,8 +914,8 @@
        "location": "",
        "kernel_size": 7,
        "neuron_density": 100,
-       "connection_resistance": 1,
-       "neighbor_locator_rule_id": "rule_1",
+       "connection_resistance": 0.1,
+       "neighbor_locator_rule_id": "rule_0",
        "neighbor_locator_rule_param_id": "param_1",
        "cortical_mapping_dst": {},
        "neuron_params": {

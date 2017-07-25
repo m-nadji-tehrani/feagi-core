@@ -1,35 +1,15 @@
 {
-   "2017-07-24_14:54:06.137675_PV171P": {
+   "2017-07-25_14:17:47.975045_QRS6KZ": {
       "neighbors": {
-         "2017-07-24_14:54:06.137919_ZLJQ56": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.137996_AJG5ZN": {
+         "2017-07-25_14:17:47.975625_RLUZB9": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138011_8RGFNC": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138083_TFCYZD": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138141_KHP9LN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
+         "2017-07-25_14:17:47.976192_KF6F15": {
             "cortical_area": "vision_v2",
             "connection_resistance": 1
          }
@@ -38,112 +18,22 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137704",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779282",
+      "cumulative_fire_count": 22,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
+         25,
          14,
-         19,
          2
       ]
    },
-   "2017-07-24_14:54:06.137714_MVET9H": {
-      "neighbors": {},
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137726",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         27,
-         13,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.137730_GQAQ99": {
+   "2017-07-25_14:17:47.975094_MO0OYA": {
       "neighbors": {
-         "2017-07-24_14:54:06.137830_JTFDR4": {
+         "2017-07-25_14:17:47.975427_46DX1M": {
             "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137875_BC9BKP": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137949_6MRLHX": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138375_YXROY3": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138578_QVTAU4": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
             "connection_resistance": 1
          }
       },
@@ -151,50 +41,46 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137745",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 4,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778948",
+      "cumulative_fire_count": 42,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
-         1,
-         8,
+         12,
+         22,
          4
       ]
    },
-   "2017-07-24_14:54:06.137749_GVH8KP": {
+   "2017-07-25_14:17:47.975120_K8ZYAF": {
       "neighbors": {
-         "2017-07-24_14:54:06.137830_JTFDR4": {
+         "2017-07-25_14:17:47.975045_QRS6KZ": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.137875_BC9BKP": {
+         "2017-07-25_14:17:47.975308_HRR340": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.137949_6MRLHX": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138375_YXROY3": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975380_20S2Z6": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975396_WP2TRT": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975564_4L0LKW": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138578_QVTAU4": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975625_RLUZB9": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          }
       },
@@ -202,45 +88,45 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137760",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 1,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779532",
+      "cumulative_fire_count": 22,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
-         1,
-         20,
-         1
+         24,
+         8,
+         3
       ]
    },
-   "2017-07-24_14:54:06.137781_QAR5BN": {
+   "2017-07-25_14:17:47.975145_VNT16F": {
       "neighbors": {
-         "2017-07-24_14:54:06.137934_BVOR94": {
+         "2017-07-25_14:17:47.975202_REXMBF": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138026_2UF2SN": {
+         "2017-07-25_14:17:47.975412_TRLV1E": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138039_O16WFZ": {
+         "2017-07-25_14:17:47.975488_ITR0N4": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138097_L6H76H": {
+         "2017-07-25_14:17:47.975534_9LSA6Y": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
+         "2017-07-25_14:17:47.975549_SEMKWC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976128_YMKD9M": {
             "cortical_area": "vision_v2",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
+         "2017-07-25_14:17:47.976405_U2RGN0": {
             "cortical_area": "vision_IT",
             "connection_resistance": 1
          }
@@ -249,529 +135,220 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.773782",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         3,
+         11,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975173_RC5T7R": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975145_VNT16F": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975412_TRLV1E": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975488_ITR0N4": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975534_9LSA6Y": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975549_SEMKWC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975579_WN6C7K": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976128_YMKD9M": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
       "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137808",
-      "cumulative_fire_count": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.777531",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         2,
+         12,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975202_REXMBF": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975252_V1DL17": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975473_O5RCWJ": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975503_K0HW10": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 1,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780875",
+      "cumulative_fire_count": 65,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         7,
+         19,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975252_V1DL17": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975094_MO0OYA": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975275_GW4NN2": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975323_AP3IRI": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975609_5EX0CC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975783_3BH3YW": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976446_S1RAV7": {
+            "cortical_area": "vision_IT",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 4,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780046",
+      "cumulative_fire_count": 34,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         11,
+         11,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975275_GW4NN2": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975427_46DX1M": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975783_3BH3YW": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.781585",
+      "cumulative_fire_count": 36,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         12,
+         12,
+         0
+      ]
+   },
+   "2017-07-25_14:17:47.975292_VZ6WCU": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975045_QRS6KZ": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975120_K8ZYAF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975308_HRR340": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975380_20S2Z6": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975396_WP2TRT": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975564_4L0LKW": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975625_RLUZB9": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779700",
+      "cumulative_fire_count": 22,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
          22,
-         4,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.137813_424CYT": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137675_PV171P": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137905_HA7M17": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138053_FSTCOU": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137826",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         10,
-         26,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.137830_JTFDR4": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137889_L4XAOO": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138068_0EJKPH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138127_PHP1M1": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138154_55T8M5": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138298_989J1R": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138490_QQG863": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138696_YLKNM4": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138752_IK49UD": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137841",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         5,
-         4,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.137845_9HABQH": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137781_QAR5BN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137934_BVOR94": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138039_O16WFZ": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137856",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         21,
-         21,
-         2
-      ]
-   },
-   "2017-07-24_14:54:06.137860_015DHM": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137730_GQAQ99": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137749_GVH8KP": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137875_BC9BKP": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138298_989J1R": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138332_HDFKTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138389_UGTDYN": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138490_QQG863": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138521_5RY1HK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138696_YLKNM4": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138724_HPWHIN": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138752_IK49UD": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137871",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         0,
-         0,
-         2
-      ]
-   },
-   "2017-07-24_14:54:06.137875_BC9BKP": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137830_JTFDR4": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137889_L4XAOO": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137949_6MRLHX": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138068_0EJKPH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138127_PHP1M1": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138154_55T8M5": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138298_989J1R": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138332_HDFKTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138389_UGTDYN": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138490_QQG863": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138696_YLKNM4": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138724_HPWHIN": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138752_IK49UD": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137886",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         4,
-         2,
-         0
-      ]
-   },
-   "2017-07-24_14:54:06.137889_L4XAOO": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137813_424CYT": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138127_PHP1M1": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137901",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         6,
-         25,
-         3
-      ]
-   },
-   "2017-07-24_14:54:06.137905_HA7M17": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137919_ZLJQ56": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137996_AJG5ZN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138011_8RGFNC": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138083_TFCYZD": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138141_KHP9LN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137916",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         14,
-         23,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.137919_ZLJQ56": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137845_9HABQH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137963_EGSOLB": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137977_507QMG": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138083_TFCYZD": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137931",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         17,
-         20,
+         3,
          4
       ]
    },
-   "2017-07-24_14:54:06.137934_BVOR94": {
+   "2017-07-25_14:17:47.975308_HRR340": {
       "neighbors": {
-         "2017-07-24_14:54:06.137714_MVET9H": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138026_2UF2SN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138097_L6H76H": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138113_VB4409": {
+         "2017-07-25_14:17:47.975625_RLUZB9": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          }
@@ -781,107 +358,20 @@
       "timer_threshold": 500,
       "firing_threshold": 5,
       "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137945",
-      "cumulative_fire_count": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779868",
+      "cumulative_fire_count": 22,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
          25,
-         20,
-         4
+         4,
+         1
       ]
    },
-   "2017-07-24_14:54:06.137949_6MRLHX": {
+   "2017-07-25_14:17:47.975323_AP3IRI": {
       "neighbors": {
-         "2017-07-24_14:54:06.137889_L4XAOO": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138068_0EJKPH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138127_PHP1M1": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138154_55T8M5": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137960",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         5,
-         11,
-         4
-      ]
-   },
-   "2017-07-24_14:54:06.137963_EGSOLB": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137781_QAR5BN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137934_BVOR94": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138039_O16WFZ": {
+         "2017-07-25_14:17:47.975427_46DX1M": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          }
@@ -890,535 +380,161 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137974",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 4,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778918",
+      "cumulative_fire_count": 42,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
-         21,
-         25,
-         3
-      ]
-   },
-   "2017-07-24_14:54:06.137977_507QMG": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137781_QAR5BN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137845_9HABQH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137963_EGSOLB": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.137988",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
+         12,
          19,
-         5,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.137996_AJG5ZN": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137919_ZLJQ56": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137977_507QMG": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138011_8RGFNC": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138083_TFCYZD": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138141_KHP9LN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138008",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         15,
-         27,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.138011_8RGFNC": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137845_9HABQH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137963_EGSOLB": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137977_507QMG": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138083_TFCYZD": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138022",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         17,
-         16,
-         2
-      ]
-   },
-   "2017-07-24_14:54:06.138026_2UF2SN": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137714_MVET9H": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138113_VB4409": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138036",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         26,
-         24,
-         1
-      ]
-   },
-   "2017-07-24_14:54:06.138039_O16WFZ": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137714_MVET9H": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138026_2UF2SN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138097_L6H76H": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138113_VB4409": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138050",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         25,
-         17,
          4
       ]
    },
-   "2017-07-24_14:54:06.138053_FSTCOU": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137675_PV171P": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137905_HA7M17": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137919_ZLJQ56": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137996_AJG5ZN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138011_8RGFNC": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138141_KHP9LN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138065",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         13,
-         19,
-         0
-      ]
-   },
-   "2017-07-24_14:54:06.138068_0EJKPH": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137813_424CYT": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138127_PHP1M1": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138080",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         6,
-         18,
-         3
-      ]
-   },
-   "2017-07-24_14:54:06.138083_TFCYZD": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137781_QAR5BN": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137845_9HABQH": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137963_EGSOLB": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137977_507QMG": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138094",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         18,
-         4,
-         2
-      ]
-   },
-   "2017-07-24_14:54:06.138097_L6H76H": {
-      "neighbors": {
-         "2017-07-24_14:54:06.137714_MVET9H": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138113_VB4409": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         }
-      },
-      "status": "Passive",
-      "activation_function_id": "",
-      "timer_threshold": 500,
-      "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138107",
-      "cumulative_fire_count": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "firing_pattern_id": "",
-      "location": [
-         26,
-         5,
-         3
-      ]
-   },
-   "2017-07-24_14:54:06.138113_VB4409": {
+   "2017-07-25_14:17:47.975348_ZQM2DR": {
       "neighbors": {},
       "status": "Passive",
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138124",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780674",
+      "cumulative_fire_count": 36,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
          27,
-         2,
+         12,
+         0
+      ]
+   },
+   "2017-07-25_14:17:47.975364_AMXET7": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975045_QRS6KZ": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975120_K8ZYAF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975292_VZ6WCU": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975308_HRR340": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975380_20S2Z6": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975396_WP2TRT": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975520_GUMF05": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975564_4L0LKW": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779089",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         21,
+         20,
+         2
+      ]
+   },
+   "2017-07-25_14:17:47.975380_20S2Z6": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975625_RLUZB9": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779476",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         25,
+         10,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975396_WP2TRT": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975625_RLUZB9": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975852_VJ3OSZ": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779360",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         25,
+         19,
          4
       ]
    },
-   "2017-07-24_14:54:06.138127_PHP1M1": {
+   "2017-07-25_14:17:47.975412_TRLV1E": {
       "neighbors": {
-         "2017-07-24_14:54:06.137813_424CYT": {
+         "2017-07-25_14:17:47.975202_REXMBF": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138298_989J1R": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975488_ITR0N4": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975503_K0HW10": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138332_HDFKTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138389_UGTDYN": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138696_YLKNM4": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138752_IK49UD": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
+         "2017-07-25_14:17:47.975549_SEMKWC": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          }
       },
@@ -1426,78 +542,22 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138138",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778035",
+      "cumulative_fire_count": 22,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
-         8,
-         1,
-         2
+         4,
+         21,
+         3
       ]
    },
-   "2017-07-24_14:54:06.138141_KHP9LN": {
+   "2017-07-25_14:17:47.975427_46DX1M": {
       "neighbors": {
-         "2017-07-24_14:54:06.137845_9HABQH": {
+         "2017-07-25_14:17:47.975442_JNEB5E": {
             "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137963_EGSOLB": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.137977_507QMG": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138083_TFCYZD": {
-            "cortical_area": "vision_v1",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138448_P09507": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138710_6SGNWP": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
             "connection_resistance": 1
          }
       },
@@ -1505,90 +565,30 @@
       "activation_function_id": "",
       "timer_threshold": 500,
       "firing_threshold": 5,
-      "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138151",
-      "cumulative_fire_count": 0,
+      "cumulative_intake_sum_since_reset": 3,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778979",
+      "cumulative_fire_count": 42,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
-         17,
-         7,
-         1
+         16,
+         9,
+         3
       ]
    },
-   "2017-07-24_14:54:06.138154_55T8M5": {
+   "2017-07-25_14:17:47.975442_JNEB5E": {
       "neighbors": {
-         "2017-07-24_14:54:06.137813_424CYT": {
+         "2017-07-25_14:17:47.975292_VZ6WCU": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138127_PHP1M1": {
+         "2017-07-25_14:17:47.975364_AMXET7": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138315_N0JTX2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138361_OWAC79": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138403_CCCE1Y": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138417_UW3RHP": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138462_EY6FLH": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138550_JN2BL2": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138564_4ZECZJ": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138665_XL3D97": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138679_8BOH0L": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138738_WKMF9C": {
-            "cortical_area": "vision_IT",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138766_ZBF3MA": {
-            "cortical_area": "vision_IT",
+         "2017-07-25_14:17:47.975520_GUMF05": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          }
       },
@@ -1597,57 +597,41 @@
       "timer_threshold": 500,
       "firing_threshold": 5,
       "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138165",
-      "cumulative_fire_count": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.779009",
+      "cumulative_fire_count": 23,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
-         6,
-         8,
-         2
+         18,
+         11,
+         4
       ]
    },
-   "2017-07-24_14:54:06.138169_MUAP9W": {
+   "2017-07-25_14:17:47.975457_CPWCBQ": {
       "neighbors": {
-         "2017-07-24_14:54:06.137730_GQAQ99": {
+         "2017-07-25_14:17:47.975145_VNT16F": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.137749_GVH8KP": {
+         "2017-07-25_14:17:47.975173_RC5T7R": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.137875_BC9BKP": {
+         "2017-07-25_14:17:47.975412_TRLV1E": {
             "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138375_YXROY3": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975534_9LSA6Y": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138433_SBPWDU": {
-            "cortical_area": "vision_v2",
+         "2017-07-25_14:17:47.975579_WN6C7K": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          },
-         "2017-07-24_14:54:06.138475_LTERTK": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138505_2S9ZB0": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138536_8APJPC": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138578_QVTAU4": {
-            "cortical_area": "vision_v2",
-            "connection_resistance": 1
-         },
-         "2017-07-24_14:54:06.138649_GLRF4E": {
-            "cortical_area": "vision_IT",
+         "2017-07-25_14:17:47.975594_GFLA3R": {
+            "cortical_area": "vision_v1",
             "connection_resistance": 1
          }
       },
@@ -1656,13 +640,406 @@
       "timer_threshold": 500,
       "firing_threshold": 5,
       "cumulative_intake_sum_since_reset": 0,
-      "last_timer_reset_time": "2017-07-24 14:54:06.138180",
+      "last_timer_reset_time": "2017-07-25 14:17:47.975469",
       "cumulative_fire_count": 0,
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "firing_pattern_id": "",
       "location": [
          0,
+         26,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975473_O5RCWJ": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975094_MO0OYA": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975275_GW4NN2": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975323_AP3IRI": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975609_5EX0CC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976033_IWMX4D": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 4,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780193",
+      "cumulative_fire_count": 34,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         11,
+         6,
+         4
+      ]
+   },
+   "2017-07-25_14:17:47.975488_ITR0N4": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975202_REXMBF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975503_K0HW10": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976257_GYK9IB": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780951",
+      "cumulative_fire_count": 43,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         6,
+         4,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975503_K0HW10": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975094_MO0OYA": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975252_V1DL17": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975275_GW4NN2": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975323_AP3IRI": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975473_O5RCWJ": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975609_5EX0CC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975905_OLYBZ4": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.781302",
+      "cumulative_fire_count": 65,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         8,
+         8,
+         4
+      ]
+   },
+   "2017-07-25_14:17:47.975520_GUMF05": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975045_QRS6KZ": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975120_K8ZYAF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975308_HRR340": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975380_20S2Z6": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975396_WP2TRT": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975564_4L0LKW": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975625_RLUZB9": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:20:27.412839",
+      "cumulative_fire_count": 8,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         22,
+         26,
+         4
+      ]
+   },
+   "2017-07-25_14:17:47.975534_9LSA6Y": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975202_REXMBF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975488_ITR0N4": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975503_K0HW10": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975549_SEMKWC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780415",
+      "cumulative_fire_count": 33,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         4,
+         27,
+         0
+      ]
+   },
+   "2017-07-25_14:17:47.975549_SEMKWC": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975202_REXMBF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975488_ITR0N4": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975503_K0HW10": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 5,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778522",
+      "cumulative_fire_count": 52,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         5,
+         18,
+         1
+      ]
+   },
+   "2017-07-25_14:17:47.975564_4L0LKW": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975625_RLUZB9": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780733",
+      "cumulative_fire_count": 19,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         25,
+         25,
+         2
+      ]
+   },
+   "2017-07-25_14:17:47.975579_WN6C7K": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975202_REXMBF": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975412_TRLV1E": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975488_ITR0N4": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975534_9LSA6Y": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975549_SEMKWC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976317_6CPR0J": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 1,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778600",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         3,
+         7,
+         1
+      ]
+   },
+   "2017-07-25_14:17:47.975594_GFLA3R": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975145_VNT16F": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975412_TRLV1E": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975488_ITR0N4": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975534_9LSA6Y": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975549_SEMKWC": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.975579_WN6C7K": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         },
+         "2017-07-25_14:17:47.976128_YMKD9M": {
+            "cortical_area": "vision_v2",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.778748",
+      "cumulative_fire_count": 22,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         2,
+         13,
+         3
+      ]
+   },
+   "2017-07-25_14:17:47.975609_5EX0CC": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975427_46DX1M": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 0,
+      "last_timer_reset_time": "2017-07-25 14:23:20.781638",
+      "cumulative_fire_count": 48,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         12,
+         27,
+         4
+      ]
+   },
+   "2017-07-25_14:17:47.975625_RLUZB9": {
+      "neighbors": {
+         "2017-07-25_14:17:47.975348_ZQM2DR": {
+            "cortical_area": "vision_v1",
+            "connection_resistance": 1
+         }
+      },
+      "status": "Passive",
+      "activation_function_id": "",
+      "timer_threshold": 500,
+      "firing_threshold": 5,
+      "cumulative_intake_sum_since_reset": 2,
+      "last_timer_reset_time": "2017-07-25 14:23:20.780645",
+      "cumulative_fire_count": 38,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "firing_pattern_id": "",
+      "location": [
+         26,
          16,
          3
       ]

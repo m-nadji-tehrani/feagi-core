@@ -12,6 +12,7 @@ import json
 import datetime
 import string
 import random
+from math import sqrt
 
 import settings
 
@@ -164,11 +165,18 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     for key in data:
         # The following if statements define various rules to help select candidate neurons
 
-        # Rule 1: Selects only neurons withing rule_param unit limits forward of source Neuron
+        # Rule 0: Selects all neurons within rule_param radius
+        if rule == 'rule_0':
+            radius = sqrt(data[key]["location"][0] ** 2 + data[neuron_id]["location"][0] ** 2 )
+            if radius < rule_param:
+                neighbor_candidates.append(key)
+
+        # Rule 1: Selects only neurons within rule_param unit limits forward of source Neuron
         if rule == 'rule_1':
             if (data[key]["location"][0] > data[neuron_id]["location"][0]) and \
                     (data[key]["location"][0] < data[neuron_id]["location"][0]+rule_param):
                 neighbor_candidates.append(key)
+
 
     return neighbor_candidates
 

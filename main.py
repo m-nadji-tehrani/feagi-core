@@ -59,29 +59,29 @@ image_number = 12
 
 #show_cortical_areas()
 trigger_first_burst(read_from_MNIST(image_number))
-#settings.save_brain_to_disk()
+settings.save_brain_to_disk()
 
 
 
 # IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
 
-print("Direction matrix with Kernel 3")
-a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 3))
-for items in range(0, np.shape(a)[0]):
-    print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
-
-print("Direction matrix with Kernel 5")
-a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 5))
-for items in range(0, np.shape(a)[0]):
-    print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
-
-print("Direction matrix with Kernel 7")
-a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 7))
-for items in range(0, np.shape(a)[0]):
-    print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
-
-
-print(IPU_vision.direction_stats(a))
+# print("Direction matrix with Kernel 3")
+# a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 3))
+# for items in range(0, np.shape(a)[0]):
+#     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
+#
+# print("Direction matrix with Kernel 5")
+# a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 5))
+# for items in range(0, np.shape(a)[0]):
+#     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
+#
+# print("Direction matrix with Kernel 7")
+# a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 7))
+# for items in range(0, np.shape(a)[0]):
+#     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
+#
+#
+# print(IPU_vision.direction_stats(a))
 
 
 # show_cortical_heatmap(image_number)
@@ -102,6 +102,7 @@ print(IPU_vision.direction_stats(a))
 # todo: Update the algorithm responsible to improving the synapse strength to consider simultaneous firing of others
 # todo: To account for LTD or Long Term Synaptic Depression
 # todo: Ability to detect the dominant direction before higher level processing
+# todo: Figure how to pass the Brain Physiology to Genome as well. Currently Genome drives Brain Anatomy only.
 
 
 # todo: NEXT    >>>>>   Fine tune Genome to produce distinguishable results as Neurons fire
@@ -129,6 +130,11 @@ Next Steps
     -When neurons fire at the same time wire them together
     -Create a fire queue to account for minor firing time differences or have a service that periodically scans the 
     firing times and with a degree of error wire neurons together
-    -
+    -Need to consider axon lenght as a factor driving the wiring of neurons in a given proximity. This is currently a 
+    param in the Genome but not used anywhere int he code. Functions under neuron_functions module to be reviewed
+    -Have the axon_avg_length as such that all the memory neurons can create synapse with all others this is to ensure
+    when neurons react to an event but reside far from each other to be able to connect.
+        Cons: Too many connections?
+        
 
 """

@@ -1,7 +1,6 @@
 
 """
 This script is responsible for the creation of The Brain from scratch using Genome data
-* Added to test Git*
 """
 
 import json

@@ -325,7 +325,9 @@ def connectome_location_data(cortical_area):
 
     neuron_locations = []
     for key in data:
-        neuron_locations.append(data[key]["location"])
+        location_data = data[key]["location"]
+        location_data.append(data[key]["cumulative_fire_count"])
+        neuron_locations.append(location_data)
 
     return neuron_locations
 

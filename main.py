@@ -61,7 +61,9 @@ image_number = 12
 trigger_first_burst(read_from_MNIST(image_number))
 settings.save_brain_to_disk()
 
+visualizer.connectome_visualizer('Memory', neighbor_show='true', threshold=0.2)
 
+#visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
 # IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
 

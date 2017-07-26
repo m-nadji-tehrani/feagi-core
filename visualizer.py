@@ -48,7 +48,7 @@ def init():
     init_status = True
 
 
-def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'):
+def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false', threshold=0):
     """Visualizes the Neurons in the connectome"""
     global init_status
     if not init_status:
@@ -70,13 +70,40 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
             if data[key]["neighbors"].keys() != []:
                 source_location = data[key]["location"]
                 for subkey in data[key]["neighbors"]:
-                    if data[key]['neighbors'][subkey]['cortical_area'] == cortical_area:
+                    if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (data[key]['neighbors']
+                                [subkey]['connection_resistance'] > threshold):
                         destination_location = data[subkey]["location"]
                         a = Arrow3D([source_location[0], destination_location[0]], [source_location[1],
                                     destination_location[1]], [source_location[2], destination_location[2]],
                                     mutation_scale=10, lw=1, arrowstyle="->", color="r")
                         ax.add_artist(a)
     plt.show()
+    plt.pause(10)
+    return
+
+
+def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
+    """Visualizes the extent of Neuron activities"""
+    global init_status
+    if not init_status:
+        init()
+
+    fig = plt.figure()
+    fig = plt.figure(figsize=plt.figaspect(.2))
+    fig.suptitle('Cortical Activities\n')
+
+    for cortical_area in cortical_areas:
+        neuron_locations = architect.connectome_location_data(cortical_area)
+        aa = fig.add_subplot(1, len(cortical_areas)+1, cortical_areas.index(cortical_area)+1)
+        aa.set_title(cortical_area)
+        aa.set_xlim(0, x)
+        aa.set_ylim(0, y)
+        # aa.set_zlim(0, z)
+        for location in neuron_locations:
+            # aa.scatter(location[0], location[1], location[2], s=location[3])
+            aa.scatter(location[0], location[1], s=location[3])
+    plt.show()
+    plt.pause(20)
     return
 
 

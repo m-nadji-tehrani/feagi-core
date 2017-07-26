@@ -28,6 +28,8 @@ def connectome_neuron_count(cortical_area):
     return neuron_count
 
 
+
+
 global raw
 raw = []
 
@@ -46,18 +48,35 @@ def connectome_neighbor_histogram(cortical_area):
     return
 
 
-def tbd():
-    for key in blueprint:
-        connectome_neighbor_histogram(key)
+# def tbd():
+#     for key in blueprint:
+#         connectome_neighbor_histogram(key)
+#
+#     df = pd.DataFrame(raw)
+#     print(df)
+#     print(df[1])
+#     # df.plot(kind='hist', stacked=True, bins=20)
+#
+#     plt.show()
+#
+#     return
 
-    df = pd.DataFrame(raw)
-    print(df)
-    print(df[1])
-    # df.plot(kind='hist', stacked=True, bins=20)
 
-    plt.show()
-
-    return
+# def cortical_synaptic_strengths(cortical_area):
+#     """
+#     list Neurons along with destination neuron and Synaptic strenght associated with them.
+#
+#     :param cortical_area:
+#     :return:
+#     """
+#     synaptic_strengths = []
+#     data = settings.brain[cortical_area]
+#     for key in data:
+#         for neighbor in data[key]["neighbors"]:
+#
+#
+#
+#     return synaptic_strengths
 
 
 

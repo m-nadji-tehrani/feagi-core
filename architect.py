@@ -45,7 +45,7 @@ def neuro_genesis(cortical_area, location):
     data[id]["status"] = "Passive"
     data[id]["activation_function_id"] = ""
     data[id]["timer_threshold"] = 500
-    data[id]["firing_threshold"] = 5
+    data[id]["firing_threshold"] = 3
     data[id]["cumulative_intake_sum_since_reset"] = 0
     data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
     data[id]["cumulative_fire_count"] = 0
@@ -59,18 +59,18 @@ def neuro_genesis(cortical_area, location):
 
 
 # todo: Need to update Synapse function to include both Source and Destination Cortical area
-def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, connection_resistance):
+def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_strength):
     """
     Function responsible for detecting a Neuron's neighbors and creating synaptic connections
     Note: Synapse association is captured on the Source Neuron side within Connectome
     :param source:
     :param destination:
-    :param connection_resistance:
+    :param synaptic_strength:
     :return:
     """
     # Input: The id for source and destination Neuron plus the parameter defining connection strength
     # Source provides the Axon and connects to Destination Dendrite
-    # connection_resistance is intended to provide the level of synaptic strength
+    # synaptic_strength is intended to provide the level of synaptic strength
 
     data = settings.brain[src_cortical_area]
 
@@ -80,7 +80,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, connection_res
         return
 
     data[src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area,
-                                         "connection_resistance": connection_resistance}
+                                         "synaptic_strength": synaptic_strength}
 
     return
 
@@ -181,12 +181,12 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     return neighbor_candidates
 
 
-def neighbor_builder(cortical_area, rule_id, rule_param, connection_resistance):
+def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
     """
     Function responsible for crawling through Neurons and deciding where to build Synapses
     :param rule:
     :param rule_param:
-    :param connection_resistance:
+    :param synaptic_strength:
     :return:
     """
     # Need to figure how to build a Neighbor relationship between Neurons
@@ -205,7 +205,7 @@ def neighbor_builder(cortical_area, rule_id, rule_param, connection_resistance):
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder(cortical_area, src_id, rule_id, rule_param)
         for dst_id in neighbor_candidates:
-            synapse(cortical_area, src_id, cortical_area, dst_id, connection_resistance)
+            synapse(cortical_area, src_id, cortical_area, dst_id, synaptic_strength)
             # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
     return
@@ -244,14 +244,14 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, neuron_id, rule, r
     return neighbor_candidates
 
 
-def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param, connection_resistance=1):
+def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param, synaptic_strength=1):
     """
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
     :param cortical_area_src:
     :param cortical_area_dst:
     :param rule:
     :param rule_param:
-    :param connection_resistance:
+    :param synaptic_strength:
     :return:
     """
     data = settings.brain[cortical_area_src]
@@ -259,7 +259,7 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_id, rule, rule_param)
         for dst_id in neighbor_candidates:
-            synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, connection_resistance)
+            synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, synaptic_strength)
             # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
     return

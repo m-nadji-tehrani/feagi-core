@@ -57,7 +57,7 @@ for key in blueprint:
                                rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
                                ["neighbor_locator_rule_id"]][data["blueprint"][key]
                                ["neighbor_locator_rule_param_id"]],
-                               connection_resistance=data["blueprint"][key]["connection_resistance"])
+                               synaptic_strength=data["blueprint"][key]["synaptic_strength"])
     print("Synapse Creation for Cortical area %s is now complete." % key)
 
 # Build Synapses across various Cortical areas
@@ -71,7 +71,7 @@ for key in blueprint:
                                        ["cortical_mapping_dst"][mapped_cortical_area]
                                        ["neighbor_locator_rule_id"]][data["blueprint"][key]["cortical_mapping_dst"]
                                        [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
-                                       connection_resistance=data["blueprint"][key]["connection_resistance"])
+                                       synaptic_strength=data["blueprint"][key]["synaptic_strength"])
         print("Completed Synapse Creation between Cortical area %s and %s" % (key, mapped_cortical_area))
 print("Neuronal mapping across all Cortical areas has been completed!!")
 

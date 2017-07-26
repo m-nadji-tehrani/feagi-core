@@ -13,6 +13,7 @@ import datetime
 
 import visualizer
 import settings
+from architect import synapse
 
 
 # Global variables
@@ -58,16 +59,28 @@ def burst(fire_list):
         print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
         return
 
-    # >>> Question: How to have neurons who fire together wire together? <<<
+    # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
+
+    burst_count += 1
+    print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
+          % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
+    for cortical_area in set([i[0] for i in fire_candidate_list]):
+        print(settings.Bcolors.BURST +
+              '    %s : %i  ' % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
+              + settings.Bcolors.ENDC)
+
     for x in list(fire_candidate_list):
         if settings.verbose:
             print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
         neuron_fire(x[0], x[1])
 
-    # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
+    # Wire together the neurons who Fire together
 
-    burst_count += 1
-    print(settings.Bcolors.BURST + 'Burst count = %i' % burst_count + settings.Bcolors.ENDC)
+    for cortical_area in set([i[0] for i in fire_candidate_list]):
+        for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+            for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                if src_neuron != dst_neuron:
+                    wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
     # todo: figure how to visualize bursts across various cortical areas
     # If visualization flag is set the visualization function will trigger
@@ -133,7 +146,7 @@ def neuron_fire(cortical_area, id):
     for x in destination:
         if settings.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
-        neuron_update(data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["connection_resistance"], x)
+        neuron_update(data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["synaptic_strength"], x)
         # Important: Currently calling the update function from Fire function has the potential of running into
         #  recursive error. Need to address this. One solution is to count the number of recursive operations and
         #  exit function when number of steps are beyond a specific point.
@@ -142,18 +155,19 @@ def neuron_fire(cortical_area, id):
 
     global fire_candidate_list
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, id]))
+    # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, id]))
     if settings.verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
     return
 
 
-def neuron_update(cortical_area, connection_resistance, destination):
+def neuron_update(cortical_area, synaptic_strength, destination):
     """This function updates the destination parameters upon upstream Neuron firing"""
 
     data = settings.brain[cortical_area]
 
-    # update the cumulative_intake_total, cumulative_intake_count and connection_resistance between source and
+    # update the cumulative_intake_total, cumulative_intake_count and synaptic_strength between source and
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
@@ -173,7 +187,7 @@ def neuron_update(cortical_area, connection_resistance, destination):
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
-    data[destination]["cumulative_intake_sum_since_reset"] += connection_resistance
+    data[destination]["cumulative_intake_sum_since_reset"] += synaptic_strength
 
     if settings.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"
@@ -190,7 +204,7 @@ def neuron_update(cortical_area, connection_resistance, destination):
     # fire_candidate_list
     global fire_candidate_list
     if data[destination]["cumulative_intake_sum_since_reset"] > data[destination]["firing_threshold"]:
-#        if fire_candidate_list.count([cortical_area, destination]) == 0:   # ???? Why??
+       if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
             fire_candidate_list.append([cortical_area, destination])
             if settings.verbose:
                 print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
@@ -219,3 +233,23 @@ def neuron_neighbors(cortical_area, id):
         print(json.dumps(data[id]["neighbors"], indent=3))
     return data[id]["neighbors"]
 
+def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
+    """
+    This function simulates neuron plasticity in a sense that when facilitates wiring the neurons together. This is 
+    done by increasing the synaptic_strength associated with a link between two neuron.
+    """
+    data = settings.brain[cortical_area]
+    genome = settings.genome
+
+    # Build neighbor relationship between the source and destination if its not already in place
+    # Check if source and destination have an existing synapse if not create one here
+    if dst_neuron not in data[src_neuron]["neighbors"]:
+        synapse(cortical_area, src_neuron, cortical_area, dst_neuron,
+                genome["blueprint"][cortical_area]["synaptic_strength"])
+
+    # Every time source and destination neuron is fired at the same time which in case of the code architecture
+    # reside in the same burst, the synaptic_strength will be increased simulating Fire together, wire together.
+    data[src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] += \
+        genome["blueprint"][cortical_area]["synaptic_strength_inc"]
+
+    return

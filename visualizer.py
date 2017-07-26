@@ -71,7 +71,7 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
                 source_location = data[key]["location"]
                 for subkey in data[key]["neighbors"]:
                     if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (data[key]['neighbors']
-                                [subkey]['connection_resistance'] > threshold):
+                                [subkey]['synaptic_strength'] > threshold):
                         destination_location = data[subkey]["location"]
                         a = Arrow3D([source_location[0], destination_location[0]], [source_location[1],
                                     destination_location[1]], [source_location[2], destination_location[2]],
@@ -103,7 +103,7 @@ def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
             # aa.scatter(location[0], location[1], location[2], s=location[3])
             aa.scatter(location[0], location[1], s=location[3])
     plt.show()
-    plt.pause(20)
+    plt.pause(1)
     return
 
 

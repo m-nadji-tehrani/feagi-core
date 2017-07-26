@@ -59,9 +59,11 @@ image_number = 12
 
 #show_cortical_areas()
 trigger_first_burst(read_from_MNIST(image_number))
+
 settings.save_brain_to_disk()
 
-visualizer.connectome_visualizer('Memory', neighbor_show='true', threshold=0.2)
+
+visualizer.connectome_visualizer('Memory', neighbor_show='true', threshold=0.1)
 
 #visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
@@ -89,7 +91,7 @@ visualizer.connectome_visualizer('Memory', neighbor_show='true', threshold=0.2)
 # show_cortical_heatmap(image_number)
 
 """
-# TODO: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with
+# todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with
 # todo: Create the pruner function
 # todo: Perform edge detection on the images from MNIST and feed them to network
 # todo: Come up with a way to analyze and categorize output data

@@ -63,7 +63,7 @@ trigger_first_burst(read_from_MNIST(image_number))
 settings.save_brain_to_disk()
 
 
-visualizer.connectome_visualizer('Memory', neighbor_show='true', threshold=0.1)
+visualizer.connectome_visualizer('Memory', neighbor_show='true', threshold=1)
 
 #visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 

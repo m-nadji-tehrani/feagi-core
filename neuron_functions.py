@@ -159,6 +159,9 @@ def neuron_fire(cortical_area, id):
     if settings.verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
+    # Push changes back to Brain
+    settings.brain[cortical_area] = data
+
     return
 
 
@@ -208,6 +211,9 @@ def neuron_update(cortical_area, synaptic_strength, destination):
             fire_candidate_list.append([cortical_area, destination])
             if settings.verbose:
                 print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+
+    # Push changes back to Brain
+    settings.brain[cortical_area] = data
 
     return fire_candidate_list
 

@@ -36,24 +36,29 @@ def neuro_genesis(cortical_area, location):
     :param location:
     :return:
     """
-    # todo: Need to update the following to use the Genome data instead of hardcoded values
 
+    genome = settings.genome
     data = settings.brain[cortical_area]
+
     id = id_gen()
+
     data[id] = {}
     data[id]["neighbors"] = {}
-    data[id]["status"] = "Passive"
-    data[id]["activation_function_id"] = ""
-    data[id]["timer_threshold"] = 500
-    data[id]["firing_threshold"] = 3
     data[id]["cumulative_intake_sum_since_reset"] = 0
-    data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
     data[id]["cumulative_fire_count"] = 0
     data[id]["cumulative_intake_total"] = 0
     data[id]["cumulative_intake_count"] = 0
-#       data[id]["group_id"] = ""           # consider using the group name part of Genome instead
-    data[id]["firing_pattern_id"] = ""
+
     data[id]["location"] = location
+    data[id]["status"] = "Passive"
+    data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
+
+
+#   data[id]["group_id"] = ""                   # consider using the group name part of Genome instead
+    data[id]["firing_pattern_id"] = genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
+    data[id]["activation_function_id"] = genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
+    data[id]["timer_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['timer_threshold']
+    data[id]["firing_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
 
     return
 
@@ -118,21 +123,21 @@ def location_collector(cortical_area):
         # Need to come up with an algorithm to populate the space within the object with random neurons given density
         # Output is expected to be a N x 3 matrix containing dimensions for N neurons to be created
 
-    data = settings.genome
+    genome = settings.genome
 
-    if data["blueprint"].get(cortical_area) is None:
+    if genome["blueprint"].get(cortical_area) is None:
         print("Cortical area %s not found!" % cortical_area)
         return
 
     neuron_loc_list = []
-    for x in range(0, data["blueprint"][cortical_area]["neuron_density"]):
+    for x in range(0, genome["blueprint"][cortical_area]["neuron_density"]):
         neuron_loc_list.append(location_generator(
-            data["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
-            data["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
-            data["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
-            data["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1],
-            data["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1],
-            data["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1]))
+            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
+            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
+            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
+            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1],
+            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1],
+            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1]))
 
     return neuron_loc_list
 

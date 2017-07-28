@@ -23,7 +23,7 @@
        "param_2": 8
     }
   },
-   "IPU_vision_filters": {
+  "IPU_vision_filters": {
       "3": {
          "-": [
             [
@@ -816,7 +816,7 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 3,
-       "neuron_density": 30,
+       "neuron_density": 100,
        "synaptic_strength": 1,
        "synaptic_strength_inc": 1,
        "neighbor_locator_rule_id": "rule_1",
@@ -843,7 +843,7 @@
           "geometric_boundaries": {
              "x": [0, 28],
              "y": [0, 28],
-             "z": [0, 5]
+             "z": [0, 10]
           }
        }
     },
@@ -852,7 +852,7 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 5,
-       "neuron_density": 20,
+       "neuron_density": 100,
        "synaptic_strength": 1,
        "synaptic_strength_inc": 1,
        "neighbor_locator_rule_id": "rule_1",
@@ -875,7 +875,7 @@
           "geometric_boundaries": {
              "x": [0, 28],
              "y": [0, 28],
-             "z": [0, 5]
+             "z": [0, 10]
           }
        }
     },
@@ -884,7 +884,7 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
-       "neuron_density": 5,
+       "neuron_density": 100,
        "synaptic_strength": 0.5,
        "synaptic_strength_inc": 0.05,
        "neighbor_locator_rule_id": "rule_1",
@@ -907,7 +907,7 @@
           "geometric_boundaries": {
              "x": [0, 28],
              "y": [0, 28],
-             "z": [0, 5]
+             "z": [0, 10]
           }
        }
     },

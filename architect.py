@@ -46,6 +46,7 @@ def neuro_genesis(cortical_area, location):
     data[id]["neighbors"] = {}
     data[id]["cumulative_intake_sum_since_reset"] = 0
     data[id]["cumulative_fire_count"] = 0
+    data[id]["cumulative_fire_count_inst"] = 0
     data[id]["cumulative_intake_total"] = 0
     data[id]["cumulative_intake_count"] = 0
 
@@ -161,6 +162,7 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     :param neuron_id:
     :param rule:
     :param rule_param:
+    :param cortical_area
     :return:
     """
     # Input: neuron id of which we desire to find all candidate neurons for
@@ -168,20 +170,9 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     neighbor_candidates = []
 
     for key in data:
-        # The following if statements define various rules to help select candidate neurons
-
-        # Rule 0: Selects all neurons within rule_param radius
-        if rule == 'rule_0':
-            radius = sqrt(data[key]["location"][0] ** 2 + data[neuron_id]["location"][0] ** 2 )
-            if radius < rule_param:
-                neighbor_candidates.append(key)
-
-        # Rule 1: Selects only neurons within rule_param unit limits forward of source Neuron
-        if rule == 'rule_1':
-            if (data[key]["location"][0] > data[neuron_id]["location"][0]) and \
-                    (data[key]["location"][0] < data[neuron_id]["location"][0]+rule_param):
-                neighbor_candidates.append(key)
-
+        if rule_matcher(rule_id=rule, rule_param=rule_param,
+                        cortical_area_src=cortical_area, cortical_area_dst=cortical_area, neuron_id=neuron_id, key=key):
+            neighbor_candidates.append(key)
 
     return neighbor_candidates
 
@@ -189,10 +180,6 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
 def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
     """
     Function responsible for crawling through Neurons and deciding where to build Synapses
-    :param rule:
-    :param rule_param:
-    :param synaptic_strength:
-    :return:
     """
     # Need to figure how to build a Neighbor relationship between Neurons
     #    1. Should it be based on the proximity?
@@ -216,35 +203,19 @@ def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
     return
 
 
-# todo: Need a new set of Neighbor building and finding functions to handle cross cortical scenarios
-
-
-def neighbor_finder_ext(cortical_area_src, cortical_area_dst, neuron_id, rule, rule_param):
+def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rule, rule_param):
     """
     Finds a list of candidate Neurons from another Cortical area to build Synapse with for a given Neuron
-    :param cortical_area_src:
-    :param cortical_area_dst:
-    :param neuron_id:
-    :param rule:
-    :param rule_param:
-    :return:
     """
 
-    # Input: neuron id of which we desire to find all candidate neurons for
-    src_data = settings.brain[cortical_area_src]
+    # Input: neuron id of which we desire to find all candidate neurons for from another cortical region
     dst_data = settings.brain[cortical_area_dst]
     neighbor_candidates = []
 
-    # The following if statements define various rules to help select candidate neurons from external source
-    # todo: Figure a way to move the rules to genome
-    # Rule 2: Selects only neurons within rule_param unit limits forward of source Neuron
-    if rule == 'rule_2':
-        for key in dst_data:
-            if (dst_data[key]["location"][0] > src_data[neuron_id]["location"][0]) and \
-                    (dst_data[key]["location"][0] < src_data[neuron_id]["location"][0]+rule_param) and \
-                    (dst_data[key]["location"][1] > src_data[neuron_id]["location"][1]) and \
-                    (dst_data[key]["location"][1] < src_data[neuron_id]["location"][1]+rule_param):
-                neighbor_candidates.append(key)
+    for key in dst_data:
+        if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
+                        cortical_area_dst=cortical_area_dst, key=key, neuron_id=src_neuron_id):
+            neighbor_candidates.append(key)
 
     return neighbor_candidates
 
@@ -252,12 +223,6 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, neuron_id, rule, r
 def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param, synaptic_strength=1):
     """
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
-    :param cortical_area_src:
-    :param cortical_area_dst:
-    :param rule:
-    :param rule_param:
-    :param synaptic_strength:
-    :return:
     """
     data = settings.brain[cortical_area_src]
     for src_id in data:
@@ -272,14 +237,16 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
 
 def field_set(cortical_area, field_name, field_value):
     """
-    This function deletes all the neighbor relationships in the connectome
-    :param field_name:
-    :param field_value:
-    :return:
+    This function changes a field value in connectome 
+    
+    *** Incomplete ***
+    
     """
-    data = settings.brain[cortical_area]
-    for key in data:
-        data[key][field_name] = field_value
+    # data = settings.brain[cortical_area]
+    # for key in data:
+    #     data[key][field_name] = field_value
+    #
+    # settings.brain[cortical_area] = data
 
     return
 
@@ -287,7 +254,6 @@ def field_set(cortical_area, field_name, field_value):
 def neighbor_reset(cortical_area):
     """
     This function deletes all the neighbor relationships in the connectome
-    :return:
     """
 
     data = settings.brain[cortical_area]
@@ -300,10 +266,6 @@ def neighbor_reset(cortical_area):
 def neuron_finder(cortical_area, location, radius):
     """
     Queries a given cortical area and returns a listed of Neuron IDs matching search criteria
-    :param cortical_area:
-    :param location:
-    :param radius:
-    :return:
     """
 
     neuron_list = []
@@ -314,7 +276,8 @@ def neuron_finder(cortical_area, location, radius):
         y = data[key]['location'][1]
         z = data[key]['location'][2]
 
-        if ((x-location[0]) ** 2 + (y-location[1]) ** 2 + (z-location[2]) ** 2) <= (radius ** 2):
+        # Searching only the XY plane for candidate neurons
+        if ((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
             if neuron_list.count(key) == 0:
                 neuron_list.append(key)
 
@@ -324,7 +287,6 @@ def neuron_finder(cortical_area, location, radius):
 def connectome_location_data(cortical_area):
     """
     Extracts Neuron locations and neighbor relatioships from the connectome
-    :return:
     """
     data = settings.brain[cortical_area]
 
@@ -340,16 +302,58 @@ def connectome_location_data(cortical_area):
 def pruner():
     """
     Responsible for pruning unused connections between neurons
-    :return:
     """
     return
-
 
 
 def neuron_eliminator():
     """
-    Responsible for programmed cell death
+    Responsible for programmed neuron's death
     """
     return
 
 
+def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key, neuron_id):
+
+    src_data = settings.brain[cortical_area_src]
+    dst_data = settings.brain[cortical_area_dst]
+
+    if cortical_area_src == cortical_area_dst:
+        x_coordinate_key = src_data[key]["location"][0]
+        x_coordinate_target = src_data[neuron_id]["location"][0]
+        y_coordinate_key = src_data[key]["location"][1]
+        y_coordinate_target = src_data[neuron_id]["location"][1]
+        z_coordinate_key = src_data[key]["location"][2]
+        z_coordinate_target = src_data[neuron_id]["location"][2]
+    else:
+        x_coordinate_key = src_data[neuron_id]["location"][0]
+        y_coordinate_key = src_data[neuron_id]["location"][1]
+        z_coordinate_key = src_data[neuron_id]["location"][2]
+        x_coordinate_target_dst = dst_data[key]["location"][0]
+        y_coordinate_target_dst = dst_data[key]["location"][1]
+        z_coordinate_target_dst = dst_data[key]["location"][2]
+
+    is_candidate = False
+
+    # Rule 0: Selects all neurons within rule_param radius
+    if rule_id == 'rule_0':
+        radius = sqrt(((x_coordinate_key - x_coordinate_target) ** 2) +
+                      ((y_coordinate_key - y_coordinate_target) ** 2) +
+                      ((z_coordinate_key - z_coordinate_target) ** 2))
+        if radius < rule_param:
+            is_candidate = True
+
+    # Rule 1: Selects only neurons within rule_param unit limits forward of source Neuron in z direction
+    if rule_id == 'rule_1':
+        if (z_coordinate_key > z_coordinate_target) and \
+                sqrt(((x_coordinate_key - x_coordinate_target) ** 2)
+                             + ((y_coordinate_key - y_coordinate_target) ** 2)) < rule_param:
+            is_candidate = True
+
+    # Rule 2: Selects neurons from the destination cortical region
+    if rule_id == 'rule_2':
+        if sqrt(((x_coordinate_key - x_coordinate_target_dst) ** 2)
+                        + ((y_coordinate_key - y_coordinate_target_dst) ** 2)) < rule_param:
+            is_candidate = True
+
+    return is_candidate

@@ -62,7 +62,7 @@ def init():
     # todo: Move this to the Genome
     # A location tolerance factor for Neuron location approximation
     global location_tolerance
-    location_tolerance = 10
+    location_tolerance = 0
 
     # todo: Move this to the Genome
     # A location tolerance factor for Neuron location approximation
@@ -156,5 +156,17 @@ def save_brain_to_disk():
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
             data_file.truncate()
+
+    return
+
+
+def reset_cumulative_counter_instances():
+    """
+    To reset the cumulative counter instances
+    """
+
+    for cortical_area in brain:
+        for neuron in brain[cortical_area]:
+            brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
 
     return

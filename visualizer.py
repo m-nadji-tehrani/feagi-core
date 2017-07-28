@@ -146,7 +146,7 @@ def cortical_heatmap(IPU_input, cortical_areas):
         for key in data:
             xx = data[key]['location'][0]
             yy = data[key]['location'][1]
-            cortical_array[xx, yy] = data[key]['cumulative_fire_count']
+            cortical_array[xx, yy] = data[key]['cumulative_fire_count_inst']
         cortical_arrays.append([cortical_area, cortical_array])
 
     # print(cortical_arrays)

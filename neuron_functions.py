@@ -140,6 +140,7 @@ def neuron_fire(cortical_area, id):
     data[id]["cumulative_intake_sum_since_reset"] = 0
     data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
     data[id]["cumulative_fire_count"] += 1
+    data[id]["cumulative_fire_count_inst"] += 1
 
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****

@@ -20,7 +20,7 @@
     },
     "rule_2" : {
        "param_1": 5,
-       "param_2": 8
+       "param_2": 5
     }
   },
   "IPU_vision_filters": {
@@ -810,9 +810,9 @@
          ]
       }
    },
-  "location_tolerance": 5,
+  "location_tolerance": 2,
   "image_color_intensity_tolerance": 250,
-  "max_burst_count": 1,
+  "max_burst_count": 10,
   "blueprint": {
     "vision_v1": {
        "growth_path": "",
@@ -836,7 +836,7 @@
        },
        "neuron_params": {
           "activation_function_id": "",
-          "timer_threshold": 500,
+          "timer_threshold": 50,
           "orientation_selectivity_id": "",
           "firing_threshold": 3,
           "firing_pattern_id": "",

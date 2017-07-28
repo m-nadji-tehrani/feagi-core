@@ -40,6 +40,7 @@ def read_from_MNIST(image_number):
     init_fire_list = []
     for item in neuron_id_list:
         init_fire_list.append(['vision_v1', item])
+    settings.event_id = architect.event_id_gen()
     print('Initial Fire List:')
     print(init_fire_list)
     return init_fire_list
@@ -70,7 +71,7 @@ def start(epocs, image_number):
 
 # show_cortical_areas()
 
-# start(epocs=2, image_number=13)
+start(epocs=1, image_number=13)
 
 stats.print_cortical_stats()
 
@@ -101,6 +102,7 @@ stats.print_cortical_stats()
 
 # show_cortical_heatmap(image_number)
 
+# todo: Next >>>>>  How to get output from memory ???
 
 # todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with
 # todo: Create the pruner function

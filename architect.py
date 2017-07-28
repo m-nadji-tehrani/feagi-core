@@ -18,7 +18,7 @@ import settings
 
 
 
-def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
+def neuron_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     """
     This function generates a unique id which will be associated with each neuron
     :param size:
@@ -27,7 +27,19 @@ def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     """
     # Rand gen source partially from:
     # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-    return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))
+    return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_N'
+
+
+def event_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
+    """
+    This function generates a unique id which will be associated with each neuron
+    :param size:
+    :param chars:
+    :return:
+    """
+    # Rand gen source partially from:
+    # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+    return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_E'
 
 
 def neuro_genesis(cortical_area, location):
@@ -40,7 +52,7 @@ def neuro_genesis(cortical_area, location):
     genome = settings.genome
     data = settings.brain[cortical_area]
 
-    id = id_gen()
+    id = neuron_id_gen()
 
     data[id] = {}
     data[id]["neighbors"] = {}
@@ -86,7 +98,8 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
         return
 
     data[src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area,
-                                         "synaptic_strength": synaptic_strength}
+                                         "synaptic_strength": synaptic_strength,
+                                         "event_id": {}}
 
     return
 
@@ -94,13 +107,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
 def location_generator(x1, y1, z1, x2, y2, z2):
     """
     Function responsible to generate a pseudo-random location for a Neuron given some constraints
-    :param x1:
-    :param y1:
-    :param z1:
-    :param x2:
-    :param y2:
-    :param z2:
-    :return:
+
     """
     # todo: update to leverage the Genome template
     # todo: Would it be better to use relative locations in each cortical region instead?

@@ -57,6 +57,9 @@ def init():
     global blueprint
     blueprint = cortical_list()
 
+    global event_id
+    event_id = '_'
+
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 
     # # todo: Move this to the Genome

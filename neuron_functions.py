@@ -261,5 +261,7 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     # reside in the same burst, the synaptic_strength will be increased simulating Fire together, wire together.
     data[src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] += \
         genome["blueprint"][cortical_area]["synaptic_strength_inc"]
+    # Append a Group ID so Memory clusters can be uniquely identified
+    data[src_neuron]["neighbors"][dst_neuron]["event_id"][settings.event_id] = ''
 
     return

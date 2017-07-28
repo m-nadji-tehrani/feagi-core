@@ -64,7 +64,7 @@ def connectome_neighbor_histogram(cortical_area):
 def print_cortical_stats():
     for cortical_area in settings.cortical_list():
         print("%s total Neuron count: %i" % (cortical_area, connectome_neuron_count(cortical_area)))
-        print("%s average synapse count: %i" % (cortical_area, connectome_total_synapse_cnt(cortical_area)/connectome_neuron_count(cortical_area)))
+        print("%s average synapse count per Neuron: %i" % (cortical_area, connectome_total_synapse_cnt(cortical_area)/connectome_neuron_count(cortical_area)))
     return
 
 

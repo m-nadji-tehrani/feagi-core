@@ -59,20 +59,11 @@ def init():
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 
-    # todo: Move this to the Genome
-    # A location tolerance factor for Neuron location approximation
-    global location_tolerance
-    location_tolerance = 0
+    # # todo: Move this to the Genome
+    # # A location tolerance factor for Neuron location approximation
+    # global image_color_intensity_tolerance
+    # image_color_intensity_tolerance = 250
 
-    # todo: Move this to the Genome
-    # A location tolerance factor for Neuron location approximation
-    global image_color_intensity_tolerance
-    image_color_intensity_tolerance = 250
-
-    # todo: Move this to the Genome
-    # Number of Max burst count allowed
-    global max_burst_count
-    max_burst_count = 100
 
     global sobel_x, sobel_y
     sobel_x = [[-1, 0, 1], [-2, 0, 1], [-1, 0, 1]]

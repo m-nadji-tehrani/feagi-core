@@ -17,16 +17,18 @@ import settings
 import architect
 
 
+
 def convert_image_to_coordinates(image):   # Image is currently assumed to be a 28 x 28 numpy array
     """
     Function responsible for reading an image and converting the pixel values to coordinates
     """
     # Note: currently set to function based on Gray scale image
+    genome = settings.genome
 
     image_locations = []
     for x in range(image.shape[0]):
         for y in range(image.shape[1]):
-            if image[x, y] >= settings.image_color_intensity_tolerance:
+            if image[x, y] >= genome["image_color_intensity_tolerance"]:
                 image_locations.append([x, y, 0])
 
     # Image location will be fed to another function to identify the Id of neurons to be activated
@@ -39,10 +41,13 @@ def convert_image_locations_to_neuron_ids(image_locations):
     :param image_locations:
     :return:
     """
+
+    genome = settings.genome
+
     neuron_id_list = []
     for x in range(len(image_locations)):
             # call the function to find neuron candidates for a given location
-            tmp = architect.neuron_finder('vision_v1', image_locations[x], settings.location_tolerance)
+            tmp = architect.neuron_finder('vision_v1', image_locations[x], genome["location_tolerance"])
             for item in tmp:
                 if (item is not None) and (neuron_id_list.count(item) == 0):
                     neuron_id_list.append(item)

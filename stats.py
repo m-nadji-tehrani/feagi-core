@@ -28,6 +28,19 @@ def connectome_neuron_count(cortical_area):
     return neuron_count
 
 
+def connectome_total_synapse_cnt(cortical_area):
+    """
+    Returns average number of Synapses for all Neurons in the connectome
+    """
+    data = settings.brain[cortical_area]
+    total_synapse_count = 0
+    for neuron in data:
+        for synapse in data[neuron]['neighbors']:
+            total_synapse_count += 1
+    return total_synapse_count
+
+
+
 
 
 global raw
@@ -45,6 +58,13 @@ def connectome_neighbor_histogram(cortical_area):
             count += 1
         raw.append([cortical_area, count])
 
+    return
+
+
+def print_cortical_stats():
+    for cortical_area in settings.cortical_list():
+        print("%s total Neuron count: %i" % (cortical_area, connectome_neuron_count(cortical_area)))
+        print("%s average synapse count: %i" % (cortical_area, connectome_total_synapse_cnt(cortical_area)/connectome_neuron_count(cortical_area)))
     return
 
 

@@ -269,7 +269,6 @@ def neuron_finder(cortical_area, location, radius):
     """
 
     neuron_list = []
-    # todo: figure a way to map the cortical_area to a given connectome file
     data = settings.brain[cortical_area]
     for key in data:
         x = data[key]['location'][0]
@@ -277,7 +276,7 @@ def neuron_finder(cortical_area, location, radius):
         z = data[key]['location'][2]
 
         # Searching only the XY plane for candidate neurons
-        if ((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
+        if sqrt((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
             if neuron_list.count(key) == 0:
                 neuron_list.append(key)
 

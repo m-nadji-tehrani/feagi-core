@@ -57,21 +57,24 @@ def show_cortical_heatmap(image_number):
     return
 
 
+def start(epocs, image_number):
+    for x in range(0, epocs):
+        settings.reset_cumulative_counter_instances()
+        trigger_first_burst(read_from_MNIST(image_number))
+        settings.save_brain_to_disk()
+    return
+
 ####################################
 ####################################
 
-image_number = 13
-
-settings.reset_cumulative_counter_instances()
 
 # show_cortical_areas()
 
-#trigger_first_burst(read_from_MNIST(image_number))
-#
-#settings.save_brain_to_disk()
-#
-visualizer.connectome_visualizer('vision_IT', neighbor_show='true', threshold=0)
+# start(epocs=2, image_number=13)
 
+stats.print_cortical_stats()
+
+#visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
 
 # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
@@ -96,7 +99,7 @@ visualizer.connectome_visualizer('vision_IT', neighbor_show='true', threshold=0)
 # print(IPU_vision.direction_stats(a))
 
 
-show_cortical_heatmap(image_number)
+# show_cortical_heatmap(image_number)
 
 
 # todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with

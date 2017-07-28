@@ -53,10 +53,13 @@ def burst(fire_list):
     global fire_candidate_list
     fire_candidate_list = fire_list
 
+    genome = settings.genome
+
     if settings.verbose:
         print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
-    if (fire_candidate_list == []) or (burst_count > settings.max_burst_count):
+    if (fire_candidate_list == []) or (burst_count > genome["max_burst_count"]):
         print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+        burst_count = 0
         return
 
     # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst

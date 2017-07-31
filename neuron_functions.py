@@ -10,6 +10,7 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 
 import json
 import datetime
+from multiprocessing.dummy import Pool as ThreadPool
 
 import visualizer
 import settings
@@ -71,11 +72,15 @@ def burst(fire_list):
         print(settings.Bcolors.BURST +
               '    %s : %i  ' % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
               + settings.Bcolors.ENDC)
-
+    # todo: Look into multithreading for Neuron neuron_fire and wire_neurons function
     for x in list(fire_candidate_list):
         if settings.verbose:
             print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
         neuron_fire(x[0], x[1])
+    # pool = ThreadPool(4)
+    # pool.starmap(neuron_fire, fire_candidate_list)
+    # pool.close()
+    # pool.join()
 
     # Wire together the neurons who Fire together
 
@@ -84,6 +89,19 @@ def burst(fire_list):
             for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
                 if src_neuron != dst_neuron:
                     wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
+
+    # wire_list = []
+    # for cortical_area in set([i[0] for i in fire_candidate_list]):
+    #     for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+    #         for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+    #             if src_neuron != dst_neuron:
+    #                 wire_list.append([cortical_area, src_neuron, dst_neuron])
+    #
+    # pool = ThreadPool(4)
+    # pool.starmap(wire_neurons_together, wire_list)
+    # pool.close()
+    # pool.join()
+
 
     # todo: figure how to visualize bursts across various cortical areas
     # If visualization flag is set the visualization function will trigger
@@ -147,15 +165,25 @@ def neuron_fire(cortical_area, id):
 
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
+    neuron_update_list = []
     for x in destination:
         if settings.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["synaptic_strength"], x)
+    #     neuron_update_list.append([data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["synaptic_strength"], x])
+    #
+    # pool = ThreadPool(4)
+    # pool.starmap(neuron_update, neuron_update_list)
+    # pool.close()
+    # pool.join()
+
         # Important: Currently calling the update function from Fire function has the potential of running into
         #  recursive error. Need to address this. One solution is to count the number of recursive operations and
         #  exit function when number of steps are beyond a specific point.
         # Its worth noting that this situation is related to how system is architected as if 2 neuron are feeding
         #  to each other there is a bigger chance of this happening.
+
+
 
     global fire_candidate_list
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, id]))

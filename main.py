@@ -2,15 +2,17 @@
 """
 This file contains the main Brain control code
 """
+import numpy as np
+from multiprocessing.dummy import Pool as ThreadPool
 
 import settings
-
 settings.init()
-import numpy as np
+
 import visualizer
 import architect
 import mnist
 import IPU_vision
+# import IPU_text
 import neuron_functions
 import stats
 
@@ -65,8 +67,27 @@ def start(epocs, image_number):
         settings.save_brain_to_disk()
     return
 
+
+def read_image_number():
+    """ This function constantly monitors user input for image number"""
+    image_number = input()
+
+    return image_number
+
+
 ####################################
 ####################################
+
+
+# if __name__ == '__main__':
+#     Thread(target = read_image_number).start()
+#     Thread(target = )
+#
+# pool = ThreadPool(2)
+# pool.map(neuron_fire, fire_candidate_list)
+# pool.close()
+# pool.join()
+
 
 
 # show_cortical_areas()
@@ -102,7 +123,20 @@ stats.print_cortical_stats()
 
 # show_cortical_heatmap(image_number)
 
-# todo: Next >>>>>  How to get output from memory ???
+
+#####       Multi processing objectives:
+#####           -Ability to read text from user at any time
+#####           -Ability to read image number from user at any time
+
+# todo: Turn things around
+#   -start with the first burtst eventhough FLC is empty
+#   -Remove the exit criteria which exits burst if FLC is empty. Add a sleep and make it unlimited loop
+#   -Build a function to Inject into FLC
+
+
+# todo: Next >>>>>  How to get output from memory ??? How to comprehend it ????
+
+
 
 # todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with
 # todo: Create the pruner function
@@ -131,7 +165,8 @@ stats.print_cortical_stats()
 # todo: Need to figure how the Direction sensitive neurons in brain function
 # todo: Need to design a neuronal system that can receive an input and its output be a combination of matching objects
 
-# todo: Think of how to implement an alternative path so when an object is seen by visual it can be labeled “trained” using alternate path.
+# todo: Think of how to implement an alternative path so when an object is seen by visual it can be labeled “trained”
+# using alternate path.
 #     1. In this case training the network is equal to exposing Network to two simultaneous events at the same time. The simultaneous occurrence would trigger a binding between Neurons in the Memory Module
 # todo: Figure how Memory Module should be configured so it can behave as explained above
 # todo: Configure an output module so after Memory module is activated the activation can be read back.

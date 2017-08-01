@@ -3,98 +3,168 @@
 This file contains the main Brain control code
 """
 import numpy as np
-from multiprocessing.dummy import Pool as ThreadPool
+import multiprocessing as mp
 
 import settings
 settings.init()
 
+import time
 import visualizer
 import architect
 import mnist
 import IPU_vision
-# import IPU_text
 import neuron_functions
 import stats
 
 
-def print_basic_info():
-    print("connectome database =                  %s" % settings.connectome_path)
-    print("Initial input Neuron trigger list =    %s" % settings.input_neuron_list_1)
-    print("Initial input Neuron trigger list =    %s" % settings.input_neuron_list_2)
-    print("Total neuron count in the connectome  %s  is: %i" % (
-    settings.connectome_path + 'vision_v1.json', stats.connectome_neuron_count(cortical_area='vision_v1')))
-
-    return
+__authur__ = 'Mohammad Nadji-tehrani'
 
 
-def show_cortical_areas():
-    # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
-    visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
-    visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
-    visualizer.connectome_visualizer(cortical_area='vision_IT', neighbor_show='true')
-    return
+class Brain:
+
+    # def __init__(self):
 
 
-def read_from_MNIST(image_number):
-    # Read image from MNIST database and translate them to activation in vision_v1 neurons
-    IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
-    neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array)
-    init_fire_list = []
-    for item in neuron_id_list:
-        init_fire_list.append(['vision_v1', item])
-    settings.event_id = architect.event_id_gen()
-    print('Initial Fire List:')
-    print(init_fire_list)
-    return init_fire_list
+    def print_basic_info(self):
+        print("connectome database =                  %s" % settings.connectome_path)
+        print("Initial input Neuron trigger list =    %s" % settings.input_neuron_list_1)
+        print("Initial input Neuron trigger list =    %s" % settings.input_neuron_list_2)
+        print("Total neuron count in the connectome  %s  is: %i" % (
+        settings.connectome_path + 'vision_v1.json', stats.connectome_neuron_count(cortical_area='vision_v1')))
+        return
 
+    def show_cortical_areas(self):
+        # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
+        visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
+        visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
+        visualizer.connectome_visualizer(cortical_area='vision_IT', neighbor_show='true')
+        return
 
-def trigger_first_burst(init_fire_list):
-    # The following initiates an initial burst of input to the System
-    neuron_functions.burst(init_fire_list)
-    return
+    def read_from_mnist(self, image_number):
+        # Read image from MNIST database and translate them to activation in vision_v1 neurons
+        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
+        neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array)
+        init_fire_list = []
+        for item in neuron_id_list:
+            init_fire_list.append(['vision_v1', item])
+        settings.event_id = architect.event_id_gen()
+        print('Initial Fire List:')
+        print(init_fire_list)
+        return init_fire_list
 
+    def trigger_first_burst(self, init_fire_list):
+        # The following initiates an initial burst of input to the System
+        neuron_functions.burst(init_fire_list)
+        return
 
-def show_cortical_heatmap(image_number):
-    # Visualize a list of cortical areas passed in in List format
-    visualizer.cortical_heatmap(mnist.read_image(image_number), ['vision_v1', 'vision_v2', 'vision_IT', 'Memory'])
-    return
+    def show_cortical_heatmap(self, image_number):
+        # Visualize a list of cortical areas passed in in List format
+        visualizer.cortical_heatmap(mnist.read_image(image_number), ['vision_v1', 'vision_v2', 'vision_IT', 'Memory'])
+        return
 
-
-def start(epocs, image_number):
-    for x in range(0, epocs):
+    def start(self, image_number):
         settings.reset_cumulative_counter_instances()
-        trigger_first_burst(read_from_MNIST(image_number))
+        self.trigger_first_burst(self.read_from_mnist(image_number))
         settings.save_brain_to_disk()
-    return
+        return
 
 
-def read_image_number():
-    """ This function constantly monitors user input for image number"""
-    image_number = input()
+    # def haha(self):
+    #     for x in range(200, 500000):
+    #         time.sleep(.1)
+    #         print(x)
+    #
+    #
+    # def hehe(self):
+    #     for x in range(20000, 500000):
+    #         time.sleep(.1)
+    #         output_p, input_p = pipe
+    #         input_p.close()
+    #         while True:
+    #             try:
+    #                 print(output_p.recv())
+    #             except EOFError:
+    #                 break
+    #         print(x)
 
-    return image_number
 
 
-####################################
-####################################
 
 
-# if __name__ == '__main__':
-#     Thread(target = read_image_number).start()
-#     Thread(target = )
+# output_p, input_p = mp.Pipe()
 #
-# pool = ThreadPool(2)
-# pool.map(neuron_fire, fire_candidate_list)
-# pool.close()
-# pool.join()
+#
+# process_1 = mp.Process(target=read_char, args=())
+# # process_2 = mp.Process(target=start, args=(1, 13))
+# process_3 = mp.Process(target=haha, args=())
+# process_4 = mp.Process(target=hehe, args=((output_p, input_p),))
+#
+# output_p.close()
+#
+# process_1.start()
+# # process_2.start()
+# process_3.start()
+# process_4.start()
+#
+# process_1.join()
+# # process_2.join()
+# process_3.join()
+# process_4.join()
 
+####################################
+####################################
+
+if __name__ == '__main__':
+    import sys
+    from tty import setraw
+    from termios import tcsetattr, tcgetattr, TCSADRAIN
+
+    b = Brain()
+
+    fd = sys.stdin.fileno()
+    old_settings = tcgetattr(fd)
+    setraw(sys.stdin.fileno())
+    global user_input
+    user_input = ''
+    try:
+        while user_input != 'q':
+            try:
+                user_input = sys.stdin.read(1)
+                if user_input == 'a':
+                    tcsetattr(fd, TCSADRAIN, old_settings)
+                    sys.stdout.write("\n")
+                    b.start(image_number=11)
+
+                if user_input == 's':
+                    tcsetattr(fd, TCSADRAIN, old_settings)
+                    sys.stdout.write("\n")
+                    b.start(image_number=12)
+
+                if user_input == 'd':
+                    tcsetattr(fd, TCSADRAIN, old_settings)
+                    sys.stdout.write("\n")
+                    b.start(image_number=13)
+
+                if user_input == 'g':
+                    sys.stdout.write("\rHaHaHa!!!")
+                    sys.stdout.flush()
+                sys.stdout.write("\r%s" % user_input)
+                sys.stdout.flush()
+            except IOError:
+                pass
+    finally:
+        tcsetattr(fd, TCSADRAIN, old_settings)
+        sys.stdout.write("\n")
+
+
+#neuron_functions.burst()
 
 
 # show_cortical_areas()
 
-start(epocs=1, image_number=13)
 
-stats.print_cortical_stats()
+
+# stats.print_cortical_stats()
 
 #visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
 
@@ -128,13 +198,13 @@ stats.print_cortical_stats()
 #####           -Ability to read text from user at any time
 #####           -Ability to read image number from user at any time
 
-# todo: Turn things around
-#   -start with the first burtst eventhough FLC is empty
+# todo: Next >>>>> Turn things around
+#   -start with the first burst eventhough FLC is empty
 #   -Remove the exit criteria which exits burst if FLC is empty. Add a sleep and make it unlimited loop
 #   -Build a function to Inject into FLC
 
 
-# todo: Next >>>>>  How to get output from memory ??? How to comprehend it ????
+# todo:  How to get output from memory ??? How to comprehend it ????
 
 
 

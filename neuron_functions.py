@@ -13,6 +13,7 @@ import datetime
 from multiprocessing.dummy import Pool as ThreadPool
 
 import visualizer
+# import IPU_text
 import settings
 from architect import synapse
 
@@ -27,7 +28,7 @@ def burst(fire_list):
     # which would start a timer since the first input is received and keep collecting inputs till
     # either the timeout is expired or the Firing threshold is met and neuron Fires
 
-    # todo: Consider to have burst instances so multiple burst can happen simultaneously
+    # todo: Consider to have burst instances so multiple burst can happen simultaneously: No need just update FLC!!!
 
     # Function Overview:
     #     This function receives a collection of inputs from multiple neurons, performs processing and generate a new
@@ -50,6 +51,8 @@ def burst(fire_list):
     # Function exit Check on whether number of recursive calls has met or fire_candidate_list is empty.
 
     # todo: figure burst count in this new model where burst is not limited to a single cortical area
+
+    burst_strt_time = datetime.datetime.now()
     global burst_count
     global fire_candidate_list
     fire_candidate_list = fire_list
@@ -58,10 +61,19 @@ def burst(fire_list):
 
     if settings.verbose:
         print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
-    if (fire_candidate_list == []) or (burst_count > genome["max_burst_count"]):
-        print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-        burst_count = 0
-        return
+
+    # Burst Exit criteria
+    # if IPU_text.user_input == 'q':
+    #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+    #     burst_count = 0                 # Shoudnt this be settings.burst_count   ????
+    #     settings.save_brain_to_disk()
+    #     return
+
+    # if (fire_candidate_list == []) or (burst_count > genome["max_burst_count"]):
+    #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+    #     burst_count = 0
+    #     settings.save_brain_to_disk()
+    #     return
 
     # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
 
@@ -77,12 +89,6 @@ def burst(fire_list):
         if settings.verbose:
             print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
         neuron_fire(x[0], x[1])
-    # pool = ThreadPool(4)
-    # pool.starmap(neuron_fire, fire_candidate_list)
-    # pool.close()
-    # pool.join()
-
-    # Wire together the neurons who Fire together
 
     for cortical_area in set([i[0] for i in fire_candidate_list]):
         for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
@@ -90,23 +96,13 @@ def burst(fire_list):
                 if src_neuron != dst_neuron:
                     wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
-    # wire_list = []
-    # for cortical_area in set([i[0] for i in fire_candidate_list]):
-    #     for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-    #         for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-    #             if src_neuron != dst_neuron:
-    #                 wire_list.append([cortical_area, src_neuron, dst_neuron])
-    #
-    # pool = ThreadPool(4)
-    # pool.starmap(wire_neurons_together, wire_list)
-    # pool.close()
-    # pool.join()
-
-
     # todo: figure how to visualize bursts across various cortical areas
     # If visualization flag is set the visualization function will trigger
     if settings.burst_show:
         visualizer.burst_visualizer(fire_candidate_locations(fire_candidate_list))
+
+    burst_duration = datetime.datetime.now() - burst_strt_time
+    print(">>> Burst duration: %s" % burst_duration)
 
     # Initiate a new Burst
     burst(fire_candidate_list)

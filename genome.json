@@ -812,7 +812,7 @@
    },
   "location_tolerance": 2,
   "image_color_intensity_tolerance": 250,
-  "max_burst_count": 10,
+  "max_burst_count": 2,
   "blueprint": {
     "vision_v1": {
        "growth_path": "",

@@ -54,9 +54,9 @@ class Brain:
         print(init_fire_list)
         return init_fire_list
 
-    def trigger_first_burst(self, init_fire_list):
+    def trigger_first_burst(self, user_input, init_fire_list):
         # The following initiates an initial burst of input to the System
-        neuron_functions.burst(init_fire_list)
+        neuron_functions.burst(user_input, init_fire_list)
         return
 
     def show_cortical_heatmap(self, image_number):
@@ -64,13 +64,13 @@ class Brain:
         visualizer.cortical_heatmap(mnist.read_image(image_number), ['vision_v1', 'vision_v2', 'vision_IT', 'Memory'])
         return
 
-    def start(self, image_number):
+    def start(self, user_input, image_number):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()
         image_data = self.read_from_mnist(image_number)
         print(image_data)
-        self.trigger_first_burst(image_data)
+        self.trigger_first_burst(user_input, image_data)
         settings.save_brain_to_disk()
         print(' exiting', cp.name, cp.pid)
         return
@@ -91,59 +91,67 @@ if __name__ == '__main__':
 
     b = Brain()
 
-    global user_input
-    user_input = ''
-
+    user_input_queue = mp.Queue()
 
     def read_user_input():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
             setraw(sys.stdin.fileno())
-            user_input = sys.stdin.read(1)
-            sys.stdout.write("\r%s" % user_input)
+            settings.user_input = sys.stdin.read(1)
+            sys.stdout.write("\r%s" % user_input_queue)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
             # sys.stdout.flush()
-        return user_input
+        return
 
     def read_user_input2():
-        user_input = input()
-        return user_input
+        settings.user_input = input()
+        user_input_queue.put(settings.user_input)
+        return
+
+    def join_processes():
+        process_1.join()
+        process_2.join()
+        process_3.join()
+        process_burst.join()
+        return
+
 
     read_user_input2()
 
     try:
-        while user_input != 'q':
+        while settings.user_input != 'q':
             try:
-                if user_input == 'a':
+                if settings.user_input == 'a':
                     process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
                     process_1.start()
-                    user_input = ''
+                    settings.user_input = ''
 
-                elif user_input == 's':
+                elif settings.user_input == 's':
                     process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
                     process_2.start()
-                    user_input = ''
+                    settings.user_input = ''
 
-                elif user_input == 'd':
+                elif settings.user_input == 'd':
                     process_3 = mp.Process(name='read_from_MNIST', target=b.read_from_mnist, args=(10,))
                     process_3.start()
-                    user_input = ''
+                    settings.user_input = ''
 
-                elif user_input == 'f':
-                    process_4 = mp.Process(name='start', target=b.start, args=(10,))
-                    process_4.start()
-                    user_input = ''
+                elif settings.user_input == 'f':
+                    process_burst = mp.Process(name='Burst process', target=b.start, args=(user_input_queue, 10))
+                    process_burst.deamon = True
+                    process_burst.start()
+                    settings.user_input = ''
 
-                elif user_input == 'g':
+                elif settings.user_input == 'g':
                     process_3.terminate()
                     # sys.stdout.write("\rHaHaHa!!!")
                     # sys.stdout.flush()
-                    user_input = ''
+                    settings.user_input = ''
 
                 else:
-                    user_input = read_user_input2()
+                    read_user_input2()
 
             except IOError:
                 print("an error has occurred!!!")
@@ -151,9 +159,8 @@ if __name__ == '__main__':
 
     finally:
         print("Finally!")
-        # process_1.join()
-        # process_2.join()
-        # process_3.join()
+
+
 
 # neuron_functions.burst()
 
@@ -193,14 +200,16 @@ if __name__ == '__main__':
 #####           -Ability to read text from user at any time
 #####           -Ability to read image number from user at any time
 
-# todo: Next >>>>> Turn things around
+# todo: Next >>>>> Turn things around      <<<<<<<<<<    NEXT!!!!!!!!!!!    <<<<<<<<<<<<<<<<
 #   -start with the first burst eventhough FLC is empty
 #   -Remove the exit criteria which exits burst if FLC is empty. Add a sleep and make it unlimited loop
 #   -Build a function to Inject into FLC
+#   -Have a way to share the connectome, FLC and User Input shared between processes and implement locks to protect it
+#           Options:    Pipe, Queue, joinableQueue, Manager, Value
 
 
 # todo:  How to get output from memory ??? How to comprehend it ????
-# todo: Look into OpenCl for GPU leverage
+# todo: Look into  GPU leverage
 
 
 

@@ -4,9 +4,11 @@ This file contains all the Global settings and parameters used throughout the pr
 """
 import json
 import os.path
+from sys import exit
+from main import join_processes
+
 
 def init():
-
     global Bcolors
     class Bcolors:
         UPDATE = '\033[94m'
@@ -18,8 +20,6 @@ def init():
         HEADER = '\033[95m'
         OKGREEN = '\033[92m'
 
-
-
     # Sleep timer for visualization delay
     global burst_timer
     burst_timer = 0.00001
@@ -27,6 +27,10 @@ def init():
     # Flag to enable Verbose mode
     global verbose
     verbose = False
+
+    # Variable containing user input to Train and Control the Brain
+    global user_input
+    user_input = ''
 
     # Flag to show visualizations
     global vis_show
@@ -150,7 +154,6 @@ def save_brain_to_disk():
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
             data_file.truncate()
-
     return
 
 
@@ -158,9 +161,16 @@ def reset_cumulative_counter_instances():
     """
     To reset the cumulative counter instances
     """
-
     for cortical_area in brain:
         for neuron in brain[cortical_area]:
             brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
+    return
 
+
+def shutdown_the_brain():
+    save_brain_to_disk()
+    print("Save to disk operation has completed")
+    join_processes()
+    print("All processes has been closed")
+    exit("Brain has shutdown!")
     return

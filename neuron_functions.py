@@ -16,6 +16,7 @@ import visualizer
 # import IPU_text
 import settings
 from architect import synapse
+
 import time
 import multiprocessing as mp
 
@@ -24,7 +25,7 @@ import multiprocessing as mp
 burst_count = 0
 
 
-def burst(fire_list):
+def burst(user_input, fire_list):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -64,6 +65,18 @@ def burst(fire_list):
     if settings.verbose:
         print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
 
+    while not user_input.empty():
+        try:
+            user_input_value = user_input.get()
+            if user_input_value == 'x':
+                print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+                burst_count = 0
+                settings.shutdown_the_brain()
+        finally:
+            break
+
+
+
     # Burst Exit criteria
     # if IPU_text.user_input == 'q':
     #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
@@ -77,17 +90,17 @@ def burst(fire_list):
     #     settings.save_brain_to_disk()
     #     return
 
-    if burst_count > genome["max_burst_count"]:
-        print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-        burst_count = 0
-        settings.save_brain_to_disk()
-        return
-
+    # if burst_count > genome["max_burst_count"]:
+    #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+    #     burst_count = 0
+    #     settings.save_brain_to_disk()
+    #     return
 
 
     # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
 
     burst_count += 1
+
     print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
           % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
     for cortical_area in set([i[0] for i in fire_candidate_list]):
@@ -115,7 +128,7 @@ def burst(fire_list):
     print(">>> Burst duration: %s" % burst_duration)
 
     # Initiate a new Burst
-    burst(fire_candidate_list)
+    burst(user_input, fire_candidate_list)
     return
 
 

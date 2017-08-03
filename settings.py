@@ -4,8 +4,8 @@ This file contains all the Global settings and parameters used throughout the pr
 """
 import json
 import os.path
-from sys import exit
-from main import join_processes
+import sys
+
 
 
 def init():
@@ -164,13 +164,4 @@ def reset_cumulative_counter_instances():
     for cortical_area in brain:
         for neuron in brain[cortical_area]:
             brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
-    return
-
-
-def shutdown_the_brain():
-    save_brain_to_disk()
-    print("Save to disk operation has completed")
-    join_processes()
-    print("All processes has been closed")
-    exit("Brain has shutdown!")
     return

@@ -13,7 +13,6 @@ import datetime
 from multiprocessing.dummy import Pool as ThreadPool
 
 import visualizer
-# import IPU_text
 import settings
 from architect import synapse
 
@@ -57,8 +56,12 @@ def burst(user_input, fire_list):
 
     burst_strt_time = datetime.datetime.now()
     global burst_count
+
+    # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
     global fire_candidate_list
     fire_candidate_list = fire_list
+
+    ready_to_exit = False
 
     genome = settings.genome
 
@@ -71,33 +74,12 @@ def burst(user_input, fire_list):
             if user_input_value == 'x':
                 print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                 burst_count = 0
-                settings.shutdown_the_brain()
+                ready_to_exit = True
         finally:
             break
 
-
-
-    # Burst Exit criteria
-    # if IPU_text.user_input == 'q':
-    #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-    #     burst_count = 0                 # Shoudnt this be settings.burst_count   ????
-    #     settings.save_brain_to_disk()
-    #     return
-
-    # if (fire_candidate_list == []) or (burst_count > genome["max_burst_count"]):
-    #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-    #     burst_count = 0
-    #     settings.save_brain_to_disk()
-    #     return
-
-    # if burst_count > genome["max_burst_count"]:
-    #     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-    #     burst_count = 0
-    #     settings.save_brain_to_disk()
-    #     return
-
-
-    # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
+    if ready_to_exit:
+        return
 
     burst_count += 1
 

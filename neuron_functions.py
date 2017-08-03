@@ -16,10 +16,21 @@ import visualizer
 # import IPU_text
 import settings
 from architect import synapse
+import time
+import multiprocessing as mp
 
 
 # Global variables
 burst_count = 0
+
+
+def haha():
+    cp = mp.current_process()
+    print(' starting', cp.name, cp.pid)
+    for x in range(200, 220):
+        time.sleep(.1)
+        print('\r', x)
+    print(' Exiting', cp.name, cp.pid)
 
 
 def burst(fire_list):
@@ -74,6 +85,14 @@ def burst(fire_list):
     #     burst_count = 0
     #     settings.save_brain_to_disk()
     #     return
+
+    if burst_count > genome["max_burst_count"]:
+        print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+        burst_count = 0
+        settings.save_brain_to_disk()
+        return
+
+
 
     # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
 

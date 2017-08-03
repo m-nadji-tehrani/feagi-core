@@ -24,13 +24,15 @@ class Brain:
 
     # def __init__(self):
 
-
     def print_basic_info(self):
-        print("connectome database =                  %s" % settings.connectome_path)
-        print("Initial input Neuron trigger list =    %s" % settings.input_neuron_list_1)
-        print("Initial input Neuron trigger list =    %s" % settings.input_neuron_list_2)
-        print("Total neuron count in the connectome  %s  is: %i" % (
+        cp = mp.current_process()
+        print(' \rstarting', cp.name, cp.pid)
+        print("\rconnectome database =                  %s" % settings.connectome_path)
+        print("\rInitial input Neuron trigger list 1 =    %s" % settings.input_neuron_list_1)
+        print("\rInitial input Neuron trigger list 2 =    %s" % settings.input_neuron_list_2)
+        print("\rTotal neuron count in the connectome  %s  is: %i" % (
         settings.connectome_path + 'vision_v1.json', stats.connectome_neuron_count(cortical_area='vision_v1')))
+        print(' \rexiting', cp.name, cp.pid)
         return
 
     def show_cortical_areas(self):
@@ -63,110 +65,95 @@ class Brain:
         return
 
     def start(self, image_number):
+        cp = mp.current_process()
+        print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()
         self.trigger_first_burst(self.read_from_mnist(image_number))
         settings.save_brain_to_disk()
+        print(' exiting', cp.name, cp.pid)
         return
 
-
-    # def haha(self):
-    #     for x in range(200, 500000):
-    #         time.sleep(.1)
-    #         print(x)
-    #
-    #
-    # def hehe(self):
-    #     for x in range(20000, 500000):
-    #         time.sleep(.1)
-    #         output_p, input_p = pipe
-    #         input_p.close()
-    #         while True:
-    #             try:
-    #                 print(output_p.recv())
-    #             except EOFError:
-    #                 break
-    #         print(x)
-
-
-
-
-
-# output_p, input_p = mp.Pipe()
-#
-#
-# process_1 = mp.Process(target=read_char, args=())
-# # process_2 = mp.Process(target=start, args=(1, 13))
-# process_3 = mp.Process(target=haha, args=())
-# process_4 = mp.Process(target=hehe, args=((output_p, input_p),))
-#
-# output_p.close()
-#
-# process_1.start()
-# # process_2.start()
-# process_3.start()
-# process_4.start()
-#
-# process_1.join()
-# # process_2.join()
-# process_3.join()
-# process_4.join()
-
-####################################
-####################################
+    def hehe(self):
+        cp = mp.current_process()
+        print(' starting', cp.name, cp.pid)
+        for x in range(20000, 20020):
+            time.sleep(.1)
+            print('\r', x)
+        print(' Exiting', cp.name, cp.pid)
 
 if __name__ == '__main__':
     import sys
     from tty import setraw
-    from termios import tcsetattr, tcgetattr, TCSADRAIN
+    import termios
 
     b = Brain()
 
-    fd = sys.stdin.fileno()
-    old_settings = tcgetattr(fd)
-    setraw(sys.stdin.fileno())
     global user_input
     user_input = ''
+
+
+    def read_user_input():
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            setraw(sys.stdin.fileno())
+            user_input = sys.stdin.read(1)
+            sys.stdout.write("\r%s" % user_input)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            sys.stdout.flush()
+        return user_input
+
+    read_user_input()
+
     try:
         while user_input != 'q':
             try:
-                user_input = sys.stdin.read(1)
                 if user_input == 'a':
-                    tcsetattr(fd, TCSADRAIN, old_settings)
-                    sys.stdout.write("\n")
-                    b.start(image_number=11)
+                    process_1 = mp.Process(name='process1', target=b.print_basic_info)
+                    process_1.start()
+                    user_input = ''
 
-                if user_input == 's':
-                    tcsetattr(fd, TCSADRAIN, old_settings)
-                    sys.stdout.write("\n")
-                    b.start(image_number=12)
+                elif user_input == 's':
+                    process_2 = mp.Process(name='process2', target=neuron_functions.haha)
+                    process_2.start()
+                    user_input = ''
 
-                if user_input == 'd':
-                    tcsetattr(fd, TCSADRAIN, old_settings)
-                    sys.stdout.write("\n")
-                    b.start(image_number=13)
+                elif user_input == 'f':
+                    process_4 = mp.Process(name='process4', target=b.hehe)
+                    process_4.start()
+                    user_input = ''
 
-                if user_input == 'g':
+                elif user_input == 'd':
+                    process_3 = mp.Process(name='process3', target=b.start, args=(12,))
+                    process_3.start()
+                    user_input = ''
+
+                elif user_input == 'g':
                     sys.stdout.write("\rHaHaHa!!!")
                     sys.stdout.flush()
-                sys.stdout.write("\r%s" % user_input)
-                sys.stdout.flush()
+                    user_input = ''
+
+                else:
+                    user_input = read_user_input()
+
             except IOError:
+                print("an error has occurred!!!")
                 pass
+
     finally:
-        tcsetattr(fd, TCSADRAIN, old_settings)
-        sys.stdout.write("\n")
+        print("Finally!")
+        # process_1.join()
+        # process_2.join()
+        # process_3.join()
 
-
-#neuron_functions.burst()
-
+# neuron_functions.burst()
 
 # show_cortical_areas()
 
-
-
 # stats.print_cortical_stats()
 
-#visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
+# visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
 
 # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
@@ -205,6 +192,7 @@ if __name__ == '__main__':
 
 
 # todo:  How to get output from memory ??? How to comprehend it ????
+# todo: Look into OpenCl for GPU leverage
 
 
 

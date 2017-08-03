@@ -18,6 +18,7 @@ def read_char():
                 user_input = sys.stdin.read(1)
                 if user_input == 'f':
                     sys.stdout.write("\rHaHaHa!!!")
+                    print("This is a good joke!!!")
                     sys.stdout.flush()
                 sys.stdout.write("\r%s" % user_input)
                 sys.stdout.flush()

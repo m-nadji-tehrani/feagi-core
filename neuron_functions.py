@@ -24,15 +24,6 @@ import multiprocessing as mp
 burst_count = 0
 
 
-def haha():
-    cp = mp.current_process()
-    print(' starting', cp.name, cp.pid)
-    for x in range(200, 220):
-        time.sleep(.1)
-        print('\r', x)
-    print(' Exiting', cp.name, cp.pid)
-
-
 def burst(fire_list):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron

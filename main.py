@@ -26,7 +26,7 @@ class Brain:
 
     def print_basic_info(self):
         cp = mp.current_process()
-        print(' \rstarting', cp.name, cp.pid)
+        print("\rstarting", cp.name, cp.pid)
         print("\rconnectome database =                  %s" % settings.connectome_path)
         print("\rInitial input Neuron trigger list 1 =    %s" % settings.input_neuron_list_1)
         print("\rInitial input Neuron trigger list 2 =    %s" % settings.input_neuron_list_2)
@@ -68,7 +68,9 @@ class Brain:
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()
-        self.trigger_first_burst(self.read_from_mnist(image_number))
+        image_data = self.read_from_mnist(image_number)
+        print(image_data)
+        self.trigger_first_burst(image_data)
         settings.save_brain_to_disk()
         print(' exiting', cp.name, cp.pid)
         return
@@ -80,6 +82,7 @@ class Brain:
             time.sleep(.1)
             print('\r', x)
         print(' Exiting', cp.name, cp.pid)
+
 
 if __name__ == '__main__':
     import sys
@@ -101,41 +104,46 @@ if __name__ == '__main__':
             sys.stdout.write("\r%s" % user_input)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-            sys.stdout.flush()
+            # sys.stdout.flush()
         return user_input
 
-    read_user_input()
+    def read_user_input2():
+        user_input = input()
+        return user_input
+
+    read_user_input2()
 
     try:
         while user_input != 'q':
             try:
                 if user_input == 'a':
-                    process_1 = mp.Process(name='process1', target=b.print_basic_info)
+                    process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
                     process_1.start()
                     user_input = ''
 
                 elif user_input == 's':
-                    process_2 = mp.Process(name='process2', target=neuron_functions.haha)
+                    process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
                     process_2.start()
                     user_input = ''
 
-                elif user_input == 'f':
-                    process_4 = mp.Process(name='process4', target=b.hehe)
-                    process_4.start()
-                    user_input = ''
-
                 elif user_input == 'd':
-                    process_3 = mp.Process(name='process3', target=b.start, args=(12,))
+                    process_3 = mp.Process(name='read_from_MNIST', target=b.read_from_mnist, args=(10,))
                     process_3.start()
                     user_input = ''
 
+                elif user_input == 'f':
+                    process_4 = mp.Process(name='start', target=b.start, args=(10,))
+                    process_4.start()
+                    user_input = ''
+
                 elif user_input == 'g':
-                    sys.stdout.write("\rHaHaHa!!!")
-                    sys.stdout.flush()
+                    process_3.terminate()
+                    # sys.stdout.write("\rHaHaHa!!!")
+                    # sys.stdout.flush()
                     user_input = ''
 
                 else:
-                    user_input = read_user_input()
+                    user_input = read_user_input2()
 
             except IOError:
                 print("an error has occurred!!!")

@@ -17,6 +17,7 @@ from matplotlib import pyplot as plt
 import IPU_vision
 
 import settings
+import multiprocessing as mp
 
 
 def read(dataset = "training", path = "../MNIST/"):
@@ -70,36 +71,42 @@ def read_image(index):
             # print(i[1])
             img = i[1]
 
-            laplacian = cv2.Laplacian(img, cv2.CV_64F)
-
-            sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
-            sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
-
-            edges = cv2.Canny(img, 1, 1)
-
-            rows, cols = img.shape
-            r45 = cv2.getRotationMatrix2D((cols/2, rows/2), 45, 1)
-            rotate45 = cv2.warpAffine(img, r45, (cols, rows))
-
-            rows, cols = img.shape
-            r90 = cv2.getRotationMatrix2D((cols/2, rows/2), 90, 1)
-            rotate90 = cv2.warpAffine(img, r90, (cols, rows))
-
-            if settings.vis_show:
-                plt.subplot(3, 3, 1), plt.imshow(img, cmap='gray')
-                plt.title('Original'), plt.xticks([]), plt.yticks([])
-                plt.subplot(3, 3, 2), plt.imshow(laplacian, cmap='gray')
-                plt.title('Laplacian'), plt.xticks([]), plt.yticks([])
-                plt.subplot(3, 3, 3), plt.imshow(sobelx, cmap='gray')
-                plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
-                plt.subplot(3, 3, 4), plt.imshow(sobely, cmap='gray')
-                plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
-                plt.subplot(3, 3, 5), plt.imshow(edges, cmap='gray')
-                plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
-                plt.subplot(3, 3, 6), plt.imshow(rotate45, cmap='gray')
-                plt.title('Rotate 45'), plt.xticks([]), plt.yticks([])
-                plt.subplot(3, 3, 7), plt.imshow(rotate90, cmap='gray')
-                plt.title('Rotate 90'), plt.xticks([]), plt.yticks([])
+            # def cv_code(img):
+            #     laplacian = cv2.Laplacian(img, cv2.CV_64F)
+            #
+            #     sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+            #     sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+            #
+            #     edges = cv2.Canny(img, 1, 1)
+            #
+            #     rows, cols = img.shape
+            #     r45 = cv2.getRotationMatrix2D((cols/2, rows/2), 45, 1)
+            #     rotate45 = cv2.warpAffine(img, r45, (cols, rows))
+            #
+            #     rows, cols = img.shape
+            #     r90 = cv2.getRotationMatrix2D((cols/2, rows/2), 90, 1)
+            #     rotate90 = cv2.warpAffine(img, r90, (cols, rows))
+            #     return laplacian, sobelx, sobely, edges, rows, r45, rotate45, rotate90
+            #
+            # cv_process = mp.Process(name='CV Process', target=cv_code, args=(img,))
+            # cv_process.start()
+            # cv_process.join()
+            #
+            # if settings.vis_show:
+            #     plt.subplot(3, 3, 1), plt.imshow(img, cmap='gray')
+            #     plt.title('Original'), plt.xticks([]), plt.yticks([])
+            #     plt.subplot(3, 3, 2), plt.imshow(laplacian, cmap='gray')
+            #     plt.title('Laplacian'), plt.xticks([]), plt.yticks([])
+            #     plt.subplot(3, 3, 3), plt.imshow(sobelx, cmap='gray')
+            #     plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
+            #     plt.subplot(3, 3, 4), plt.imshow(sobely, cmap='gray')
+            #     plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
+            #     plt.subplot(3, 3, 5), plt.imshow(edges, cmap='gray')
+            #     plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
+            #     plt.subplot(3, 3, 6), plt.imshow(rotate45, cmap='gray')
+            #     plt.title('Rotate 45'), plt.xticks([]), plt.yticks([])
+            #     plt.subplot(3, 3, 7), plt.imshow(rotate90, cmap='gray')
+            #     plt.title('Rotate 90'), plt.xticks([]), plt.yticks([])
 
     return img
 

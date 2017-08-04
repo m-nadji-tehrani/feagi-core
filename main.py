@@ -7,7 +7,6 @@ import multiprocessing as mp
 import settings
 settings.init()
 
-import time
 import visualizer
 import architect
 import mnist
@@ -55,7 +54,6 @@ class Brain:
 
     def inject_to_fcl(self, fire_list, fcl_queue):
         # Update FCL with new input data. FCL is read from the Queue and updated
-        # todo:
         flc = fcl_queue.get()
         for item in fire_list:
             flc.append(item)
@@ -187,61 +185,72 @@ if __name__ == '__main__':
 
 
 # show_cortical_heatmap(image_number)
+#
+#
+#
+#          <<<<<<<  T O   D O   L I S T   >>>>>>>>
+#
 
 
-#       Multi processing objectives:
-#           -Ability to read text from user at any time
-#           -Ability to read image number from user at any time
-
-# todo: Next >>>>> Turn things around      <<<<<<<<<<    NEXT!!!!!!!!!!!    <<<<<<<<<<<<<<<<
-#   -start with the first burst eventhough FCL is empty      ***Done***
-#   -Remove the exit criteria which exits burst if FCL is empty. Add a sleep and make it unlimited loop ***Done***
-#   -Build a function to Inject into FCL
-#   -Have a way to share the connectome, FCL and User Input shared between processes and implement locks to protect it
-#           Options:    Pipe, Queue, joinableQueue, Manager, Value
-
-
-# todo:  How to get output from memory ??? How to comprehend it ????
-# todo: Look into  GPU leverage
-
-# todo: regenerative model
-
-
-
-
-
-# todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with
-# todo: Create the pruner function
-# todo: Perform edge detection on the images from MNIST and feed them to network
-# todo: Come up with a way to analyze and categorize output data
-# todo: Build multiple layers which receive same image but with different angle so the overlay be remembered
-# todo: Consideration for how to evolve the network over generations. Update Genome based on some constraints
+# General Architecture - Anatomy
+# todo: Move Rules to Genome
 # todo: Consider Synaptic capacity as a property of each neuron
 # todo: Account for Neuron morphology as a Neuron property
-# todo: What could trigger evolution of a cortical area?
-# todo: Consider a method to reward or punish neuron so it can evolve
 # todo: Dynamic synaptic capacity when system is shaping vs its established
 # todo: Accounting for Synaptic rearrangement
-# todo: Update the algorithm responsible to improving the synapse strength to consider simultaneous firing of others
-# todo: To account for LTD or Long Term Synaptic Depression
-# todo: Ability to detect the dominant direction before higher level processing
-# todo: Figure how to pass the Brain Physiology to Genome as well. Currently Genome drives Brain Anatomy only.
-# todo: Define streams containing a chain of cortical areas for various functions such as vision, hearing, etc.
-
-
-# todo: Synaptic_strenght currently growing out of bound. Need to impose limits
-# todo: Use directional kernal analysis data as part of input data
 # todo: Fine tune Genome to produce distinguishable results as Neurons fire
+# todo: Define streams containing a chain of cortical areas for various functions such as vision, hearing, etc.
+# todo: find a way to speed up brain building when synapse creation is not needed e.g. memory, utf8
+
+# Input handling
+# todo: Use directional kernal analysis data as part of input data
 # todo: Update IPU module to include combination of multiple input types e.g. brightness, edges, etc.
-# todo: Fix issue on the visualization related to 3D init not compatible with 2D ones
+# todo: Perform edge detection on the images from MNIST and feed them to network (OpenCL or other methods)
+# todo: Figure how to Associate ASCii characters with neuronal readouts
 # todo: Need to figure how the Direction sensitive neurons in brain function
 # todo: Need to design a neuronal system that can receive an input and its output be a combination of matching objects
 
+
+# Neuron functions - Physiology
+# todo: Create the pruner function
+# todo: Synaptic_strenght currently growing out of bound. Need to impose limits
+# todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with
+# todo: To account for LTD or Long Term Synaptic Depression
+# todo: Update the algorithm responsible to improving the synapse strength to consider simultaneous firing of others
+# todo: Figure how to pass the Brain Physiology to Genome as well. Currently Genome drives Brain Anatomy only.
+# todo: Need to imp. a looped structure to account for connecting events happening within a time delay of each-other
+# todo: Ability to detect the dominant direction before higher level processing
+
+
+# Genetic Evolution
+# todo: regenerative model.
+# todo: Consideration for how to evolve the network over generations. Update Genome based on some constraints
+# todo: What could trigger evolution of a cortical area?
+# todo: Consider a method to reward or punish neuron so it can evolve
+
+
+# Multi processing
+# todo: Look into  GPU leverage
+
+
+# Analysis
+# todo: Come up with a way to analyze and categorize output data
+
+
+# Memory
 # todo: Think of how to implement an alternative path so when an object is seen by visual it can be labeled “trained”
 # using alternate path.
-#     1. In this case training the network is equal to exposing Network to two simultaneous events at the same time. The simultaneous occurrence would trigger a binding between Neurons in the Memory Module
+#     1. In this case training the network is equal to exposing Network to two simultaneous events at the same time.
+#  The simultaneous occurrence would trigger a binding between Neurons in the Memory Module
 # todo: Figure how Memory Module should be configured so it can behave as explained above
 # todo: Configure an output module so after Memory module is activated the activation can be read back.
-# todo: Figure how to Associate ASCii characters with neuronal readouts
-# todo: Need to implement a looped structure to account for connecting events happening within a time delay of each-other
+# todo: How to get output from memory ??? How to comprehend it ????
+# todo: Implement IPU_Text to read a char from user and pass it to the Memory   <<<<< NEXT !!!!!
+# todo: Work on fusing Memories together and reading back from Memory    <<<<< Up Next
+# todo: Think of modulating the memory into functional areas such as Image memory, Char memory, etc.
+
+
+# Visualization
+# todo: Fix issue on the visualization related to 3D init not compatible with 2D ones
+
 

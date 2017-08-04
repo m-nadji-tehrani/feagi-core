@@ -362,4 +362,9 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
                         + ((y_coordinate_key - y_coordinate_target_dst) ** 2)) < rule_param:
             is_candidate = True
 
+    # Rule 3: Specific for narrow cortical regions specially built for computer interface
+    if rule_id == 'rule_3':
+        if abs(z_coordinate_key - z_coordinate_target) < rule_param:
+            is_candidate = True
+
     return is_candidate

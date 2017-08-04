@@ -21,6 +21,10 @@
     "rule_2" : {
        "param_1": 5,
        "param_2": 5
+    },
+    "rule_3" : {
+       "param_1": 1,
+       "param_2": 0
     }
   },
   "IPU_vision_filters": {
@@ -914,6 +918,38 @@
           }
        }
     },
+     "utf8": {
+       "growth_path": "",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 7,
+       "neuron_density": 56000,
+       "synaptic_strength": 0.5,
+       "synaptic_strength_inc": 0.05,
+       "neighbor_locator_rule_id": "rule_0",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "Memory_utf8" : {
+             "neighbor_locator_rule_id": "rule_3",
+             "neighbor_locator_rule_param_id": "param_2"
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "orientation_selectivity_id": "",
+          "timer_threshold": 500,
+          "firing_threshold": 5,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "geometric_boundaries": {
+             "x": [0, 1],
+             "y": [0, 1],
+             "z": [0, 56000]
+          }
+       }
+    },
      "Memory": {
        "growth_path": "",
        "orientation_selectivity_pattern": "",
@@ -938,6 +974,33 @@
              "x": [0, 28],
              "y": [0, 28],
              "z": [0, 28]
+          }
+       }
+    },
+     "Memory_utf8": {
+       "growth_path": "",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 7,
+       "neuron_density": 56000,
+       "synaptic_strength": 0,
+       "synaptic_strength_inc": 0.01,
+       "neighbor_locator_rule_id": "rule_0",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {},
+       "neuron_params": {
+          "activation_function_id": "",
+          "orientation_selectivity_id": "",
+          "timer_threshold": 1,
+          "firing_threshold": 2,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "geometric_boundaries": {
+             "x": [0, 1],
+             "y": [0, 1],
+             "z": [0, 56000]
           }
        }
     }

@@ -2,7 +2,6 @@
 """
 This file contains the main Brain control code
 """
-import numpy as np
 import multiprocessing as mp
 
 import settings
@@ -43,7 +42,7 @@ class Brain:
         return
 
     def read_from_mnist(self, image_number):
-        # Read image from MNIST database and translate them to activation in vision_v1 neurons
+        # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
         neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array)
         init_fire_list = []
@@ -54,9 +53,13 @@ class Brain:
         print(init_fire_list)
         return init_fire_list
 
-    def trigger_first_burst(self, user_input, init_fire_list):
-        # The following initiates an initial burst of input to the System
-        neuron_functions.burst(user_input, init_fire_list)
+    def inject_to_fcl(self, fire_list, fcl_queue):
+        # Update FCL with new input data. FCL is read from the Queue and updated
+        # todo:
+        fcl = fcl_queue.get()
+        for item in fire_list:
+            FCL.append(item)
+        fcl_queue.put(fcl)
         return
 
     def show_cortical_heatmap(self, image_number):
@@ -64,24 +67,15 @@ class Brain:
         visualizer.cortical_heatmap(mnist.read_image(image_number), ['vision_v1', 'vision_v2', 'vision_IT', 'Memory'])
         return
 
-    def start(self, user_input, image_number):
+    def see_mnist(self, image_number, fcl_queue):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()
-        image_data = self.read_from_mnist(image_number)
-        print(image_data)
-        self.trigger_first_burst(user_input, image_data)
-        settings.save_brain_to_disk()
+        fire_list = self.read_from_mnist(image_number)
+        print(fire_list)
+        self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
         return
-
-    def hehe(self):
-        cp = mp.current_process()
-        print(' starting', cp.name, cp.pid)
-        for x in range(20000, 20020):
-            time.sleep(.1)
-            print('\r', x)
-        print(' Exiting', cp.name, cp.pid)
 
 
 if __name__ == '__main__':
@@ -91,7 +85,9 @@ if __name__ == '__main__':
 
     b = Brain()
 
+    # Initializing queues
     user_input_queue = mp.Queue()
+    FCL_queue = mp.Queue()
 
     def read_user_input():
         fd = sys.stdin.fileno()
@@ -117,6 +113,14 @@ if __name__ == '__main__':
         process_burst.join()
         return
 
+    # Initialize Fire Candidate List (FCL)
+    FCL = []
+    FCL_queue.put(FCL)
+
+    # Starting the burst machine
+    process_burst = mp.Process(name='Burst process', target=neuron_functions.burst, args=(user_input_queue, FCL_queue))
+    process_burst.deamon = True
+    process_burst.start()
 
     read_user_input2()
 
@@ -134,15 +138,15 @@ if __name__ == '__main__':
                     settings.user_input = ''
 
                 elif settings.user_input == 'd':
-                    process_3 = mp.Process(name='read_from_MNIST', target=b.read_from_mnist, args=(10,))
+                    process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_mnist, args=(10,FCL_queue))
                     process_3.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 'f':
-                    process_burst = mp.Process(name='Burst process', target=b.start, args=(user_input_queue, 10))
-                    process_burst.deamon = True
-                    process_burst.start()
-                    settings.user_input = ''
+                # elif settings.user_input == 'f':
+                #     process_burst = mp.Process(name='Burst process', target=b.start, args=(10))
+                #     process_burst.deamon = True
+                #     process_burst.start()
+                #     settings.user_input = ''
 
                 elif settings.user_input == 'g':
                     process_3.terminate()
@@ -159,7 +163,7 @@ if __name__ == '__main__':
 
     finally:
         print("Finally!")
-
+        settings.save_brain_to_disk()
 
 
 # neuron_functions.burst()
@@ -196,15 +200,15 @@ if __name__ == '__main__':
 # show_cortical_heatmap(image_number)
 
 
-#####       Multi processing objectives:
-#####           -Ability to read text from user at any time
-#####           -Ability to read image number from user at any time
+#       Multi processing objectives:
+#           -Ability to read text from user at any time
+#           -Ability to read image number from user at any time
 
 # todo: Next >>>>> Turn things around      <<<<<<<<<<    NEXT!!!!!!!!!!!    <<<<<<<<<<<<<<<<
-#   -start with the first burst eventhough FLC is empty
-#   -Remove the exit criteria which exits burst if FLC is empty. Add a sleep and make it unlimited loop
-#   -Build a function to Inject into FLC
-#   -Have a way to share the connectome, FLC and User Input shared between processes and implement locks to protect it
+#   -start with the first burst eventhough FCL is empty
+#   -Remove the exit criteria which exits burst if FCL is empty. Add a sleep and make it unlimited loop
+#   -Build a function to Inject into FCL
+#   -Have a way to share the connectome, FCL and User Input shared between processes and implement locks to protect it
 #           Options:    Pipe, Queue, joinableQueue, Manager, Value
 
 

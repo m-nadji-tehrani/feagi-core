@@ -10,18 +10,16 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 
 import json
 import datetime
-from multiprocessing.dummy import Pool as ThreadPool
+from time import sleep
 
 import visualizer
 import settings
 from architect import synapse
 
-import time
-import multiprocessing as mp
-
 
 # Global variables
 burst_count = 0
+
 
 
 def burst(user_input, fire_list):
@@ -59,9 +57,9 @@ def burst(user_input, fire_list):
 
     # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
     global fire_candidate_list
-    fire_candidate_list = fire_list
 
-    ready_to_exit = False
+    # Read FCL from the Multiprocessing Queue
+    fire_candidate_list = fire_list.get()
 
     genome = settings.genome
 
@@ -71,14 +69,15 @@ def burst(user_input, fire_list):
     while not user_input.empty():
         try:
             user_input_value = user_input.get()
+            print("User input value is ", user_input_value)
             if user_input_value == 'x':
                 print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                 burst_count = 0
-                ready_to_exit = True
+                settings.ready_to_exit_burst = True
         finally:
             break
 
-    if ready_to_exit:
+    if settings.ready_to_exit_burst:
         return
 
     burst_count += 1
@@ -109,8 +108,15 @@ def burst(user_input, fire_list):
     burst_duration = datetime.datetime.now() - burst_strt_time
     print(">>> Burst duration: %s" % burst_duration)
 
+    # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
+    fire_list.put(fire_candidate_list)
+
+    # Add a delay if fire_candidate_list is empty
+    if len(fire_candidate_list) <= 1:
+        sleep(1)
+
     # Initiate a new Burst
-    burst(user_input, fire_candidate_list)
+    burst(user_input, fire_list)
     return
 
 
@@ -244,7 +250,6 @@ def neuron_update(cortical_area, synaptic_strength, destination):
             fire_candidate_list.append([cortical_area, destination])
             if settings.verbose:
                 print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
-
     # Push changes back to Brain
     settings.brain[cortical_area] = data
 

@@ -64,6 +64,9 @@ def init():
     global event_id
     event_id = '_'
 
+    global ready_to_exit_burst
+    ready_to_exit_burst = False
+
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 
     # # todo: Move this to the Genome

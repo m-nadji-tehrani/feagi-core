@@ -16,6 +16,7 @@ import visualizer
 import settings
 from architect import synapse
 
+settings.init()
 
 # Global variables
 burst_count = 0
@@ -52,72 +53,66 @@ def burst(user_input, fire_list):
 
     # todo: figure burst count in this new model where burst is not limited to a single cortical area
 
-    burst_strt_time = datetime.datetime.now()
-    global burst_count
+    while not settings.ready_to_exit_burst:
+        burst_strt_time = datetime.datetime.now()
+        global burst_count
 
-    # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
-    global fire_candidate_list
+        # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
+        global fire_candidate_list
 
-    # Read FCL from the Multiprocessing Queue
-    fire_candidate_list = fire_list.get()
+        # Read FCL from the Multiprocessing Queue
+        fire_candidate_list = fire_list.get()
 
-    genome = settings.genome
+        genome = settings.genome
 
-    if settings.verbose:
-        print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
-
-    while not user_input.empty():
-        try:
-            user_input_value = user_input.get()
-            print("User input value is ", user_input_value)
-            if user_input_value == 'x':
-                print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-                burst_count = 0
-                settings.ready_to_exit_burst = True
-        finally:
-            break
-
-    if settings.ready_to_exit_burst:
-        return
-
-    burst_count += 1
-
-    print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
-          % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
-    for cortical_area in set([i[0] for i in fire_candidate_list]):
-        print(settings.Bcolors.BURST +
-              '    %s : %i  ' % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
-              + settings.Bcolors.ENDC)
-    # todo: Look into multithreading for Neuron neuron_fire and wire_neurons function
-    for x in list(fire_candidate_list):
         if settings.verbose:
-            print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
-        neuron_fire(x[0], x[1])
+            print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
 
-    for cortical_area in set([i[0] for i in fire_candidate_list]):
-        for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-            for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-                if src_neuron != dst_neuron:
-                    wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
+        burst_count += 1
 
-    # todo: figure how to visualize bursts across various cortical areas
-    # If visualization flag is set the visualization function will trigger
-    if settings.burst_show:
-        visualizer.burst_visualizer(fire_candidate_locations(fire_candidate_list))
+        print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
+              % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
+        for cortical_area in set([i[0] for i in fire_candidate_list]):
+            print(settings.Bcolors.BURST +
+                  '    %s : %i  ' % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
+                  + settings.Bcolors.ENDC)
+        # todo: Look into multithreading for Neuron neuron_fire and wire_neurons function
+        for x in list(fire_candidate_list):
+            if settings.verbose:
+                print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
+            neuron_fire(x[0], x[1])
 
-    burst_duration = datetime.datetime.now() - burst_strt_time
-    print(">>> Burst duration: %s" % burst_duration)
+        for cortical_area in set([i[0] for i in fire_candidate_list]):
+            for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                    if src_neuron != dst_neuron:
+                        wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
-    # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
-    fire_list.put(fire_candidate_list)
+        # todo: figure how to visualize bursts across various cortical areas
+        # If visualization flag is set the visualization function will trigger
+        if settings.burst_show:
+            visualizer.burst_visualizer(fire_candidate_locations(fire_candidate_list))
 
-    # Add a delay if fire_candidate_list is empty
-    if len(fire_candidate_list) <= 1:
-        sleep(1)
+        burst_duration = datetime.datetime.now() - burst_strt_time
+        print(">>> Burst duration: %s" % burst_duration)
 
-    # Initiate a new Burst
-    burst(user_input, fire_list)
-    return
+        # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
+        fire_list.put(fire_candidate_list)
+
+        # Add a delay if fire_candidate_list is empty
+        if len(fire_candidate_list) <= 1:
+            sleep(1)
+
+        while not user_input.empty():
+            try:
+                user_input_value = user_input.get()
+                print("User input value is ", user_input_value)
+                if user_input_value == 'x':
+                    print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+                    burst_count = 0
+                    settings.ready_to_exit_burst = True
+            finally:
+                break
 
 
 #  >>>>>> Review this function against what we had in past

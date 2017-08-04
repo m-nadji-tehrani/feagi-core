@@ -28,7 +28,7 @@ def init():
     global verbose
     verbose = False
 
-    # Variable containing user input to Train and Control the Brain
+    # Variable containing user input to train and control the Brain
     global user_input
     user_input = ''
 
@@ -66,6 +66,8 @@ def init():
 
     global ready_to_exit_burst
     ready_to_exit_burst = False
+
+
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 

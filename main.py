@@ -56,10 +56,10 @@ class Brain:
     def inject_to_fcl(self, fire_list, fcl_queue):
         # Update FCL with new input data. FCL is read from the Queue and updated
         # todo:
-        fcl = fcl_queue.get()
+        flc = fcl_queue.get()
         for item in fire_list:
-            FCL.append(item)
-        fcl_queue.put(fcl)
+            flc.append(item)
+        fcl_queue.put(flc)
         return
 
     def show_cortical_heatmap(self, image_number):
@@ -67,7 +67,7 @@ class Brain:
         visualizer.cortical_heatmap(mnist.read_image(image_number), ['vision_v1', 'vision_v2', 'vision_IT', 'Memory'])
         return
 
-    def see_mnist(self, image_number, fcl_queue):
+    def see_from_mnist(self, image_number, fcl_queue):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()
@@ -89,6 +89,10 @@ if __name__ == '__main__':
     user_input_queue = mp.Queue()
     FCL_queue = mp.Queue()
 
+    # Initialize Fire Candidate List (FCL)
+    FCL = []
+    FCL_queue.put(FCL)
+
     def read_user_input():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
@@ -103,6 +107,7 @@ if __name__ == '__main__':
 
     def read_user_input2():
         settings.user_input = input()
+        print("settings.user_input has value of ", settings.user_input)
         user_input_queue.put(settings.user_input)
         return
 
@@ -113,13 +118,9 @@ if __name__ == '__main__':
         process_burst.join()
         return
 
-    # Initialize Fire Candidate List (FCL)
-    FCL = []
-    FCL_queue.put(FCL)
-
     # Starting the burst machine
     process_burst = mp.Process(name='Burst process', target=neuron_functions.burst, args=(user_input_queue, FCL_queue))
-    process_burst.deamon = True
+    process_burst.deamon = False
     process_burst.start()
 
     read_user_input2()
@@ -137,21 +138,9 @@ if __name__ == '__main__':
                     process_2.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 'd':
-                    process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_mnist, args=(10,FCL_queue))
+                elif settings.user_input == 'i':
+                    process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist, args=(10, FCL_queue))
                     process_3.start()
-                    settings.user_input = ''
-
-                # elif settings.user_input == 'f':
-                #     process_burst = mp.Process(name='Burst process', target=b.start, args=(10))
-                #     process_burst.deamon = True
-                #     process_burst.start()
-                #     settings.user_input = ''
-
-                elif settings.user_input == 'g':
-                    process_3.terminate()
-                    # sys.stdout.write("\rHaHaHa!!!")
-                    # sys.stdout.flush()
                     settings.user_input = ''
 
                 else:
@@ -205,8 +194,8 @@ if __name__ == '__main__':
 #           -Ability to read image number from user at any time
 
 # todo: Next >>>>> Turn things around      <<<<<<<<<<    NEXT!!!!!!!!!!!    <<<<<<<<<<<<<<<<
-#   -start with the first burst eventhough FCL is empty
-#   -Remove the exit criteria which exits burst if FCL is empty. Add a sleep and make it unlimited loop
+#   -start with the first burst eventhough FCL is empty      ***Done***
+#   -Remove the exit criteria which exits burst if FCL is empty. Add a sleep and make it unlimited loop ***Done***
 #   -Build a function to Inject into FCL
 #   -Have a way to share the connectome, FCL and User Input shared between processes and implement locks to protect it
 #           Options:    Pipe, Queue, joinableQueue, Manager, Value
@@ -214,6 +203,10 @@ if __name__ == '__main__':
 
 # todo:  How to get output from memory ??? How to comprehend it ????
 # todo: Look into  GPU leverage
+
+# todo: regenerative model
+
+
 
 
 

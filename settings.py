@@ -4,8 +4,6 @@ This file contains all the Global settings and parameters used throughout the pr
 """
 import json
 import os.path
-import sys
-
 
 
 def init():
@@ -67,8 +65,6 @@ def init():
     global ready_to_exit_burst
     ready_to_exit_burst = False
 
-
-
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 
     # # todo: Move this to the Genome
@@ -89,22 +85,6 @@ def init():
     # connectome_file defines the json file name and location which is acting as Neuron database
     global connectome_file
     connectome_file = './connectome/vision_r01.json'
-
-    # todo: Remove this, should not be needed anymore
-    # List of neuron ids which will provide the initial input to the system
-    global input_neuron_list_1
-    input_neuron_list_1 = ["2017-03-13_17:25:50.219808_SELIU9",
-                         "2017-03-13_17:25:18.518105_F8UZ7S",
-                         "2017-03-13_16:53:44.927756_7YKHO2",
-                         "2017-03-13_16:53:44.930625_GORNA5"]
-
-    # todo: Remove this, should not be needed anymore
-    global input_neuron_list_2
-    input_neuron_list_2 = ["2017-03-13_16:53:44.928501_3EJP3N",
-                     "2017-03-13_17:25:18.518105_F8UZ7S",
-                     "2017-03-13_16:53:09.239461_FTNL8W",
-                     "2017-03-13_16:53:44.930625_GORNA5",
-                         "2017-03-13_16:53:44.931493_E0I80R"]
 
 
 # Reads the list of all Cortical areas defined in Genome

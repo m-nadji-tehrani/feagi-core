@@ -8,7 +8,6 @@ import shutil
 import errno
 import datetime
 
-
 import architect
 import visualizer
 import settings
@@ -53,12 +52,15 @@ for key in blueprint:
 
 # Build Synapses within all Cortical areas
 for key in blueprint:
-    architect.neighbor_builder(cortical_area=key, rule_id=data["blueprint"][key]["neighbor_locator_rule_id"],
-                               rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
-                               ["neighbor_locator_rule_id"]][data["blueprint"][key]
-                               ["neighbor_locator_rule_param_id"]],
-                               synaptic_strength=data["blueprint"][key]["synaptic_strength"])
-    print("Synapse Creation for Cortical area %s is now complete." % key)
+    if data["blueprint"][key]["init_synapse_needed"] == "True":
+        architect.neighbor_builder(cortical_area=key, rule_id=data["blueprint"][key]["neighbor_locator_rule_id"],
+                                   rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
+                                   ["neighbor_locator_rule_id"]][data["blueprint"][key]
+                                   ["neighbor_locator_rule_param_id"]],
+                                   synaptic_strength=data["blueprint"][key]["synaptic_strength"])
+        print("Synapse creation for Cortical area %s is now complete." % key)
+    else:
+        print("Synapse creation for Cortical area %s has been skipped." % key)
 
 # Build Synapses across various Cortical areas
 for key in blueprint:

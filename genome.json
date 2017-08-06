@@ -23,7 +23,7 @@
        "param_2": 5
     },
     "rule_3" : {
-       "param_1": 1,
+       "param_1": 0,
        "param_2": 0
     }
   },
@@ -823,7 +823,9 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 3,
-       "neuron_density": 100,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
        "synaptic_strength": 1,
        "synaptic_strength_inc": 1,
        "neighbor_locator_rule_id": "rule_1",
@@ -859,7 +861,9 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 5,
-       "neuron_density": 100,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
        "synaptic_strength": 1,
        "synaptic_strength_inc": 1,
        "neighbor_locator_rule_id": "rule_1",
@@ -891,7 +895,9 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
-       "neuron_density": 100,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
        "synaptic_strength": 0.5,
        "synaptic_strength_inc": 0.05,
        "neighbor_locator_rule_id": "rule_1",
@@ -923,7 +929,9 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
-       "neuron_density": 56000,
+       "cortical_neuron_count": 300,
+       "location_generation_type": "sequential",
+       "init_synapse_needed": "False",
        "synaptic_strength": 0.5,
        "synaptic_strength_inc": 0.05,
        "neighbor_locator_rule_id": "rule_0",
@@ -946,7 +954,7 @@
           "geometric_boundaries": {
              "x": [0, 1],
              "y": [0, 1],
-             "z": [0, 56000]
+             "z": [0, 300]
           }
        }
     },
@@ -955,7 +963,9 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
-       "neuron_density": 100,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "False",
        "synaptic_strength": 0,
        "synaptic_strength_inc": 0.01,
        "neighbor_locator_rule_id": "rule_0",
@@ -982,7 +992,9 @@
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
-       "neuron_density": 56000,
+       "cortical_neuron_count": 300,
+       "location_generation_type": "sequential",
+       "init_synapse_needed": "False",
        "synaptic_strength": 0,
        "synaptic_strength_inc": 0.01,
        "neighbor_locator_rule_id": "rule_0",
@@ -1000,7 +1012,7 @@
           "geometric_boundaries": {
              "x": [0, 1],
              "y": [0, 1],
-             "z": [0, 56000]
+             "z": [0, 300]
           }
        }
     }

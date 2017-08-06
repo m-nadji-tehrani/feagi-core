@@ -8,14 +8,11 @@ Architect will accept the following information as input:
 Architect output would be the json file defined in settings as connectome_file
 """
 
-import json
 import datetime
 import string
 import random
 from math import sqrt
-
 import settings
-
 
 
 def neuron_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -104,7 +101,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
     return
 
 
-def location_generator(x1, y1, z1, x2, y2, z2):
+def random_location_generator(x1, y1, z1, x2, y2, z2):
     """
     Function responsible to generate a pseudo-random location for a Neuron given some constraints
 
@@ -138,14 +135,59 @@ def location_collector(cortical_area):
         return
 
     neuron_loc_list = []
-    for x in range(0, genome["blueprint"][cortical_area]["neuron_density"]):
-        neuron_loc_list.append(location_generator(
-            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
-            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
-            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
-            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1],
-            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1],
-            genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1]))
+
+    if genome["blueprint"][cortical_area]["location_generation_type"] == "random":
+        for _ in range(0, genome["blueprint"][cortical_area]["cortical_neuron_count"]):
+            neuron_loc_list.append(random_location_generator(
+                genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
+                genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
+                genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
+                genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1],
+                genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1],
+                genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1]))
+    else:
+        x_lenght = (genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1] -
+                    genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0])
+        y_lenght = (genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1] -
+                    genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0])
+        z_lenght = (genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1] -
+                    genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0])
+
+        # Following formula calculates the proper distance between neurons to be used to have n number of them
+        # evenly distributed within the given cortical area
+
+        none_zero_axis = list(filter(lambda axis_width: axis_width > 1, [x_lenght, y_lenght, z_lenght]))
+
+        dimension = len(none_zero_axis)
+
+        neuron_count = genome["blueprint"][cortical_area]["cortical_neuron_count"]
+
+        area = 1
+        for _ in none_zero_axis:
+            area = area * _
+
+        neuron_gap = (area / neuron_count) ** (1 / dimension)
+
+        # Number of neurons in each axis
+        xn = int(x_lenght / neuron_gap)
+        yn = int(y_lenght / neuron_gap)
+        zn = int(z_lenght / neuron_gap)
+
+        if xn == 0: xn = 1
+        if yn == 0: yn = 1
+        if zn == 0: zn = 1
+
+        x_coordinate = genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0]
+        y_coordinate = genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0]
+        z_coordinate = genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0]
+
+        for i in range(xn):
+            for ii in range(yn):
+                for iii in range(zn):
+                    neuron_loc_list.append([x_coordinate, y_coordinate, z_coordinate])
+                    z_coordinate += neuron_gap
+                y_coordinate += neuron_gap
+            x_coordinate += neuron_gap
 
     return neuron_loc_list
 
@@ -364,7 +406,7 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
 
     # Rule 3: Specific for narrow cortical regions specially built for computer interface
     if rule_id == 'rule_3':
-        if abs(z_coordinate_key - z_coordinate_target) < rule_param:
+        if abs(z_coordinate_key - z_coordinate_target_dst) == rule_param:
             is_candidate = True
 
     return is_candidate

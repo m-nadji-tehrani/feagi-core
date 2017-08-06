@@ -16,11 +16,10 @@ import visualizer
 import settings
 from architect import synapse
 
-settings.init()
+# settings.init()
 
 # Global variables
 burst_count = 0
-
 
 
 def burst(user_input, fire_list):
@@ -272,10 +271,12 @@ def neuron_neighbors(cortical_area, id):
         print(json.dumps(data[id]["neighbors"], indent=3))
     return data[id]["neighbors"]
 
+
 def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     """
-    This function simulates neuron plasticity in a sense that when facilitates wiring the neurons together. This is 
-    done by increasing the synaptic_strength associated with a link between two neuron.
+    This function simulates neuron plasticity in a sense that when neurons in a given cortical area fire in the 
+     same burst they wire together. This is done by increasing the synaptic_strength associated with a link between 
+     two neuron. Additionally an event id is is associated to the neurons.
     """
     data = settings.brain[cortical_area]
     genome = settings.genome

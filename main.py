@@ -1,12 +1,6 @@
-
-"""
-This file contains the main Brain control code
-"""
-import multiprocessing as mp
-
 import settings
 settings.init()
-
+import multiprocessing as mp
 import visualizer
 import architect
 import mnist
@@ -14,6 +8,10 @@ import IPU_vision
 import neuron_functions
 import stats
 
+
+"""
+This file contains the main Brain control code
+"""
 
 __authur__ = 'Mohammad Nadji-tehrani'
 
@@ -25,7 +23,7 @@ class Brain:
     def print_basic_info(self):
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
-        print("\rconnectome database =                  %s" % settings.connectome_path)
+        print("\rConnectome database =                  %s" % settings.connectome_path)
         print("\rInitial input Neuron trigger list 1 =    %s" % settings.input_neuron_list_1)
         print("\rInitial input Neuron trigger list 2 =    %s" % settings.input_neuron_list_2)
         print("\rTotal neuron count in the connectome  %s  is: %i" % (
@@ -201,6 +199,7 @@ if __name__ == '__main__':
 # todo: Fine tune Genome to produce distinguishable results as Neurons fire
 # todo: Define streams containing a chain of cortical areas for various functions such as vision, hearing, etc.
 # todo: find a way to speed up brain building when synapse creation is not needed e.g. memory, utf8
+# todo: Synapse creation takes a very long time in presense of large neurons. Think of a way to limit the scope. zipcode
 
 # Input handling
 # todo: Use directional kernal analysis data as part of input data
@@ -227,6 +226,7 @@ if __name__ == '__main__':
 # todo: Consideration for how to evolve the network over generations. Update Genome based on some constraints
 # todo: What could trigger evolution of a cortical area?
 # todo: Consider a method to reward or punish neuron so it can evolve
+# todo: Build a Genome Generator
 
 
 # Multi processing

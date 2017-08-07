@@ -5,6 +5,7 @@ import visualizer
 import architect
 import mnist
 import IPU_vision
+import IPU_utf8
 import neuron_functions
 import stats
 
@@ -13,7 +14,7 @@ import stats
 This file contains the main Brain control code
 """
 
-__authur__ = 'Mohammad Nadji-tehrani'
+__author__ = 'Mohammad Nadji-tehrani'
 
 
 class Brain:
@@ -66,12 +67,20 @@ class Brain:
     def see_from_mnist(self, image_number, fcl_queue):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
-        settings.reset_cumulative_counter_instances()
+        settings.reset_cumulative_counter_instances()   # ????
         fire_list = self.read_from_mnist(image_number)
         print(fire_list)
         self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
         return
+
+    def read_char(self, char, fcl_queue):
+        cp = mp.current_process()
+        print(' starting', cp.name, cp.pid)
+        fire_list = IPU_utf8.convert_char_to_fire_list(char)
+        print(fire_list)
+        self.inject_to_fcl(fire_list, fcl_queue)
+        print(' exiting', cp.name, cp.pid)
 
 
 if __name__ == '__main__':
@@ -111,6 +120,7 @@ if __name__ == '__main__':
         process_1.join()
         process_2.join()
         process_3.join()
+        process_4.join()
         process_burst.join()
         return
 
@@ -134,9 +144,15 @@ if __name__ == '__main__':
                     process_2.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 'i':
+                elif settings.user_input == 'i1':
                     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist, args=(10, FCL_queue))
                     process_3.start()
+                    settings.user_input = ''
+
+                elif settings.user_input == 'i2':
+                    char = input("Enter char: ")
+                    process_4 = mp.Process(name='Seeing_MNIST_image', target=b.read_char, args=(char, FCL_queue))
+                    process_4.start()
                     settings.user_input = ''
 
                 else:

@@ -276,7 +276,7 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     """
     This function simulates neuron plasticity in a sense that when neurons in a given cortical area fire in the 
      same burst they wire together. This is done by increasing the synaptic_strength associated with a link between 
-     two neuron. Additionally an event id is is associated to the neurons.
+     two neuron. Additionally an event id is is associated to the neurons who fired together.
     """
     data = settings.brain[cortical_area]
     genome = settings.genome

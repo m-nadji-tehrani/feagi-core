@@ -324,7 +324,7 @@ def neuron_finder(cortical_area, location, radius):
         y = data[key]['location'][1]
         z = data[key]['location'][2]
 
-        # Searching only the XY plane for candidate neurons
+        # Searching only the XY plane for candidate neurons         ????
         if sqrt((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
             if neuron_list.count(key) == 0:
                 neuron_list.append(key)

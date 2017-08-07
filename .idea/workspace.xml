@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="UTF8 cortical area added">
+    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/IPU_uft8.py" afterPath="$PROJECT_DIR$/IPU_utf8.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/architect.py" afterPath="$PROJECT_DIR$/architect.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/brain_gen.py" afterPath="$PROJECT_DIR$/brain_gen.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/Memory.json" afterPath="$PROJECT_DIR$/connectome/Memory.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/vision_IT.json" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/vision_v1.json" afterPath="$PROJECT_DIR$/connectome/vision_v1.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/vision_v2.json" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/genome.json" afterPath="$PROJECT_DIR$/genome.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/neuron_functions.py" afterPath="$PROJECT_DIR$/neuron_functions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.py" afterPath="$PROJECT_DIR$/settings.py" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +27,7 @@
     <SUITE FILE_PATH="coverage/My_Brian$neuron_functions.coverage" NAME="neuron_functions Coverage Results" MODIFIED="1501787372735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$getchar.coverage" NAME="getchar Coverage Results" MODIFIED="1501374246460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$.coverage" NAME=" Coverage Results" MODIFIED="1501604042733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1502057152012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1502077322127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$visualizer.coverage" NAME="visualizer Coverage Results" MODIFIED="1501019334695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$genome_functions.coverage" NAME="genome_functions Coverage Results" MODIFIED="1491589109785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$stats.coverage" NAME="stats Coverage Results" MODIFIED="1491594329805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -38,7 +36,7 @@
     <SUITE FILE_PATH="coverage/My_Brian$Python_Console.coverage" NAME="Python Console Coverage Results" MODIFIED="1493089427608" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/My_Brian$print_test.coverage" NAME="print_test Coverage Results" MODIFIED="1501434580084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$settings.coverage" NAME="settings Coverage Results" MODIFIED="1501797253859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Brian$brain_gen.coverage" NAME="brain_gen Coverage Results" MODIFIED="1502056756458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$brain_gen.coverage" NAME="brain_gen Coverage Results" MODIFIED="1502076158601" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$read.coverage" NAME="read Coverage Results" MODIFIED="1501513738668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$multiprocess_test.coverage" NAME="multiprocess_test Coverage Results" MODIFIED="1501639743328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
@@ -53,11 +51,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.66501415">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1080">
-                  <caret line="18" column="12" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+                <state relative-caret-position="259">
+                  <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -66,8 +64,8 @@
           <file leaf-file-name="architect.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/architect.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="534">
-                  <caret line="411" column="23" lean-forward="true" selection-start-line="411" selection-start-column="23" selection-end-line="411" selection-end-column="23" />
+                <state relative-caret-position="4">
+                  <caret line="314" column="11" lean-forward="false" selection-start-line="314" selection-start-column="4" selection-end-line="314" selection-end-column="17" />
                   <folding>
                     <element signature="e#445#460#0" expanded="true" />
                   </folding>
@@ -78,8 +76,8 @@
           <file leaf-file-name="brain_gen.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/brain_gen.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="315">
-                  <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+                <state relative-caret-position="60">
+                  <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
                   <folding>
                     <element signature="e#98#109#0" expanded="true" />
                   </folding>
@@ -87,21 +85,33 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="neuron_functions.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="neuron_functions.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/neuron_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="24">
-                  <caret line="262" column="0" lean-forward="true" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+                <state relative-caret-position="-769">
+                  <caret line="125" column="46" lean-forward="false" selection-start-line="125" selection-start-column="41" selection-end-line="125" selection-end-column="46" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="IPU_uft8.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/IPU_uft8.py">
+          <file leaf-file-name="IPU_utf8.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/IPU_utf8.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="75">
-                  <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+                <state relative-caret-position="165">
+                  <caret line="11" column="43" lean-forward="false" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+                  <folding>
+                    <element signature="e#84#119#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="IPU_vision.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/IPU_vision.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="183">
+                  <caret line="49" column="28" lean-forward="false" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -123,10 +133,10 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="genome.json" pinned="false" current-in-tab="true">
+          <file leaf-file-name="genome.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/genome.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
+                <state relative-caret-position="-1642">
                   <caret line="25" column="19" lean-forward="false" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
                   <folding>
                     <element signature="n#!!block;n#IPU_vision_filters#0;n#!!top" expanded="false" />
@@ -140,17 +150,17 @@
           <file leaf-file-name="utf8.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/connectome/utf8.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="9134">
-                  <caret line="7501" column="1" lean-forward="false" selection-start-line="7501" selection-start-column="1" selection-end-line="7501" selection-end-column="1" />
+                <state relative-caret-position="189">
+                  <caret line="2626" column="37" lean-forward="false" selection-start-line="2626" selection-start-column="31" selection-end-line="2626" selection-end-column="37" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Memory_utf8.json" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Memory_utf8.json" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/connectome/Memory_utf8.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-84373">
+                <state relative-caret-position="-84927">
                   <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding />
                 </state>
@@ -170,9 +180,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>corti</find>
-      <find>cortica</find>
-      <find>cortical</find>
       <find>cortical_</find>
       <find>cortical_ne</find>
       <find>cortical_neu</find>
@@ -193,13 +200,16 @@
       <find>neuron_dens</find>
       <find>neuron_densi</find>
       <find>neuron_densit</find>
-      <find>neuron_density</find>
       <find>json</find>
       <find>sys</find>
       <find>random</find>
       <find>location_generator</find>
       <find>shutil</find>
       <find>wire</find>
+      <find>neuron_density</find>
+      <find>neuron_finder</find>
+      <find>brain</find>
+      <find>BOT3B8</find>
     </findStrings>
     <replaceStrings>
       <replace>-3</replace>
@@ -269,13 +279,15 @@
         <option value="$PROJECT_DIR$/IPU_text.py" />
         <option value="$PROJECT_DIR$/mnist.py" />
         <option value="$PROJECT_DIR$/IPU_Char.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/settings.py" />
         <option value="$PROJECT_DIR$/connectome/utf8.json" />
         <option value="$PROJECT_DIR$/brain_gen.py" />
-        <option value="$PROJECT_DIR$/architect.py" />
         <option value="$PROJECT_DIR$/genome.json" />
         <option value="$PROJECT_DIR$/neuron_functions.py" />
+        <option value="$PROJECT_DIR$/IPU_uft8.py" />
+        <option value="$PROJECT_DIR$/architect.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/IPU_utf8.py" />
       </list>
     </option>
   </component>
@@ -827,7 +839,14 @@
       <option name="project" value="LOCAL" />
       <updated>1501873851827</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Sequential neuron generation">
+      <created>1502057216641</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1502057216641</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView">
@@ -924,10 +943,18 @@
     <MESSAGE value="Common FCL" />
     <MESSAGE value="Inject to FLC" />
     <MESSAGE value="UTF8 cortical area added" />
-    <option name="LAST_COMMIT_MESSAGE" value="UTF8 cortical area added" />
+    <MESSAGE value="Sequential neuron generation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sequential neuron generation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/IPU_utf8.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -938,7 +965,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="98" />
+      <option name="time" value="100" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1104,14 +1131,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IPU_vision.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="579">
-          <caret line="49" column="83" lean-forward="false" selection-start-line="49" selection-start-column="83" selection-end-line="49" selection-end-column="83" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/dummy/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="571">
@@ -1263,14 +1282,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IPU_uft8.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
@@ -1281,53 +1292,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1080">
-          <caret line="18" column="12" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/brain_gen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
-          <folding>
-            <element signature="e#98#109#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/architect.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="411" column="23" lean-forward="true" selection-start-line="411" selection-start-column="23" selection-end-line="411" selection-end-column="23" />
+        <state relative-caret-position="4">
+          <caret line="314" column="11" lean-forward="false" selection-start-line="314" selection-start-column="4" selection-end-line="314" selection-end-column="17" />
           <folding>
             <element signature="e#445#460#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/connectome/utf8.json">
+    <entry file="file://$PROJECT_DIR$/IPU_vision.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9134">
-          <caret line="7501" column="1" lean-forward="false" selection-start-line="7501" selection-start-column="1" selection-end-line="7501" selection-end-column="1" />
+        <state relative-caret-position="183">
+          <caret line="49" column="28" lean-forward="false" selection-start-line="49" selection-start-column="28" selection-end-line="49" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/connectome/Memory_utf8.json">
+    <entry file="file://$PROJECT_DIR$/brain_gen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-84373">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="60">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#98#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/neuron_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-769">
+          <caret line="125" column="46" lean-forward="false" selection-start-line="125" selection-start-column="41" selection-end-line="125" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/genome.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="-1642">
           <caret line="25" column="19" lean-forward="false" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
           <folding>
             <element signature="n#!!block;n#IPU_vision_filters#0;n#!!top" expanded="false" />
@@ -1337,10 +1340,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/neuron_functions.py">
+    <entry file="file://$PROJECT_DIR$/connectome/utf8.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="262" column="0" lean-forward="true" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+        <state relative-caret-position="189">
+          <caret line="2626" column="37" lean-forward="false" selection-start-line="2626" selection-start-column="31" selection-end-line="2626" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IPU_utf8.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="43" lean-forward="false" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+          <folding>
+            <element signature="e#84#119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/connectome/Memory_utf8.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-84927">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>

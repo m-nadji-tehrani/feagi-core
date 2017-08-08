@@ -8,7 +8,7 @@ import IPU_vision
 import IPU_utf8
 import neuron_functions
 import stats
-
+from time import sleep
 
 """
 This file contains the main Brain control code
@@ -88,6 +88,7 @@ class Brain:
             fire_candidate_list = fcl_queue.get()
             fcl_queue.put(fire_candidate_list)
             visualizer.burst_visualizer(fire_candidate_list)
+            sleep(1)
         return
 
 

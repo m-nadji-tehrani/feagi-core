@@ -48,9 +48,9 @@ def burst_visualizer(fire_candidate_list):
     if not settings.vis_init_status:
         settings.vis_init()
 
-    settings.ax.set_xlim(0, 30)
-    settings.ax.set_ylim(0, 30)
-    settings.ax.set_zlim(0, 30)
+    # settings.ax.set_xlim(0, 30)
+    # settings.ax.set_ylim(0, 30)
+    # settings.ax.set_zlim(0, 30)
 
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
@@ -59,18 +59,13 @@ def burst_visualizer(fire_candidate_list):
         if key == "Memory":
             for location in neuron_locations[key]:
                 settings.ax.scatter(location[0], location[1], location[2], c='r', marker='^')
-            settings.plt.draw()
-            # settings.plt.pause(settings.burst_timer)
-            time.sleep(settings.burst_timer)
+            settings.plt.show()
+            settings.plt.pause(settings.burst_timer)
 
             for location in neuron_locations[key]:
                 settings.ax.scatter(location[0], location[1], location[2], c='b', marker='^')
-            settings.plt.draw()
-            # settings.plt.pause(settings.burst_timer)
-            time.sleep(settings.burst_timer)
-
-    settings.plt.show()
-    settings.plt.pause(1)
+            settings.plt.show()
+            settings.plt.pause(settings.burst_timer)
     return
 
 

@@ -3,63 +3,25 @@
 This file contains all of the Visualization functions
 """
 
-import json
-from matplotlib.patches import FancyArrowPatch
-from mpl_toolkits.mplot3d import proj3d
-from mpl_toolkits.mplot3d import axes3d
-import matplotlib.patches as patches
-import matplotlib.pyplot as plt
 import numpy as np
 import time
 
 import settings
 import architect
-
-global init_status
-init_status = False
-
-
-def init():
-    plt.ion()
-    print("Initializing plot...")
-    global Arrow3D
-    class Arrow3D(FancyArrowPatch):
-        def __init__(self, xs, ys, zs, *args, **kwargs):
-            FancyArrowPatch.__init__(self, (0, 0), (0, 0), *args, **kwargs)
-            self._verts3d = xs, ys, zs
-
-        def draw(self, renderer):
-            xs3d, ys3d, zs3d = self._verts3d
-            xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
-            self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
-            FancyArrowPatch.draw(self, renderer)
-
-        plt.ion()
-        fig = plt.figure()
-        global ax
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlim(0, 30)
-        ax.set_ylim(0, 30)
-        ax.set_zlim(0, 30)
-        ax.set_xlabel('X Label')
-        ax.set_ylabel('Y Label')
-        ax.set_zlabel('Z Label')
-    global init_status
-    init_status = True
+import neuron_functions
 
 
 def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false', threshold=0):
     """Visualizes the Neurons in the connectome"""
-    global init_status
-    if not init_status:
-        init()
+    if not settings.vis_init_status:
+        settings.vis_init()
     neuron_locations = architect.connectome_location_data(cortical_area)
-    ax.set_xlim(0, x)
-    ax.set_ylim(0, y)
-    ax.set_zlim(0, z)
+    settings.ax.set_xlim(0, x)
+    settings.ax.set_ylim(0, y)
+    settings.ax.set_zlim(0, z)
 
     for location in neuron_locations:
-        ax.scatter(location[0], location[1], location[2], c='b', marker='.')
+        settings.ax.scatter(location[0], location[1], location[2], c='b', marker='.')
 
     # Displays the Axon-Dendrite connections when True is set
     if neighbor_show == 'true':
@@ -73,23 +35,52 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
                     if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (data[key]['neighbors']
                                 [subkey]['synaptic_strength'] > threshold):
                         destination_location = data[subkey]["location"]
-                        a = Arrow3D([source_location[0], destination_location[0]], [source_location[1],
+                        a = settings.Arrow3D([source_location[0], destination_location[0]], [source_location[1],
                                     destination_location[1]], [source_location[2], destination_location[2]],
                                     mutation_scale=10, lw=1, arrowstyle="->", color="r")
-                        ax.add_artist(a)
-    plt.show()
-    plt.pause(10)
+                        settings.ax.add_artist(a)
+    settings.plt.show()
+    settings.plt.pause(1)
+    return
+
+
+def burst_visualizer(fire_candidate_list):
+    if not settings.vis_init_status:
+        settings.vis_init()
+
+    settings.ax.set_xlim(0, 30)
+    settings.ax.set_ylim(0, 30)
+    settings.ax.set_zlim(0, 30)
+
+    neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
+
+    # Toggle the visual appearance of the Neuron to resemble firing action
+    for key in neuron_locations:
+        if key == "Memory":
+            for location in neuron_locations[key]:
+                settings.ax.scatter(location[0], location[1], location[2], c='r', marker='^')
+            settings.plt.draw()
+            # settings.plt.pause(settings.burst_timer)
+            time.sleep(settings.burst_timer)
+
+            for location in neuron_locations[key]:
+                settings.ax.scatter(location[0], location[1], location[2], c='b', marker='^')
+            settings.plt.draw()
+            # settings.plt.pause(settings.burst_timer)
+            time.sleep(settings.burst_timer)
+
+    settings.plt.show()
+    settings.plt.pause(1)
     return
 
 
 def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
     """Visualizes the extent of Neuron activities"""
-    global init_status
-    if not init_status:
-        init()
+    if not settings.vis_init_status:
+        settings.vis_init()
 
-    fig = plt.figure()
-    fig = plt.figure(figsize=plt.figaspect(.2))
+    fig = settings.plt.figure()
+    fig = settings.plt.figure(figsize=settings.plt.figaspect(.2))
     fig.suptitle('Cortical Activities\n')
 
     for cortical_area in cortical_areas:
@@ -102,26 +93,8 @@ def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
         for location in neuron_locations:
             # aa.scatter(location[0], location[1], location[2], s=location[3])
             aa.scatter(location[0], location[1], s=location[3])
-    plt.show()
-    plt.pause(1)
-    return
-
-
-def burst_visualizer(neuron_locations):
-    """This function receives the coordinate location for firing neuron and will have it visualized"""
-    global init_status
-    if not init_status:
-        init()
-    # Toggle the visual appearance of the Neuron to resemble firing action
-    for location in neuron_locations:
-        ax.scatter(location[0], location[1], location[2], c='r', marker='^')
-    plt.pause(settings.burst_timer)
-
-    for location in neuron_locations:
-        ax.scatter(location[0], location[1], location[2], c='b', marker='^')
-    plt.pause(settings.burst_timer)
-    # time.sleep(settings.burst_timer)
-
+    settings.plt.show()
+    settings.plt.pause(1)
     return
 
 
@@ -131,6 +104,9 @@ def cortical_heatmap(IPU_input, cortical_areas):
     :param cortical_area:
     :return:
     """
+    if not settings.vis_init_status:
+        settings.vis_init()
+
     cortical_arrays = []
     cortical_arrays.append(["IPU_Vision", IPU_input])
     for cortical_area in cortical_areas:
@@ -152,14 +128,14 @@ def cortical_heatmap(IPU_input, cortical_areas):
     # print(cortical_arrays)
     print(cortical_arrays[0][1])
 
-    fig = plt.figure()
+    fig = settings.plt.figure()
     for i in range(1, len(cortical_areas)+2):
         aa = fig.add_subplot(1, len(cortical_areas)+1, i)
         aa.set_title(cortical_arrays[i-1][0])
         aa.imshow(cortical_arrays[i-1][1])
 
-    plt.suptitle('Heatmap of Cortical area Neuronal Fire count', fontsize=12)
+    settings.plt.suptitle('Heatmap of Cortical area Neuronal Fire count', fontsize=12)
 
     # plt.pause(10)
-    plt.show()
+    settings.plt.show()
     return

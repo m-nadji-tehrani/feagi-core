@@ -82,11 +82,22 @@ class Brain:
         self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
 
+    def burst_visualizer(self, fcl_queue):
+        while 1==1:
+            print("Bursting!!!     <<<<<<     <<<<<<<      <<<<<<<        <<<<<<<<<<")
+            fire_candidate_list = fcl_queue.get()
+            fcl_queue.put(fire_candidate_list)
+            visualizer.burst_visualizer(fire_candidate_list)
+        return
+
 
 if __name__ == '__main__':
     import sys
     from tty import setraw
     import termios
+
+    # Initialize visualization libraries
+    settings.vis_init()
 
     b = Brain()
 
@@ -117,10 +128,11 @@ if __name__ == '__main__':
         return
 
     def join_processes():
-        process_1.join()
-        process_2.join()
+        # process_1.join()
+        # process_2.join()
         process_3.join()
-        process_4.join()
+        # process_4.join()
+        process_5.terminate()
         process_burst.join()
         return
 
@@ -139,7 +151,7 @@ if __name__ == '__main__':
                     process_1.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 's':
+                elif settings.user_input == 's1':
                     process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
                     process_2.start()
                     settings.user_input = ''
@@ -151,8 +163,13 @@ if __name__ == '__main__':
 
                 elif settings.user_input == 'i2':
                     char = input("Enter char: ")
-                    process_4 = mp.Process(name='Seeing_MNIST_image', target=b.read_char, args=(char, FCL_queue))
+                    process_4 = mp.Process(name='Reading input char', target=b.read_char, args=(char, FCL_queue))
                     process_4.start()
+                    settings.user_input = ''
+
+                elif settings.user_input == 's2':
+                    process_5 = mp.Process(name='Visualize burst activities', target=b.burst_visualizer(FCL_queue))
+                    process_5.start()
                     settings.user_input = ''
 
                 else:
@@ -164,6 +181,7 @@ if __name__ == '__main__':
 
     finally:
         print("Finally!")
+        join_processes()
         settings.save_brain_to_disk()
 
 

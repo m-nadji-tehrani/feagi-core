@@ -87,11 +87,6 @@ def burst(user_input, fire_list):
                     if src_neuron != dst_neuron:
                         wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
-        # todo: figure how to visualize bursts across various cortical areas
-        # If visualization flag is set the visualization function will trigger
-        if settings.burst_show:
-            visualizer.burst_visualizer(fire_candidate_locations(fire_candidate_list))
-
         burst_duration = datetime.datetime.now() - burst_strt_time
         print(">>> Burst duration: %s" % burst_duration)
 
@@ -121,26 +116,18 @@ def fire_candidate_locations(fire_candidate_list):
     print('***')
     # print(fire_candidate_list)
 
-    neuron_locations = []
+    neuron_locations = {}
+    # Generate a dictionary of cortical areas in the fire_candidate_list
     for item in fire_candidate_list:
-        neuron_locations.append(settings.brain[item[0]][item[1]]["location"])
+        neuron_locations[item[0]] = []
 
-        #
-        # data = settings.brain[fire_candidate_list[fire_candidate_list.index(item)][0]]
-        # print(data)
-        # for key in data:
-        #     neuron_locations.append(data[key]["location"])
-        # print(neuron_locations)
-
-
-    # for item in fire_candidate_list:
-    #     if settings.read_data_from_memory:
-    #         data = main.brain
-    #     else:
-    #         with open(settings.connectome_path+fire_candidate_list[item][0]+'.json', "r") as data_file:
-    #             data = json.load(data_file)
-    #
-    #     neuron_locations.append(data[fire_candidate_list[item][0]]["location"])
+    # Add neuron locations under each cortical area
+    for cortical_area in neuron_locations:
+        for item in fire_candidate_list:
+            if item[0] == cortical_area:
+                neuron_locations[cortical_area].append([settings.brain[item[0]][item[1]]["location"][0],
+                                                        settings.brain[item[0]][item[1]]["location"][1],
+                                                        settings.brain[item[0]][item[1]]["location"][2]])
 
     return neuron_locations
 
@@ -183,8 +170,6 @@ def neuron_fire(cortical_area, id):
         #  exit function when number of steps are beyond a specific point.
         # Its worth noting that this situation is related to how system is architected as if 2 neuron are feeding
         #  to each other there is a bigger chance of this happening.
-
-
 
     global fire_candidate_list
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, id]))

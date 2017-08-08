@@ -5,7 +5,6 @@ Architect will accept the following information as input:
         1. Growth boundaries: Driving the limits of Neuron creation
         2. Neuron Density:    Driving number of Neurons per unit of space
         3. Growth pattern:    Driving Neighbor relations and shape of connectivity
-Architect output would be the json file defined in settings as connectome_file
 """
 
 import datetime

@@ -4,6 +4,7 @@ This file contains all the Global settings and parameters used throughout the pr
 """
 import json
 import os.path
+import matplotlib.pyplot as plt
 
 
 def init():
@@ -20,7 +21,7 @@ def init():
 
     # Sleep timer for visualization delay
     global burst_timer
-    burst_timer = 0.00001
+    burst_timer = 1
 
     # Flag to enable Verbose mode
     global verbose
@@ -33,10 +34,6 @@ def init():
     # Flag to show visualizations
     global vis_show
     vis_show = False
-
-    # Flag to show bursts
-    global burst_show
-    burst_show = False
 
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory
@@ -65,6 +62,11 @@ def init():
     global ready_to_exit_burst
     ready_to_exit_burst = False
 
+    global vis_init_status
+    vis_init_status = False
+
+
+
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 
     # # todo: Move this to the Genome
@@ -77,14 +79,39 @@ def init():
     sobel_x = [[-1, 0, 1], [-2, 0, 1], [-1, 0, 1]]
     sobel_y = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]
 
-    # # Neuron locations for the ones participating in a Burst are passed to the visualization function
-    # global input_neuron_locations
-    # input_neuron_locations = [[10,10,10], [20, 20, 20]]
 
-    # todo: Remove this, should not be needed anymore
-    # connectome_file defines the json file name and location which is acting as Neuron database
-    global connectome_file
-    connectome_file = './connectome/vision_r01.json'
+def vis_init():
+    from matplotlib.patches import FancyArrowPatch
+    from mpl_toolkits.mplot3d import proj3d
+    from mpl_toolkits.mplot3d import axes3d
+    import matplotlib.patches as patches
+
+    plt.ion()
+    print("Initializing plot...")
+    global Arrow3D
+    class Arrow3D(FancyArrowPatch):
+        def __init__(self, xs, ys, zs, *args, **kwargs):
+            FancyArrowPatch.__init__(self, (0, 0), (0, 0), *args, **kwargs)
+            self._verts3d = xs, ys, zs
+
+        def draw(self, renderer):
+            xs3d, ys3d, zs3d = self._verts3d
+            xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
+            self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
+            FancyArrowPatch.draw(self, renderer)
+
+        plt.ion()
+        fig = plt.figure()
+        global ax
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_xlim(0, 30)
+        ax.set_ylim(0, 30)
+        ax.set_zlim(0, 30)
+        ax.set_xlabel('X Label')
+        ax.set_ylabel('Y Label')
+        ax.set_zlabel('Z Label')
+    global vis_init_status
+    vis_init_status = True
 
 
 # Reads the list of all Cortical areas defined in Genome

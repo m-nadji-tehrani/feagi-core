@@ -44,27 +44,42 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
     return
 
 
-def burst_visualizer(fire_candidate_list):
+def burst_visualizer(fire_candidate_list, x, y, z):
     if not settings.vis_init_status:
         settings.vis_init()
 
-    # settings.ax.set_xlim(0, 30)
-    # settings.ax.set_ylim(0, 30)
-    # settings.ax.set_zlim(0, 30)
-
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
+    # figure = settings.plt.figure(figsize=settings.plt.figaspect(.2))
+
+    index = 0
+    indexed_cortical_list = []
+    for key in settings.cortical_areas:
+        indexed_cortical_list.append([index, key])
+        index += 1
+
+
     # Toggle the visual appearance of the Neuron to resemble firing action
-    for key in neuron_locations:
-        if key == "Memory":
-            for location in neuron_locations[key]:
-                settings.ax.scatter(location[0], location[1], location[2], c='r', marker='^')
-            settings.plt.show()
+    for entry in indexed_cortical_list:
+        axx = settings.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
+        axx.set_title(entry[1])
+        axx.set_xlim(0, 30)
+        axx.set_ylim(0, 30)
+        axx.set_zlim(0, 30)
+        axx.set_xlabel('X Label')
+        axx.set_ylabel('Y Label')
+        axx.set_zlabel('Z Label')
+
+        for location in neuron_locations[entry[1]]:
+            axx.scatter(location[0], location[1], location[2], c='r', marker='^')
+
+        if neuron_locations[entry[1]]:
+            settings.plt.draw()
             settings.plt.pause(settings.burst_timer)
 
-            for location in neuron_locations[key]:
-                settings.ax.scatter(location[0], location[1], location[2], c='b', marker='^')
-            settings.plt.show()
+            for location in neuron_locations[entry[1]]:
+                axx.scatter(location[0], location[1], location[2], c='b', marker='^')
+            settings.plt.draw()
             settings.plt.pause(settings.burst_timer)
     return
 

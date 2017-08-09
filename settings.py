@@ -65,6 +65,8 @@ def init():
     global vis_init_status
     vis_init_status = False
 
+    global cortical_areas
+    cortical_areas = cortical_list()
 
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
@@ -100,7 +102,7 @@ def vis_init():
             self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
             FancyArrowPatch.draw(self, renderer)
 
-        plt.ion()
+        # plt.ion()
         fig = plt.figure()
         global ax
         ax = fig.add_subplot(111, projection='3d')
@@ -110,6 +112,11 @@ def vis_init():
         ax.set_xlabel('X Label')
         ax.set_ylabel('Y Label')
         ax.set_zlabel('Z Label')
+        fig.suptitle("Main plot")
+
+        global figure
+        figure = plt.figure(figsize=plt.figaspect(.15))
+
     global vis_init_status
     vis_init_status = True
 

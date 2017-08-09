@@ -87,7 +87,7 @@ class Brain:
             print("Bursting!!!     <<<<<<     <<<<<<<      <<<<<<<        <<<<<<<<<<")
             fire_candidate_list = fcl_queue.get()
             fcl_queue.put(fire_candidate_list)
-            visualizer.burst_visualizer(fire_candidate_list)
+            visualizer.burst_visualizer(fire_candidate_list, x=30, y=30, z=30)
             sleep(1)
         return
 

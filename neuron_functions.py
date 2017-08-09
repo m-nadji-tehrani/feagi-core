@@ -118,16 +118,14 @@ def fire_candidate_locations(fire_candidate_list):
 
     neuron_locations = {}
     # Generate a dictionary of cortical areas in the fire_candidate_list
-    for item in fire_candidate_list:
-        neuron_locations[item[0]] = []
+    for item in settings.cortical_areas:
+        neuron_locations[item] = []
 
     # Add neuron locations under each cortical area
-    for cortical_area in neuron_locations:
-        for item in fire_candidate_list:
-            if item[0] == cortical_area:
-                neuron_locations[cortical_area].append([settings.brain[item[0]][item[1]]["location"][0],
-                                                        settings.brain[item[0]][item[1]]["location"][1],
-                                                        settings.brain[item[0]][item[1]]["location"][2]])
+    for item in fire_candidate_list:
+        neuron_locations[item[0]].append([settings.brain[item[0]][item[1]]["location"][0],
+                                                settings.brain[item[0]][item[1]]["location"][1],
+                                                settings.brain[item[0]][item[1]]["location"][2]])
 
     return neuron_locations
 

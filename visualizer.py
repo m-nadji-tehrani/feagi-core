@@ -58,7 +58,6 @@ def burst_visualizer(fire_candidate_list, x, y, z):
         indexed_cortical_list.append([index, key])
         index += 1
 
-
     # Toggle the visual appearance of the Neuron to resemble firing action
     for entry in indexed_cortical_list:
         axx = settings.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
@@ -73,14 +72,26 @@ def burst_visualizer(fire_candidate_list, x, y, z):
         for location in neuron_locations[entry[1]]:
             axx.scatter(location[0], location[1], location[2], c='r', marker='^')
 
-        if neuron_locations[entry[1]]:
-            settings.plt.draw()
-            settings.plt.pause(settings.burst_timer)
+    settings.plt.draw()
+    settings.plt.cla()
+    settings.plt.pause(settings.burst_timer)
+    time.sleep(0.1)
 
-            for location in neuron_locations[entry[1]]:
-                axx.scatter(location[0], location[1], location[2], c='b', marker='^')
-            settings.plt.draw()
-            settings.plt.pause(settings.burst_timer)
+    # for entry in indexed_cortical_list:
+    #     axx = settings.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
+    #     axx.set_title(entry[1])
+    #     axx.set_xlim(0, 30)
+    #     axx.set_ylim(0, 30)
+    #     axx.set_zlim(0, 30)
+    #     axx.set_xlabel('X Label')
+    #     axx.set_ylabel('Y Label')
+    #     axx.set_zlabel('Z Label')
+    #
+    #     for location in neuron_locations[entry[1]]:
+    #         axx.scatter(location[0], location[1], location[2], c='b', marker='^')
+
+        # settings.plt.draw()
+        # settings.plt.pause(settings.burst_timer)
     return
 
 

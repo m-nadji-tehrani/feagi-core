@@ -21,7 +21,7 @@ def init():
 
     # Sleep timer for visualization delay
     global burst_timer
-    burst_timer = 1
+    burst_timer = 1e-17
 
     # Flag to enable Verbose mode
     global verbose

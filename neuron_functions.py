@@ -11,6 +11,11 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 import json
 import datetime
 from time import sleep
+import multiprocessing as mp
+from mpl_toolkits.mplot3d import proj3d
+import subprocess
+import matplotlib.pyplot as plt
+import pylab
 
 import visualizer
 import settings
@@ -40,17 +45,12 @@ def burst(user_input, fire_list):
     # Function processing:
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
-    # Exit condition:
-    #     -When Max number of hops has been reached which could be set to 100 simulating the Brain ~100 steps limit.
-    #     -When input vector is empty
-    # Important:
-    #     Need to account for recursive function call which could potentially be infinite.
-    # Todo_list:
-    #     -Figure the input format. Maybe a JSON
 
-    # Function exit Check on whether number of recursive calls has met or fire_candidate_list is empty.
+    global figure
+    figure = plt.figure(figsize=plt.figaspect(.15))
 
-    # todo: figure burst count in this new model where burst is not limited to a single cortical area
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+100+800")
 
     while not settings.ready_to_exit_burst:
         burst_strt_time = datetime.datetime.now()
@@ -62,6 +62,12 @@ def burst(user_input, fire_list):
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
 
+        print(" ##### Visualize bursts flag = ", settings.visualize_bursts)
+
+        # Burst Visualization
+        if len(fire_candidate_list) > 1:
+            visualizer.burst_visualizer(fire_candidate_list, 30, 30, 30)
+
         genome = settings.genome
 
         if settings.verbose:
@@ -71,11 +77,14 @@ def burst(user_input, fire_list):
 
         print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
               % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
+
         for cortical_area in set([i[0] for i in fire_candidate_list]):
             print(settings.Bcolors.BURST +
                   '    %s : %i  ' % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
                   + settings.Bcolors.ENDC)
+
         # todo: Look into multithreading for Neuron neuron_fire and wire_neurons function
+
         for x in list(fire_candidate_list):
             if settings.verbose:
                 print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
@@ -95,7 +104,7 @@ def burst(user_input, fire_list):
 
         # Add a delay if fire_candidate_list is empty
         if len(fire_candidate_list) <= 1:
-            sleep(1)
+            sleep(settings.idle_burst_timer)
 
         while not user_input.empty():
             try:
@@ -105,6 +114,13 @@ def burst(user_input, fire_list):
                     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                     burst_count = 0
                     settings.ready_to_exit_burst = True
+                    settings.user_input = ''
+                if user_input_value == 'v':
+                    if settings.visualize_bursts:
+                        settings.visualize_bursts = False
+                    else:
+                        settings.visualize_bursts = True
+                    settings.user_input = ''
             finally:
                 break
 

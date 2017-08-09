@@ -5,6 +5,8 @@ This file contains all of the Visualization functions
 
 import numpy as np
 import time
+import matplotlib.pyplot as plt
+
 
 import settings
 import architect
@@ -45,9 +47,12 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
 
 
 def burst_visualizer(fire_candidate_list, x, y, z):
-    if not settings.vis_init_status:
-        settings.vis_init()
+    print("###### Vis_init_status = ", settings.vis_init_status)
+    # if not settings.vis_init_status:
+        # settings.vis_init()
 
+
+    print("Bursting!!!     <<<<<<     <<<<<<<      <<<<<<<        <<<<<<<<<<")
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
     # figure = settings.plt.figure(figsize=settings.plt.figaspect(.2))
@@ -60,7 +65,7 @@ def burst_visualizer(fire_candidate_list, x, y, z):
 
     # Toggle the visual appearance of the Neuron to resemble firing action
     for entry in indexed_cortical_list:
-        axx = settings.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
+        axx = neuron_functions.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
         axx.set_title(entry[1])
         axx.set_xlim(0, 30)
         axx.set_ylim(0, 30)

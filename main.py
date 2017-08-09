@@ -82,34 +82,6 @@ class Brain:
         self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
 
-    def burst_visualizer(self, fcl_queue):
-        while 1==1:
-            print("Bursting!!!     <<<<<<     <<<<<<<      <<<<<<<        <<<<<<<<<<")
-            fire_candidate_list = fcl_queue.get()
-            fcl_queue.put(fire_candidate_list)
-            visualizer.burst_visualizer(fire_candidate_list, x=30, y=30, z=30)
-            sleep(.5)
-        return
-
-
-if __name__ == '__main__':
-    import sys
-    from tty import setraw
-    import termios
-
-    # Initialize visualization libraries
-    settings.vis_init()
-
-    b = Brain()
-
-    # Initializing queues
-    user_input_queue = mp.Queue()
-    FCL_queue = mp.Queue()
-
-    # Initialize Fire Candidate List (FCL)
-    FCL = []
-    FCL_queue.put(FCL)
-
     def read_user_input():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
@@ -122,6 +94,30 @@ if __name__ == '__main__':
             # sys.stdout.flush()
         return
 
+
+
+
+if __name__ == '__main__':
+
+    import sys
+    from tty import setraw
+    import termios
+
+    # Initialize visualization libraries
+    # settings.vis_init()
+
+    b = Brain()
+
+    mp.set_start_method('spawn')
+
+    # Initializing queues
+    user_input_queue = mp.Queue()
+    FCL_queue = mp.Queue()
+
+    # Initialize Fire Candidate List (FCL)
+    FCL = []
+    FCL_queue.put(FCL)
+
     def read_user_input2():
         settings.user_input = input()
         print("settings.user_input has value of ", settings.user_input)
@@ -133,7 +129,6 @@ if __name__ == '__main__':
         # process_2.join()
         process_3.join()
         # process_4.join()
-        process_5.terminate()
         process_burst.join()
         return
 
@@ -152,25 +147,20 @@ if __name__ == '__main__':
                     process_1.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 's1':
+                elif settings.user_input == 's':
                     process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
                     process_2.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 'i1':
+                elif settings.user_input == 'i':
                     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist, args=(10, FCL_queue))
                     process_3.start()
                     settings.user_input = ''
 
-                elif settings.user_input == 'i2':
+                elif settings.user_input == 'c':
                     char = input("Enter char: ")
                     process_4 = mp.Process(name='Reading input char', target=b.read_char, args=(char, FCL_queue))
                     process_4.start()
-                    settings.user_input = ''
-
-                elif settings.user_input == 's2':
-                    process_5 = mp.Process(name='Visualize burst activities', target=b.burst_visualizer(FCL_queue))
-                    process_5.start()
                     settings.user_input = ''
 
                 else:

@@ -23,6 +23,9 @@ def init():
     global burst_timer
     burst_timer = 1e-17
 
+    global idle_burst_timer
+    idle_burst_timer = 2
+
     # Flag to enable Verbose mode
     global verbose
     verbose = False
@@ -67,6 +70,9 @@ def init():
 
     global cortical_areas
     cortical_areas = cortical_list()
+
+    global visualize_bursts
+    visualize_bursts = False
 
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<

@@ -6,6 +6,7 @@ This file contains all of the Visualization functions
 import numpy as np
 import time
 import matplotlib.pyplot as plt
+import matplotlib.pylab as pylab
 
 
 import settings
@@ -138,6 +139,10 @@ def cortical_heatmap(IPU_input, cortical_areas):
     # print(cortical_arrays[0][1])
 
     fig2 = settings.plt.figure(num=None, figsize=(8, 8), dpi=28, facecolor='w', edgecolor='k')
+
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+10+800")
+
     for i in range(1, len(cortical_areas)+2):
         aa = fig2.add_subplot(1, len(cortical_areas)+1, i)
         aa.set_title(cortical_arrays[i-1][0])

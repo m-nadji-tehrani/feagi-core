@@ -11,12 +11,12 @@
   },
   "neighbor_locator_rule": {
      "rule_0" : {
-       "param_1": 20,
+       "param_1": 5,
        "param_2": 0
     },
     "rule_1" : {
        "param_1": 5,
-       "param_2": 20
+       "param_2": 5
     },
     "rule_2" : {
        "param_1": 5,
@@ -932,7 +932,7 @@
        "cortical_neuron_count": 300,
        "location_generation_type": "sequential",
        "init_synapse_needed": "False",
-       "synaptic_strength": 0.5,
+       "synaptic_strength": 0.51,
        "synaptic_strength_inc": 0.05,
        "neighbor_locator_rule_id": "rule_0",
        "neighbor_locator_rule_param_id": "param_1",
@@ -1004,7 +1004,7 @@
           "activation_function_id": "",
           "orientation_selectivity_id": "",
           "timer_threshold": 50,
-          "firing_threshold": 2,
+          "firing_threshold": 0.5,
           "firing_pattern_id": "",
           "axon_avg_length": "",
           "axon_avg_connections": "",

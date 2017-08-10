@@ -289,7 +289,6 @@ if __name__ == '__main__':
 # todo: Figure how Memory Module should be configured so it can behave as explained above
 # todo: Configure an output module so after Memory module is activated the activation can be read back.
 # todo: How to get output from memory ??? How to comprehend it ????
-# todo: Implement IPU_Text to read a char from user and pass it to the Memory   <<<<< NEXT !!!!!
 # todo: Work on fusing Memories together and reading back from Memory    <<<<< Up Next
 # todo: Think of modulating the memory into functional areas such as Image memory, Char memory, etc.
 

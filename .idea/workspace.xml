@@ -3,14 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/brain_gen.py" afterPath="$PROJECT_DIR$/brain_gen.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/Memory.json" afterPath="$PROJECT_DIR$/connectome/Memory.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/vision_IT.json" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/vision_v1.json" afterPath="$PROJECT_DIR$/connectome/vision_v1.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/connectome/vision_v2.json" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/genome.json" afterPath="$PROJECT_DIR$/genome.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.py" afterPath="$PROJECT_DIR$/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/visualizer.py" afterPath="$PROJECT_DIR$/visualizer.py" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,7 +26,7 @@
     <SUITE FILE_PATH="coverage/My_Brian$neuron_functions.coverage" NAME="neuron_functions Coverage Results" MODIFIED="1501787372735" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$getchar.coverage" NAME="getchar Coverage Results" MODIFIED="1501374246460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$.coverage" NAME=" Coverage Results" MODIFIED="1501604042733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1502373568419" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1502379710734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$visualizer.coverage" NAME="visualizer Coverage Results" MODIFIED="1501019334695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$genome_functions.coverage" NAME="genome_functions Coverage Results" MODIFIED="1491589109785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$Cortical_functions.coverage" NAME="Cortical_functions Coverage Results" MODIFIED="1491597560271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -51,22 +50,24 @@
     <splitter split-orientation="horizontal" split-proportion="0.66597366">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2580">
-                  <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="173" selection-end-column="117" />
+                <state relative-caret-position="395">
+                  <caret line="171" column="43" lean-forward="false" selection-start-line="171" selection-start-column="43" selection-end-line="171" selection-end-column="43" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-            <entry file="file:///usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/tkinter/__init__.py">
+          <file leaf-file-name="visualizer.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/visualizer.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="88">
-                  <caret line="556" column="0" lean-forward="false" selection-start-line="556" selection-start-column="0" selection-end-line="556" selection-end-column="0" />
-                  <folding />
+                <state relative-caret-position="517">
+                  <caret line="139" column="54" lean-forward="false" selection-start-line="139" selection-start-column="54" selection-end-line="139" selection-end-column="54" />
+                  <folding>
+                    <element signature="e#64#82#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -74,51 +75,9 @@
           <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/settings.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="267">
-                  <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+                <state relative-caret-position="178">
+                  <caret line="97" column="40" lean-forward="true" selection-start-line="97" selection-start-column="40" selection-end-line="97" selection-end-column="40" />
                   <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="queues.py" pinned="false" current-in-tab="false">
-            <entry file="file:///usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/queues.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="75">
-                  <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="mnist.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/mnist.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1054">
-                  <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="IPU_utf8.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/IPU_utf8.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="90">
-                  <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="stats.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/stats.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1320">
-                  <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#101#119#0" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -144,8 +103,8 @@
           <file leaf-file-name="vision_v1.json" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/connectome/vision_v1.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="12135">
-                  <caret line="809" column="11" lean-forward="false" selection-start-line="809" selection-start-column="11" selection-end-line="809" selection-end-column="11" />
+                <state relative-caret-position="8310">
+                  <caret line="554" column="8" lean-forward="false" selection-start-line="554" selection-start-column="8" selection-end-line="554" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -157,7 +116,7 @@
                 <state relative-caret-position="200">
                   <caret line="1882" column="39" lean-forward="false" selection-start-line="1882" selection-start-column="39" selection-end-line="1882" selection-end-column="39" />
                   <folding>
-                    <marker date="1502373608000" expanded="true" signature="163054:163088" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
+                    <marker date="1502379751000" expanded="true" signature="163054:163088" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
                   </folding>
                 </state>
               </provider>
@@ -169,7 +128,7 @@
                 <state relative-caret-position="-771">
                   <caret line="1859" column="35" lean-forward="true" selection-start-line="1859" selection-start-column="35" selection-end-line="1859" selection-end-column="35" />
                   <folding>
-                    <marker date="1502373608000" expanded="true" signature="54169:54203" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
+                    <marker date="1502379751000" expanded="true" signature="54166:54200" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
                   </folding>
                 </state>
               </provider>
@@ -179,9 +138,9 @@
             <entry file="file://$PROJECT_DIR$/connectome/vision_v2.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="31672">
-                  <caret line="7251" column="1" lean-forward="false" selection-start-line="7251" selection-start-column="1" selection-end-line="7251" selection-end-column="1" />
+                  <caret line="7166" column="1" lean-forward="false" selection-start-line="7166" selection-start-column="1" selection-end-line="7166" selection-end-column="1" />
                   <folding>
-                    <marker date="1502373608000" expanded="true" signature="232066:232197" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
+                    <marker date="1502379751000" expanded="true" signature="229180:229311" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
                   </folding>
                 </state>
               </provider>
@@ -313,13 +272,13 @@
         <option value="$PROJECT_DIR$/architect.py" />
         <option value="$PROJECT_DIR$/stats.py" />
         <option value="$APPLICATION_CONFIG_DIR$/pycharm.vmoptions" />
-        <option value="$PROJECT_DIR$/visualizer.py" />
         <option value="$PROJECT_DIR$/connectome/Memory_utf8.json" />
         <option value="$PROJECT_DIR$/neuron_functions.py" />
         <option value="$PROJECT_DIR$/genome.json" />
         <option value="$PROJECT_DIR$/brain_gen.py" />
-        <option value="$PROJECT_DIR$/settings.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/settings.py" />
+        <option value="$PROJECT_DIR$/visualizer.py" />
       </list>
     </option>
   </component>
@@ -938,7 +897,14 @@
       <option name="project" value="LOCAL" />
       <updated>1502336248165</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="GUI user input">
+      <created>1502373635008</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1502373635008</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView">
@@ -959,7 +925,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26939204" sideWeight="0.57241744" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28442028" sideWeight="0.48583484" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10383387" sideWeight="0.49646643" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10383387" sideWeight="0.49646643" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36897275" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17571884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1041,7 +1007,8 @@
     <MESSAGE value="Burst Visualizer adjustments" />
     <MESSAGE value="Multi processing and visualization adjustments" />
     <MESSAGE value="Misc. tweaks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Misc. tweaks" />
+    <MESSAGE value="GUI user input" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI user input" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1058,7 +1025,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>154</line>
+          <line>153</line>
           <option name="timeStamp" value="136" />
         </line-breakpoint>
       </breakpoints>
@@ -1125,6 +1092,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="1724" column="0" lean-forward="false" selection-start-line="1724" selection-start-column="0" selection-end-line="1724" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1316,14 +1284,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IPU_utf8.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/connectome/utf8.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
@@ -1342,22 +1302,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/visualizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="134" column="0" lean-forward="true" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
-          <folding>
-            <element signature="e#64#82#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/connectome/Memory_utf8.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="1882" column="39" lean-forward="false" selection-start-line="1882" selection-start-column="39" selection-end-line="1882" selection-end-column="39" />
           <folding>
-            <marker date="1502373608000" expanded="true" signature="163054:163088" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
+            <marker date="1502379751000" expanded="true" signature="163054:163088" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
           </folding>
         </state>
       </provider>
@@ -1367,7 +1317,7 @@
         <state relative-caret-position="-771">
           <caret line="1859" column="35" lean-forward="true" selection-start-line="1859" selection-start-column="35" selection-end-line="1859" selection-end-column="35" />
           <folding>
-            <marker date="1502373608000" expanded="true" signature="54169:54203" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
+            <marker date="1502379751000" expanded="true" signature="54166:54200" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
           </folding>
         </state>
       </provider>
@@ -1388,9 +1338,9 @@
     <entry file="file://$PROJECT_DIR$/connectome/vision_v2.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="31672">
-          <caret line="7251" column="1" lean-forward="false" selection-start-line="7251" selection-start-column="1" selection-end-line="7251" selection-end-column="1" />
+          <caret line="7166" column="1" lean-forward="false" selection-start-line="7166" selection-start-column="1" selection-end-line="7166" selection-end-column="1" />
           <folding>
-            <marker date="1502373608000" expanded="true" signature="232066:232197" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
+            <marker date="1502379751000" expanded="true" signature="229180:229311" ph="{&quot;cumulative_intake_sum_since_reset&quot;: 0...}" />
           </folding>
         </state>
       </provider>
@@ -1414,8 +1364,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/connectome/vision_v1.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12135">
-          <caret line="809" column="11" lean-forward="false" selection-start-line="809" selection-start-column="11" selection-end-line="809" selection-end-column="11" />
+        <state relative-caret-position="8310">
+          <caret line="554" column="8" lean-forward="false" selection-start-line="554" selection-start-column="8" selection-end-line="554" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -1445,14 +1395,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1054">
-          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/multiprocessing/queues.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1469,19 +1411,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/settings.py">
+    <entry file="file://$PROJECT_DIR$/mnist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        <state relative-caret-position="1054">
+          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IPU_utf8.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2580">
-          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="173" selection-end-column="117" />
+        <state relative-caret-position="395">
+          <caret line="171" column="43" lean-forward="false" selection-start-line="171" selection-start-column="43" selection-end-line="171" selection-end-column="43" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="97" column="40" lean-forward="true" selection-start-line="97" selection-start-column="40" selection-end-line="97" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="139" column="54" lean-forward="false" selection-start-line="139" selection-start-column="54" selection-end-line="139" selection-end-column="54" />
+          <folding>
+            <element signature="e#64#82#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

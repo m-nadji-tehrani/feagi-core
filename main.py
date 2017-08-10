@@ -59,11 +59,6 @@ class Brain:
         fcl_queue.put(flc)
         return
 
-    def show_cortical_heatmap(self, image_number):
-        # Visualize a list of cortical areas passed in in List format
-        visualizer.cortical_heatmap(mnist.read_image(image_number), ['vision_v1', 'vision_v2', 'vision_IT', 'Memory'])
-        return
-
     def see_from_mnist(self, image_number, fcl_queue):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
@@ -128,6 +123,10 @@ if __name__ == '__main__':
 
     b = Brain()
 
+    # b.show_cortical_areas()
+    # visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
+    # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
+
     mp.set_start_method('spawn')
 
     # Initializing queues
@@ -170,6 +169,8 @@ if __name__ == '__main__':
                     settings.user_input = ''
 
                 elif settings.user_input == 'i':
+                    # Visualize MNIST input
+                    visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param)), [])
                     process_3 = mp.Process(name='Seeing_MNIST_image',
                                            target=b.see_from_mnist, args=(int(settings.user_input_param), FCL_queue))
                     process_3.start()
@@ -177,8 +178,8 @@ if __name__ == '__main__':
                     settings.user_input = ''
 
                 elif settings.user_input == 'c':
-                    char = input("Enter char: ")
-                    process_4 = mp.Process(name='Reading input char', target=b.read_char, args=(char, FCL_queue))
+                    process_4 = mp.Process(name='Reading input char',
+                                           target=b.read_char, args=(settings.user_input_param, FCL_queue))
                     process_4.start()
                     process_4.join()
                     settings.user_input = ''
@@ -203,11 +204,6 @@ if __name__ == '__main__':
         settings.save_brain_to_disk()
 
 
-# show_cortical_areas()
-
-# visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
-
-# visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
 # IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
 
@@ -230,7 +226,7 @@ if __name__ == '__main__':
 # print(IPU_vision.direction_stats(a))
 
 
-# show_cortical_heatmap(image_number)
+
 #
 #
 #

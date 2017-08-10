@@ -31,7 +31,7 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
 
         # The following code scans thru connectome and extract locations for source and destination neurons
         for key in data:
-            if data[key]["neighbors"].keys() != []:
+            if data[key]["neighbors"].keys():
                 source_location = data[key]["location"]
                 for subkey in data[key]["neighbors"]:
                     if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (data[key]['neighbors']
@@ -47,9 +47,6 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
 
 
 def burst_visualizer(fire_candidate_list):
-    print("###### Vis_init_status = ", settings.vis_init_status)
-    # if not settings.vis_init_status:
-        # settings.vis_init()
 
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
@@ -64,9 +61,12 @@ def burst_visualizer(fire_candidate_list):
         jj = settings.max_xyz_range
         axx = neuron_functions.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
         axx.set_title(entry[1])
-        axx.set_xlim(0, settings.max_xyz_range[entry[1]][0])
-        axx.set_ylim(0, settings.max_xyz_range[entry[1]][1])
-        axx.set_zlim(0, settings.max_xyz_range[entry[1]][2])
+        axx.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                     settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+        axx.set_ylim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                     settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+        axx.set_zlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                     settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
         axx.set_xlabel('X Label')
         axx.set_ylabel('Y Label')
         axx.set_zlabel('Z Label')
@@ -112,33 +112,34 @@ def cortical_heatmap(IPU_input, cortical_areas):
     :param cortical_area:
     :return:
     """
-    if not settings.vis_init_status:
-        settings.vis_init()
+    # if not settings.vis_init_status:
+    #     settings.vis_init()
+    settings.plt.ion()
 
     cortical_arrays = []
     cortical_arrays.append(["IPU_Vision", IPU_input])
-    for cortical_area in cortical_areas:
-        genome = settings.genome
-        x1 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0]
-        x2 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1]
-        y1 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0]
-        y2 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1]
-
-        # Convert Cortical data to a numpy array
-        data = settings.brain[cortical_area]
-        cortical_array = np.zeros((x2-x1, y2-y1))
-        for key in data:
-            xx = data[key]['location'][0]
-            yy = data[key]['location'][1]
-            cortical_array[xx, yy] = data[key]['cumulative_fire_count_inst']
-        cortical_arrays.append([cortical_area, cortical_array])
+    # for cortical_area in cortical_areas:
+    #     genome = settings.genome
+    #     x1 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0]
+    #     x2 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1]
+    #     y1 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0]
+    #     y2 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1]
+    #
+    #     # Convert Cortical data to a numpy array
+    #     data = settings.brain[cortical_area]
+    #     cortical_array = np.zeros((x2-x1, y2-y1))
+    #     for key in data:
+    #         xx = data[key]['location'][0]
+    #         yy = data[key]['location'][1]
+    #         cortical_array[xx, yy] = data[key]['cumulative_fire_count_inst']
+    #     cortical_arrays.append([cortical_area, cortical_array])
 
     # print(cortical_arrays)
-    print(cortical_arrays[0][1])
+    # print(cortical_arrays[0][1])
 
-    fig = settings.plt.figure()
+    fig2 = settings.plt.figure(num=None, figsize=(8, 8), dpi=28, facecolor='w', edgecolor='k')
     for i in range(1, len(cortical_areas)+2):
-        aa = fig.add_subplot(1, len(cortical_areas)+1, i)
+        aa = fig2.add_subplot(1, len(cortical_areas)+1, i)
         aa.set_title(cortical_arrays[i-1][0])
         aa.imshow(cortical_arrays[i-1][1])
 

@@ -6,7 +6,7 @@ Provides functions performing statistical analysis on the Connectome and Cortica
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import json
+
 
 
 import settings
@@ -14,7 +14,7 @@ import settings
 
 plt.style.use('ggplot')
 
-blueprint = settings.cortical_list()
+
 
 
 def connectome_neuron_count(cortical_area):
@@ -66,6 +66,26 @@ def print_cortical_stats():
         print("%s total Neuron count: %i" % (cortical_area, connectome_neuron_count(cortical_area)))
         print("%s average synapse count per Neuron: %i" % (cortical_area, connectome_total_synapse_cnt(cortical_area)/connectome_neuron_count(cortical_area)))
     return
+
+
+def cortical_xyz_range():
+    cortical_list = settings.cortical_list()
+    xyz_range = {}
+    tmp_x = []
+    tmp_y = []
+    tmp_z = []
+    for cortical_area in cortical_list:
+        for neuron in settings.brain[cortical_area]:
+            tmp_x.append(settings.brain[cortical_area][neuron]["location"][0])
+            tmp_y.append(settings.brain[cortical_area][neuron]["location"][1])
+            tmp_z.append(settings.brain[cortical_area][neuron]["location"][2])
+        max_x = max(tmp_x)
+        max_y = max(tmp_y)
+        max_z = max(tmp_z)
+        xyz_range[cortical_area] = [max_x, max_y, max_z]
+    return xyz_range
+
+
 
 
 # def tbd():

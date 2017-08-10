@@ -77,12 +77,13 @@ class Brain:
     def read_char(self, char, fcl_queue):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
-        fire_list = IPU_utf8.convert_char_to_fire_list(char)
-        print(fire_list)
-        self.inject_to_fcl(fire_list, fcl_queue)
+        if char:
+            fire_list = IPU_utf8.convert_char_to_fire_list(char)
+            print(fire_list)
+            self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
 
-    def read_user_input():
+    def read_user_input(self):
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -93,8 +94,6 @@ class Brain:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
             # sys.stdout.flush()
         return
-
-
 
 
 if __name__ == '__main__':
@@ -125,10 +124,6 @@ if __name__ == '__main__':
         return
 
     def join_processes():
-        # process_1.join()
-        # process_2.join()
-        process_3.join()
-        # process_4.join()
         process_burst.join()
         return
 
@@ -145,23 +140,34 @@ if __name__ == '__main__':
                 if settings.user_input == 'a':
                     process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
                     process_1.start()
+                    process_1.join()
                     settings.user_input = ''
 
                 elif settings.user_input == 's':
                     process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
                     process_2.start()
+                    process_2.join()
                     settings.user_input = ''
 
                 elif settings.user_input == 'i':
                     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist, args=(10, FCL_queue))
                     process_3.start()
+                    process_3.join()
                     settings.user_input = ''
 
                 elif settings.user_input == 'c':
                     char = input("Enter char: ")
                     process_4 = mp.Process(name='Reading input char', target=b.read_char, args=(char, FCL_queue))
                     process_4.start()
+                    process_4.join()
                     settings.user_input = ''
+                # # Toggling burst visualization on/off
+                # elif settings.user_input == 't':
+                #     if settings.vis_show:
+                #         settings.vis_show = False
+                #     else:
+                #         settings.vis_show = True
+                #     settings.user_input = ''
 
                 else:
                     read_user_input2()
@@ -176,11 +182,7 @@ if __name__ == '__main__':
         settings.save_brain_to_disk()
 
 
-# neuron_functions.burst()
-
 # show_cortical_areas()
-
-# stats.print_cortical_stats()
 
 # visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
 

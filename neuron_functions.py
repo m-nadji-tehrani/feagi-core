@@ -21,9 +21,7 @@ import visualizer
 import settings
 from architect import synapse
 
-# settings.init()
 
-# Global variables
 burst_count = 0
 
 
@@ -46,11 +44,13 @@ def burst(user_input, fire_list):
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
 
-    global figure
-    figure = plt.figure(figsize=plt.figaspect(.15))
 
-    pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+100+800")
+    if settings.vis_show:
+        global figure
+        figure = plt.figure(figsize=plt.figaspect(.15))
+
+        pylab.thismanager = pylab.get_current_fig_manager()
+        pylab.thismanager.window.wm_geometry("+80+800")
 
     while not settings.ready_to_exit_burst:
         burst_strt_time = datetime.datetime.now()
@@ -62,11 +62,9 @@ def burst(user_input, fire_list):
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
 
-        print(" ##### Visualize bursts flag = ", settings.visualize_bursts)
-
         # Burst Visualization
-        if len(fire_candidate_list) > 1:
-            visualizer.burst_visualizer(fire_candidate_list, 30, 30, 30)
+        if len(fire_candidate_list) > 0 and settings.vis_show:
+            visualizer.burst_visualizer(fire_candidate_list)
 
         genome = settings.genome
 
@@ -103,7 +101,7 @@ def burst(user_input, fire_list):
         fire_list.put(fire_candidate_list)
 
         # Add a delay if fire_candidate_list is empty
-        if len(fire_candidate_list) <= 1:
+        if len(fire_candidate_list) < 1:
             sleep(settings.idle_burst_timer)
 
         while not user_input.empty():
@@ -114,12 +112,6 @@ def burst(user_input, fire_list):
                     print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                     burst_count = 0
                     settings.ready_to_exit_burst = True
-                    settings.user_input = ''
-                if user_input_value == 'v':
-                    if settings.visualize_bursts:
-                        settings.visualize_bursts = False
-                    else:
-                        settings.visualize_bursts = True
                     settings.user_input = ''
             finally:
                 break
@@ -223,6 +215,9 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
     data[destination]["cumulative_intake_sum_since_reset"] += synaptic_strength
+
+    # print("cumulative_intake_sum_since_reset:", destination,
+    #       ":", data[destination]["cumulative_intake_sum_since_reset"])
 
     if settings.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"

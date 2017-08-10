@@ -42,20 +42,16 @@ def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false'
                                     mutation_scale=10, lw=1, arrowstyle="->", color="r")
                         settings.ax.add_artist(a)
     settings.plt.show()
-    settings.plt.pause(1)
+    settings.plt.pause(settings.burst_timer)
     return
 
 
-def burst_visualizer(fire_candidate_list, x, y, z):
+def burst_visualizer(fire_candidate_list):
     print("###### Vis_init_status = ", settings.vis_init_status)
     # if not settings.vis_init_status:
         # settings.vis_init()
 
-
-    print("Bursting!!!     <<<<<<     <<<<<<<      <<<<<<<        <<<<<<<<<<")
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
-
-    # figure = settings.plt.figure(figsize=settings.plt.figaspect(.2))
 
     index = 0
     indexed_cortical_list = []
@@ -65,11 +61,12 @@ def burst_visualizer(fire_candidate_list, x, y, z):
 
     # Toggle the visual appearance of the Neuron to resemble firing action
     for entry in indexed_cortical_list:
+        jj = settings.max_xyz_range
         axx = neuron_functions.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
         axx.set_title(entry[1])
-        axx.set_xlim(0, 30)
-        axx.set_ylim(0, 30)
-        axx.set_zlim(0, 30)
+        axx.set_xlim(0, settings.max_xyz_range[entry[1]][0])
+        axx.set_ylim(0, settings.max_xyz_range[entry[1]][1])
+        axx.set_zlim(0, settings.max_xyz_range[entry[1]][2])
         axx.set_xlabel('X Label')
         axx.set_ylabel('Y Label')
         axx.set_zlabel('Z Label')
@@ -78,25 +75,10 @@ def burst_visualizer(fire_candidate_list, x, y, z):
             axx.scatter(location[0], location[1], location[2], c='r', marker='^')
 
     settings.plt.draw()
-    settings.plt.cla()
     settings.plt.pause(settings.burst_timer)
-    time.sleep(0.1)
+    settings.plt.clf()
+    axx.cla()
 
-    # for entry in indexed_cortical_list:
-    #     axx = settings.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
-    #     axx.set_title(entry[1])
-    #     axx.set_xlim(0, 30)
-    #     axx.set_ylim(0, 30)
-    #     axx.set_zlim(0, 30)
-    #     axx.set_xlabel('X Label')
-    #     axx.set_ylabel('Y Label')
-    #     axx.set_zlabel('Z Label')
-    #
-    #     for location in neuron_locations[entry[1]]:
-    #         axx.scatter(location[0], location[1], location[2], c='b', marker='^')
-
-        # settings.plt.draw()
-        # settings.plt.pause(settings.burst_timer)
     return
 
 

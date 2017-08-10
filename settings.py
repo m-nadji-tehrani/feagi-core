@@ -5,7 +5,7 @@ This file contains all the Global settings and parameters used throughout the pr
 import json
 import os.path
 import matplotlib.pyplot as plt
-
+from stats import cortical_xyz_range
 
 def init():
     global Bcolors
@@ -36,7 +36,7 @@ def init():
 
     # Flag to show visualizations
     global vis_show
-    vis_show = False
+    vis_show = True
 
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory
@@ -71,8 +71,8 @@ def init():
     global cortical_areas
     cortical_areas = cortical_list()
 
-    global visualize_bursts
-    visualize_bursts = False
+    global max_xyz_range
+    max_xyz_range = cortical_xyz_range()
 
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<

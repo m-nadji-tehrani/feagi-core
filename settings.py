@@ -74,8 +74,8 @@ def init():
     global cortical_areas
     cortical_areas = cortical_list()
 
-    global max_xyz_range
-    max_xyz_range = cortical_xyz_range()
+    # global max_xyz_range
+    # max_xyz_range = cortical_xyz_range()
 
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<

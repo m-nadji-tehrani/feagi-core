@@ -59,7 +59,6 @@ def burst_visualizer(fire_candidate_list):
 
     # Toggle the visual appearance of the Neuron to resemble firing action
     for entry in indexed_cortical_list:
-        jj = settings.max_xyz_range
         axx = neuron_functions.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
         axx.set_title(entry[1])
         axx.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],

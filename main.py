@@ -39,14 +39,15 @@ class Brain:
         visualizer.connectome_visualizer(cortical_area='vision_IT', neighbor_show='true')
         return
 
-    def read_from_mnist(self, image_number):
+    def read_from_mnist(self, image_number, event_queue):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
         neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array)
         init_fire_list = []
         for item in neuron_id_list:
             init_fire_list.append(['vision_v1', item])
-        settings.event_id = architect.event_id_gen()
+        event_id = architect.event_id_gen()
+        event_queue.put(event_id)
         print('Initial Fire List:')
         print(init_fire_list)
         return init_fire_list
@@ -59,11 +60,11 @@ class Brain:
         fcl_queue.put(flc)
         return
 
-    def see_from_mnist(self, image_number, fcl_queue):
+    def see_from_mnist(self, image_number, fcl_queue, event_queue):
         cp = mp.current_process()
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()   # ????
-        fire_list = self.read_from_mnist(image_number)
+        fire_list= self.read_from_mnist(image_number, event_queue)
         print(fire_list)
         self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
@@ -132,10 +133,17 @@ if __name__ == '__main__':
     # Initializing queues
     user_input_queue = mp.Queue()
     FCL_queue = mp.Queue()
+    brain_queue = mp.Queue()
+    event_queue = mp.Queue()
 
     # Initialize Fire Candidate List (FCL)
     FCL = []
     FCL_queue.put(FCL)
+
+    # Setting up Brain queue for multiprocessing
+    brain_data = settings.brain
+    brain_queue.put(brain_data)
+
 
     def read_user_input():
         master.update_idletasks()
@@ -147,7 +155,8 @@ if __name__ == '__main__':
         return
 
     # Starting the burst machine
-    process_burst = mp.Process(name='Burst process', target=neuron_functions.burst, args=(user_input_queue, FCL_queue))
+    process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
+                               args=(user_input_queue, FCL_queue, brain_queue, event_queue))
     process_burst.deamon = False
     process_burst.start()
 
@@ -171,8 +180,8 @@ if __name__ == '__main__':
                 elif settings.user_input == 'i':
                     # Visualize MNIST input
                     visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param)), [])
-                    process_3 = mp.Process(name='Seeing_MNIST_image',
-                                           target=b.see_from_mnist, args=(int(settings.user_input_param), FCL_queue))
+                    process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
+                                           args=(int(settings.user_input_param), FCL_queue, event_queue))
                     process_3.start()
                     process_3.join()
                     settings.user_input = ''
@@ -200,6 +209,7 @@ if __name__ == '__main__':
 
     finally:
         print("Finally!")
+        settings.brain = brain_queue.get()
         join_processes()
         settings.save_brain_to_disk()
 
@@ -290,10 +300,12 @@ if __name__ == '__main__':
 # todo: Configure an output module so after Memory module is activated the activation can be read back.
 # todo: How to get output from memory ??? How to comprehend it ????
 # todo: Work on fusing Memories together and reading back from Memory    <<<<< Up Next
-# todo: Think of modulating the memory into functional areas such as Image memory, Char memory, etc.
+# todo: Think of modulating the memory into functional areas such as Image memory, Char memory, etc.   <<< NEXT!!!!
 
 
 # Visualization
 # todo: Fix issue on the visualization related to 3D init not compatible with 2D ones
 
 
+# Speach
+# todo: Make it learn to Speak!

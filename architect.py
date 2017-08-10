@@ -46,28 +46,28 @@ def neuro_genesis(cortical_area, location):
     """
 
     genome = settings.genome
-    data = settings.brain[cortical_area]
+
 
     id = neuron_id_gen()
 
-    data[id] = {}
-    data[id]["neighbors"] = {}
-    data[id]["cumulative_intake_sum_since_reset"] = 0
-    data[id]["cumulative_fire_count"] = 0
-    data[id]["cumulative_fire_count_inst"] = 0
-    data[id]["cumulative_intake_total"] = 0
-    data[id]["cumulative_intake_count"] = 0
+    settings.brain[cortical_area][id] = {}
+    settings.brain[cortical_area][id]["neighbors"] = {}
+    settings.brain[cortical_area][id]["cumulative_intake_sum_since_reset"] = 0
+    settings.brain[cortical_area][id]["cumulative_fire_count"] = 0
+    settings.brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
+    settings.brain[cortical_area][id]["cumulative_intake_total"] = 0
+    settings.brain[cortical_area][id]["cumulative_intake_count"] = 0
 
-    data[id]["location"] = location
-    data[id]["status"] = "Passive"
-    data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
+    settings.brain[cortical_area][id]["location"] = location
+    settings.brain[cortical_area][id]["status"] = "Passive"
+    settings.brain[cortical_area][id]["last_timer_reset_time"] = str(datetime.datetime.now())
 
 
-#   data[id]["group_id"] = ""                   # consider using the group name part of Genome instead
-    data[id]["firing_pattern_id"] = genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
-    data[id]["activation_function_id"] = genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
-    data[id]["timer_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['timer_threshold']
-    data[id]["firing_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
+#   settings.brain[cortical_area][id]["group_id"] = ""                   # consider using the group name part of Genome instead
+    settings.brain[cortical_area][id]["firing_pattern_id"] = genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
+    settings.brain[cortical_area][id]["activation_function_id"] = genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
+    settings.brain[cortical_area][id]["timer_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['timer_threshold']
+    settings.brain[cortical_area][id]["firing_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
 
     return
 
@@ -86,14 +86,13 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
     # Source provides the Axon and connects to Destination Dendrite
     # synaptic_strength is intended to provide the level of synaptic strength
 
-    data = settings.brain[src_cortical_area]
 
     # Check to see if the source and destination ids are valid if not exit the function
-    if src_id not in data:
+    if src_id not in settings.brain[src_cortical_area]:
         print("Source or Destination neuron not found")
         return
 
-    data[src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area,
+    settings.brain[src_cortical_area][src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area,
                                          "synaptic_strength": synaptic_strength,
                                          "event_id": {}}
 
@@ -214,10 +213,10 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     :return:
     """
     # Input: neuron id of which we desire to find all candidate neurons for
-    data = settings.brain[cortical_area]
+
     neighbor_candidates = []
 
-    for key in data:
+    for key in settings.brain[cortical_area]:
         if rule_matcher(rule_id=rule, rule_param=rule_param,
                         cortical_area_src=cortical_area, cortical_area_dst=cortical_area, neuron_id=neuron_id, key=key):
             neighbor_candidates.append(key)
@@ -240,8 +239,8 @@ def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
     #    2. For each neuron in path find a list of eligible candidates
     #    3. Update connectome to the candidates become neighbors of the source neuron
 
-    data = settings.brain[cortical_area]
-    for src_id in data:
+
+    for src_id in settings.brain[cortical_area]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder(cortical_area, src_id, rule_id, rule_param)
         for dst_id in neighbor_candidates:
@@ -272,8 +271,8 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
     """
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
     """
-    data = settings.brain[cortical_area_src]
-    for src_id in data:
+
+    for src_id in settings.brain[cortical_area_src]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_id, rule, rule_param)
         for dst_id in neighbor_candidates:
@@ -290,11 +289,11 @@ def field_set(cortical_area, field_name, field_value):
     *** Incomplete ***
     
     """
-    # data = settings.brain[cortical_area]
-    # for key in data:
-    #     data[key][field_name] = field_value
+    # settings.brain[cortical_area] = settings.brain[cortical_area]
+    # for key in settings.brain[cortical_area]:
+    #     settings.brain[cortical_area][key][field_name] = field_value
     #
-    # settings.brain[cortical_area] = data
+
 
     return
 
@@ -304,9 +303,8 @@ def neighbor_reset(cortical_area):
     This function deletes all the neighbor relationships in the connectome
     """
 
-    data = settings.brain[cortical_area]
-    for key in data:
-        data[key]["neighbors"] = {}
+    for key in settings.brain[cortical_area]:
+        settings.brain[cortical_area][key]["neighbors"] = {}
 
     return
 
@@ -317,11 +315,11 @@ def neuron_finder(cortical_area, location, radius):
     """
 
     neuron_list = []
-    data = settings.brain[cortical_area]
-    for key in data:
-        x = data[key]['location'][0]
-        y = data[key]['location'][1]
-        z = data[key]['location'][2]
+
+    for key in settings.brain[cortical_area]:
+        x = settings.brain[cortical_area][key]['location'][0]
+        y = settings.brain[cortical_area][key]['location'][1]
+        z = settings.brain[cortical_area][key]['location'][2]
 
         # Searching only the XY plane for candidate neurons         ????
         if sqrt((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
@@ -335,12 +333,11 @@ def connectome_location_data(cortical_area):
     """
     Extracts Neuron locations and neighbor relatioships from the connectome
     """
-    data = settings.brain[cortical_area]
 
     neuron_locations = []
-    for key in data:
-        location_data = data[key]["location"]
-        location_data.append(data[key]["cumulative_fire_count"])
+    for key in settings.brain[cortical_area]:
+        location_data = settings.brain[cortical_area][key]["location"]
+        location_data.append(settings.brain[cortical_area][key]["cumulative_fire_count"])
         neuron_locations.append(location_data)
 
     return neuron_locations

@@ -25,7 +25,7 @@ from architect import synapse
 burst_count = 0
 
 
-def burst(user_input, fire_list):
+def burst(user_input, fire_list, brain_queue, event_queue):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -43,8 +43,8 @@ def burst(user_input, fire_list):
     # Function processing:
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
-
-
+    settings.event_id = event_queue.get()
+    settings.brain = brain_queue.get()
     if settings.vis_show:
         global figure
         figure = plt.figure(figsize=plt.figaspect(.15))
@@ -88,11 +88,21 @@ def burst(user_input, fire_list):
                 print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
             neuron_fire(x[0], x[1])
 
-        for cortical_area in set([i[0] for i in fire_candidate_list]):
+        # for cortical_area in set([i[0] for i in fire_candidate_list]):
+        #     for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+        #         for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+        #             if src_neuron != dst_neuron:
+        #                 wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
+        #
+
+        memory_list = ['Memory', 'Memory_utf8']
+        for cortical_area in memory_list:
             for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
                 for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
                     if src_neuron != dst_neuron:
                         wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
+
+
 
         burst_duration = datetime.datetime.now() - burst_strt_time
         print(">>> Burst duration: %s" % burst_duration)
@@ -115,6 +125,8 @@ def burst(user_input, fire_list):
                     settings.user_input = ''
             finally:
                 break
+    # Push updated brain data back to the queue
+    brain_queue.put(settings.brain)
 
 
 #  >>>>>> Review this function against what we had in past
@@ -141,21 +153,19 @@ def fire_candidate_locations(fire_candidate_list):
 def neuron_fire(cortical_area, id):
     """This function initiate the firing of Neuron in a given cortical area"""
 
-    data = settings.brain[cortical_area]
-
     # Setting Destination to the list of Neurons connected to the firing Neuron
-    destination = data[id]["neighbors"]
+    destination = settings.brain[cortical_area][id]["neighbors"]
     if settings.verbose:
         print(settings.Bcolors.FIRE + "Firing neuron %s using firing pattern %s"
-          % (id, json.dumps(data[id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)
+          % (id, json.dumps(settings.brain[cortical_area][id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)
         print(settings.Bcolors.FIRE + "Neuron %s neighbors are %s" % (id, json.dumps(destination, indent=3)) +
               settings.Bcolors.ENDC)
 
     # After neuron fires all cumulative counters on Source gets reset
-    data[id]["cumulative_intake_sum_since_reset"] = 0
-    data[id]["last_timer_reset_time"] = str(datetime.datetime.now())
-    data[id]["cumulative_fire_count"] += 1
-    data[id]["cumulative_fire_count_inst"] += 1
+    settings.brain[cortical_area][id]["cumulative_intake_sum_since_reset"] = 0
+    settings.brain[cortical_area][id]["last_timer_reset_time"] = str(datetime.datetime.now())
+    settings.brain[cortical_area][id]["cumulative_fire_count"] += 1
+    settings.brain[cortical_area][id]["cumulative_fire_count_inst"] += 1
 
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
@@ -163,8 +173,8 @@ def neuron_fire(cortical_area, id):
     for x in destination:
         if settings.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
-        neuron_update(data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["synaptic_strength"], x)
-    #     neuron_update_list.append([data[id]["neighbors"][x]["cortical_area"], data[id]["neighbors"][x]["synaptic_strength"], x])
+        neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
+    #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x])
     #
     # pool = ThreadPool(4)
     # pool.starmap(neuron_update, neuron_update_list)
@@ -183,8 +193,6 @@ def neuron_fire(cortical_area, id):
     if settings.verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
-    # Push changes back to Brain
-    settings.brain[cortical_area] = data
 
     return
 
@@ -192,36 +200,34 @@ def neuron_fire(cortical_area, id):
 def neuron_update(cortical_area, synaptic_strength, destination):
     """This function updates the destination parameters upon upstream Neuron firing"""
 
-    data = settings.brain[cortical_area]
-
     # update the cumulative_intake_total, cumulative_intake_count and synaptic_strength between source and
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
     if settings.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"
-          % (destination, data[destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
+          % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
 
     # Check if timer is expired on the destination Neuron and if so reset the counter
     # Todo: Need to tune up the timer as depending on the application performance the timer could be always expired
-    if (datetime.datetime.strptime(data[destination]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f") +
-            datetime.timedelta(0, data[destination]["timer_threshold"])) < datetime.datetime.now():
-        data[destination]["last_timer_reset_time"] = str(datetime.datetime.now())
-        data[destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
+    if (datetime.datetime.strptime(settings.brain[cortical_area][destination]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f") +
+            datetime.timedelta(0, settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
+        settings.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
+        settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
         if settings.verbose:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + destination +
                   ' got rest' + settings.Bcolors.ENDC)
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
-    data[destination]["cumulative_intake_sum_since_reset"] += synaptic_strength
+    settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] += synaptic_strength
 
     # print("cumulative_intake_sum_since_reset:", destination,
-    #       ":", data[destination]["cumulative_intake_sum_since_reset"])
+    #       ":", settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
 
     if settings.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"
-          % (destination, data[destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
+          % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
 
     # Add code to start a timer when neuron first receives a signal and reset counters when its expired
 
@@ -233,13 +239,11 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to
     # fire_candidate_list
     global fire_candidate_list
-    if data[destination]["cumulative_intake_sum_since_reset"] > data[destination]["firing_threshold"]:
+    if settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] > settings.brain[cortical_area][destination]["firing_threshold"]:
        if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
             fire_candidate_list.append([cortical_area, destination])
             if settings.verbose:
                 print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
-    # Push changes back to Brain
-    settings.brain[cortical_area] = data
 
     return fire_candidate_list
 
@@ -270,22 +274,25 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     """
     This function simulates neuron plasticity in a sense that when neurons in a given cortical area fire in the 
      same burst they wire together. This is done by increasing the synaptic_strength associated with a link between 
-     two neuron. Additionally an event id is is associated to the neurons who fired together.
+     two neuron. Additionally an event id is associated to the neurons who have fired together.
     """
-    data = settings.brain[cortical_area]
+
     genome = settings.genome
 
+    # Since this function only targets Memory regions and neurons in memory regions do not have neighbor relationship
+    # by default hence here we first need to synapse the source and destination together
     # Build neighbor relationship between the source and destination if its not already in place
     # Check if source and destination have an existing synapse if not create one here
-    if dst_neuron not in data[src_neuron]["neighbors"]:
+    if dst_neuron not in settings.brain[cortical_area][src_neuron]["neighbors"]:
         synapse(cortical_area, src_neuron, cortical_area, dst_neuron,
                 genome["blueprint"][cortical_area]["synaptic_strength"])
 
     # Every time source and destination neuron is fired at the same time which in case of the code architecture
     # reside in the same burst, the synaptic_strength will be increased simulating Fire together, wire together.
-    data[src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] += \
+    settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] += \
         genome["blueprint"][cortical_area]["synaptic_strength_inc"]
     # Append a Group ID so Memory clusters can be uniquely identified
-    data[src_neuron]["neighbors"][dst_neuron]["event_id"][settings.event_id] = ''
+    settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["event_id"][settings.event_id] = ''
+
 
     return

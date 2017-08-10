@@ -1,85 +1,5 @@
 {
-   "2017-08-09_22:27:11.045981_ZKWA6F_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         2,
-         25,
-         2,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.045997",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046002_2GEQ9D_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         12,
-         9,
-         0,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046015",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046019_3TCJ6U_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         5,
-         9,
-         14,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046031",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046040_DYW6Z2_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         24,
-         4,
-         6,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046055",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046059_ZEI995_N": {
+   "2017-08-10_08:59:29.254573_4YDIBU_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -88,38 +8,17 @@
       "cumulative_intake_count": 0,
       "location": [
          3,
-         26,
-         8,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046071",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046075_YYZD8F_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
          10,
-         21,
-         12,
-         0
+         2
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046087",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254590",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046091_Z59A89_N": {
+   "2017-08-10_08:59:29.254595_3J4ZE6_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -127,79 +26,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         1,
-         25,
-         16,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046103",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046107_EFZ7XD_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         21,
-         12,
-         27,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046128",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046132_UMKG5K_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
+         18,
          14,
-         10,
-         26,
-         0
+         15
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046142",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254608",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046146_4CLATW_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         20,
-         11,
-         9,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046157",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046163_WOI1IB_N": {
+   "2017-08-10_08:59:29.254612_I212LB_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -208,38 +46,17 @@
       "cumulative_intake_count": 0,
       "location": [
          27,
-         22,
-         14,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046174",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046178_6IZ25E_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
          20,
-         24,
-         12,
-         0
+         5
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046189",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254624",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046193_OH2C7R_N": {
+   "2017-08-10_08:59:29.254628_MY42Q9_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -247,19 +64,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
+         17,
          5,
-         24,
-         13,
-         0
+         12
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046204",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254640",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046208_VNKJXQ_N": {
+   "2017-08-10_08:59:29.254645_1F08EP_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -267,539 +83,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         2,
-         18,
-         10,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046220",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046224_K63HI3_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         16,
-         17,
-         2,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046235",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046239_FKXKNG_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         27,
-         23,
-         17,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046260",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046266_KYHDY8_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         16,
-         26,
-         14,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046288",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046292_R6SUXY_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         2,
-         2,
-         12,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046303",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046307_Q0J0V8_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         26,
-         18,
-         26,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046318",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046322_BMICIO_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         20,
-         17,
-         11,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046334",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046338_JXYD6H_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         18,
-         1,
-         13,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046348",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046352_TQR1ER_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         9,
          19,
-         5,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046364",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046368_KLNOYX_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         25,
-         16,
-         18,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046378",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046382_2ESLFW_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         22,
-         25,
-         5,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046393",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046399_XLWQ34_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         20,
-         22,
-         13,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046410",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046414_GWPCLL_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         1,
-         12,
-         20,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046424",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046428_235HCB_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         20,
-         16,
-         23,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046439",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046443_20XVSY_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         7,
-         10,
-         18,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046453",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046457_A7RW2N_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         27,
-         11,
-         4,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046469",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046473_CXG41O_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         17,
-         10,
-         24,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046483",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046487_RWZV7C_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         1,
-         18,
-         16,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046497",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046503_TLTUIN_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         0,
-         12,
-         14,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046515",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046519_PX3HRS_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         9,
-         27,
-         4,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046530",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046534_M809B3_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         26,
-         16,
-         0,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046545",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046549_MLETFV_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         21,
-         11,
-         11,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046559",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046563_QZ37JP_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         16,
-         27,
-         9,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046574",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046577_F3KML0_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         5,
-         24,
-         20,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046589",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046593_UNGFW5_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         26,
-         10,
          8,
-         0
+         8
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046604",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254656",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046610_JPWPG9_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         3,
-         13,
-         5,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046620",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046624_C0EPWX_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         9,
-         15,
-         8,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046635",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046639_6B8J0J_N": {
+   "2017-08-10_08:59:29.254664_NG361D_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -809,137 +104,16 @@
       "location": [
          20,
          0,
-         3,
-         0
+         1
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046650",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254676",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046654_NWO8LF_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         15,
-         17,
-         10,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046665",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046669_S1NYB3_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         4,
-         11,
-         10,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046681",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046685_T6PGRG_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         25,
-         2,
-         4,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046695",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046699_W793M2_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         25,
-         25,
-         13,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046710",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046716_ZAD3WI_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         9,
-         27,
-         6,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046727",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046731_7D0GBS_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         17,
-         14,
-         24,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046741",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046745_T2RXRL_N": {
+   "2017-08-10_08:59:29.254681_H6QZF1_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -948,18 +122,17 @@
       "cumulative_intake_count": 0,
       "location": [
          26,
-         11,
-         15,
-         0
+         26,
+         20
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046756",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254692",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046760_6W9G3E_N": {
+   "2017-08-10_08:59:29.254697_EVL1NQ_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -967,19 +140,56 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         25,
-         11,
-         22,
-         0
+         14,
+         10,
+         27
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046771",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254708",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046774_IF4XGW_N": {
+   "2017-08-10_08:59:29.254712_WWE7GP_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         1,
+         0,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254725",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254729_YV40EM_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         21,
+         17,
+         17
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254741",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254745_73C138_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -988,18 +198,36 @@
       "cumulative_intake_count": 0,
       "location": [
          16,
-         15,
+         13,
+         5
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254758",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254764_XTCSC1_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         7,
          4,
-         0
+         4
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046786",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254776",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.046790_JK3O1D_N": {
+   "2017-08-10_08:59:29.254789_VS6WVV_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1007,399 +235,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         23,
-         3,
-         26,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046802",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046805_H0D70W_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         10,
-         3,
-         15,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046816",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046821_P2Z8UM_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         21,
-         15,
-         22,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046832",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046836_RBEF11_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         7,
-         18,
-         23,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046847",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046851_6LZ6X9_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         23,
-         25,
-         27,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046862",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046866_6GJIKS_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         14,
-         20,
-         22,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046876",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046880_0SD8G2_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         22,
-         15,
-         1,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046891",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046894_NEMK6H_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         4,
-         7,
-         22,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046906",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046909_VTSAUQ_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         7,
-         1,
-         3,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046920",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046924_WY4WUR_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         17,
-         10,
-         25,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046935",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046941_P7TELG_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         10,
          24,
-         18,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046952",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046956_GF3OCG_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         11,
-         15,
-         23,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046967",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046971_7MZWTO_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         0,
-         10,
-         1,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046982",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.046986_TS88GJ_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         6,
-         7,
-         15,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.046997",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047000_TK4AGW_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         0,
-         21,
-         9,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047011",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047015_3N7VZ8_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         26,
-         2,
-         27,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047027",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047030_LKDJJX_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         22,
-         14,
-         17,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047041",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047047_1JTYUI_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         17,
-         0,
-         9,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047059",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047062_NA1L17_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         27,
-         11,
-         11,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047074",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047078_IQUFN7_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         21,
-         2,
          12,
-         0
+         24
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047089",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254801",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047092_LUWJXO_N": {
+   "2017-08-10_08:59:29.254805_TLL2OI_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1407,19 +254,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         7,
+         14,
          24,
-         17,
-         0
+         3
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047103",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254817",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047107_HFAEY7_N": {
+   "2017-08-10_08:59:29.254821_BYDDBH_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1427,59 +273,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         10,
-         10,
-         9,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047118",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047122_A5EAI5_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         16,
-         25,
-         18,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047132",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047136_LWILYB_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         9,
-         10,
+         14,
          20,
-         0
+         3
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047146",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254832",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047154_95KUJG_N": {
+   "2017-08-10_08:59:29.254851_C67ED5_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1487,79 +292,56 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         8,
-         20,
-         13,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047166",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047170_OO0CGK_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         23,
-         17,
-         6,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047181",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047185_OY52F9_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         17,
-         5,
-         13,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047195",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047199_VDFH3F_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         23,
+         27,
          2,
+         21
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254865",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254870_FYH9EG_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         23,
+         17,
+         6
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254883",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254888_RXT0B1_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
          19,
-         0
+         27,
+         17
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047209",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254901",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047213_MFT8RC_N": {
+   "2017-08-10_08:59:29.254906_MX1DOC_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1567,39 +349,18 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         15,
-         14,
-         20,
-         0
+         10,
+         27,
+         25
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047224",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254919",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047227_J0CT09_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         2,
-         0,
-         16,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047239",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047243_YFURPZ_N": {
+   "2017-08-10_08:59:29.254927_6O0KZ0_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1608,18 +369,701 @@
       "cumulative_intake_count": 0,
       "location": [
          6,
-         9,
-         12,
-         0
+         8,
+         13
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047253",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254940",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047261_PN9JMK_N": {
+   "2017-08-10_08:59:29.254945_ZPZIMX_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         7,
+         8,
+         1
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254959",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254964_LB9BOM_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         13,
+         26,
+         17
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254979",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.254984_91EISV_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         14,
+         12,
+         18
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.254998",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255003_CY8T3X_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         11,
+         4,
+         17
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255017",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255021_0SXKNQ_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         24,
+         12,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255035",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255040_TOCWZR_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         16,
+         12,
+         7
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255053",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255058_59KIFZ_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         13,
+         10,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255071",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255078_RZGJ3R_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         2,
+         14,
+         11
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255092",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255097_BMNDJT_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         11,
+         25,
+         21
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255111",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255116_584846_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         16,
+         19,
+         1
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255130",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255135_QFCHZZ_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         17,
+         6,
+         3
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255150",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255155_48YXFE_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         21,
+         18,
+         11
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255168",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255173_SUVVQN_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         4,
+         19,
+         2
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255187",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255192_JLLP0E_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         6,
+         26,
+         8
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255205",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255212_3QURUR_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         20,
+         1,
+         26
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255226",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255231_4VG3DF_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         18,
+         7,
+         23
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255245",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255250_F2MTKP_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         1,
+         19,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255263",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255268_HMXXLK_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         0,
+         11,
+         27
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255282",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255287_NB1ZPA_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         16,
+         26,
+         21
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255300",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255305_CV5QSB_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         8,
+         26,
+         2
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255319",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255324_KTJ0IM_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         17,
+         2,
+         4
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255352",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255358_FZOPVX_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         2,
+         11,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255369",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255374_GL0TAF_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         8,
+         21,
+         22
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255386",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255390_UJD4AH_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         11,
+         8,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255401",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255405_VGGJDM_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         16,
+         23,
+         22
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255415",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255419_0O3QXV_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         24,
+         17,
+         3
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255431",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255435_8YEITG_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         27,
+         2,
+         10
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255447",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255451_R9VWVH_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         26,
+         0,
+         23
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255462",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255468_EXZZOL_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         21,
+         16,
+         26
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255480",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255484_BTYLOA_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         3,
+         9,
+         13
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255495",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255499_RH5EIY_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         1,
+         15,
+         1
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255510",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255514_XTX552_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         3,
+         2,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255525",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255529_ICNDTX_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         19,
+         15,
+         12
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255541",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255545_I3ZAPP_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         16,
+         11,
+         8
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255556",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255560_PQ0B5B_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         19,
+         17,
+         25
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255572",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255578_STP04Y_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         23,
+         21,
+         15
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255589",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255593_CJSHJP_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1629,17 +1073,35 @@
       "location": [
          24,
          13,
+         11
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255605",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255609_4YVV3Y_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         8,
          17,
-         0
+         10
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047274",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255620",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047278_ZHFU5T_N": {
+   "2017-08-10_08:59:29.255624_ZXLDWM_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1647,199 +1109,493 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         14,
-         18,
-         21,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047289",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047293_C9CTTW_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         9,
-         8,
-         21,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047304",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047308_HSEKJA_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         1,
-         13,
-         8,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047318",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047322_BLC3SH_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         25,
-         8,
-         4,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047335",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047339_CA9C6L_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         22,
-         12,
-         11,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047350",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047354_BKT9VZ_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         10,
-         26,
-         10,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047364",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047371_MJ57Q0_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         12,
-         27,
-         15,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047384",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047388_KK4100_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         3,
-         26,
-         1,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047400",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047404_95SQ9Z_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         15,
-         14,
-         22,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047414",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047418_Y71RUK_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         15,
          2,
+         21,
+         17
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255635",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255639_7VV1EQ_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         4,
+         9,
+         25
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255650",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255654_6KNPML_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         3,
+         10,
+         23
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255665",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255669_PKBVR9_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         9,
+         27,
+         13
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255680",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255686_O0L30V_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
          11,
+         17,
+         27
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255698",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255702_GL5VNU_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         19,
+         0,
+         8
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255714",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255718_F95QVL_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         21,
+         4,
+         25
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255729",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255733_85HUP1_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         0,
+         12,
+         15
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255744",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255751_DQL7OO_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         14,
+         27,
+         8
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255762",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255766_EPN6CR_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         24,
+         24,
+         20
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255777",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255781_CGI5CU_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         12,
+         27,
+         17
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255792",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255798_F6IBJH_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         7,
+         26,
+         19
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255810",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255814_THN3LG_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         18,
+         22,
+         7
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255827",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255831_EA09Y3_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         27,
+         12,
+         4
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255843",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255847_F2Q11P_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         20,
+         2,
          0
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047439",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255860",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047444_OH68VQ_N": {
+   "2017-08-10_08:59:29.255864_QMPWZ5_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         26,
+         12,
+         11
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255875",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255879_TBYTPI_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         4,
+         20,
+         23
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255890",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255894_N5MNRK_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         11,
+         6,
+         22
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255905",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255911_3VEZU2_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         26,
+         0,
+         24
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255924",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255928_OSPU6M_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         12,
+         21,
+         12
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255939",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255943_PBYXI8_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         22,
+         0,
+         26
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255954",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255958_QRNFKC_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         16,
+         27,
+         23
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255970",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255974_MDDHVY_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         20,
+         19,
+         5
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.255986",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.255990_MHGWMY_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         23,
+         18,
+         13
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256001",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256005_UK1H7J_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         27,
+         21,
+         10
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256017",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256021_8M07BD_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         18,
+         1,
+         4
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256032",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256038_W7WEGT_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1848,18 +1604,17 @@
       "cumulative_intake_count": 0,
       "location": [
          13,
-         3,
-         14,
-         0
+         18,
+         3
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047462",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256049",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047469_GYKB2U_N": {
+   "2017-08-10_08:59:29.256053_0TN02K_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1867,19 +1622,246 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         8,
-         27,
+         21,
          1,
-         0
+         20
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047484",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256066",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047488_GJZIEL_N": {
+   "2017-08-10_08:59:29.256071_LELBD0_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         9,
+         26,
+         27
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256082",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256086_KBMXQI_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         24,
+         27,
+         6
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256097",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256101_0O0XS0_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         0,
+         0,
+         14
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256113",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256117_L3WRG1_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         4,
+         0,
+         11
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256129",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256133_KOBRAV_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         0,
+         27,
+         9
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256145",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256151_ZVUD7F_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         15,
+         1,
+         7
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256162",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256166_8SV63N_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         20,
+         23,
+         26
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256178",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256182_B6DOWP_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         1,
+         9,
+         8
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256192",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256196_N6UD0J_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         1,
+         17,
+         2
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256208",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256212_BP5Y1Q_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         13,
+         14,
+         23
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256224",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256228_LNSI1A_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         26,
+         19,
+         19
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256239",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256243_KIRHTA_N": {
+      "neighbors": {},
+      "cumulative_intake_sum_since_reset": 0,
+      "cumulative_fire_count": 0,
+      "cumulative_fire_count_inst": 0,
+      "cumulative_intake_total": 0,
+      "cumulative_intake_count": 0,
+      "location": [
+         20,
+         13,
+         16
+      ],
+      "status": "Passive",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256254",
+      "firing_pattern_id": "",
+      "activation_function_id": "",
+      "timer_threshold": 50,
+      "firing_threshold": 2
+   },
+   "2017-08-10_08:59:29.256261_I4YT1W_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1889,17 +1871,16 @@
       "location": [
          4,
          14,
-         0,
-         0
+         4
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047499",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256282",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    },
-   "2017-08-09_22:27:11.047509_G0E70A_N": {
+   "2017-08-10_08:59:29.256287_O8E16Y_N": {
       "neighbors": {},
       "cumulative_intake_sum_since_reset": 0,
       "cumulative_fire_count": 0,
@@ -1907,96 +1888,15 @@
       "cumulative_intake_total": 0,
       "cumulative_intake_count": 0,
       "location": [
-         6,
-         17,
-         0,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047522",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047526_8QVIKC_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         27,
-         13,
-         26,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047536",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047540_CKLFCK_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         25,
-         9,
-         3,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047551",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047555_ET30OV_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         10,
-         27,
          1,
-         0
+         26,
+         27
       ],
       "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047566",
+      "last_timer_reset_time": "2017-08-10 08:59:29.256302",
       "firing_pattern_id": "",
       "activation_function_id": "",
-      "timer_threshold": 1,
-      "firing_threshold": 2
-   },
-   "2017-08-09_22:27:11.047570_2NE1NW_N": {
-      "neighbors": {},
-      "cumulative_intake_sum_since_reset": 0,
-      "cumulative_fire_count": 0,
-      "cumulative_fire_count_inst": 0,
-      "cumulative_intake_total": 0,
-      "cumulative_intake_count": 0,
-      "location": [
-         14,
-         23,
-         15,
-         0
-      ],
-      "status": "Passive",
-      "last_timer_reset_time": "2017-08-09 22:27:11.047580",
-      "firing_pattern_id": "",
-      "activation_function_id": "",
-      "timer_threshold": 1,
+      "timer_threshold": 50,
       "firing_threshold": 2
    }
 }

@@ -34,6 +34,9 @@ def init():
     global user_input
     user_input = ''
 
+    global user_input_param
+    user_input = ''
+
     # Flag to show visualizations
     global vis_show
     vis_show = True

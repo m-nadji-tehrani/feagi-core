@@ -101,9 +101,30 @@ if __name__ == '__main__':
     import sys
     from tty import setraw
     import termios
+    import brain_gen
+    import tkinter
 
-    # Initialize visualization libraries
-    # settings.vis_init()
+
+    def submit_entry_fields():
+        print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
+        settings.user_input = e1.get()
+        settings.user_input_param = e2.get()
+        user_input_queue.put(settings.user_input)
+    master = tkinter.Tk()
+
+    tkinter.Label(master, text="Command").grid(row=0)
+    tkinter.Label(master, text="Parameter").grid(row=1)
+
+    e1 = tkinter.Entry(master)
+    e2 = tkinter.Entry(master)
+
+    e1.grid(row=0, column=1)
+    e2.grid(row=1, column=1)
+
+    tkinter.Button(master, text='Quit', command=master.quit).grid(row=3, column=0, pady=4)
+    tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
+
+    brain_gen.brain_gen()
 
     b = Brain()
 
@@ -117,10 +138,9 @@ if __name__ == '__main__':
     FCL = []
     FCL_queue.put(FCL)
 
-    def read_user_input2():
-        settings.user_input = input()
-        print("settings.user_input has value of ", settings.user_input)
-        user_input_queue.put(settings.user_input)
+    def read_user_input():
+        master.update_idletasks()
+        master.update()
         return
 
     def join_processes():
@@ -132,7 +152,7 @@ if __name__ == '__main__':
     process_burst.deamon = False
     process_burst.start()
 
-    read_user_input2()
+    read_user_input()
 
     try:
         while settings.user_input != 'q':
@@ -150,7 +170,8 @@ if __name__ == '__main__':
                     settings.user_input = ''
 
                 elif settings.user_input == 'i':
-                    process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist, args=(10, FCL_queue))
+                    process_3 = mp.Process(name='Seeing_MNIST_image',
+                                           target=b.see_from_mnist, args=(int(settings.user_input_param), FCL_queue))
                     process_3.start()
                     process_3.join()
                     settings.user_input = ''
@@ -170,7 +191,7 @@ if __name__ == '__main__':
                 #     settings.user_input = ''
 
                 else:
-                    read_user_input2()
+                    read_user_input()
 
             except IOError:
                 print("an error has occurred!!!")

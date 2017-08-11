@@ -109,9 +109,10 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             if _[0] == "utf8_memory":
                 for neuron in fire_candidate_list:
                     if neuron[0] == "vision_memory":
-                        dst_neuron_id = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
-                        wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                                                  dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+                        dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
+                        for dst_neuron_id in dst_neuron_id_list:
+                            wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                                                      dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
         burst_duration = datetime.datetime.now() - burst_strt_time
         print(">>> Burst duration: %s" % burst_duration)
@@ -319,7 +320,6 @@ def wire_neurons_together_ext(src_cortical_area, src_neuron, dst_cortical_area, 
 
     genome = settings.genome
 
-    synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron,
-            genome["blueprint"][src_cortical_area]["synaptic_strength"])
+    synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron, genome["blueprint"][src_cortical_area]["synaptic_strength"])
 
     return

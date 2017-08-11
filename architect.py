@@ -93,8 +93,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
         print("Source or Destination neuron not found")
         return
 
-    settings.brain[src_cortical_area][src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area,
-                                         "synaptic_strength": synaptic_strength}
+    settings.brain[src_cortical_area][src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area, "synaptic_strength": synaptic_strength}
 
     return
 

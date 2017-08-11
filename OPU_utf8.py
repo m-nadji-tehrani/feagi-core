@@ -10,7 +10,7 @@ event.
 
 def convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id):
 
-    char = settings.brain[cortical_area][neuron_id]["location"][2]
+    char = int(settings.brain[cortical_area][neuron_id]["location"][2])
 
     return chr(char)
 

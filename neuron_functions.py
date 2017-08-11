@@ -19,7 +19,8 @@ import pylab
 
 import visualizer
 import settings
-from architect import synapse
+from architect import synapse, neighbor_finder_ext
+import OPU_utf8
 
 
 burst_count = 0
@@ -92,17 +93,25 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         #     for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
         #         for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
         #             if src_neuron != dst_neuron:
-        #                 wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
+        #                 wire_neurons_together(cortical_area=cortical_area,
+        #                                       src_neuron=src_neuron, dst_neuron=dst_neuron)
         #
 
-        memory_list = ['Memory', 'Memory_utf8']
+        memory_list = ['utf8_memory', 'vision_memory']
         for cortical_area in memory_list:
             for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
                 for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
                     if src_neuron != dst_neuron:
                         wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
-
+        # Code to wire memory to Output processing unit when the firing coinside with an IPU event
+        for _ in fire_candidate_list:
+            if _[0] == "utf8_memory":
+                for neuron in fire_candidate_list:
+                    if neuron[0] == "vision_memory":
+                        dst_neuron_id = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
+                        wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                                                  dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
         burst_duration = datetime.datetime.now() - burst_strt_time
         print(">>> Burst duration: %s" % burst_duration)
@@ -174,6 +183,11 @@ def neuron_fire(cortical_area, id):
         if settings.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
+
+    if cortical_area == 'utf8_out':
+        print("Comprehended character is: %s                 #*#*#*#*#*#*#"
+              % OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id))
+
     #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x])
     #
     # pool = ThreadPool(4)
@@ -192,6 +206,9 @@ def neuron_fire(cortical_area, id):
     # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, id]))
     if settings.verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+
+    # todo: add a check that if the firing neuron is part of OPU to perform an action pseudo#7731169
+
 
 
     return
@@ -292,7 +309,17 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] += \
         genome["blueprint"][cortical_area]["synaptic_strength_inc"]
     # Append a Group ID so Memory clusters can be uniquely identified
-    settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["event_id"][settings.event_id] = ''
+    if settings.event_id:
+        settings.brain[cortical_area][src_neuron]["event_id"][settings.event_id] = ''
 
+    return
+
+
+def wire_neurons_together_ext(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron):
+
+    genome = settings.genome
+
+    synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron,
+            genome["blueprint"][src_cortical_area]["synaptic_strength"])
 
     return

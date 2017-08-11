@@ -14,14 +14,18 @@ import architect
 import neuron_functions
 
 
-def connectome_visualizer(cortical_area, x=30, y=30, z=30, neighbor_show='false', threshold=0):
+def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
     """Visualizes the Neurons in the connectome"""
     if not settings.vis_init_status:
         settings.vis_init()
     neuron_locations = architect.connectome_location_data(cortical_area)
-    settings.ax.set_xlim(0, x)
-    settings.ax.set_ylim(0, y)
-    settings.ax.set_zlim(0, z)
+
+    settings.ax.set_xlim(settings.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
+                 settings.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1])
+    settings.ax.set_ylim(settings.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
+                 settings.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1])
+    settings.ax.set_zlim(settings.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
+                 settings.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
 
     for location in neuron_locations:
         settings.ax.scatter(location[0], location[1], location[2], c='b', marker='.')

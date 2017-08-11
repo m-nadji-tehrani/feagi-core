@@ -52,6 +52,7 @@ def neuro_genesis(cortical_area, location):
 
     settings.brain[cortical_area][id] = {}
     settings.brain[cortical_area][id]["neighbors"] = {}
+    settings.brain[cortical_area][id]["event_id"] = {}
     settings.brain[cortical_area][id]["cumulative_intake_sum_since_reset"] = 0
     settings.brain[cortical_area][id]["cumulative_fire_count"] = 0
     settings.brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
@@ -93,8 +94,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
         return
 
     settings.brain[src_cortical_area][src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area,
-                                         "synaptic_strength": synaptic_strength,
-                                         "event_id": {}}
+                                         "synaptic_strength": synaptic_strength}
 
     return
 

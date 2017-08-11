@@ -34,9 +34,10 @@ class Brain:
 
     def show_cortical_areas(self):
         # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
-        visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
-        visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
-        visualizer.connectome_visualizer(cortical_area='vision_IT', neighbor_show='true')
+        # visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
+        # visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
+        # visualizer.connectome_visualizer(cortical_area='vision_IT', neighbor_show='true')
+        visualizer.connectome_visualizer(cortical_area='vision_memory', neighbor_show='true')
         return
 
     def read_from_mnist(self, image_number, event_queue):
@@ -91,6 +92,28 @@ class Brain:
             # sys.stdout.flush()
         return
 
+    # def kernel_view(self):
+        # IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
+
+        # print("Direction matrix with Kernel 3")
+        # a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 3))
+        # for items in range(0, np.shape(a)[0]):
+        #     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
+        #
+        # print("Direction matrix with Kernel 5")
+        # a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 5))
+        # for items in range(0, np.shape(a)[0]):
+        #     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
+        #
+        # print("Direction matrix with Kernel 7")
+        # a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 7))
+        # for items in range(0, np.shape(a)[0]):
+        #     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
+        #
+        #
+        # print(IPU_vision.direction_stats(a))
+        # return
+
 
 if __name__ == '__main__':
 
@@ -106,6 +129,7 @@ if __name__ == '__main__':
         settings.user_input = e1.get()
         settings.user_input_param = e2.get()
         user_input_queue.put(settings.user_input)
+
     master = tkinter.Tk()
 
     tkinter.Label(master, text="Command").grid(row=0)
@@ -124,8 +148,6 @@ if __name__ == '__main__':
 
     b = Brain()
 
-    # b.show_cortical_areas()
-    # visualizer.connectome_visualizer('vision_v1', neighbor_show='true', threshold=0)
     # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
     mp.set_start_method('spawn')
@@ -192,13 +214,6 @@ if __name__ == '__main__':
                     process_4.start()
                     process_4.join()
                     settings.user_input = ''
-                # # Toggling burst visualization on/off
-                # elif settings.user_input == 't':
-                #     if settings.vis_show:
-                #         settings.vis_show = False
-                #     else:
-                #         settings.vis_show = True
-                #     settings.user_input = ''
 
                 else:
                     read_user_input()
@@ -213,31 +228,6 @@ if __name__ == '__main__':
         join_processes()
         settings.save_brain_to_disk()
 
-
-
-# IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
-
-# print("Direction matrix with Kernel 3")
-# a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 3))
-# for items in range(0, np.shape(a)[0]):
-#     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
-#
-# print("Direction matrix with Kernel 5")
-# a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 5))
-# for items in range(0, np.shape(a)[0]):
-#     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
-#
-# print("Direction matrix with Kernel 7")
-# a = (IPU_vision.create_direction_matrix(mnist.read_image(image_number), 7))
-# for items in range(0, np.shape(a)[0]):
-#     print(' '.join(map(str, [x.encode('utf-8') for x in a[items]])))
-#
-#
-# print(IPU_vision.direction_stats(a))
-
-
-
-#
 #
 #
 #          <<<<<<<  T O   D O   L I S T   >>>>>>>>
@@ -307,5 +297,5 @@ if __name__ == '__main__':
 # todo: Fix issue on the visualization related to 3D init not compatible with 2D ones
 
 
-# Speach
+# Speech
 # todo: Make it learn to Speak!

@@ -26,7 +26,8 @@ def brain_gen():
             else:
                 raise
 
-    copyanything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
+    # Backup the current folder
+    # copyanything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
 
 
     # Reset in-memory brain data

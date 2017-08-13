@@ -58,6 +58,9 @@ def neuro_genesis(cortical_area, location):
     settings.brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
     settings.brain[cortical_area][id]["cumulative_intake_total"] = 0
     settings.brain[cortical_area][id]["cumulative_intake_count"] = 0
+    settings.brain[cortical_area][id]["consecutive_fire_cnt"] = 0
+    settings.brain[cortical_area][id]["snooze_till_burst_num"] = 0
+    settings.brain[cortical_area][id]["last_burst_num"] = 0
 
     settings.brain[cortical_area][id]["location"] = location
     settings.brain[cortical_area][id]["status"] = "Passive"

@@ -49,8 +49,8 @@ class Brain:
             init_fire_list.append(['vision_v1', item])
         event_id = architect.event_id_gen()
         event_queue.put(event_id)
-        print('Initial Fire List:')
-        print(init_fire_list)
+        # print('Initial Fire List:')
+        # print(init_fire_list)
         return init_fire_list
 
     def inject_to_fcl(self, fire_list, fcl_queue):
@@ -144,6 +144,7 @@ if __name__ == '__main__':
     tkinter.Button(master, text='Quit', command=master.quit).grid(row=3, column=0, pady=4)
     tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
+    # Calling function to regenerate the Brain from the Genome
     brain_gen.brain_gen()
 
     b = Brain()
@@ -173,14 +174,20 @@ if __name__ == '__main__':
         return
 
     def join_processes():
-        process_burst.join()
+        # process_burst.join()
+        process_burst.close()
         return
 
     # Starting the burst machine
-    process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
-                               args=(user_input_queue, FCL_queue, brain_queue, event_queue))
+    # pool = mp.Pool(max(1, mp.cpu_count()))
+
+    process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, FCL_queue, brain_queue, event_queue,))
+
+    # process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
+    #                            args=(user_input_queue, FCL_queue, brain_queue, event_queue))
+
     process_burst.deamon = False
-    process_burst.start()
+
 
     read_user_input()
 

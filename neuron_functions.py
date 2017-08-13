@@ -163,6 +163,8 @@ def fire_candidate_locations(fire_candidate_list):
 def neuron_fire(cortical_area, id):
     """This function initiate the firing of Neuron in a given cortical area"""
 
+    global burst_count
+
     # Setting Destination to the list of Neurons connected to the firing Neuron
     destination = settings.brain[cortical_area][id]["neighbors"]
     if settings.verbose:
@@ -177,6 +179,7 @@ def neuron_fire(cortical_area, id):
     settings.brain[cortical_area][id]["cumulative_fire_count"] += 1
     settings.brain[cortical_area][id]["cumulative_fire_count_inst"] += 1
 
+
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     neuron_update_list = []
@@ -184,6 +187,19 @@ def neuron_fire(cortical_area, id):
         if settings.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
+
+    # Condition to snooze the neuron
+    if settings.brain[cortical_area][id]["consecutive_fire_cnt"] > \
+            settings.genome["blueprint"][cortical_area]["neuron_params"]["consecutive_fire_cnt_max"]:
+        snooze_till(cortical_area, id, burst_count +
+                    settings.genome["blueprint"][cortical_area]["neuron_params"]["snooze_length"])
+
+    # Condition to increasing the consecutive fire count
+    if burst_count == settings.brain[cortical_area][id]["last_burst_num"] + 1:
+        settings.brain[cortical_area][id]["consecutive_fire_cnt"] += 1
+
+    settings.brain[cortical_area][id]["last_burst_num"] = burst_count
+
 
     if cortical_area == 'utf8_out':
         print("Comprehended character is: %s                 #*#*#*#*#*#*#"
@@ -208,9 +224,7 @@ def neuron_fire(cortical_area, id):
     if settings.verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
-    # todo: add a check that if the firing neuron is part of OPU to perform an action pseudo#7731169
-
-
+    # todo: add a check that if the firing neuron is part of OPU to perform an action
 
     return
 
@@ -227,7 +241,7 @@ def neuron_update(cortical_area, synaptic_strength, destination):
           % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
 
     # Check if timer is expired on the destination Neuron and if so reset the counter
-    # Todo: Need to tune up the timer as depending on the application performance the timer could be always expired
+    # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
     if (datetime.datetime.strptime(settings.brain[cortical_area][destination]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f") +
             datetime.timedelta(0, settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
         settings.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
@@ -257,11 +271,13 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to
     # fire_candidate_list
     global fire_candidate_list
+    global burst_count
     if settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] > settings.brain[cortical_area][destination]["firing_threshold"]:
-       if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
-            fire_candidate_list.append([cortical_area, destination])
-            if settings.verbose:
-                print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+        if settings.brain[cortical_area][destination]["snooze_till_burst_num"] <= burst_count:
+           if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
+                fire_candidate_list.append([cortical_area, destination])
+                if settings.verbose:
+                    print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
     return fire_candidate_list
 
@@ -309,6 +325,12 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     # reside in the same burst, the synaptic_strength will be increased simulating Fire together, wire together.
     settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] += \
         genome["blueprint"][cortical_area]["synaptic_strength_inc"]
+
+    # Condition to cap the synaptic_strength and provide prohibitory reaction (Serotonin)
+    settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["synaptic_strength"] = \
+        min(settings.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["synaptic_strength"],
+            genome["blueprint"][cortical_area]["synaptic_strength_max"])
+
     # Append a Group ID so Memory clusters can be uniquely identified
     if settings.event_id:
         settings.brain[cortical_area][src_neuron]["event_id"][settings.event_id] = ''
@@ -320,6 +342,15 @@ def wire_neurons_together_ext(src_cortical_area, src_neuron, dst_cortical_area, 
 
     genome = settings.genome
 
-    synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron, genome["blueprint"][src_cortical_area]["synaptic_strength"])
+    synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron,
+            genome["blueprint"][src_cortical_area]["synaptic_strength"])
 
+    return
+
+
+def snooze_till(cortical_area, neuron_id, burst_id):
+    """ Acting as an inhibitory neurotransmitter to supress firing of neuron till a later burst"""
+    settings.brain[cortical_area][neuron_id]["snooze_till_burst_num"] \
+        = burst_id + settings.genome["blueprint"][cortical_area]["neuron_params"]["snooze_length"]
+    print("%s : %s has been snoozed!" % (cortical_area, neuron_id))
     return

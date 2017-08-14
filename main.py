@@ -66,7 +66,7 @@ class Brain:
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()   # ????
         fire_list= self.read_from_mnist(image_number, event_queue)
-        print(fire_list)
+        # print(fire_list)
         self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
         return

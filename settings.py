@@ -51,7 +51,7 @@ def init():
 
     # Genome defines the json file name and location which is acting as Human Genome
     global genome_file
-    genome_file = './genome.json'
+    genome_file = './reproduction/genome.json'
 
     global brain
     brain = load_brain_in_memory()

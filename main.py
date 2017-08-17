@@ -45,18 +45,31 @@ class Brain:
         print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()   # ????
         fire_list= self.read_from_mnist(image_number, event_queue)
-        # print(fire_list)
         self.inject_to_fcl(fire_list, fcl_queue)
         print(' exiting', cp.name, cp.pid)
         return
 
     def read_from_mnist(self, image_number, event_queue):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
-        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
-        neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array)
         init_fire_list = []
-        for item in neuron_id_list:
-            init_fire_list.append(['vision_v1', item])
+        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
+        cortical_list  = settings.cortical_list()
+        vision_group = []
+        for item in cortical_list:
+            if settings.genome['blueprint'][item]['group_id'] == 'vision_v1':
+                vision_group.append(item)
+        print('vision group is: ', vision_group)
+        for cortical_area in vision_group:
+            cortical_direction_sensitivity = settings.genome['blueprint'][cortical_area]['direction_sensitivity']
+            image = mnist.read_image(image_number)
+            print('image : ', image)
+            polarized_image = IPU_vision.create_direction_matrix(image, 3, cortical_direction_sensitivity)
+            print("Polarized image for :", cortical_area, polarized_image)
+            IPU_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
+            neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array, cortical_area)
+            for item in neuron_id_list:
+                init_fire_list.append([cortical_area, item])
+
         event_id = architect.event_id_gen()
         event_queue.put(event_id)
         # print('Initial Fire List:')

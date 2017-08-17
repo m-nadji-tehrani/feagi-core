@@ -17,6 +17,16 @@ import settings
 import architect
 
 
+def kernel_sizer(kernel_values):
+    np.tmp = kernel_values
+    kernel_size = np.shape(np.tmp)
+    kernel_size = kernel_size[0]
+    if divmod(kernel_size, 2)[1] == 0:
+        print("Error: Kernel size should only be Odd number!")
+        return
+    return kernel_size
+
+
 def convert_image_to_coordinates(image):   # Image is currently assumed to be a 28 x 28 numpy array
     """
     Function responsible for reading an image and converting the pixel values to coordinates
@@ -34,7 +44,22 @@ def convert_image_to_coordinates(image):   # Image is currently assumed to be a 
     return image_locations
 
 
-def convert_image_locations_to_neuron_ids(image_locations):
+def convert_direction_matrix_to_coordinates(image):
+    print("Polarized image type = ", type(image))
+    image_locations = []
+    x = 0
+    y = 0
+    for row in image:
+        for column in row:
+            if image[x][y] != '':
+                image_locations.append([x, y, 0])
+            y += 1
+        y = 0
+        x += 1
+    return image_locations
+
+
+def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
     """
     Queries the connectome for each location and provides the list of Neuron Ids matching the location
     :param image_locations:
@@ -46,7 +71,7 @@ def convert_image_locations_to_neuron_ids(image_locations):
     neuron_id_list = []
     for x in range(len(image_locations)):
             # call the function to find neuron candidates for a given location
-            tmp = architect.neuron_finder('vision_v1', image_locations[x], genome["location_tolerance"])
+            tmp = architect.neuron_finder(cortical_area, image_locations[x], genome["location_tolerance"])
             for item in tmp:
                 if (item is not None) and (neuron_id_list.count(item) == 0):
                     neuron_id_list.append(item)
@@ -83,29 +108,16 @@ def kernel_direction(kernel_values):
     """
     # todo: Important >>> Something is wrong with this function returning incorrect values as direction label changes
 
-    np.tmp = kernel_values
-    kernel_size = np.shape(np.tmp)
-    kernel_size = kernel_size[0]
-    if divmod(kernel_size, 2)[1] == 0:
-        print("Error: Kernel size should only be Odd number!")
-        return
-
-    result = np.zeros((kernel_size, kernel_size))
     end_result = {}
+    kernel_size = kernel_sizer(kernel_values)
     for filter_entry in settings.genome["IPU_vision_filters"][str(kernel_size)]:
-        filter_value = settings.genome["IPU_vision_filters"][str(kernel_size)][filter_entry]
-        for i in range(0, kernel_size):
-            for ii in range(0, kernel_size):
-                result[i][ii] = kernel_values[i][ii] * filter_value[i][ii]
-                ii += 1
-            i += 1
-        end_result[filter_entry] = result
-        result = np.zeros((kernel_size, kernel_size))
+        end_result[filter_entry] = apply_direction_filter(kernel_values, kernel_size, filter_entry)
+
     tmpArray = []
     # print('this is tmp before all appends', tmpArray)
     for entry in end_result:
         sumation = np.sum(end_result[entry])
-        # print("Appending: %s Sum: %d \n End_result: \n %s" % (entry, sumation,end_result[entry]))
+        # print("Appending: %s Sum: %d \n End_result: \n %s" % (entry, summation,end_result[entry]))
         # tmp = np.append(tmp, [entry, np.sum(end_result[entry])], axis=0)
         tmpArray.append([entry, np.sum(end_result[entry])])
         # print('***', tmpArray)
@@ -121,7 +133,22 @@ def kernel_direction(kernel_values):
     return direction
 
 
-def create_direction_matrix(image, kernel_size):
+def apply_direction_filter(kernel_values, kernel_size, direction_key):
+    """Function to apply a particular filter to a kernel region of any size"""
+    # end_result = {}
+    result = np.zeros((kernel_size, kernel_size))
+    filter_value = settings.genome["IPU_vision_filters"][str(kernel_size)][direction_key]
+    for i in range(0, kernel_size):
+        for ii in range(0, kernel_size):
+            result[i][ii] = kernel_values[i][ii] * filter_value[i][ii]
+            ii += 1
+        i += 1
+    # end_result[direction_key] = result
+
+    return result
+
+
+def create_direction_matrix(image, kernel_size, direction_sensitivity=''):
     """
     Generates a Matrix where each element outlines the Direction detected by the Kernel filters against each 
     corresponding pixel in the image. 
@@ -138,7 +165,10 @@ def create_direction_matrix(image, kernel_size):
     for row in image:
         for row_item in row:
             direction = kernel_direction(image_read_by_block(image, kernel_size, [row_index, col_index]))
-            direction_matrix[row_index].append(direction)
+            if direction == direction_sensitivity or direction_sensitivity == '':
+                direction_matrix[row_index].append(direction)
+            else:
+                direction_matrix[row_index].append('')
             col_index += 1
         col_index = 0
         row_index += 1
@@ -170,12 +200,14 @@ def image_orientation_detector():
     return
 
 
-def orientation_matrix():
+def orientation_matrix(raw_image, orientation_key, kernel_size):
     """
     Function to produce an orientation matrix based on the raw image data
     """
-    # A 27*27 image will produce a 9x9 orientation matrix
-    # or we can produce the orientation matrix the same size as the image
+
+
+
+
     return
 
 
@@ -215,6 +247,8 @@ def direction_stats(image_block):
 
 
 # settings.init()
+
+# settings.init()
 # print(kernel_direction([
 #   [ 1,  1,  1]
 #  ,[ 1,  10,  1]
@@ -226,13 +260,13 @@ def direction_stats(image_block):
 #  ,[ 1,  1,  1,  1,  1]
 #  ,[ 1,  1,  1,  1,  1]]))
 # print(kernel_direction([
-#   [ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]]))
+#   [ 10,  1,  1,  1,  1,  1,  1]
+#  ,[ 1,  10,  1,  1,  1,  1,  1]
+#  ,[ 1,  1,  10,  1,  1,  1,  1]
+#  ,[ 1,  1,  1,  10,  1,  1,  1]
+#  ,[ 1,  1,  1,  1,  10,  1,  1]
+#  ,[ 1,  1,  1,  1,  1,  10,  1]
+#  ,[ 1,  1,  1,  1,  1,  1,  10]]))
 
 #
 # print(direction_stats(kernel_direction([
@@ -240,3 +274,16 @@ def direction_stats(image_block):
 #  ,[ 1,  10,  1]
 #  ,[ 1,  1,  1]])))
 
+
+# print(apply_direction_filter([
+#   [ 1,  10,  1]
+#  ,[ 1,  10,  1]
+#  ,[ 1,  10,  1]], '\\'))
+#
+# print(kernel_sizer([
+#   [ 1,  1,  1,  1,  1,  1,  1]
+#  ,[ 1,  1,  1,  1,  1,  1,  1]
+#  ,[ 1,  1,  1,  1,  1,  1,  1]
+#  ,[ 1,  1,  1,  1,  1,  1,  1]
+#  ,[ 1,  1,  1,  1,  1,  1,  1]
+#  ,[ 1,  1,  1,  1,  1,  1,  1]]))

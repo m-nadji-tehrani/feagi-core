@@ -819,8 +819,10 @@
   "image_color_intensity_tolerance": 250,
   "max_burst_count": 3,
   "blueprint": {
-    "vision_v1": {
+    "vision_v1-1": {
        "growth_path": "",
+       "direction_sensitivity": "/",
+       "group_id": "vision_v1",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 3,
@@ -836,8 +838,238 @@
           "vision_v2" : {
              "neighbor_locator_rule_id": "rule_2",
              "neighbor_locator_rule_param_id": "param_2"
-          },
-          "vision_IT" : {
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "timer_threshold": 50,
+          "orientation_selectivity_id": "",
+          "firing_threshold": 3,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "consecutive_fire_cnt_max": 3,
+          "snooze_length": 2,
+          "geometric_boundaries": {
+             "x": [0, 28],
+             "y": [0, 28],
+             "z": [0, 10]
+          }
+       }
+    },
+    "vision_v1-2": {
+       "growth_path": "",
+       "group_id": "vision_v1",
+       "direction_sensitivity": "\\",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 3,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
+       "synaptic_strength": 1,
+       "synaptic_strength_inc": 1,
+       "synaptic_strength_max": 1,
+       "neighbor_locator_rule_id": "rule_1",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "vision_v2" : {
+             "neighbor_locator_rule_id": "rule_2",
+             "neighbor_locator_rule_param_id": "param_2"
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "timer_threshold": 50,
+          "orientation_selectivity_id": "",
+          "firing_threshold": 3,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "consecutive_fire_cnt_max": 3,
+          "snooze_length": 2,
+          "geometric_boundaries": {
+             "x": [0, 28],
+             "y": [0, 28],
+             "z": [0, 10]
+          }
+       }
+    },
+    "vision_v1-3": {
+       "growth_path": "",
+       "group_id": "vision_v1",
+       "direction_sensitivity": "|",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 3,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
+       "synaptic_strength": 1,
+       "synaptic_strength_inc": 1,
+       "synaptic_strength_max": 1,
+       "neighbor_locator_rule_id": "rule_1",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "vision_v2" : {
+             "neighbor_locator_rule_id": "rule_2",
+             "neighbor_locator_rule_param_id": "param_2"
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "timer_threshold": 50,
+          "orientation_selectivity_id": "",
+          "firing_threshold": 3,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "consecutive_fire_cnt_max": 3,
+          "snooze_length": 2,
+          "geometric_boundaries": {
+             "x": [0, 28],
+             "y": [0, 28],
+             "z": [0, 10]
+          }
+       }
+    },
+    "vision_v1-4": {
+       "growth_path": "",
+       "group_id": "vision_v1",
+       "direction_sensitivity": "-",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 3,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
+       "synaptic_strength": 1,
+       "synaptic_strength_inc": 1,
+       "synaptic_strength_max": 1,
+       "neighbor_locator_rule_id": "rule_1",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "vision_v2" : {
+             "neighbor_locator_rule_id": "rule_2",
+             "neighbor_locator_rule_param_id": "param_2"
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "timer_threshold": 50,
+          "orientation_selectivity_id": "",
+          "firing_threshold": 3,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "consecutive_fire_cnt_max": 3,
+          "snooze_length": 2,
+          "geometric_boundaries": {
+             "x": [0, 28],
+             "y": [0, 28],
+             "z": [0, 10]
+          }
+       }
+    },
+    "vision_v1-5": {
+       "growth_path": "",
+       "group_id": "vision_v1",
+       "direction_sensitivity": ".",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 3,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
+       "synaptic_strength": 1,
+       "synaptic_strength_inc": 1,
+       "synaptic_strength_max": 1,
+       "neighbor_locator_rule_id": "rule_1",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "vision_v2" : {
+             "neighbor_locator_rule_id": "rule_2",
+             "neighbor_locator_rule_param_id": "param_2"
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "timer_threshold": 50,
+          "orientation_selectivity_id": "",
+          "firing_threshold": 3,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "consecutive_fire_cnt_max": 3,
+          "snooze_length": 2,
+          "geometric_boundaries": {
+             "x": [0, 28],
+             "y": [0, 28],
+             "z": [0, 10]
+          }
+       }
+    },
+    "vision_v1-6": {
+       "growth_path": "",
+       "group_id": "vision_v1",
+       "direction_sensitivity": " ",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 3,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
+       "synaptic_strength": 1,
+       "synaptic_strength_inc": 1,
+       "synaptic_strength_max": 1,
+       "neighbor_locator_rule_id": "rule_1",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "vision_v2" : {
+             "neighbor_locator_rule_id": "rule_2",
+             "neighbor_locator_rule_param_id": "param_2"
+          }
+       },
+       "neuron_params": {
+          "activation_function_id": "",
+          "timer_threshold": 50,
+          "orientation_selectivity_id": "",
+          "firing_threshold": 3,
+          "firing_pattern_id": "",
+          "axon_avg_length": "",
+          "axon_avg_connections": "",
+          "axon_orientation function": "",
+          "consecutive_fire_cnt_max": 3,
+          "snooze_length": 2,
+          "geometric_boundaries": {
+             "x": [0, 28],
+             "y": [0, 28],
+             "z": [0, 10]
+          }
+       }
+    },
+    "vision_v1-7": {
+       "growth_path": "",
+       "group_id": "vision_v1",
+       "direction_sensitivity": "I",
+       "orientation_selectivity_pattern": "",
+       "location": "",
+       "kernel_size": 3,
+       "cortical_neuron_count": 100,
+       "location_generation_type": "random",
+       "init_synapse_needed": "True",
+       "synaptic_strength": 1,
+       "synaptic_strength_inc": 1,
+       "synaptic_strength_max": 1,
+       "neighbor_locator_rule_id": "rule_1",
+       "neighbor_locator_rule_param_id": "param_1",
+       "cortical_mapping_dst": {
+          "vision_v2" : {
              "neighbor_locator_rule_id": "rule_2",
              "neighbor_locator_rule_param_id": "param_2"
           }
@@ -862,6 +1094,7 @@
     },
      "vision_v2": {
        "growth_path": "",
+       "group_id": "vision_v2",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 5,
@@ -899,6 +1132,7 @@
     },
      "vision_IT": {
        "growth_path": "",
+       "group_id": "vision_IT",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -936,6 +1170,7 @@
     },
      "vision_memory": {
        "growth_path": "",
+       "group_id": "Memory",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -968,6 +1203,7 @@
     },
      "utf8": {
        "growth_path": "",
+       "group_id": "IPU",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -1005,6 +1241,7 @@
     },
      "utf8_memory": {
        "growth_path": "",
+       "group_id": "memory",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -1037,6 +1274,7 @@
     },
      "utf8_out": {
        "growth_path": "",
+       "group_id": "OPU",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,

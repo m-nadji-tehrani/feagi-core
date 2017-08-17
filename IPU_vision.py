@@ -10,12 +10,11 @@
 import numpy as np
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
-import cv2
+# import cv2
 import matplotlib.pyplot as plt
 
 import settings
 import architect
-
 
 
 def convert_image_to_coordinates(image):   # Image is currently assumed to be a 28 x 28 numpy array
@@ -146,12 +145,10 @@ def create_direction_matrix(image, kernel_size):
     return direction_matrix
 
 
-"""
-todo: Need to add a method to combine multiple IPU layer data into a single one
-        -Think how to build a direction agnostic representation of an object
+# todo: Need to add a method to combine multiple IPU layer data into a single one
+#        -Think how to build a direction agnostic representation of an object
         
 
-"""
 def kernel_edge_detector(kernel_values):
 
 
@@ -191,7 +188,6 @@ def direction_stats(image_block):
     # direction_matrix = (image, kernel_size))
     # print(image)
 
-
     direction_matrix = ''
     for row in image_block:
         for item in row:
@@ -204,8 +200,7 @@ def direction_stats(image_block):
             unique_chars.append(item)
     # print('list of unique chars = %s' % unique_chars)
 
-
-    # Count number of occorances of each unique character
+    # Count number of occurrences of each unique character
     counts = []
     for item in unique_chars:
         counts.append([item, direction_matrix.count(item)])
@@ -217,10 +212,6 @@ def direction_stats(image_block):
         stats.append([counts[key][0], str(counts[key][1] * 100 / float(count_total)) + ' %'])
 
     return stats
-
-
-
-
 
 
 # settings.init()

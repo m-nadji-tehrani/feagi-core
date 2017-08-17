@@ -40,6 +40,16 @@ class Brain:
         visualizer.connectome_visualizer(cortical_area='vision_memory', neighbor_show='true')
         return
 
+    def see_from_mnist(self, image_number, fcl_queue, event_queue):
+        cp = mp.current_process()
+        print(' starting', cp.name, cp.pid)
+        settings.reset_cumulative_counter_instances()   # ????
+        fire_list= self.read_from_mnist(image_number, event_queue)
+        # print(fire_list)
+        self.inject_to_fcl(fire_list, fcl_queue)
+        print(' exiting', cp.name, cp.pid)
+        return
+
     def read_from_mnist(self, image_number, event_queue):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
@@ -59,16 +69,6 @@ class Brain:
         for item in fire_list:
             flc.append(item)
         fcl_queue.put(flc)
-        return
-
-    def see_from_mnist(self, image_number, fcl_queue, event_queue):
-        cp = mp.current_process()
-        print(' starting', cp.name, cp.pid)
-        settings.reset_cumulative_counter_instances()   # ????
-        fire_list= self.read_from_mnist(image_number, event_queue)
-        # print(fire_list)
-        self.inject_to_fcl(fire_list, fcl_queue)
-        print(' exiting', cp.name, cp.pid)
         return
 
     def read_char(self, char, fcl_queue):
@@ -250,7 +250,7 @@ if __name__ == '__main__':
 # todo: Fine tune Genome to produce distinguishable results as Neurons fire
 # todo: Define streams containing a chain of cortical areas for various functions such as vision, hearing, etc.
 # todo: find a way to speed up brain building when synapse creation is not needed e.g. memory, utf8
-# todo: Synapse creation takes a very long time in presense of large neurons. Think of a way to limit the scope. zipcode
+# todo: Synapse creation takes a very long time in presence of large neurons. Think of a way to limit the scope. zipcode
 
 # Input handling
 # todo: Use directional kernal analysis data as part of input data
@@ -296,8 +296,6 @@ if __name__ == '__main__':
 # todo: Figure how Memory Module should be configured so it can behave as explained above
 # todo: Configure an output module so after Memory module is activated the activation can be read back.
 # todo: How to get output from memory ??? How to comprehend it ????
-# todo: Work on fusing Memories together and reading back from Memory    <<<<< Up Next
-# todo: Think of modulating the memory into functional areas such as Image memory, Char memory, etc.   <<< NEXT!!!!
 
 
 # Visualization

@@ -70,7 +70,8 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         genome = settings.genome
 
         if settings.verbose:
-            print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s' % fire_candidate_list + settings.Bcolors.ENDC)
+            print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s'
+                  % fire_candidate_list + settings.Bcolors.ENDC)
 
         burst_count += 1
 
@@ -78,8 +79,8 @@ def burst(user_input, fire_list, brain_queue, event_queue):
               % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
 
         for cortical_area in set([i[0] for i in fire_candidate_list]):
-            print(settings.Bcolors.BURST +
-                  '    %s : %i  ' % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
+            print(settings.Bcolors.BURST + '    %s : %i  '
+                  % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
                   + settings.Bcolors.ENDC)
 
         # todo: Look into multithreading for Neuron neuron_fire and wire_neurons function
@@ -129,7 +130,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                 user_input_value = user_input.get()
                 print("User input value is ", user_input_value)
                 if user_input_value == 'x':
-                    print(settings.Bcolors.BURST + '>>>   Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+                    print(settings.Bcolors.BURST + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                     burst_count = 0
                     settings.ready_to_exit_burst = True
                     settings.user_input = ''
@@ -186,7 +187,8 @@ def neuron_fire(cortical_area, id):
     for x in destination:
         if settings.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
-        neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
+        neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
+                      settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
 
     # Condition to snooze the neuron
     if settings.brain[cortical_area][id]["consecutive_fire_cnt"] > \
@@ -205,7 +207,8 @@ def neuron_fire(cortical_area, id):
         print("Comprehended character is: %s                 #*#*#*#*#*#*#"
               % OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id))
 
-    #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"], settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x])
+    #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
+        # settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x])
     #
     # pool = ThreadPool(4)
     # pool.starmap(neuron_update, neuron_update_list)
@@ -238,12 +241,13 @@ def neuron_update(cortical_area, synaptic_strength, destination):
 
     if settings.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"
-          % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
+          % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
+              + settings.Bcolors.ENDC)
 
     # Check if timer is expired on the destination Neuron and if so reset the counter
     # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
-    if (datetime.datetime.strptime(settings.brain[cortical_area][destination]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f") +
-            datetime.timedelta(0, settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
+    if (datetime.datetime.strptime(settings.brain[cortical_area][destination]["last_timer_reset_time"],
+                                   "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(0, settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
         settings.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
         settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
         if settings.verbose:
@@ -259,7 +263,8 @@ def neuron_update(cortical_area, synaptic_strength, destination):
 
     if settings.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"
-          % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"]) + settings.Bcolors.ENDC)
+          % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
+              + settings.Bcolors.ENDC)
 
     # Add code to start a timer when neuron first receives a signal and reset counters when its expired
 
@@ -272,12 +277,14 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # fire_candidate_list
     global fire_candidate_list
     global burst_count
-    if settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] > settings.brain[cortical_area][destination]["firing_threshold"]:
+    if settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] > \
+            settings.brain[cortical_area][destination]["firing_threshold"]:
         if settings.brain[cortical_area][destination]["snooze_till_burst_num"] <= burst_count:
            if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
                 fire_candidate_list.append([cortical_area, destination])
                 if settings.verbose:
-                    print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+                    print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list
+                          + settings.Bcolors.ENDC)
 
     return fire_candidate_list
 

@@ -8,6 +8,7 @@ import IPU_vision
 import IPU_utf8
 import neuron_functions
 import stats
+import numpy as np
 from time import sleep
 
 """
@@ -52,24 +53,28 @@ class Brain:
     def read_from_mnist(self, image_number, event_queue):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         init_fire_list = []
-        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))
+        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))    # todo  ?????
         cortical_list  = settings.cortical_list()
         vision_group = []
         for item in cortical_list:
             if settings.genome['blueprint'][item]['group_id'] == 'vision_v1':
                 vision_group.append(item)
-        print('vision group is: ', vision_group)
+        # print('vision group is: ', vision_group)
+        image = mnist.read_image(image_number)
+        print('image :\n ', np.array2string(image, max_line_width=np.inf))
+        filter = IPU_vision.Filter()
+        filtered_image = filter.brightness(image)
+        print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
         for cortical_area in vision_group:
             cortical_direction_sensitivity = settings.genome['blueprint'][cortical_area]['direction_sensitivity']
-            image = mnist.read_image(image_number)
-            print('image : ', image)
-            polarized_image = IPU_vision.create_direction_matrix(image, 3, cortical_direction_sensitivity)
-            print("Polarized image for :", cortical_area, polarized_image)
+            kernel_size = 7
+            polarized_image = IPU_vision.create_direction_matrix(filtered_image, kernel_size, cortical_direction_sensitivity)
+            print("Polarized image for :", cortical_area)
+            print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
             IPU_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array, cortical_area)
             for item in neuron_id_list:
                 init_fire_list.append([cortical_area, item])
-
         event_id = architect.event_id_gen()
         event_queue.put(event_id)
         # print('Initial Fire List:')
@@ -313,6 +318,7 @@ if __name__ == '__main__':
 
 # Visualization
 # todo: Fix issue on the visualization related to 3D init not compatible with 2D ones
+# todo: Implement concept of cortical pathway along with visualization adjustments    <<<<<<  NEXT!!!!
 
 
 # Speech

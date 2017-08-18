@@ -17,6 +17,18 @@ import settings
 import architect
 
 
+class Filter:
+    def brightness(self, image):
+        new_image = np.zeros(image.shape)
+        for x in range(image.shape[0]):
+            for y in range(image.shape[1]):
+                if image[x, y] >= settings.genome["image_color_intensity_tolerance"]:
+                    new_image[x, y] = image[x, y]
+                else:
+                    new_image[x, y] = 1
+        return new_image
+
+
 def kernel_sizer(kernel_values):
     np.tmp = kernel_values
     kernel_size = np.shape(np.tmp)
@@ -205,9 +217,6 @@ def orientation_matrix(raw_image, orientation_key, kernel_size):
     Function to produce an orientation matrix based on the raw image data
     """
 
-
-
-
     return
 
 
@@ -246,13 +255,15 @@ def direction_stats(image_block):
     return stats
 
 
-# settings.init()
 
-# settings.init()
-# print(kernel_direction([
-#   [ 1,  1,  1]
-#  ,[ 1,  10,  1]
-#  ,[ 1,  1,  1]]))
+
+settings.init()
+
+
+print(kernel_direction([
+  [ .1,  .1,  .1]
+ ,[ .1,  .1,  .1]
+ ,[ .1,  .1,  .1]]))
 # print(kernel_direction([
 #   [ 1,  1,  1,  1,  1]
 #  ,[ 1,  1,  1,  1,  1]

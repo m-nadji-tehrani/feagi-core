@@ -96,26 +96,30 @@ def init():
 
 
 def init_burst_visualization():
-    global burst_figure
-    burst_figure = plt.figure(figsize=plt.figaspect(.15))
-    pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+80+800")
+    # global burst_figure
+    # burst_figure = plt.figure(figsize=plt.figaspect(.15))
+    # pylab.thismanager = pylab.get_current_fig_manager()
+    # pylab.thismanager.window.wm_geometry("+80+800")
 
-    global utf8_figure
-    utf8_figure = plt.figure(figsize=(6, 1.25))
+    global input_figure
+    input_figure = plt.figure(figsize=(2, 6))
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+20+200")
+
+    global vision_figure
+    vision_figure = plt.figure(figsize=(6, 10))
     pylab.thismanager = pylab.get_current_fig_manager()
     pylab.thismanager.window.wm_geometry("+300+20")
 
-    global vision_figure
-    vision_figure = plt.figure(figsize=(6, 5))
-    pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+300+220")
-
     global memory_figure
-    vision_figure = plt.figure(figsize=(1, 7))
+    memory_figure = plt.figure(figsize=(2, 6))
     pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+950+20")
+    pylab.thismanager.window.wm_geometry("+920+20")
 
+    global output_figure
+    output_figure = plt.figure(figsize=(2, 6))
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+1200+20")
 
 
 

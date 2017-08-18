@@ -12,10 +12,7 @@ import json
 import datetime
 from time import sleep
 import multiprocessing as mp
-from mpl_toolkits.mplot3d import proj3d
 import subprocess
-import matplotlib.pyplot as plt
-import pylab
 
 import visualizer
 import settings
@@ -47,11 +44,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
     settings.event_id = event_queue.get()
     settings.brain = brain_queue.get()
     if settings.vis_show:
-        global figure
-        figure = plt.figure(figsize=plt.figaspect(.15))
-
-        pylab.thismanager = pylab.get_current_fig_manager()
-        pylab.thismanager.window.wm_geometry("+80+800")
+        settings.init_burst_visualization()
 
     while not settings.ready_to_exit_burst:
         burst_strt_time = datetime.datetime.now()

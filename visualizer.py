@@ -7,6 +7,7 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
+from mpl_toolkits.mplot3d import proj3d
 
 
 import settings
@@ -63,7 +64,7 @@ def burst_visualizer(fire_candidate_list):
 
     # Toggle the visual appearance of the Neuron to resemble firing action
     for entry in indexed_cortical_list:
-        axx = neuron_functions.figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
+        axx = settings.burst_figure.add_subplot(1, len(indexed_cortical_list), entry[0] + 1, projection='3d')
         axx.set_title(entry[1])
         axx.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
                      settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
@@ -91,7 +92,7 @@ def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
     if not settings.vis_init_status:
         settings.vis_init()
 
-    fig = settings.plt.figure()
+    # fig = settings.plt.figure()
     fig = settings.plt.figure(figsize=settings.plt.figaspect(.2))
     fig.suptitle('Cortical Activities\n')
 

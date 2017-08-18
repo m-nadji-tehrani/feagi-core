@@ -57,7 +57,7 @@ class Brain:
         cortical_list  = settings.cortical_list()
         vision_group = []
         for item in cortical_list:
-            if settings.genome['blueprint'][item]['group_id'] == 'vision_v1':
+            if settings.genome['blueprint'][item]['sub_group_id'] == 'vision_v1':
                 vision_group.append(item)
         # print('vision group is: ', vision_group)
         image = mnist.read_image(image_number)

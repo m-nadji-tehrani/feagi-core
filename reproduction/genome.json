@@ -822,7 +822,8 @@
     "vision_v1-1": {
        "growth_path": "",
        "direction_sensitivity": "/",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 3,
@@ -860,7 +861,8 @@
     },
     "vision_v1-2": {
        "growth_path": "",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "direction_sensitivity": "\\",
        "orientation_selectivity_pattern": "",
        "location": "",
@@ -899,7 +901,8 @@
     },
     "vision_v1-3": {
        "growth_path": "",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "direction_sensitivity": "|",
        "orientation_selectivity_pattern": "",
        "location": "",
@@ -938,7 +941,8 @@
     },
     "vision_v1-4": {
        "growth_path": "",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "direction_sensitivity": "-",
        "orientation_selectivity_pattern": "",
        "location": "",
@@ -977,7 +981,8 @@
     },
     "vision_v1-5": {
        "growth_path": "",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "direction_sensitivity": ".",
        "orientation_selectivity_pattern": "",
        "location": "",
@@ -1016,7 +1021,8 @@
     },
     "vision_v1-6": {
        "growth_path": "",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "direction_sensitivity": " ",
        "orientation_selectivity_pattern": "",
        "location": "",
@@ -1055,7 +1061,8 @@
     },
     "vision_v1-7": {
        "growth_path": "",
-       "group_id": "vision_v1",
+       "group_id": "vision",
+       "sub_group_id": "vision_v1",
        "direction_sensitivity": "I",
        "orientation_selectivity_pattern": "",
        "location": "",
@@ -1094,7 +1101,8 @@
     },
      "vision_v2": {
        "growth_path": "",
-       "group_id": "vision_v2",
+       "group_id": "vision",
+       "sub_group_id": "vision_v2",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 5,
@@ -1132,7 +1140,8 @@
     },
      "vision_IT": {
        "growth_path": "",
-       "group_id": "vision_IT",
+       "group_id": "vision",
+       "sub_group_id": "vision_IT",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -1171,6 +1180,7 @@
      "vision_memory": {
        "growth_path": "",
        "group_id": "Memory",
+       "sub_group_id": "vision",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -1203,7 +1213,8 @@
     },
      "utf8": {
        "growth_path": "",
-       "group_id": "IPU",
+       "group_id": "UTF8",
+       "sub_group_id": "IPU_utf8",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -1241,7 +1252,8 @@
     },
      "utf8_memory": {
        "growth_path": "",
-       "group_id": "memory",
+       "group_id": "Memory",
+       "sub_group_id": "utf8",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,
@@ -1274,7 +1286,8 @@
     },
      "utf8_out": {
        "growth_path": "",
-       "group_id": "OPU",
+       "group_id": "UTF8",
+       "sub_group_id": "OPU_utf8",
        "orientation_selectivity_pattern": "",
        "location": "",
        "kernel_size": 7,

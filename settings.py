@@ -5,6 +5,7 @@ This file contains all the Global settings and parameters used throughout the pr
 import json
 import os.path
 import matplotlib.pyplot as plt
+import matplotlib.pylab as pylab
 from stats import cortical_xyz_range
 
 def init():
@@ -94,6 +95,30 @@ def init():
     sobel_y = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]
 
 
+def init_burst_visualization():
+    global burst_figure
+    burst_figure = plt.figure(figsize=plt.figaspect(.15))
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+80+800")
+
+    global utf8_figure
+    utf8_figure = plt.figure(figsize=(6, 1.25))
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+300+20")
+
+    global vision_figure
+    vision_figure = plt.figure(figsize=(6, 5))
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+300+220")
+
+    global memory_figure
+    vision_figure = plt.figure(figsize=(1, 7))
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+950+20")
+
+
+
+
 def vis_init():
     from matplotlib.patches import FancyArrowPatch
     from mpl_toolkits.mplot3d import proj3d
@@ -125,9 +150,6 @@ def vis_init():
         ax.set_ylabel('Y Label')
         ax.set_zlabel('Z Label')
         fig.suptitle("Main plot")
-
-        global figure
-        figure = plt.figure(figsize=plt.figaspect(.15))
 
     global vis_init_status
     vis_init_status = True

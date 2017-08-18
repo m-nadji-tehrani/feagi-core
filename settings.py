@@ -41,6 +41,8 @@ def init():
     # Flag to show visualizations
     global vis_show
     vis_show = True
+    if vis_show:
+        init_burst_visualization()
 
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory
@@ -102,9 +104,9 @@ def init_burst_visualization():
     # pylab.thismanager.window.wm_geometry("+80+800")
 
     global input_figure
-    input_figure = plt.figure(figsize=(2, 6))
+    input_figure = plt.figure(figsize=(2, 3))
     pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+20+200")
+    pylab.thismanager.window.wm_geometry("+20+600")
 
     global vision_figure
     vision_figure = plt.figure(figsize=(6, 10))
@@ -117,10 +119,9 @@ def init_burst_visualization():
     pylab.thismanager.window.wm_geometry("+920+20")
 
     global output_figure
-    output_figure = plt.figure(figsize=(2, 6))
+    output_figure = plt.figure(figsize=(2, 3))
     pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+1200+20")
-
+    pylab.thismanager.window.wm_geometry("+1200+600")
 
 
 def vis_init():

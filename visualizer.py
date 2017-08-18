@@ -122,45 +122,48 @@ def burst_visualizer(fire_candidate_list):
             d_memory.set_zlabel('Z Label')
 
         if settings.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-            d_utf8 = settings.input_figure.add_subplot(2, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
-            d_utf8.set_title(entry[1])
-            d_utf8.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+            d_ipu = settings.input_figure.add_subplot(1, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+            d_ipu.set_title(entry[1])
+            d_ipu.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
                          settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
-            d_utf8.set_ylim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+            d_ipu.set_ylim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
                          settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
-            d_utf8.set_zlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+            d_ipu.set_zlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
                          settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
-            d_utf8.set_xlabel('X Label')
-            d_utf8.set_ylabel('Y Label')
-            d_utf8.set_zlabel('Z Label')
+            d_ipu.set_xlabel('X Label')
+            d_ipu.set_ylabel('Y Label')
+            d_ipu.set_zlabel('Z Label')
 
         if settings.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-            d_utf8 = settings.output_figure.add_subplot(2, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
-            d_utf8.set_title(entry[1])
-            d_utf8.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+            d_opu = settings.output_figure.add_subplot(1, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+            d_opu.set_title(entry[1])
+            d_opu.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
                          settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
-            d_utf8.set_ylim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+            d_opu.set_ylim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
                          settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
-            d_utf8.set_zlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+            d_opu.set_zlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
                          settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
-            d_utf8.set_xlabel('X Label')
-            d_utf8.set_ylabel('Y Label')
-            d_utf8.set_zlabel('Z Label')
+            d_opu.set_xlabel('X Label')
+            d_opu.set_ylabel('Y Label')
+            d_opu.set_zlabel('Z Label')
 
         for location in neuron_locations[entry[1]]:
             if settings.genome['blueprint'][entry[1]]['group_id'] == 'vision':
                 d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
             if settings.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
                 d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
-            if settings.genome['blueprint'][entry[1]]['group_id'] == 'UTF8':
-                d_utf8.scatter(location[0], location[1], location[2], c='r', marker='^')
+            if settings.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+                d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
+            if settings.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+                d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
 
     settings.plt.draw()
     settings.plt.pause(settings.burst_timer)
     settings.plt.clf()
     d_vision.cla()
     d_memory.cla()
-    d_utf8.cla()
+    d_ipu.cla()
+    d_opu.cla()
     return
 
 
@@ -186,6 +189,23 @@ def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
     settings.plt.show()
     settings.plt.pause(1)
     return
+
+
+def mnist_img_show(IPU_input):
+    """ Displays the image from MNIST database"""
+
+    aa = settings.input_figure.add_subplot(2, 1, 2)
+    aa.set_title("User selection from MNIST")
+    aa.imshow(IPU_input)
+
+    # settings.plt.suptitle('Heatmap of Cortical area Neuronal Fire count', fontsize=12)
+
+    # plt.pause(10)
+    # settings.plt.show()
+    settings.plt.draw()
+    settings.plt.pause(settings.burst_timer)
+    return
+
 
 
 def cortical_heatmap(IPU_input, cortical_areas):
@@ -222,7 +242,7 @@ def cortical_heatmap(IPU_input, cortical_areas):
     fig2 = settings.plt.figure(num=None, figsize=(8, 8), dpi=28, facecolor='w', edgecolor='k')
 
     pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+10+800")
+    pylab.thismanager.window.wm_geometry("+20+300")
 
     for i in range(1, len(cortical_areas)+2):
         aa = fig2.add_subplot(1, len(cortical_areas)+1, i)

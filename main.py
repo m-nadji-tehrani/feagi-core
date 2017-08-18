@@ -226,6 +226,7 @@ if __name__ == '__main__':
 
                 elif settings.user_input == 'i':
                     # Visualize MNIST input
+                    # visualizer.mnist_img_show(mnist.read_image(int(settings.user_input_param)))
                     visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param)), [])
                     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                            args=(int(settings.user_input_param), FCL_queue, event_queue))
@@ -317,8 +318,7 @@ if __name__ == '__main__':
 
 
 # Visualization
-# todo: Fix issue on the visualization related to 3D init not compatible with 2D ones
-# todo: Implement concept of cortical pathway along with visualization adjustments    <<<<<<  NEXT!!!!
+# todo: Fix issue where some cortical activities are not showing up    <<<  NEXT !!!!!
 
 
 # Speech

@@ -70,6 +70,7 @@ def read_image(index):
         if tmp == index:
             # print(i[1])
             img = i[1]
+            label = i[0]
 
             # def cv_code(img):
             #     laplacian = cv2.Laplacian(img, cv2.CV_64F)
@@ -108,7 +109,7 @@ def read_image(index):
             #     plt.subplot(3, 3, 7), plt.imshow(rotate90, cmap='gray')
             #     plt.title('Rotate 90'), plt.xticks([]), plt.yticks([])
 
-    return img
+    return img, label
 
 
 

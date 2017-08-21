@@ -66,7 +66,7 @@ def burst_visualizer(fire_candidate_list):
 
         if settings.genome['blueprint'][entry[1]]['group_id'] == 'vision':
             if settings.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
-                d_vision = settings.vision_figure.add_subplot(7, 3, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+                d_vision = settings.vision_figure.add_subplot(7, 3, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
                              settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
@@ -77,8 +77,9 @@ def burst_visualizer(fire_candidate_list):
                 d_vision.set_xlabel('X Label')
                 d_vision.set_ylabel('Y Label')
                 d_vision.set_zlabel('Z Label')
-            if settings.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v2':
-                d_vision = settings.vision_figure.add_subplot(7, 3, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+
+            elif settings.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v2':
+                d_vision = settings.vision_figure.add_subplot(7, 3, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(
                     settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -92,8 +93,8 @@ def burst_visualizer(fire_candidate_list):
                 d_vision.set_xlabel('X Label')
                 d_vision.set_ylabel('Y Label')
                 d_vision.set_zlabel('Z Label')
-            if settings.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_IT':
-                d_vision = settings.vision_figure.add_subplot(7, 3, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+            elif settings.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_IT':
+                d_vision = settings.vision_figure.add_subplot(7, 3, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(
                     settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -108,7 +109,7 @@ def burst_visualizer(fire_candidate_list):
                 d_vision.set_ylabel('Y Label')
                 d_vision.set_zlabel('Z Label')
 
-        if settings.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
+        elif settings.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
             d_memory = settings.memory_figure.add_subplot(2, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
             d_memory.set_title(entry[1])
             d_memory.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -121,7 +122,7 @@ def burst_visualizer(fire_candidate_list):
             d_memory.set_ylabel('Y Label')
             d_memory.set_zlabel('Z Label')
 
-        if settings.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+        elif settings.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
             d_ipu = settings.input_figure.add_subplot(1, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
             d_ipu.set_title(entry[1])
             d_ipu.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -134,7 +135,7 @@ def burst_visualizer(fire_candidate_list):
             d_ipu.set_ylabel('Y Label')
             d_ipu.set_zlabel('Z Label')
 
-        if settings.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+        elif settings.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
             d_opu = settings.output_figure.add_subplot(1, 1, settings.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
             d_opu.set_title(entry[1])
             d_opu.set_xlim(settings.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],

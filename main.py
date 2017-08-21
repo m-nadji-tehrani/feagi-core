@@ -43,34 +43,36 @@ class Brain:
 
     def see_from_mnist(self, image_number, fcl_queue, event_queue):
         cp = mp.current_process()
-        print(' starting', cp.name, cp.pid)
+        # print(' starting', cp.name, cp.pid)
         settings.reset_cumulative_counter_instances()   # ????
         fire_list= self.read_from_mnist(image_number, event_queue)
         self.inject_to_fcl(fire_list, fcl_queue)
-        print(' exiting', cp.name, cp.pid)
+        # print(' exiting', cp.name, cp.pid)
         return
 
     def read_from_mnist(self, image_number, event_queue):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         init_fire_list = []
-        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number))    # todo  ?????
+        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ?????
         cortical_list  = settings.cortical_list()
         vision_group = []
         for item in cortical_list:
             if settings.genome['blueprint'][item]['sub_group_id'] == 'vision_v1':
                 vision_group.append(item)
         # print('vision group is: ', vision_group)
-        image = mnist.read_image(image_number)
-        print('image :\n ', np.array2string(image, max_line_width=np.inf))
+        image_ = mnist.read_image(image_number)
+        image = image_[0]
+        print("*** Image read from MNIST was :", image_[1])
+        # print('image :\n ', np.array2string(image, max_line_width=np.inf))
         filter = IPU_vision.Filter()
         filtered_image = filter.brightness(image)
-        print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
+        # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
         for cortical_area in vision_group:
             cortical_direction_sensitivity = settings.genome['blueprint'][cortical_area]['direction_sensitivity']
             kernel_size = 7
             polarized_image = IPU_vision.create_direction_matrix(filtered_image, kernel_size, cortical_direction_sensitivity)
-            print("Polarized image for :", cortical_area)
-            print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
+            # print("Polarized image for :", cortical_area)
+            # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
             IPU_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array, cortical_area)
             for item in neuron_id_list:
@@ -91,12 +93,12 @@ class Brain:
 
     def read_char(self, char, fcl_queue):
         cp = mp.current_process()
-        print(' starting', cp.name, cp.pid)
+        # print(' starting', cp.name, cp.pid)
         if char:
             fire_list = IPU_utf8.convert_char_to_fire_list(char)
             print(fire_list)
             self.inject_to_fcl(fire_list, fcl_queue)
-        print(' exiting', cp.name, cp.pid)
+        # print(' exiting', cp.name, cp.pid)
 
     def read_user_input(self):
         fd = sys.stdin.fileno()
@@ -225,9 +227,8 @@ if __name__ == '__main__':
                     settings.user_input = ''
 
                 elif settings.user_input == 'i':
-                    # Visualize MNIST input
-                    # visualizer.mnist_img_show(mnist.read_image(int(settings.user_input_param)))
-                    visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param)), [])
+                    if settings.vis_show:
+                        visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param))[0], [])
                     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                            args=(int(settings.user_input_param), FCL_queue, event_queue))
                     process_3.start()
@@ -253,6 +254,7 @@ if __name__ == '__main__':
         settings.brain = brain_queue.get()
         join_processes()
         settings.save_brain_to_disk()
+        settings.save_genome_to_disk()
 
 #
 #

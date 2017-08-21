@@ -18,6 +18,7 @@ import visualizer
 import settings
 from architect import synapse, neighbor_finder_ext
 import OPU_utf8
+import genethesizer
 
 
 burst_count = 0
@@ -67,6 +68,9 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                   % fire_candidate_list + settings.Bcolors.ENDC)
 
         burst_count += 1
+        if burst_count % settings.genome['evolution_burst_count'] == 0:
+            print('Evolution phase reached...')
+            genethesizer.generation_assessment()
 
         print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
               % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
@@ -75,8 +79,11 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             print(settings.Bcolors.BURST + '    %s : %i  '
                   % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
                   + settings.Bcolors.ENDC)
+            if settings.genome['blueprint'][cortical_area]['group_id'] == 'Memory' and \
+                            len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
+                sleep(settings.idle_burst_timer)
 
-        # todo: Look into multithreading for Neuron neuron_fire and wire_neurons function
+        # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
 
         for x in list(fire_candidate_list):
             if settings.verbose:
@@ -98,7 +105,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                     if src_neuron != dst_neuron:
                         wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
-        # Code to wire memory to Output processing unit when the firing coinside with an IPU event
+        # Code to wire memory to Output processing unit when the firing coincide with an IPU event
         for _ in fire_candidate_list:
             if _[0] == "utf8_memory":
                 for neuron in fire_candidate_list:
@@ -173,7 +180,6 @@ def neuron_fire(cortical_area, id):
     settings.brain[cortical_area][id]["cumulative_fire_count"] += 1
     settings.brain[cortical_area][id]["cumulative_fire_count_inst"] += 1
 
-
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     neuron_update_list = []
@@ -194,7 +200,6 @@ def neuron_fire(cortical_area, id):
         settings.brain[cortical_area][id]["consecutive_fire_cnt"] += 1
 
     settings.brain[cortical_area][id]["last_burst_num"] = burst_count
-
 
     if cortical_area == 'utf8_out':
         print("Comprehended character is: %s                 #*#*#*#*#*#*#"
@@ -237,10 +242,12 @@ def neuron_update(cortical_area, synaptic_strength, destination):
           % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
               + settings.Bcolors.ENDC)
 
-    # Check if timer is expired on the destination Neuron and if so reset the counter
     # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
+    # Check if timer is expired on the destination Neuron and if so reset the counter
+    # todo: in rare cases the date conversion format is running into exception
     if (datetime.datetime.strptime(settings.brain[cortical_area][destination]["last_timer_reset_time"],
-                                   "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(0, settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
+                                   "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(0,
+                                                                                settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
         settings.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
         settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
         if settings.verbose:
@@ -352,5 +359,5 @@ def snooze_till(cortical_area, neuron_id, burst_id):
     """ Acting as an inhibitory neurotransmitter to supress firing of neuron till a later burst"""
     settings.brain[cortical_area][neuron_id]["snooze_till_burst_num"] \
         = burst_id + settings.genome["blueprint"][cortical_area]["neuron_params"]["snooze_length"]
-    print("%s : %s has been snoozed!" % (cortical_area, neuron_id))
+    # print("%s : %s has been snoozed!" % (cortical_area, neuron_id))
     return

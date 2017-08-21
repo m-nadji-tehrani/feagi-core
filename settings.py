@@ -40,7 +40,7 @@ def init():
 
     # Flag to show visualizations
     global vis_show
-    vis_show = True
+    vis_show = False
     if vis_show:
         init_burst_visualization()
 
@@ -107,21 +107,25 @@ def init_burst_visualization():
     input_figure = plt.figure(figsize=(2, 3))
     pylab.thismanager = pylab.get_current_fig_manager()
     pylab.thismanager.window.wm_geometry("+20+600")
+    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
     global vision_figure
     vision_figure = plt.figure(figsize=(6, 10))
     pylab.thismanager = pylab.get_current_fig_manager()
     pylab.thismanager.window.wm_geometry("+300+20")
+    plt.subplots_adjust(left=0, bottom=0, right=1, top=.98, wspace=0.2, hspace=0)
 
     global memory_figure
     memory_figure = plt.figure(figsize=(2, 6))
     pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+920+20")
+    pylab.thismanager.window.wm_geometry("+920+300")
+    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
     global output_figure
     output_figure = plt.figure(figsize=(2, 3))
     pylab.thismanager = pylab.get_current_fig_manager()
     pylab.thismanager.window.wm_geometry("+1200+600")
+    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
 
 def vis_init():
@@ -212,6 +216,19 @@ def save_brain_to_disk():
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
             data_file.truncate()
+    return
+
+
+def save_genome_to_disk():
+    with open(genome_file, "r+") as data_file:
+        data = genome
+
+        print("Genome has been preserved for future generations!")
+
+        # Saving changes to the connectome
+        data_file.seek(0)  # rewind
+        data_file.write(json.dumps(data, indent=3))
+        data_file.truncate()
     return
 
 

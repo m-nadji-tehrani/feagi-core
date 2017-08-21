@@ -57,7 +57,7 @@ def convert_image_to_coordinates(image):   # Image is currently assumed to be a 
 
 
 def convert_direction_matrix_to_coordinates(image):
-    print("Polarized image type = ", type(image))
+    # print("Polarized image type = ", type(image))
     image_locations = []
     x = 0
     y = 0
@@ -257,13 +257,13 @@ def direction_stats(image_block):
 
 
 
-settings.init()
-
-
-print(kernel_direction([
-  [ .1,  .1,  .1]
- ,[ .1,  .1,  .1]
- ,[ .1,  .1,  .1]]))
+# settings.init()
+#
+#
+# print(kernel_direction([
+#   [ .1,  .1,  .1]
+#  ,[ .1,  .1,  .1]
+#  ,[ .1,  .1,  .1]]))
 # print(kernel_direction([
 #   [ 1,  1,  1,  1,  1]
 #  ,[ 1,  1,  1,  1,  1]

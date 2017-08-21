@@ -44,6 +44,9 @@ def init():
     if vis_show:
         init_burst_visualization()
 
+    global auto_train
+    auto_train = True
+
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory
     read_data_from_memory = True

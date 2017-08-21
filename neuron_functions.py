@@ -11,8 +11,8 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 import json
 import datetime
 from time import sleep
-import multiprocessing as mp
-import subprocess
+# import multiprocessing as mp
+# import subprocess
 
 import visualizer
 import settings
@@ -202,7 +202,7 @@ def neuron_fire(cortical_area, id):
     settings.brain[cortical_area][id]["last_burst_num"] = burst_count
 
     if cortical_area == 'utf8_out':
-        print("Comprehended character is: %s                 #*#*#*#*#*#*#"
+        print("Comprehended character is:                 <<<     %s      >>>                 #*#*#*#*#*#*#"
               % OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id))
 
     #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],

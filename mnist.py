@@ -10,14 +10,17 @@ which is GPL licensed.
 import os
 import struct
 import numpy as np
-import sys
-sys.path.append('/usr/local/opt/opencv3/lib/python3.6/site-packages/')
-import cv2
-from matplotlib import pyplot as plt
-import IPU_vision
+import random
 
-import settings
-import multiprocessing as mp
+
+# import sys
+# sys.path.append('/usr/local/opt/opencv3/lib/python3.6/site-packages/')
+# import cv2
+# from matplotlib import pyplot as plt
+# import IPU_vision
+#
+# import settings
+# import multiprocessing as mp
 
 
 def read(dataset = "training", path = "../MNIST/"):
@@ -49,6 +52,12 @@ def read(dataset = "training", path = "../MNIST/"):
     # Create an iterator which returns each image in turn
     for i in range(len(lbl)):
         yield get_img(i)
+
+
+def read_training_img_from_mnist():
+    image_num = random.randrange(10, 500, 1)
+    training_image = read_image(image_num)
+    return training_image
 
 
 # def show(image):

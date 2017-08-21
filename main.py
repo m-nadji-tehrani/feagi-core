@@ -8,6 +8,8 @@ import IPU_vision
 import IPU_utf8
 import neuron_functions
 import stats
+import random
+from time import sleep
 import numpy as np
 from time import sleep
 
@@ -112,6 +114,8 @@ class Brain:
             # sys.stdout.flush()
         return
 
+
+
     # def kernel_view(self):
         # IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
 
@@ -165,7 +169,7 @@ if __name__ == '__main__':
     tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
     # Calling function to regenerate the Brain from the Genome
-    brain_gen.brain_gen()
+    # brain_gen.brain_gen()
 
     b = Brain()
 
@@ -198,6 +202,62 @@ if __name__ == '__main__':
         process_burst.close()
         return
 
+    def process_print_basic_info():
+        process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
+        process_1.start()
+        process_1.join()
+        settings.user_input = ''
+        return
+
+    def process_show_cortical_areas():
+        process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
+        process_2.start()
+        process_2.join()
+        settings.user_input = ''
+        return
+
+    def process_see_from_mnist():
+        if settings.vis_show:
+            visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param))[0], [])
+        process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
+                               args=(int(settings.user_input_param), FCL_queue, event_queue))
+        process_3.start()
+        process_3.join()
+        settings.user_input = ''
+        return
+
+    def process_read_char():
+        process_4 = mp.Process(name='Reading input char',
+                               target=b.read_char, args=(settings.user_input_param, FCL_queue))
+        process_4.start()
+        process_4.join()
+        settings.user_input = ''
+        return
+
+    def process_auto_training():
+        print("Auto training has been initiated.....")
+        for _ in range(int(settings.user_input_param)):
+            mnist_img_number = random.randrange(10, 500, 1)
+            if settings.vis_show:
+                visualizer.cortical_heatmap(mnist.read_image(mnist_img_number)[0], [])
+            # Following for loop help to train for a single number n number of times
+            for x in range(20):
+                mnist_img_char = mnist.read_image(mnist_img_number)[1]
+                process_5 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
+                                       args=(mnist_img_number, FCL_queue, event_queue))
+                process_6 = mp.Process(name='Reading input char', target=b.read_char, args=(str(mnist_img_char), FCL_queue))
+                process_5.start()
+                sleep(3)
+                process_6.start()
+                # process_5.join()
+                # process_6.join()
+        print("Auto training has been completed.")
+        settings.user_input = 'x'
+        return
+
+
+
+
     # Starting the burst machine
     # pool = mp.Pool(max(1, mp.cpu_count()))
 
@@ -214,33 +274,20 @@ if __name__ == '__main__':
     try:
         while settings.user_input != 'q':
             try:
-                if settings.user_input == 'a':
-                    process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
-                    process_1.start()
-                    process_1.join()
-                    settings.user_input = ''
+                if settings.user_input == 'p':
+                    process_print_basic_info()
 
                 elif settings.user_input == 's':
-                    process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
-                    process_2.start()
-                    process_2.join()
-                    settings.user_input = ''
+                    process_show_cortical_areas()
 
                 elif settings.user_input == 'i':
-                    if settings.vis_show:
-                        visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param))[0], [])
-                    process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
-                                           args=(int(settings.user_input_param), FCL_queue, event_queue))
-                    process_3.start()
-                    process_3.join()
-                    settings.user_input = ''
+                    process_see_from_mnist()
 
                 elif settings.user_input == 'c':
-                    process_4 = mp.Process(name='Reading input char',
-                                           target=b.read_char, args=(settings.user_input_param, FCL_queue))
-                    process_4.start()
-                    process_4.join()
-                    settings.user_input = ''
+                    process_read_char()
+
+                elif settings.user_input == 'a':
+                    process_auto_training()
 
                 else:
                     read_user_input()

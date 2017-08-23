@@ -72,7 +72,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
 
-        print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FLC is %i'
+        print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FCL is %i'
               % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
 
         for cortical_area in set([i[0] for i in fire_candidate_list]):

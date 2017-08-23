@@ -1185,7 +1185,7 @@
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
          "init_synapse_needed": "True",
-         "synaptic_strength": 0.1,
+         "synaptic_strength": 0.5,
          "synaptic_strength_inc": 1,
          "synaptic_strength_max": 1,
          "neighbor_locator_rule_id": "rule_1",

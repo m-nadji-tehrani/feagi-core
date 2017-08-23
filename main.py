@@ -10,8 +10,6 @@ import neuron_functions
 import stats
 import random
 from time import sleep
-import numpy as np
-from time import sleep
 
 """
 This file contains the main Brain control code
@@ -21,8 +19,9 @@ __author__ = 'Mohammad Nadji-tehrani'
 
 
 class Brain:
-
+    #
     # def __init__(self):
+    #     settings.init()
 
     def print_basic_info(self):
         cp = mp.current_process()
@@ -140,7 +139,6 @@ class Brain:
 
 
 if __name__ == '__main__':
-
     import sys
     from tty import setraw
     import termios
@@ -169,7 +167,7 @@ if __name__ == '__main__':
     tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
     # Calling function to regenerate the Brain from the Genome
-    # brain_gen.brain_gen()
+    brain_gen.brain_gen()
 
     b = Brain()
 

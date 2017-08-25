@@ -1,15 +1,16 @@
-import settings
-settings.init()
+
+
 import multiprocessing as mp
-import visualizer
-import architect
-import mnist
-import IPU_vision
-import IPU_utf8
-import neuron_functions
-import stats
-import random
-from time import sleep
+import settings
+
+settings.init_burst_visualization()
+settings.init_data()
+settings.init_messaging()
+settings.init_settings()
+settings.init_timers()
+settings.init_user_interactions()
+settings.init_visualization()
+
 
 """
 This file contains the main Brain control code
@@ -21,9 +22,10 @@ __author__ = 'Mohammad Nadji-tehrani'
 class Brain:
     #
     # def __init__(self):
-    #     settings.init()
+    # settings.init()
 
     def print_basic_info(self):
+        import stats
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
         print("\rConnectome database =                  %s" % settings.connectome_path)
@@ -35,6 +37,7 @@ class Brain:
         return
 
     def show_cortical_areas(self):
+        import visualizer
         # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
         # visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
         # visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
@@ -52,6 +55,9 @@ class Brain:
         return
 
     def read_from_mnist(self, image_number, event_queue):
+        import architect
+        import IPU_vision
+        import mnist
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         init_fire_list = []
         IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ?????
@@ -93,6 +99,7 @@ class Brain:
         return
 
     def read_char(self, char, fcl_queue):
+        import IPU_utf8
         cp = mp.current_process()
         # print(' starting', cp.name, cp.pid)
         if char:
@@ -112,8 +119,6 @@ class Brain:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
             # sys.stdout.flush()
         return
-
-
 
     # def kernel_view(self):
         # IPU_vision.image_read_block(mnist.read_image(image_number), 3, [27, 27])
@@ -144,7 +149,11 @@ if __name__ == '__main__':
     import termios
     import brain_gen
     import tkinter
+    import visualizer
+    import mnist
+    import neuron_functions
 
+    print('^^^^^^^^^^^^^^^^^ *********************** $$$$$$$$$$$$$$$$$$$$$$$$$ #######################')
 
     def submit_entry_fields():
         print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
@@ -233,6 +242,8 @@ if __name__ == '__main__':
         return
 
     def process_auto_training():
+        import random
+        from time import sleep
         print("Auto training has been initiated.....")
         for _ in range(int(settings.user_input_param)):
             mnist_img_number = random.randrange(10, 500, 1)
@@ -252,8 +263,6 @@ if __name__ == '__main__':
         print("Auto training has been completed.")
         settings.user_input = 'x'
         return
-
-
 
 
     # Starting the burst machine

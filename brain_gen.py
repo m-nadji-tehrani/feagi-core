@@ -12,7 +12,6 @@ import architect
 import visualizer
 import settings
 
-# settings.init()
 
 
 def brain_gen():

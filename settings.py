@@ -8,7 +8,17 @@ import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 from stats import cortical_xyz_range
 
-def init():
+
+def init_timers():
+    # Sleep timer for visualization delay
+    global burst_timer
+    burst_timer = 1e-17
+
+    global idle_burst_timer
+    idle_burst_timer = 2
+
+
+def init_messaging():
     global Bcolors
     class Bcolors:
         UPDATE = '\033[94m'
@@ -20,17 +30,11 @@ def init():
         HEADER = '\033[95m'
         OKGREEN = '\033[92m'
 
-    # Sleep timer for visualization delay
-    global burst_timer
-    burst_timer = 1e-17
-
-    global idle_burst_timer
-    idle_burst_timer = 2
-
     # Flag to enable Verbose mode
     global verbose
     verbose = False
 
+def init_user_interactions():
     # Variable containing user input to train and control the Brain
     global user_input
     user_input = ''
@@ -38,15 +42,22 @@ def init():
     global user_input_param
     user_input = ''
 
+    global opu_char
+    opu_char = 'X'
+
+
+def init_visualization():
     # Flag to show visualizations
     global vis_show
-    vis_show = False
+    vis_show = True
     if vis_show:
         init_burst_visualization()
 
-    global auto_train
-    auto_train = True
+    global vis_init_status
+    vis_init_status = False
 
+
+def init_data():
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory
     read_data_from_memory = True
@@ -71,20 +82,21 @@ def init():
     global event_id
     event_id = '_'
 
-    global ready_to_exit_burst
-    ready_to_exit_burst = False
-
-    global vis_init_status
-    vis_init_status = False
-
     global cortical_areas
     cortical_areas = cortical_list()
 
     # global max_xyz_range
     # max_xyz_range = cortical_xyz_range()
 
-    global opu_char
-    opu_char = 'X'
+
+def init_settings():
+    global auto_train
+    auto_train = True
+
+    global ready_to_exit_burst
+    ready_to_exit_burst = False
+
+
 
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
@@ -94,10 +106,10 @@ def init():
     # global image_color_intensity_tolerance
     # image_color_intensity_tolerance = 250
 
+    # global sobel_x, sobel_y
+    # sobel_x = [[-1, 0, 1], [-2, 0, 1], [-1, 0, 1]]
+    # sobel_y = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]
 
-    global sobel_x, sobel_y
-    sobel_x = [[-1, 0, 1], [-2, 0, 1], [-1, 0, 1]]
-    sobel_y = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]
 
 
 def init_burst_visualization():

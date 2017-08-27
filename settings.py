@@ -49,7 +49,7 @@ def init_user_interactions():
 def init_visualization():
     # Flag to show visualizations
     global vis_show
-    vis_show = True
+    vis_show = False
     if vis_show:
         init_burst_visualization()
 
@@ -149,7 +149,7 @@ def vis_init():
     from mpl_toolkits.mplot3d import axes3d
     import matplotlib.patches as patches
 
-    plt.ion()
+    # plt.ion()
     print("Initializing plot...")
     global Arrow3D
     class Arrow3D(FancyArrowPatch):
@@ -251,6 +251,7 @@ def reset_cumulative_counter_instances():
     """
     To reset the cumulative counter instances
     """
+    global brain
     for cortical_area in brain:
         for neuron in brain[cortical_area]:
             brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0

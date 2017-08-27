@@ -208,7 +208,6 @@ def mnist_img_show(IPU_input):
     return
 
 
-
 def cortical_heatmap(IPU_input, cortical_areas):
     """
     Create a 2D heatmap for the requested Cortical area based on the level of Neuronal activity

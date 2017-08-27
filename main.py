@@ -20,11 +20,18 @@ __author__ = 'Mohammad Nadji-tehrani'
 
 
 class Brain:
-    #
     # def __init__(self):
-    # settings.init()
+    #     import settings
+        # settings.init_burst_visualization()
+        # settings.init_data()
+        # settings.init_messaging()
+        # settings.init_settings()
+        # settings.init_timers()
+        # settings.init_user_interactions()
+        # settings.init_visualization()
 
-    def print_basic_info(self):
+    @staticmethod
+    def print_basic_info():
         import stats
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
@@ -36,7 +43,8 @@ class Brain:
         print(' \rexiting', cp.name, cp.pid)
         return
 
-    def show_cortical_areas(self):
+    @staticmethod
+    def show_cortical_areas():
         import visualizer
         # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
         # visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
@@ -45,29 +53,31 @@ class Brain:
         visualizer.connectome_visualizer(cortical_area='vision_memory', neighbor_show='true')
         return
 
-    def see_from_mnist(self, image_number, fcl_queue, event_queue):
+    def see_from_mnist(self, mnist_img, fcl_queue, event_queue):
         cp = mp.current_process()
         # print(' starting', cp.name, cp.pid)
-        settings.reset_cumulative_counter_instances()   # ????
-        fire_list= self.read_from_mnist(image_number, event_queue)
+#        settings.reset_cumulative_counter_instances()   # ????
+        fire_list= self.read_from_mnist(mnist_img, event_queue)
         self.inject_to_fcl(fire_list, fcl_queue)
         # print(' exiting', cp.name, cp.pid)
         return
 
-    def read_from_mnist(self, image_number, event_queue):
+    @staticmethod
+    def read_from_mnist(mnist_img, event_queue):
         import architect
         import IPU_vision
         import mnist
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         init_fire_list = []
-        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ?????
+#        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ?????
         cortical_list  = settings.cortical_list()
         vision_group = []
         for item in cortical_list:
             if settings.genome['blueprint'][item]['sub_group_id'] == 'vision_v1':
                 vision_group.append(item)
         # print('vision group is: ', vision_group)
-        image_ = mnist.read_image(image_number)
+        image_ = mnist_img
+        # image_ = mnist.read_image(image_number)
         image = image_[0]
         print("*** Image read from MNIST was :", image_[1])
         # print('image :\n ', np.array2string(image, max_line_width=np.inf))
@@ -80,8 +90,8 @@ class Brain:
             polarized_image = IPU_vision.create_direction_matrix(filtered_image, kernel_size, cortical_direction_sensitivity)
             # print("Polarized image for :", cortical_area)
             # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
-            IPU_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
-            neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(IPU_vision_array, cortical_area)
+            ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
+            neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
             for item in neuron_id_list:
                 init_fire_list.append([cortical_area, item])
         event_id = architect.event_id_gen()
@@ -90,7 +100,8 @@ class Brain:
         # print(init_fire_list)
         return init_fire_list
 
-    def inject_to_fcl(self, fire_list, fcl_queue):
+    @staticmethod
+    def inject_to_fcl(fire_list, fcl_queue):
         # Update FCL with new input data. FCL is read from the Queue and updated
         flc = fcl_queue.get()
         for item in fire_list:
@@ -98,17 +109,19 @@ class Brain:
         fcl_queue.put(flc)
         return
 
-    def read_char(self, char, fcl_queue):
+    @staticmethod
+    def read_char(char, fcl_queue):
         import IPU_utf8
         cp = mp.current_process()
         # print(' starting', cp.name, cp.pid)
         if char:
             fire_list = IPU_utf8.convert_char_to_fire_list(char)
             print(fire_list)
-            self.inject_to_fcl(fire_list, fcl_queue)
+            Brain.inject_to_fcl(fire_list, fcl_queue)
         # print(' exiting', cp.name, cp.pid)
 
-    def read_user_input(self):
+    @staticmethod
+    def read_user_input():
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -152,8 +165,16 @@ if __name__ == '__main__':
     import visualizer
     import mnist
     import neuron_functions
+    import settings
 
-    print('^^^^^^^^^^^^^^^^^ *********************** $$$$$$$$$$$$$$$$$$$$$$$$$ #######################')
+    # settings.init_burst_visualization()
+    # settings.init_data()
+    # settings.init_messaging()
+    # settings.init_settings()
+    # settings.init_timers()
+    # settings.init_user_interactions()
+    # settings.init_visualization()
+
 
     def submit_entry_fields():
         print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
@@ -235,32 +256,44 @@ if __name__ == '__main__':
 
     def process_read_char():
         process_4 = mp.Process(name='Reading input char',
-                               target=b.read_char, args=(settings.user_input_param, FCL_queue))
+                               target=Brain.read_char, args=(settings.user_input_param, FCL_queue))
         process_4.start()
         process_4.join()
         settings.user_input = ''
         return
 
+
+    def training_num_gen(num):
+        import random
+        rand_num = random.randrange(10, 500, 1)
+        mnist_data = mnist.read_image(rand_num)
+        while int(num) != mnist_data[1]:
+            rand_num = random.randrange(10, 500, 1)
+            mnist_data = mnist.read_image(random.randrange(10, 500, 1))
+        return rand_num, mnist_data
+
     def process_auto_training():
         import random
         from time import sleep
-        print("Auto training has been initiated.....")
-        for _ in range(int(settings.user_input_param)):
-            mnist_img_number = random.randrange(10, 500, 1)
+        b = Brain()
+        print("---------------------------------------------------------------------Auto training has been initiated.")
+        for number in range(10):
+            mnist_num, mnist_img = training_num_gen(number)
             if settings.vis_show:
-                visualizer.cortical_heatmap(mnist.read_image(mnist_img_number)[0], [])
+                visualizer.cortical_heatmap(mnist.read_image(mnist_num), [])
             # Following for loop help to train for a single number n number of times
-            for x in range(20):
-                mnist_img_char = mnist.read_image(mnist_img_number)[1]
+            for x in range(int(settings.user_input_param)):
+                print(">>  >>  >>  >>  >>  Training round %i for number %s" % (x + 1, mnist_img[1]))
+                mnist_img_char = str(mnist_img[1])
                 process_5 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
-                                       args=(mnist_img_number, FCL_queue, event_queue))
+                                       args=(mnist_img, FCL_queue, event_queue))
                 process_6 = mp.Process(name='Reading input char', target=b.read_char, args=(str(mnist_img_char), FCL_queue))
                 process_5.start()
                 sleep(3)
                 process_6.start()
                 # process_5.join()
                 # process_6.join()
-        print("Auto training has been completed.")
+        print("---------------------------------------------------------------------Auto training has been completed.")
         settings.user_input = 'x'
         return
 

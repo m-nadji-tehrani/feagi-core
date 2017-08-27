@@ -44,8 +44,6 @@ def burst(user_input, fire_list, brain_queue, event_queue):
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
     settings.event_id = event_queue.get()
     settings.brain = brain_queue.get()
-    # if settings.vis_show:
-    #     settings.init_burst_visualization()
 
     while not settings.ready_to_exit_burst:
         burst_strt_time = datetime.datetime.now()

@@ -117,6 +117,7 @@ class Brain:
         if char:
             fire_list = IPU_utf8.convert_char_to_fire_list(char)
             print(fire_list)
+            print("% % % % % % % % % % % % % % % % % % Injecting character >>>  %s <<<" % char)
             Brain.inject_to_fcl(fire_list, fcl_queue)
         # print(' exiting', cp.name, cp.pid)
 
@@ -247,8 +248,9 @@ if __name__ == '__main__':
     def process_see_from_mnist():
         if settings.vis_show:
             visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param))[0], [])
+        mnist_img = mnist.read_image(int(settings.user_input_param))
         process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
-                               args=(int(settings.user_input_param), FCL_queue, event_queue))
+                               args=(mnist_img, FCL_queue, event_queue))
         process_3.start()
         process_3.join()
         settings.user_input = ''
@@ -283,7 +285,7 @@ if __name__ == '__main__':
                 visualizer.cortical_heatmap(mnist.read_image(mnist_num), [])
             # Following for loop help to train for a single number n number of times
             for x in range(int(settings.user_input_param)):
-                print(">>  >>  >>  >>  >>  Training round %i for number %s" % (x + 1, mnist_img[1]))
+                print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Training round %i for number %s" % (x + 1, mnist_img[1]))
                 mnist_img_char = str(mnist_img[1])
                 process_5 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                        args=(mnist_img, FCL_queue, event_queue))

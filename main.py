@@ -291,7 +291,7 @@ if __name__ == '__main__':
                                        args=(mnist_img, FCL_queue, event_queue))
                 process_6 = mp.Process(name='Reading input char', target=b.read_char, args=(str(mnist_img_char), FCL_queue))
                 process_5.start()
-                sleep(3)
+                sleep(settings.auto_train_delay)
                 process_6.start()
                 # process_5.join()
                 # process_6.join()
@@ -361,6 +361,7 @@ if __name__ == '__main__':
 # todo: Define streams containing a chain of cortical areas for various functions such as vision, hearing, etc.
 # todo: find a way to speed up brain building when synapse creation is not needed e.g. memory, utf8
 # todo: Synapse creation takes a very long time in presence of large neurons. Think of a way to limit the scope. zipcode
+
 
 # Input handling
 # todo: Use directional kernal analysis data as part of input data

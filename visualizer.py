@@ -53,7 +53,6 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
 
 
 def burst_visualizer(fire_candidate_list):
-
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
     index = 0

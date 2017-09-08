@@ -17,6 +17,9 @@ def init_timers():
     global idle_burst_timer
     idle_burst_timer = 2
 
+    global auto_train_delay
+    auto_train_delay = 3
+
 
 def init_messaging():
     global Bcolors
@@ -66,6 +69,12 @@ def init_data():
     global connectome_path
     connectome_path = './connectome/'
 
+
+    # rules_path defines the folder where all connectome files reside
+    global rules_path
+    rules_path = './reproduction/rules.json'
+
+
     # Genome defines the json file name and location which is acting as Human Genome
     global genome_file
     genome_file = './reproduction/genome.json'
@@ -84,6 +93,9 @@ def init_data():
 
     global cortical_areas
     cortical_areas = cortical_list()
+
+    global rules
+    rules = load_rules_in_memory()
 
     # global max_xyz_range
     # max_xyz_range = cortical_xyz_range()
@@ -206,6 +218,13 @@ def reset_brain():
     for item in cortical_areas:
         brain[item] = {}
     return brain
+
+
+def load_rules_in_memory():
+    global rules_path
+    with open(rules_path, "r") as data_file:
+        rules = json.load(data_file)
+    return rules
 
 
 def load_brain_in_memory():

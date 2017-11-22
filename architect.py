@@ -407,4 +407,10 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
         if abs(z_coordinate_key - z_coordinate_target_dst) == rule_param:
             is_candidate = True
 
+    # Rule 4: Selects neurons from the destination cortical region
+    if rule_id == 'rule_4':
+        if ((x_coordinate_key * rule_param - x_coordinate_target_dst) > 0) and \
+                ((y_coordinate_key * rule_param - y_coordinate_target_dst) > 0):
+            is_candidate = True
+
     return is_candidate

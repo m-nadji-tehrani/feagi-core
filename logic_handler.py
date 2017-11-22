@@ -1,7 +1,15 @@
-# This library is Mohammad's spin on the json_logic package 0.6.3
 
-# This is a Python implementation of the following jsonLogic JS library:
-# https://github.com/jwadhams/json-logic-js
+"""
+This library is a modified version of json_logic package 0.6.3 which itself is Python implementation
+of the following jsonLogic JS library:
+https://github.com/jwadhams/json-logic-js
+
+Originall Author: nadir.izr
+Home Page: https://github.com/nadirizr/json-logic-py
+Keywords: json-logic
+License: MIT
+"""
+
 
 import sys
 from functools import reduce
@@ -14,7 +22,7 @@ def logic(tests, data=None):
 
     data = data or {}
 
-    op = tests.keys()[0]
+    op = list(tests.keys())[0]
     values = tests[op]
     operations = {
         "==": (lambda a, b: a == b),
@@ -61,3 +69,22 @@ def logic(tests, data=None):
     values = map(lambda val: logic(val, data), values)
 
     return operations[op](*values)
+
+
+logic_value1 = \
+    {
+        "and": [
+            {"=": [2, 2]},
+            {"and": [
+                {">": [3, 1]},
+                {"<": [1, 3]}]}
+            ]
+    }
+
+logic_value2 = {"and": [
+    {">": [3, 1]},
+    {"<": [1, 3]}
+  ]}
+
+print(logic(logic_value1))
+

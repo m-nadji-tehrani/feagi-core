@@ -76,4 +76,36 @@ def genethesize():
 
     return genome
 
+
+def mutate():
+    return
+
+
+def crossover():
+    return
+
+
+def tranlate_genotype2phenotype():
+    return
+
+
+def calculate_fitness():
+    return
+
+
+def calculate_survival_prob():
+    return
+
+
+def sysnthesize_new_gen():
+    return
+
+
+def selection():
+    return
+
+
+def spin_new_generation():
+    return
+
 # print(genethesize())

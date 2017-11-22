@@ -52,7 +52,7 @@ def init_user_interactions():
 def init_visualization():
     # Flag to show visualizations
     global vis_show
-    vis_show = False
+    vis_show = True
     if vis_show:
         init_burst_visualization()
 

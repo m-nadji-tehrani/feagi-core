@@ -26,6 +26,10 @@
       "rule_3": {
          "param_1": 0,
          "param_2": 0
+      },
+      "rule_4": {
+         "param_1": 10,
+         "param_2": 0
       }
    },
    "IPU_vision_filters": {
@@ -1241,8 +1245,8 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_memory": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_3"
+               "neighbor_locator_rule_id": "rule_4",
+               "neighbor_locator_rule_param_id": "param_1"
             }
          },
          "neuron_params": {

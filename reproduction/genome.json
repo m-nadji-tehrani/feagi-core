@@ -11,7 +11,7 @@
    },
    "neighbor_locator_rule": {
       "rule_0": {
-         "param_1": 5,
+         "param_1": 1,
          "param_2": 0
       },
       "rule_1": {
@@ -28,8 +28,17 @@
          "param_2": 0
       },
       "rule_4": {
-         "param_1": 10,
+         "param_1": 5,
          "param_2": 0
+      },
+      "rule_5": {
+         "param_1": 10,
+         "param_2": 20,
+         "param_3": 30,
+         "param_4": 40,
+         "param_5": 50,
+         "param_6": 60,
+         "param_7": 70
       }
    },
    "IPU_vision_filters": {
@@ -834,11 +843,14 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 1,
+         "layer_index": 1,
+         "total_layer_count": 7,
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -883,12 +895,15 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 4,
+         "layer_index": 2,
+         "total_layer_count": 7,
          "direction_sensitivity": "\\",
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -897,7 +912,7 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_v2": {
-               "neighbor_locator_rule_id": "rule_2",
+               "neighbor_locator_rule_id": "rule_5",
                "neighbor_locator_rule_param_id": "param_2"
             }
          },
@@ -933,12 +948,15 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 7,
+         "layer_index": 3,
+         "total_layer_count": 7,
          "direction_sensitivity": "|",
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -947,8 +965,8 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_v2": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_2"
+               "neighbor_locator_rule_id": "rule_5",
+               "neighbor_locator_rule_param_id": "param_3"
             }
          },
          "neuron_params": {
@@ -983,12 +1001,15 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 10,
+         "layer_index": 4,
+         "total_layer_count": 7,
          "direction_sensitivity": "-",
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -997,8 +1018,8 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_v2": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_2"
+               "neighbor_locator_rule_id": "rule_5",
+               "neighbor_locator_rule_param_id": "param_4"
             }
          },
          "neuron_params": {
@@ -1033,12 +1054,15 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 13,
+         "layer_index": 5,
+         "total_layer_count": 7,
          "direction_sensitivity": ".",
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -1047,8 +1071,8 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_v2": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_2"
+               "neighbor_locator_rule_id": "rule_5",
+               "neighbor_locator_rule_param_id": "param_5"
             }
          },
          "neuron_params": {
@@ -1083,12 +1107,15 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 16,
+         "layer_index": 6,
+         "total_layer_count": 7,
          "direction_sensitivity": " ",
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -1097,8 +1124,8 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_v2": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_2"
+               "neighbor_locator_rule_id": "rule_5",
+               "neighbor_locator_rule_param_id": "param_6"
             }
          },
          "neuron_params": {
@@ -1133,12 +1160,15 @@
          "group_id": "vision",
          "sub_group_id": "vision_v1",
          "plot_index": 19,
+         "layer_index": 7,
+         "total_layer_count": 7,
          "direction_sensitivity": "I",
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 3,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 1,
@@ -1147,8 +1177,8 @@
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_v2": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_2"
+               "neighbor_locator_rule_id": "rule_5",
+               "neighbor_locator_rule_param_id": "param_7"
             }
          },
          "neuron_params": {
@@ -1188,6 +1218,7 @@
          "kernel_size": 5,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "True",
          "synaptic_strength": 0.5,
          "synaptic_strength_inc": 1,
@@ -1214,15 +1245,15 @@
             "geometric_boundaries": {
                "x": [
                   0,
-                  28
+                  280
                ],
                "y": [
                   0,
-                  28
+                  280
                ],
                "z": [
                   0,
-                  10
+                  280
                ]
             }
          }
@@ -1237,6 +1268,7 @@
          "kernel_size": 7,
          "cortical_neuron_count": 100,
          "location_generation_type": "random",
+         "synapse_attractivity": 60,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 0.05,
@@ -1271,7 +1303,7 @@
                ],
                "z": [
                   0,
-                  10
+                  70
                ]
             }
          }
@@ -1284,8 +1316,9 @@
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 7,
-         "cortical_neuron_count": 1000,
+         "cortical_neuron_count": 10000,
          "location_generation_type": "random",
+         "synapse_attractivity": 5,
          "init_synapse_needed": "False",
          "synaptic_strength": 0.1,
          "synaptic_strength_inc": 1,
@@ -1307,15 +1340,15 @@
             "geometric_boundaries": {
                "x": [
                   0,
-                  300
+                  1000
                ],
                "y": [
                   0,
-                  300
+                  1000
                ],
                "z": [
                   0,
-                  300
+                  1000
                ]
             }
          }
@@ -1330,6 +1363,7 @@
          "kernel_size": 7,
          "cortical_neuron_count": 300,
          "location_generation_type": "sequential",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "False",
          "synaptic_strength": 0.51,
          "synaptic_strength_inc": 0.05,
@@ -1379,6 +1413,7 @@
          "kernel_size": 7,
          "cortical_neuron_count": 300,
          "location_generation_type": "sequential",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "False",
          "synaptic_strength": 1,
          "synaptic_strength_inc": 0.01,
@@ -1423,6 +1458,7 @@
          "kernel_size": 7,
          "cortical_neuron_count": 300,
          "location_generation_type": "sequential",
+         "synapse_attractivity": 100,
          "init_synapse_needed": "False",
          "synaptic_strength": 0.51,
          "synaptic_strength_inc": 0.05,

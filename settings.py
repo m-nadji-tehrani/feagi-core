@@ -42,8 +42,14 @@ def init_user_interactions():
     global user_input
     user_input = ''
 
+    global previous_user_input
+    previous_user_input = ''
+
     global user_input_param
-    user_input = ''
+    user_input_param = ''
+
+    global previous_user_input_param
+    previous_user_input_param = ''
 
     global opu_char
     opu_char = 'X'

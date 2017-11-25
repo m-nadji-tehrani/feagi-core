@@ -278,8 +278,11 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_id, rule, rule_param)
         for dst_id in neighbor_candidates:
-            synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, synaptic_strength)
-            # print("Made a Synapse between %s and %s" % (src_id, dst_id))
+            # Through a dice to decide for synapse creation. This is to limit the amount of synapses.
+            if random.randrange(1, 100) < settings.genome['blueprint'][cortical_area_dst]['synapse_attractivity']:
+                # Connect the source and destination neuron via creating a synapse
+                synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, synaptic_strength)
+                # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
     return
 
@@ -359,10 +362,26 @@ def neuron_eliminator():
     return
 
 
+def cortical_area_lengths(cortical_area):
+    lenght = []
+    coordinates = ['x', 'y', 'z']
+    for _ in coordinates:
+        lenght.append(settings.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][1] -
+                      settings.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][0])
+
+    return lenght
+
+
 def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key, neuron_id):
 
     src_data = settings.brain[cortical_area_src]
     dst_data = settings.brain[cortical_area_dst]
+    genome = settings.genome
+
+    # Find relative coordinates on the source and destination side
+    src_lenghts = cortical_area_lengths(cortical_area_src)
+    dest_lenghts = cortical_area_lengths(cortical_area_dst)
+    coordinate_scales = [a/b for a,b in zip(dest_lenghts, src_lenghts)]
 
     if cortical_area_src == cortical_area_dst:
         x_coordinate_key = src_data[key]["location"][0]
@@ -379,6 +398,12 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
         y_coordinate_target_dst = dst_data[key]["location"][1]
         z_coordinate_target_dst = dst_data[key]["location"][2]
 
+    dest_projection_center = []
+    dest_projection_center.append(x_coordinate_key * coordinate_scales[0])
+    dest_projection_center.append(y_coordinate_key * coordinate_scales[1])
+    dest_projection_center.append(z_coordinate_key * coordinate_scales[2])
+
+
     is_candidate = False
 
     # Rule 0: Selects all neurons within rule_param radius
@@ -387,6 +412,7 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
                       ((y_coordinate_key - y_coordinate_target) ** 2) +
                       ((z_coordinate_key - z_coordinate_target) ** 2))
         if radius < rule_param:
+            print("This is the neuron id you were looking for:", neuron_id)
             is_candidate = True
 
     # Rule 1: Selects only neurons within rule_param unit limits forward of source Neuron in z direction
@@ -407,10 +433,23 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
         if abs(z_coordinate_key - z_coordinate_target_dst) == rule_param:
             is_candidate = True
 
-    # Rule 4: Selects neurons from the destination cortical region
+    # Rule 4:
     if rule_id == 'rule_4':
         if ((x_coordinate_key * rule_param - x_coordinate_target_dst) > 0) and \
-                ((y_coordinate_key * rule_param - y_coordinate_target_dst) > 0):
+                ((y_coordinate_key * rule_param - y_coordinate_target_dst) > 0) and \
+                ((z_coordinate_key * 3 - z_coordinate_target_dst) > 0):
+            is_candidate = True
+
+    # Rule 5: Helps mapping multiple layers to a single layer
+    # todo: find a way to move the number 10 in below rule to Genome
+    if rule_id == 'rule_5':
+        src_layer_index = settings.genome['blueprint'][cortical_area_src]['layer_index']
+        src_total_layer_count = settings.genome['blueprint'][cortical_area_src]['total_layer_count']
+        dest_layer_hight = dest_lenghts[2] / src_total_layer_count
+        if (sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
+                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < 10) and \
+                (z_coordinate_target_dst < src_layer_index * dest_layer_hight) and \
+                (z_coordinate_target_dst > ((src_layer_index + 1) * dest_layer_hight)):
             is_candidate = True
 
     return is_candidate

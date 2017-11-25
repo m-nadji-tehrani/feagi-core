@@ -1,5 +1,6 @@
 
 
+from time import sleep
 import multiprocessing as mp
 import settings
 
@@ -64,6 +65,7 @@ class Brain:
 
     @staticmethod
     def read_from_mnist(mnist_img, event_queue):
+        print("Reading from MNIST")
         import architect
         import IPU_vision
         import mnist
@@ -102,11 +104,13 @@ class Brain:
 
     @staticmethod
     def inject_to_fcl(fire_list, fcl_queue):
+        print("Injecting to FCL.../\/\/\/")
         # Update FCL with new input data. FCL is read from the Queue and updated
         flc = fcl_queue.get()
         for item in fire_list:
             flc.append(item)
         fcl_queue.put(flc)
+        print("Injected to FCL.../\/\/\/")
         return
 
     @staticmethod
@@ -123,15 +127,18 @@ class Brain:
 
     @staticmethod
     def read_user_input():
+        print("Func: read_user_input : start")
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
             setraw(sys.stdin.fileno())
             settings.user_input = sys.stdin.read(1)
             sys.stdout.write("\r%s" % user_input_queue)
+            print("hahaha______hehehe")
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
             # sys.stdout.flush()
+        print("Func: read_user_input : end")
         return
 
     # def kernel_view(self):
@@ -179,6 +186,10 @@ if __name__ == '__main__':
 
     def submit_entry_fields():
         print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
+        if settings.user_input:
+            settings.previous_user_input = settings.user_input
+        if settings.previous_user_input:
+            settings.previous_user_input_param = settings.user_input_param
         settings.user_input = e1.get()
         settings.user_input_param = e2.get()
         user_input_queue.put(settings.user_input)
@@ -264,7 +275,6 @@ if __name__ == '__main__':
         settings.user_input = ''
         return
 
-
     def training_num_gen(num):
         import random
         rand_num = random.randrange(10, 500, 1)
@@ -310,29 +320,47 @@ if __name__ == '__main__':
 
     process_burst.deamon = False
 
-
     read_user_input()
 
     try:
         while settings.user_input != 'q':
+            # if settings.user_input != settings.previous_user_input and \
+                 #           settings.user_input_param != settings.previous_user_input_param:
+            print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<", settings.user_input, settings.previous_user_input)
             try:
                 if settings.user_input == 'p':
                     process_print_basic_info()
+                    settings.user_input = ''
 
                 elif settings.user_input == 's':
                     process_show_cortical_areas()
+                    settings.user_input = ''
 
                 elif settings.user_input == 'i':
                     process_see_from_mnist()
+                    settings.user_input = ''
 
                 elif settings.user_input == 'c':
                     process_read_char()
+                    settings.user_input = ''
 
                 elif settings.user_input == 'a':
                     process_auto_training()
+                    settings.user_input = ''
+
+                elif settings.user_input == 'v':
+                    if settings.verbose:
+                        settings.verbose = False
+                        print("Verbose mode is Turned OFF!")
+                        settings.user_input = ''
+                    else:
+                        settings.verbose = True
+                        print("Verbose mode is Turned ON!")
+                        settings.user_input = ''
 
                 else:
                     read_user_input()
+                    sleep(2)
 
             except IOError:
                 print("an error has occurred!!!")

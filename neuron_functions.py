@@ -66,6 +66,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                   % fire_candidate_list + settings.Bcolors.ENDC)
 
         burst_count += 1
+        # Figure what you were thiking on the following
         if burst_count % settings.genome['evolution_burst_count'] == 0:
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
@@ -251,6 +252,7 @@ def neuron_update(cortical_area, synaptic_strength, destination):
         if settings.verbose:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + destination +
                   ' got rest' + settings.Bcolors.ENDC)
+
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons

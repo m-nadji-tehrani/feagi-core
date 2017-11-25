@@ -376,12 +376,14 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
 
     src_data = settings.brain[cortical_area_src]
     dst_data = settings.brain[cortical_area_dst]
-    genome = settings.genome
+
+    if cortical_area_dst == 'vision_v2' and cortical_area_src == 'vision_v1-1':
+        1 == 1
 
     # Find relative coordinates on the source and destination side
     src_lenghts = cortical_area_lengths(cortical_area_src)
     dest_lenghts = cortical_area_lengths(cortical_area_dst)
-    coordinate_scales = [a/b for a,b in zip(dest_lenghts, src_lenghts)]
+    coordinate_scales = [a/b for a, b in zip(dest_lenghts, src_lenghts)]
 
     if cortical_area_src == cortical_area_dst:
         x_coordinate_key = src_data[key]["location"][0]
@@ -402,7 +404,6 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
     dest_projection_center.append(x_coordinate_key * coordinate_scales[0])
     dest_projection_center.append(y_coordinate_key * coordinate_scales[1])
     dest_projection_center.append(z_coordinate_key * coordinate_scales[2])
-
 
     is_candidate = False
 
@@ -435,21 +436,19 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
 
     # Rule 4:
     if rule_id == 'rule_4':
-        if ((x_coordinate_key * rule_param - x_coordinate_target_dst) > 0) and \
-                ((y_coordinate_key * rule_param - y_coordinate_target_dst) > 0) and \
-                ((z_coordinate_key * 3 - z_coordinate_target_dst) > 0):
+        if sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
+                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param:
             is_candidate = True
 
     # Rule 5: Helps mapping multiple layers to a single layer
-    # todo: find a way to move the number 10 in below rule to Genome
     if rule_id == 'rule_5':
         src_layer_index = settings.genome['blueprint'][cortical_area_src]['layer_index']
         src_total_layer_count = settings.genome['blueprint'][cortical_area_src]['total_layer_count']
-        dest_layer_hight = dest_lenghts[2] / src_total_layer_count
+        dest_layer_height = dest_lenghts[2] / src_total_layer_count
         if (sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
-                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < 10) and \
-                (z_coordinate_target_dst < src_layer_index * dest_layer_hight) and \
-                (z_coordinate_target_dst > ((src_layer_index + 1) * dest_layer_hight)):
+                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param) and \
+                (z_coordinate_target_dst > src_layer_index * dest_layer_height) and \
+                (z_coordinate_target_dst < ((src_layer_index + 1) * dest_layer_height)):
             is_candidate = True
 
     return is_candidate

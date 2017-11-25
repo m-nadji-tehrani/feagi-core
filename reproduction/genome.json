@@ -1216,7 +1216,7 @@
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 5,
-         "cortical_neuron_count": 100,
+         "cortical_neuron_count": 1000,
          "location_generation_type": "random",
          "synapse_attractivity": 100,
          "init_synapse_needed": "True",
@@ -1266,7 +1266,7 @@
          "orientation_selectivity_pattern": "",
          "location": "",
          "kernel_size": 7,
-         "cortical_neuron_count": 100,
+         "cortical_neuron_count": 1000,
          "location_generation_type": "random",
          "synapse_attractivity": 60,
          "init_synapse_needed": "True",
@@ -1295,15 +1295,15 @@
             "geometric_boundaries": {
                "x": [
                   0,
-                  28
+                  500
                ],
                "y": [
                   0,
-                  28
+                  500
                ],
                "z": [
                   0,
-                  70
+                  500
                ]
             }
          }

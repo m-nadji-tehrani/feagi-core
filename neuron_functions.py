@@ -104,15 +104,18 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                     if src_neuron != dst_neuron:
                         wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
-        # Code to wire memory to Output processing unit when the firing coincide with an IPU event
+        # Wiring Vision memory to UIF-8 memory
         for _ in fire_candidate_list:
             if _[0] == "utf8_memory":
                 for neuron in fire_candidate_list:
                     if neuron[0] == "vision_memory":
-                        dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
-                        for dst_neuron_id in dst_neuron_id_list:
-                            wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                                                      dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+                        wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                                                  dst_cortical_area='utf8_memory', dst_neuron=_[1])
+
+                        # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
+                        # for dst_neuron_id in dst_neuron_id_list:
+                        #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                        #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
         burst_duration = datetime.datetime.now() - burst_strt_time
         print(">>> Burst duration: %s" % burst_duration)
@@ -133,6 +136,26 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                     burst_count = 0
                     settings.ready_to_exit_burst = True
                     settings.user_input = ''
+                elif user_input_value == 'v':
+                    if settings.verbose:
+                        settings.verbose = False
+                        print("Verbose mode is Turned OFF!")
+                        settings.user_input = ''
+                    else:
+                        settings.verbose = True
+                        print("Verbose mode is Turned ON!")
+                        settings.user_input = ''
+
+                elif user_input_value == 'g':
+                    if settings.verbose:
+                        settings.vis_show = False
+                        print("Visualization mode is Turned OFF!")
+                        settings.user_input = ''
+                    else:
+                        settings.vis_show = True
+                        print("Visualization mode is Turned ON!")
+                        settings.user_input = ''
+
             finally:
                 break
     # Push updated brain data back to the queue

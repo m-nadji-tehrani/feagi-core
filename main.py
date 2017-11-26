@@ -4,6 +4,8 @@ from time import sleep
 import multiprocessing as mp
 import settings
 
+print("Main function has been initiated ^^^vvv^^^")
+
 settings.init_burst_visualization()
 settings.init_data()
 settings.init_messaging()
@@ -104,13 +106,13 @@ class Brain:
 
     @staticmethod
     def inject_to_fcl(fire_list, fcl_queue):
-        print("Injecting to FCL.../\/\/\/")
+        # print("Injecting to FCL.../\/\/\/")
         # Update FCL with new input data. FCL is read from the Queue and updated
         flc = fcl_queue.get()
         for item in fire_list:
             flc.append(item)
         fcl_queue.put(flc)
-        print("Injected to FCL.../\/\/\/")
+        # print("Injected to FCL.../\/\/\/")
         return
 
     @staticmethod
@@ -175,6 +177,8 @@ if __name__ == '__main__':
     import neuron_functions
     import settings
 
+    # print("AAAAAAAABBBBBBBBBCCCCCCCCC")
+    #
     # settings.init_burst_visualization()
     # settings.init_data()
     # settings.init_messaging()
@@ -348,16 +352,6 @@ if __name__ == '__main__':
                     process_auto_training()
                     settings.user_input = ''
 
-                elif settings.user_input == 'v':
-                    if settings.verbose:
-                        settings.verbose = False
-                        print("Verbose mode is Turned OFF!")
-                        settings.user_input = ''
-                    else:
-                        settings.verbose = True
-                        print("Verbose mode is Turned ON!")
-                        settings.user_input = ''
-
                 else:
                     read_user_input()
                     sleep(2)
@@ -378,6 +372,11 @@ if __name__ == '__main__':
 #          <<<<<<<  T O   D O   L I S T   >>>>>>>>
 #
 
+
+# Problems to fix
+# todo: Synaptic activities in Memory everntually get to a point that does not ramp down
+# todo: One number's visual memory is resembling all others
+# todo: Brain is being loaded in memory too regularly
 
 # General Architecture - Anatomy
 # todo: Move Rules to Genome

@@ -28,8 +28,8 @@
          "param_2": 0
       },
       "rule_4": {
-         "param_1": 5,
-         "param_2": 0
+         "param_1": 15,
+         "param_2": 50
       },
       "rule_5": {
          "param_1": 10,
@@ -1218,23 +1218,23 @@
          "kernel_size": 5,
          "cortical_neuron_count": 1000,
          "location_generation_type": "random",
-         "synapse_attractivity": 100,
+         "synapse_attractivity": 80,
          "init_synapse_needed": "True",
          "synaptic_strength": 0.5,
-         "synaptic_strength_inc": 1,
+         "synaptic_strength_inc": 0.5,
          "synaptic_strength_max": 1,
          "neighbor_locator_rule_id": "rule_1",
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_IT": {
-               "neighbor_locator_rule_id": "rule_2",
-               "neighbor_locator_rule_param_id": "param_2"
+               "neighbor_locator_rule_id": "rule_4",
+               "neighbor_locator_rule_param_id": "param_1"
             }
          },
          "neuron_params": {
             "activation_function_id": "",
             "timer_threshold": 50,
-            "firing_threshold": 2,
+            "firing_threshold": 4,
             "firing_pattern_id": "",
             "orientation_selectivity_id": "",
             "axon_avg_length": "",
@@ -1268,24 +1268,24 @@
          "kernel_size": 7,
          "cortical_neuron_count": 1000,
          "location_generation_type": "random",
-         "synapse_attractivity": 60,
+         "synapse_attractivity": 80,
          "init_synapse_needed": "True",
          "synaptic_strength": 1,
-         "synaptic_strength_inc": 0.05,
+         "synaptic_strength_inc": 0.1,
          "synaptic_strength_max": 1,
          "neighbor_locator_rule_id": "rule_1",
          "neighbor_locator_rule_param_id": "param_1",
          "cortical_mapping_dst": {
             "vision_memory": {
                "neighbor_locator_rule_id": "rule_4",
-               "neighbor_locator_rule_param_id": "param_1"
+               "neighbor_locator_rule_param_id": "param_2"
             }
          },
          "neuron_params": {
             "activation_function_id": "",
             "orientation_selectivity_id": "",
             "timer_threshold": 50,
-            "firing_threshold": 3,
+            "firing_threshold": 1,
             "firing_pattern_id": "",
             "axon_avg_length": "",
             "axon_avg_connections": "",
@@ -1330,12 +1330,12 @@
             "activation_function_id": "",
             "orientation_selectivity_id": "",
             "timer_threshold": 40,
-            "firing_threshold": 2,
+            "firing_threshold": 3,
             "firing_pattern_id": "",
             "axon_avg_length": "",
             "axon_avg_connections": "",
             "axon_orientation function": "",
-            "consecutive_fire_cnt_max": 4,
+            "consecutive_fire_cnt_max": 2,
             "snooze_length": 4,
             "geometric_boundaries": {
                "x": [
@@ -1420,7 +1420,12 @@
          "synaptic_strength_max": 1,
          "neighbor_locator_rule_id": "rule_0",
          "neighbor_locator_rule_param_id": "param_1",
-         "cortical_mapping_dst": {},
+         "cortical_mapping_dst": {
+            "utf8_out": {
+               "neighbor_locator_rule_id": "rule_3",
+               "neighbor_locator_rule_param_id": "param_2"
+            }
+         },
          "neuron_params": {
             "activation_function_id": "",
             "orientation_selectivity_id": "",
@@ -1470,7 +1475,7 @@
             "activation_function_id": "",
             "orientation_selectivity_id": "",
             "timer_threshold": 50,
-            "firing_threshold": 5,
+            "firing_threshold": 1,
             "firing_pattern_id": "",
             "axon_avg_length": "",
             "axon_avg_connections": "",

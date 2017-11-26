@@ -76,20 +76,16 @@ def neuro_genesis(cortical_area, location):
     return
 
 
-# todo: Need to update Synapse function to include both Source and Destination Cortical area
 def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_strength):
     """
-    Function responsible for detecting a Neuron's neighbors and creating synaptic connections
+    Function responsible for creating a synapse between a neuron and another one. In reality a single neuron can have
+    many synapses with another individual neuron. Here we use synaptic strength to simulate the same
     Note: Synapse association is captured on the Source Neuron side within Connectome
-    :param source:
-    :param destination:
-    :param synaptic_strength:
-    :return:
-    """
+    
     # Input: The id for source and destination Neuron plus the parameter defining connection strength
     # Source provides the Axon and connects to Destination Dendrite
     # synaptic_strength is intended to provide the level of synaptic strength
-
+    """
 
     # Check to see if the source and destination ids are valid if not exit the function
     if src_id not in settings.brain[src_cortical_area]:
@@ -434,7 +430,7 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
         if abs(z_coordinate_key - z_coordinate_target_dst) == rule_param:
             is_candidate = True
 
-    # Rule 4:
+    # Rule 4: Maps entire layer to another. Expands the xy plane and ignores the z location
     if rule_id == 'rule_4':
         if sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
                 ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param:

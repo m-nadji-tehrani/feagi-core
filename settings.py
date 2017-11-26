@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 from stats import cortical_xyz_range
 
+print("Settings has been initialized!")
 
 def init_timers():
     # Sleep timer for visualization delay
@@ -58,7 +59,7 @@ def init_user_interactions():
 def init_visualization():
     # Flag to show visualizations
     global vis_show
-    vis_show = True
+    vis_show = False
     if vis_show:
         init_burst_visualization()
 
@@ -230,6 +231,7 @@ def load_rules_in_memory():
     global rules_path
     with open(rules_path, "r") as data_file:
         rules = json.load(data_file)
+    print("Rules has been successfully loaded into memory...")
     return rules
 
 

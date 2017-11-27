@@ -200,12 +200,33 @@ if __name__ == '__main__':
         return neuron_count
 
 
+    def cortical_area_synapse_count(cortical_area):
+        """
+        Returns number of Neurons in the connectome
+        """
+        data = settings.brain[cortical_area]
+        synapse_count = 0
+        for key in data:
+            for _ in data[key]['neighbors']:
+                synapse_count += 1
+        return synapse_count
+
+
     def connectome_neuron_count():
         total_neuron_count = 0
         for cortical_area in settings.cortical_areas:
             total_neuron_count += cortical_area_neuron_count(cortical_area)
 
         return total_neuron_count
+
+
+    def connectome_synapse_count():
+        total_synapse_count = 0
+        for cortical_area in settings.cortical_areas:
+            total_synapse_count += cortical_area_synapse_count(cortical_area)
+
+        return total_synapse_count
+
 
 
     def submit_entry_fields():
@@ -240,7 +261,9 @@ if __name__ == '__main__':
         print("--------------------------------------------------------------")
         print("Brain generation lasted %s " % brain_generation_duration)
         print("--------------------------------------------------------------")
-        print("Total neuron count in Connectome is: ", connectome_neuron_count())
+        print("Total Neuron count in Connectome is: ", connectome_neuron_count())
+        print("--------------------------------------------------------------")
+        print("Total Synapse count in Connectome is: ", connectome_synapse_count())
         print("--------------------------------------------------------------")
 
     b = Brain()

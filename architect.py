@@ -220,7 +220,9 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
 
     neighbor_candidates = []
 
-    for key in settings.brain[cortical_area]:
+    neighbors_in_block = neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3)
+
+    for key in neighbors_in_block:
         if rule_matcher(rule_id=rule, rule_param=rule_param,
                         cortical_area_src=cortical_area, cortical_area_dst=cortical_area, neuron_id=neuron_id, key=key):
             neighbor_candidates.append(key)
@@ -463,7 +465,7 @@ def block_id_gen(x, y, z, block_size=10):
     bx = ceil(x / block_size)
     by = ceil(y / block_size)
     bz = ceil(z / block_size)
-    return bx, by, bz
+    return [bx, by, bz]
 
 
 def neurons_in_same_block(cortical_area, neuron_id):

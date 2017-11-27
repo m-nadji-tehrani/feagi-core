@@ -7,11 +7,31 @@ import json
 import shutil
 import errno
 import datetime
+import multiprocessing
 
 import architect
 import visualizer
 import settings
 
+
+def build_synapse(key):
+    # Read Genome data
+    genome = settings.genome
+
+    timer = datetime.datetime.now()
+    synapse_count = architect.neighbor_builder(cortical_area=key,
+                                               rule_id=genome["blueprint"][key]["neighbor_locator_rule_id"],
+                                               rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
+                                               ["neighbor_locator_rule_id"]][genome["blueprint"][key]
+                                               ["neighbor_locator_rule_param_id"]],
+                                               synaptic_strength=genome["blueprint"][key]["synaptic_strength"])
+    print("Synapse creation for Cortical area %s is now complete. Count: %i  Duration: %s"
+          % (key, synapse_count, datetime.datetime.now() - timer))
+    return
+
+def job_test(key):
+    print(key)
+    return
 
 def brain_gen():
     # Backup the old brain
@@ -47,25 +67,28 @@ def brain_gen():
 
     # Develop Neurons for various cortical areas defined in Genome
     for key in blueprint:
+        timer = datetime.datetime.now()
         neuron_count = architect.three_dim_growth(key)
-        print("Neuron Creation for Cortical area %s is now complete. Count: %i" % (key, neuron_count))
+        print("Neuron Creation for Cortical area %s is now complete. Count: %i  Duration: %s"
+              % (key, neuron_count, datetime.datetime.now() - timer))
 
     # Build Synapses within all Cortical areas
     for key in blueprint:
+        jobs = []
         if data["blueprint"][key]["init_synapse_needed"] == "True":
-            synapse_count = architect.neighbor_builder(cortical_area=key,
-                                                       rule_id=data["blueprint"][key]["neighbor_locator_rule_id"],
-                                                       rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
-                                                       ["neighbor_locator_rule_id"]][data["blueprint"][key]
-                                                       ["neighbor_locator_rule_param_id"]],
-                                                       synaptic_strength=data["blueprint"][key]["synaptic_strength"])
-            print("Synapse creation for Cortical area %s is now complete. Count: %i" % (key, synapse_count))
+            p = multiprocessing.Process(target=build_synapse, args=(key, ))
+            jobs.append(p)
+            p.start()
+            print("Started Synapse creation job for ", key)
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)
+
+
 
     # Build Synapses across various Cortical areas
     for key in blueprint:
         for mapped_cortical_area in data["blueprint"][key]["cortical_mapping_dst"]:
+            timer = datetime.datetime.now()
             synapse_count = architect.neighbor_builder_ext(cortical_area_src=key,
                                            cortical_area_dst=mapped_cortical_area,
                                            rule=data["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
@@ -75,8 +98,8 @@ def brain_gen():
                                            ["neighbor_locator_rule_id"]][data["blueprint"][key]["cortical_mapping_dst"]
                                            [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
                                            synaptic_strength=data["blueprint"][key]["synaptic_strength"])
-            print("Completed Synapse Creation between Cortical area %s and %s. Count: %i"
-                  % (key, mapped_cortical_area, synapse_count))
+            print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
+                  % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     print("Neuronal mapping across all Cortical areas has been completed!!")
 
     # # Visualize Neurons and Synapses

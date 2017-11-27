@@ -47,25 +47,26 @@ def brain_gen():
 
     # Develop Neurons for various cortical areas defined in Genome
     for key in blueprint:
-        architect.three_dim_growth(key)
-        print("Neuron Creation for Cortical area %s is now complete." % key)
+        neuron_count = architect.three_dim_growth(key)
+        print("Neuron Creation for Cortical area %s is now complete. Count: %i" % (key, neuron_count))
 
     # Build Synapses within all Cortical areas
     for key in blueprint:
         if data["blueprint"][key]["init_synapse_needed"] == "True":
-            architect.neighbor_builder(cortical_area=key, rule_id=data["blueprint"][key]["neighbor_locator_rule_id"],
-                                       rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
-                                       ["neighbor_locator_rule_id"]][data["blueprint"][key]
-                                       ["neighbor_locator_rule_param_id"]],
-                                       synaptic_strength=data["blueprint"][key]["synaptic_strength"])
-            print("Synapse creation for Cortical area %s is now complete." % key)
+            synapse_count = architect.neighbor_builder(cortical_area=key,
+                                                       rule_id=data["blueprint"][key]["neighbor_locator_rule_id"],
+                                                       rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
+                                                       ["neighbor_locator_rule_id"]][data["blueprint"][key]
+                                                       ["neighbor_locator_rule_param_id"]],
+                                                       synaptic_strength=data["blueprint"][key]["synaptic_strength"])
+            print("Synapse creation for Cortical area %s is now complete. Count: %i" % (key, synapse_count))
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)
 
     # Build Synapses across various Cortical areas
     for key in blueprint:
         for mapped_cortical_area in data["blueprint"][key]["cortical_mapping_dst"]:
-            architect.neighbor_builder_ext(cortical_area_src=key,
+            synapse_count = architect.neighbor_builder_ext(cortical_area_src=key,
                                            cortical_area_dst=mapped_cortical_area,
                                            rule=data["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
                                            ["neighbor_locator_rule_id"],
@@ -74,7 +75,8 @@ def brain_gen():
                                            ["neighbor_locator_rule_id"]][data["blueprint"][key]["cortical_mapping_dst"]
                                            [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
                                            synaptic_strength=data["blueprint"][key]["synaptic_strength"])
-            print("Completed Synapse Creation between Cortical area %s and %s" % (key, mapped_cortical_area))
+            print("Completed Synapse Creation between Cortical area %s and %s. Count: %i"
+                  % (key, mapped_cortical_area, synapse_count))
     print("Neuronal mapping across all Cortical areas has been completed!!")
 
     # # Visualize Neurons and Synapses

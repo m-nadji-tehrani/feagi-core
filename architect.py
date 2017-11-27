@@ -201,10 +201,12 @@ def three_dim_growth(cortical_area):
 
     neuron_loc_blk = zip(neuron_loc_list, neuron_blk_list)
 
+    neuron_count = 0
     for __ in neuron_loc_blk:
         neuro_genesis(cortical_area, __)        # Create a new Neuron in target destination
+        neuron_count += 1
 
-    return
+    return neuron_count
 
 
 def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
@@ -217,9 +219,9 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     :return:
     """
     # Input: neuron id of which we desire to find all candidate neurons for
-
     neighbor_candidates = []
 
+    # Narrow down the search scope to only few blocks
     neighbors_in_block = neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3)
 
     for key in neighbors_in_block:
@@ -245,15 +247,37 @@ def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
     #    2. For each neuron in path find a list of eligible candidates
     #    3. Update connectome to the candidates become neighbors of the source neuron
 
-
+    synapse_count = 0
     for src_id in settings.brain[cortical_area]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder(cortical_area, src_id, rule_id, rule_param)
         for dst_id in neighbor_candidates:
             synapse(cortical_area, src_id, cortical_area, dst_id, synaptic_strength)
+            synapse_count += 1
             # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
-    return
+    return synapse_count
+
+def dst_projection_center(cortical_area_src, neuron_id, cortical_area_dst):
+    """
+    Returns the coordinates of a neuron projected into a target Cortical layer
+    """
+
+    # Find relative coordinates on the source and destination side
+    src_lengths = cortical_area_lengths(cortical_area_src)
+    dst_lengths = cortical_area_lengths(cortical_area_dst)
+    coordinate_scales = [a/b for a, b in zip(dst_lengths, src_lengths)]
+
+    x_coordinate_src = settings.brain[cortical_area_src][neuron_id]["location"][0]
+    y_coordinate_src = settings.brain[cortical_area_src][neuron_id]["location"][1]
+    z_coordinate_src = settings.brain[cortical_area_src][neuron_id]["location"][2]
+
+    dst_projection_center = list()
+    dst_projection_center.append(x_coordinate_src * coordinate_scales[0])
+    dst_projection_center.append(y_coordinate_src * coordinate_scales[1])
+    dst_projection_center.append(z_coordinate_src * coordinate_scales[2])
+
+    return dst_projection_center
 
 
 def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rule, rule_param):
@@ -265,10 +289,17 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     dst_data = settings.brain[cortical_area_dst]
     neighbor_candidates = []
 
-    for key in dst_data:
+    # todo: Need to bring here concept of the projection center and find neurons around the block there
+    projection_coord = dst_projection_center(cortical_area_src, src_neuron_id, cortical_area_dst)
+
+    # todo: move the block size and kernel size below to settings
+    proj_block_id = block_id_gen(projection_coord[0], projection_coord[1], projection_coord[2], block_size=10)
+    neuron_list = neurons_in_block_neighborhood_2(cortical_area_dst, proj_block_id, kernel_size=3)
+
+    for neuron in neuron_list:
         if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
-                        cortical_area_dst=cortical_area_dst, key=key, neuron_id=src_neuron_id):
-            neighbor_candidates.append(key)
+                        cortical_area_dst=cortical_area_dst, key=neuron, neuron_id=src_neuron_id):
+            neighbor_candidates.append(neuron)
 
     return neighbor_candidates
 
@@ -278,6 +309,7 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
     """
 
+    synapse_count = 0
     for src_id in settings.brain[cortical_area_src]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_id, rule, rule_param)
@@ -286,9 +318,10 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
             if random.randrange(1, 100) < settings.genome['blueprint'][cortical_area_dst]['synapse_attractivity']:
                 # Connect the source and destination neuron via creating a synapse
                 synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, synaptic_strength)
+                synapse_count += 1
                 # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
-    return
+    return synapse_count
 
 
 def field_set(cortical_area, field_name, field_value):
@@ -523,6 +556,18 @@ def neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3):
     neuron_list = list()
     neuron_block_id = settings.brain[cortical_area][neuron_id]['block']
     block_list = neighboring_blocks(neuron_block_id, kernel_size)
+    for _ in block_list:
+        neurons_in_block = neurons_in_the_block(cortical_area, _)
+        for __ in neurons_in_block:
+            neuron_list.append(__)
+    return neuron_list
+
+def neurons_in_block_neighborhood_2(cortical_area, block_id, kernel_size=3):
+    """
+    Provides the list of all neurons within the surrounding blocks given the kernel size with default being 3
+    """
+    neuron_list = list()
+    block_list = neighboring_blocks(block_id, kernel_size)
     for _ in block_list:
         neurons_in_block = neurons_in_the_block(cortical_area, _)
         for __ in neurons_in_block:

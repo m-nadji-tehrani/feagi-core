@@ -4,7 +4,7 @@ from time import sleep
 import multiprocessing as mp
 import settings
 
-print("Main function has been initiated ^^^vvv^^^")
+# print("Main function has been initiated ^^^vvv^^^")
 
 settings.init_burst_visualization()
 settings.init_data()
@@ -67,7 +67,7 @@ class Brain:
 
     @staticmethod
     def read_from_mnist(mnist_img, event_queue):
-        print("Reading from MNIST")
+        # print("Reading from MNIST")
         import architect
         import IPU_vision
         import mnist
@@ -169,6 +169,7 @@ class Brain:
 if __name__ == '__main__':
     import sys
     from tty import setraw
+    from datetime import datetime
     import termios
     import brain_gen
     import tkinter
@@ -176,6 +177,7 @@ if __name__ == '__main__':
     import mnist
     import neuron_functions
     import settings
+
 
     # print("AAAAAAAABBBBBBBBBCCCCCCCCC")
     #
@@ -186,6 +188,24 @@ if __name__ == '__main__':
     # settings.init_timers()
     # settings.init_user_interactions()
     # settings.init_visualization()
+
+    def cortical_area_neuron_count(cortical_area):
+        """
+        Returns number of Neurons in the connectome
+        """
+        data = settings.brain[cortical_area]
+        neuron_count = 0
+        for key in data:
+            neuron_count += 1
+        return neuron_count
+
+
+    def connectome_neuron_count():
+        total_neuron_count = 0
+        for cortical_area in settings.cortical_areas:
+            total_neuron_count += cortical_area_neuron_count(cortical_area)
+
+        return total_neuron_count
 
 
     def submit_entry_fields():
@@ -213,7 +233,15 @@ if __name__ == '__main__':
     tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
     # Calling function to regenerate the Brain from the Genome
-    brain_gen.brain_gen()
+    if settings.regenerate_brain:
+        brain_generation_start_time = datetime.now()
+        brain_gen.brain_gen()
+        brain_generation_duration = datetime.now() - brain_generation_start_time
+        print("--------------------------------------------------------------")
+        print("Brain generation lasted %s " % brain_generation_duration)
+        print("--------------------------------------------------------------")
+        print("Total neuron count in Connectome is: ", connectome_neuron_count())
+        print("--------------------------------------------------------------")
 
     b = Brain()
 
@@ -291,7 +319,9 @@ if __name__ == '__main__':
     def process_auto_training():
         import random
         from time import sleep
+        from datetime import datetime
         b = Brain()
+        training_start_time = datetime.now()
         print("---------------------------------------------------------------------Auto training has been initiated.")
         for number in range(10):
             mnist_num, mnist_img = training_num_gen(number)
@@ -309,7 +339,10 @@ if __name__ == '__main__':
                 process_6.start()
                 # process_5.join()
                 # process_6.join()
+        training_duration = datetime.now() - training_start_time
         print("---------------------------------------------------------------------Auto training has been completed.")
+        print("Training lasted %s " % training_duration)
+        print("--------------------------------------------------------------")
         settings.user_input = 'x'
         return
 
@@ -330,7 +363,7 @@ if __name__ == '__main__':
         while settings.user_input != 'q':
             # if settings.user_input != settings.previous_user_input and \
                  #           settings.user_input_param != settings.previous_user_input_param:
-            print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<", settings.user_input, settings.previous_user_input)
+            # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<", settings.user_input, settings.previous_user_input)
             try:
                 if settings.user_input == 'p':
                     process_print_basic_info()

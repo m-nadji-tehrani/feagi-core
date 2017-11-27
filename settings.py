@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 from stats import cortical_xyz_range
 
-print("Settings has been initialized!")
+# print("Settings has been initialized!")
 
 def init_timers():
     # Sleep timer for visualization delay
@@ -20,6 +20,9 @@ def init_timers():
 
     global auto_train_delay
     auto_train_delay = 3
+
+    global block_size
+    block_size = 10
 
 
 def init_messaging():
@@ -71,6 +74,9 @@ def init_data():
     # Flag to read all Connectome data from memory instead of File
     global read_data_from_memory
     read_data_from_memory = True
+
+    global regenerate_brain
+    regenerate_brain = True
 
     # connectome_path defines the folder where all connectome files reside
     global connectome_path
@@ -231,7 +237,7 @@ def load_rules_in_memory():
     global rules_path
     with open(rules_path, "r") as data_file:
         rules = json.load(data_file)
-    print("Rules has been successfully loaded into memory...")
+    # print("Rules has been successfully loaded into memory...")
     return rules
 
 
@@ -243,7 +249,7 @@ def load_brain_in_memory():
             with open(connectome_path + item + '.json', "r") as data_file:
                 data = json.load(data_file)
                 brain[item] = data
-    print("Brain has been successfully loaded into memory...")
+    # print("Brain has been successfully loaded into memory...")
     return brain
 
 

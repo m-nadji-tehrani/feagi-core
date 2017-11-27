@@ -13,7 +13,6 @@ import visualizer
 import settings
 
 
-
 def brain_gen():
     # Backup the old brain
     def copyanything(src, dst):

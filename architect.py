@@ -10,7 +10,7 @@ Architect will accept the following information as input:
 import datetime
 import string
 import random
-from math import sqrt
+from math import sqrt, ceil
 import settings
 
 
@@ -38,11 +38,10 @@ def event_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_E'
 
 
-def neuro_genesis(cortical_area, location):
+def neuro_genesis(cortical_area, loc_blk):
     """
     Responsible for adding a Neuron to connectome
-    :param location:
-    :return:
+
     """
 
     genome = settings.genome
@@ -62,7 +61,8 @@ def neuro_genesis(cortical_area, location):
     settings.brain[cortical_area][id]["snooze_till_burst_num"] = 0
     settings.brain[cortical_area][id]["last_burst_num"] = 0
 
-    settings.brain[cortical_area][id]["location"] = location
+    settings.brain[cortical_area][id]["location"] = loc_blk[0]
+    settings.brain[cortical_area][id]["block"] = loc_blk[1]
     settings.brain[cortical_area][id]["status"] = "Passive"
     settings.brain[cortical_area][id]["last_timer_reset_time"] = str(datetime.datetime.now())
 
@@ -194,9 +194,15 @@ def three_dim_growth(cortical_area):
     """
     # This code segment creates a new Neuron per every location in neuron_loc_list
     neuron_loc_list = location_collector(cortical_area)
+    neuron_blk_list = []
 
-    for x in neuron_loc_list:
-        neuro_genesis(cortical_area, x)        # Create a new Neuron in target destination
+    for _ in neuron_loc_list:
+        neuron_blk_list.append(block_id_gen(_[0], _[1], _[2]))
+
+    neuron_loc_blk = zip(neuron_loc_list, neuron_blk_list)
+
+    for __ in neuron_loc_blk:
+        neuro_genesis(cortical_area, __)        # Create a new Neuron in target destination
 
     return
 
@@ -448,3 +454,10 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
             is_candidate = True
 
     return is_candidate
+
+
+def block_id_gen(x, y, z, block_size=10):
+    bx = ceil(x / block_size)
+    by = ceil(y / block_size)
+    bz = ceil(z / block_size)
+    return bx, by, bz

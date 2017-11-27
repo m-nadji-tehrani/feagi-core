@@ -3,21 +3,14 @@
 Provides functions performing statistical analysis on the Connectome and Cortical behavior
 """
 
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
 
-
-
+# plt.style.use('ggplot')
 import settings
 
-
-plt.style.use('ggplot')
-
-
-
-
-def connectome_neuron_count(cortical_area):
+def cortical_area_neuron_count(cortical_area):
     """
     Returns number of Neurons in the connectome
     """
@@ -26,6 +19,18 @@ def connectome_neuron_count(cortical_area):
     for key in data:
         neuron_count += 1
     return neuron_count
+
+
+def connectome_neuron_count():
+    total_neuron_count = 0
+    for cortical_area in settings.cortical_areas:
+        cortical_area_neuron_count(cortical_area)
+        total_neuron_count += 1
+
+    return total_neuron_count
+
+
+
 
 
 def connectome_total_synapse_cnt(cortical_area):
@@ -38,13 +43,6 @@ def connectome_total_synapse_cnt(cortical_area):
         for synapse in data[neuron]['neighbors']:
             total_synapse_count += 1
     return total_synapse_count
-
-
-
-
-
-global raw
-raw = []
 
 
 def connectome_neighbor_histogram(cortical_area):

@@ -10,7 +10,7 @@ Architect will accept the following information as input:
 import datetime
 import string
 import random
-from math import sqrt, ceil
+from math import sqrt, ceil, floor
 import settings
 
 
@@ -457,7 +457,72 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
 
 
 def block_id_gen(x, y, z, block_size=10):
+    """
+    Generating a block id so it can be used for faster neighbor detection
+    """
     bx = ceil(x / block_size)
     by = ceil(y / block_size)
     bz = ceil(z / block_size)
     return bx, by, bz
+
+
+def neurons_in_same_block(cortical_area, neuron_id):
+    """
+    Generates a list of Neurons in the same block as the given one
+    """
+    neuron_list = []
+    for _ in settings.brain[cortical_area]:
+        if settings.brain[cortical_area][_]['block'] == settings.brain[cortical_area][neuron_id]['block']:
+            if _ != neuron_id:
+                neuron_list.append(_)
+    return neuron_list
+
+
+def neurons_in_the_block(cortical_area, block_id):
+    """
+    Generates a list of Neurons in the given block
+    block_id to be entered as [x,y,z]
+    """
+    neuron_list = []
+    for _ in settings.brain[cortical_area]:
+        if settings.brain[cortical_area][_]['block'] == block_id:
+            neuron_list.append(_)
+    return neuron_list
+
+
+def neighboring_blocks(block_id, kernel_size):
+    """
+    Returns the list of block ids who are neighbor of the given one
+    Block_id is in form of [x,y,z]
+    """
+
+    block_list = list()
+
+    kernel_half = floor(kernel_size / 2)
+    seed_id = [block_id[0] - kernel_half, block_id[1] - kernel_half, block_id[2] - kernel_half]
+
+    for i in range(0, kernel_size):
+        for ii in range(0, kernel_size):
+            for iii in range(0, kernel_size):
+                neighbor_block_id = [seed_id[0] + i, seed_id[1] + ii, seed_id[2] + iii]
+                if neighbor_block_id != block_id and \
+                                neighbor_block_id[0] > 0 and \
+                                neighbor_block_id[1] > 0 and \
+                                neighbor_block_id[2] > 0:
+                    block_list.append(neighbor_block_id)
+
+    return block_list
+
+
+def neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3):
+    """
+    Provides the list of all neurons within the surrounding blocks given the kernel size with default being 3
+    """
+    neuron_list = list()
+    neuron_block_id = settings.brain[cortical_area][neuron_id]['block']
+    block_list = neighboring_blocks(neuron_block_id, kernel_size)
+    for _ in block_list:
+        neurons_in_block = neurons_in_the_block(cortical_area, _)
+        for __ in neurons_in_block:
+            neuron_list.append(__)
+    return neuron_list

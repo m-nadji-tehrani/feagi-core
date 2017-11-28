@@ -8,6 +8,8 @@ import shutil
 import errno
 import datetime
 import multiprocessing
+from multiprocessing import Pool, Process
+
 
 import architect
 import visualizer
@@ -29,11 +31,28 @@ def build_synapse(key):
           % (key, synapse_count, datetime.datetime.now() - timer))
     return
 
-def job_test(key):
-    print(key)
+
+def build_synapse_ext(key):
+    # Read Genome data
+    genome = settings.genome
+    for mapped_cortical_area in genome["blueprint"][key]["cortical_mapping_dst"]:
+        timer = datetime.datetime.now()
+        synapse_count = architect.neighbor_builder_ext(cortical_area_src=key,
+                                       cortical_area_dst=mapped_cortical_area,
+                                       rule=genome["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
+                                       ["neighbor_locator_rule_id"],
+                                       rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
+                                       ["cortical_mapping_dst"][mapped_cortical_area]
+                                       ["neighbor_locator_rule_id"]][genome["blueprint"][key]["cortical_mapping_dst"]
+                                       [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
+                                       synaptic_strength=genome["blueprint"][key]["synaptic_strength"])
+        print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
+              % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     return
 
-def brain_gen():
+
+def main():
+
     # Backup the old brain
     def copyanything(src, dst):
         try:
@@ -73,33 +92,22 @@ def brain_gen():
               % (key, neuron_count, datetime.datetime.now() - timer))
 
     # Build Synapses within all Cortical areas
+    pool1 = Pool(processes=7)
+    synapse_creation_candidates = []
     for key in blueprint:
-        jobs = []
         if data["blueprint"][key]["init_synapse_needed"] == "True":
-            p = multiprocessing.Process(target=build_synapse, args=(key, ))
-            jobs.append(p)
-            p.start()
-            print("Started Synapse creation job for ", key)
+            synapse_creation_candidates.append(key)
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)
-
-
+    pool1.map(build_synapse, synapse_creation_candidates)
+    pool1.close()
+    pool1.join()
 
     # Build Synapses across various Cortical areas
-    for key in blueprint:
-        for mapped_cortical_area in data["blueprint"][key]["cortical_mapping_dst"]:
-            timer = datetime.datetime.now()
-            synapse_count = architect.neighbor_builder_ext(cortical_area_src=key,
-                                           cortical_area_dst=mapped_cortical_area,
-                                           rule=data["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
-                                           ["neighbor_locator_rule_id"],
-                                           rule_param=data["neighbor_locator_rule"][data["blueprint"][key]
-                                           ["cortical_mapping_dst"][mapped_cortical_area]
-                                           ["neighbor_locator_rule_id"]][data["blueprint"][key]["cortical_mapping_dst"]
-                                           [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
-                                           synaptic_strength=data["blueprint"][key]["synaptic_strength"])
-            print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
-                  % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
+    pool2 = Pool(processes=7)
+    pool2.map(build_synapse_ext, blueprint)
+    pool2.close()
+    pool2.join()
     print("Neuronal mapping across all Cortical areas has been completed!!")
 
     # # Visualize Neurons and Synapses

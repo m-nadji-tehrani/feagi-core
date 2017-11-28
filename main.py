@@ -178,6 +178,7 @@ if __name__ == '__main__':
     import neuron_functions
     import settings
 
+    mp.set_start_method('spawn')
 
     # print("AAAAAAAABBBBBBBBBCCCCCCCCC")
     #
@@ -256,7 +257,7 @@ if __name__ == '__main__':
     # Calling function to regenerate the Brain from the Genome
     if settings.regenerate_brain:
         brain_generation_start_time = datetime.now()
-        brain_gen.brain_gen()
+        brain_gen.main()
         brain_generation_duration = datetime.now() - brain_generation_start_time
         print("--------------------------------------------------------------")
         print("Brain generation lasted %s " % brain_generation_duration)
@@ -270,7 +271,7 @@ if __name__ == '__main__':
 
     # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 
-    mp.set_start_method('spawn')
+
 
     # Initializing queues
     user_input_queue = mp.Queue()

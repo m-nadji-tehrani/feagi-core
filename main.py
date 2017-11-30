@@ -165,6 +165,42 @@ class Brain:
         # print(IPU_vision.direction_stats(a))
         # return
 
+    @staticmethod
+    def cortical_area_neuron_count(cortical_area):
+        """
+        Returns number of Neurons in the connectome
+        """
+        data = settings.brain[cortical_area]
+        neuron_count = 0
+        for key in data:
+            neuron_count += 1
+        return neuron_count
+
+    @staticmethod
+    def cortical_area_synapse_count(cortical_area):
+        """
+        Returns number of Neurons in the connectome
+        """
+        data = settings.brain[cortical_area]
+        synapse_count = 0
+        for neuron in data:
+            for _ in data[neuron]['neighbors']:
+                synapse_count += 1
+        return synapse_count
+
+    def connectome_neuron_count(self):
+        total_neuron_count = 0
+        for cortical_area in settings.cortical_areas:
+            total_neuron_count += self.cortical_area_neuron_count(cortical_area)
+        return total_neuron_count
+
+    def connectome_synapse_count(self):
+        total_synapse_count = 0
+        for cortical_area in settings.cortical_areas:
+            total_synapse_count += self.cortical_area_synapse_count(cortical_area)
+
+        return total_synapse_count
+
 
 if __name__ == '__main__':
     import sys
@@ -189,45 +225,6 @@ if __name__ == '__main__':
     # settings.init_timers()
     # settings.init_user_interactions()
     # settings.init_visualization()
-
-    def cortical_area_neuron_count(cortical_area):
-        """
-        Returns number of Neurons in the connectome
-        """
-        data = settings.brain[cortical_area]
-        neuron_count = 0
-        for key in data:
-            neuron_count += 1
-        return neuron_count
-
-
-    def cortical_area_synapse_count(cortical_area):
-        """
-        Returns number of Neurons in the connectome
-        """
-        data = settings.brain[cortical_area]
-        synapse_count = 0
-        for key in data:
-            for _ in data[key]['neighbors']:
-                synapse_count += 1
-        return synapse_count
-
-
-    def connectome_neuron_count():
-        total_neuron_count = 0
-        for cortical_area in settings.cortical_areas:
-            total_neuron_count += cortical_area_neuron_count(cortical_area)
-
-        return total_neuron_count
-
-
-    def connectome_synapse_count():
-        total_synapse_count = 0
-        for cortical_area in settings.cortical_areas:
-            total_synapse_count += cortical_area_synapse_count(cortical_area)
-
-        return total_synapse_count
-
 
 
     def submit_entry_fields():
@@ -254,20 +251,23 @@ if __name__ == '__main__':
     tkinter.Button(master, text='Quit', command=master.quit).grid(row=3, column=0, pady=4)
     tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
+    b = Brain()
+
     # Calling function to regenerate the Brain from the Genome
     if settings.regenerate_brain:
         brain_generation_start_time = datetime.now()
         brain_gen.main()
         brain_generation_duration = datetime.now() - brain_generation_start_time
+        settings.init_data()
         print("--------------------------------------------------------------")
         print("Brain generation lasted %s " % brain_generation_duration)
         print("--------------------------------------------------------------")
-        print("Total Neuron count in Connectome is: ", connectome_neuron_count())
+        print("Total Neuron count in Connectome is: ", b.connectome_neuron_count())
         print("--------------------------------------------------------------")
-        print("Total Synapse count in Connectome is: ", connectome_synapse_count())
+        print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
         print("--------------------------------------------------------------")
 
-    b = Brain()
+
 
     # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
 

@@ -92,7 +92,8 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, synaptic_stren
         print("Source or Destination neuron not found")
         return
 
-    settings.brain[src_cortical_area][src_id]["neighbors"][dst_id] = {"cortical_area": dst_cortical_area, "synaptic_strength": synaptic_strength}
+    settings.brain[src_cortical_area][src_id]["neighbors"][dst_id] = \
+        {"cortical_area": dst_cortical_area, "synaptic_strength": synaptic_strength}
 
     return
 
@@ -232,7 +233,7 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     return neighbor_candidates
 
 
-def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
+def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, synaptic_strength):
     """
     Function responsible for crawling through Neurons and deciding where to build Synapses
     """
@@ -247,6 +248,10 @@ def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
     #    2. For each neuron in path find a list of eligible candidates
     #    3. Update connectome to the candidates become neighbors of the source neuron
 
+    # todo: Warning: Need to watch for the side effects on this line to make sure its not overwriting values
+    if brain_gen:
+        settings.brain = brain
+
     synapse_count = 0
     for src_id in settings.brain[cortical_area]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
@@ -256,7 +261,20 @@ def neighbor_builder(cortical_area, rule_id, rule_param, synaptic_strength):
             synapse_count += 1
             # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
-    return synapse_count
+    if brain_gen:
+        brain = settings.brain
+
+        synapse_count2 = 0
+        for area in brain:
+            for neuron in brain[area]:
+                for connection in brain[area][neuron]['neighbors']:
+                    synapse_count2 += 1
+        print('OOOOOOOOOOOOOOOOOOOOOOO')
+        print(synapse_count2)
+        print('OOOOOOOOOOOOOOOOOOOOOOO')
+    else:
+        brain = {}
+    return synapse_count, brain
 
 def dst_projection_center(cortical_area_src, neuron_id, cortical_area_dst):
     """
@@ -304,10 +322,13 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     return neighbor_candidates
 
 
-def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param, synaptic_strength=1):
+def neighbor_builder_ext(brain, brain_gen, cortical_area_src, cortical_area_dst, rule, rule_param, synaptic_strength=1):
     """
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
     """
+
+    if brain_gen:
+        settings.brain = brain
 
     synapse_count = 0
     for src_id in settings.brain[cortical_area_src]:
@@ -321,7 +342,11 @@ def neighbor_builder_ext(cortical_area_src, cortical_area_dst, rule, rule_param,
                 synapse_count += 1
                 # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
-    return synapse_count
+    if brain_gen:
+        brain = settings.brain
+    else:
+        brain = {}
+    return synapse_count, brain
 
 
 def field_set(cortical_area, field_name, field_value):

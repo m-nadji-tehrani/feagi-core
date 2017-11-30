@@ -41,6 +41,7 @@ def init_messaging():
     global verbose
     verbose = False
 
+
 def init_user_interactions():
     # Variable containing user input to train and control the Brain
     global user_input
@@ -253,17 +254,27 @@ def load_brain_in_memory():
     return brain
 
 
-def save_brain_to_disk():
-    for cortical_area in cortical_list():
+def save_brain_to_disk(cortical_area):
+    if cortical_area:
         with open(connectome_path+cortical_area+'.json', "r+") as data_file:
             data = brain[cortical_area]
 
-            print("All data related to Cortical area %s is saved in connectome" % cortical_area)
-
+            print("...All data related to Cortical area %s is saved in connectome" % cortical_area)
             # Saving changes to the connectome
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
             data_file.truncate()
+    else:
+        for cortical_area in cortical_list():
+            with open(connectome_path+cortical_area+'.json', "r+") as data_file:
+                data = brain[cortical_area]
+
+                print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
+
+                # Saving changes to the connectome
+                data_file.seek(0)  # rewind
+                data_file.write(json.dumps(data, indent=3))
+                data_file.truncate()
     return
 
 

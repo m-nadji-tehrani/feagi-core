@@ -254,12 +254,12 @@ def load_brain_in_memory():
     return brain
 
 
-def save_brain_to_disk(cortical_area):
-    if cortical_area:
+def save_brain_to_disk(cortical_area='all'):
+    if cortical_area != 'all':
         with open(connectome_path+cortical_area+'.json', "r+") as data_file:
             data = brain[cortical_area]
 
-            print("...All data related to Cortical area %s is saved in connectome" % cortical_area)
+            # print("...All data related to Cortical area %s is saved in connectome\n" % cortical_area)
             # Saving changes to the connectome
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
@@ -269,7 +269,7 @@ def save_brain_to_disk(cortical_area):
             with open(connectome_path+cortical_area+'.json', "r+") as data_file:
                 data = brain[cortical_area]
 
-                print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
+                print(">>> >>> All data related to Cortical area %s is saved in connectome\n" % cortical_area)
 
                 # Saving changes to the connectome
                 data_file.seek(0)  # rewind

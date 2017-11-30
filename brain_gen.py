@@ -69,7 +69,6 @@ def main():
     # Backup the current folder
     # copyanything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
 
-
     # Reset in-memory brain data
     settings.reset_brain()
 
@@ -110,6 +109,7 @@ def main():
     pool1.close()
     pool1.join()
 
+    settings.init_data()
     # Build Synapses across various Cortical areas
     func2 = partial(build_synapse_ext, settings.brain)
     pool2 = Pool(processes=7)

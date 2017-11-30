@@ -216,17 +216,6 @@ if __name__ == '__main__':
 
     mp.set_start_method('spawn')
 
-    # print("AAAAAAAABBBBBBBBBCCCCCCCCC")
-    #
-    # settings.init_burst_visualization()
-    # settings.init_data()
-    # settings.init_messaging()
-    # settings.init_settings()
-    # settings.init_timers()
-    # settings.init_user_interactions()
-    # settings.init_visualization()
-
-
     def submit_entry_fields():
         print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
         if settings.user_input:
@@ -259,6 +248,8 @@ if __name__ == '__main__':
         brain_gen.main()
         brain_generation_duration = datetime.now() - brain_generation_start_time
         settings.init_data()
+
+        # todo: Move the following to stats module
         print("--------------------------------------------------------------")
         print("Brain generation lasted %s " % brain_generation_duration)
         print("--------------------------------------------------------------")
@@ -267,11 +258,7 @@ if __name__ == '__main__':
         print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
         print("--------------------------------------------------------------")
 
-
-
     # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
-
-
 
     # Initializing queues
     user_input_queue = mp.Queue()

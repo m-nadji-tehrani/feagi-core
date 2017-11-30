@@ -269,9 +269,6 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, synap
             for neuron in brain[area]:
                 for connection in brain[area][neuron]['neighbors']:
                     synapse_count2 += 1
-        print('OOOOOOOOOOOOOOOOOOOOOOO')
-        print(synapse_count2)
-        print('OOOOOOOOOOOOOOOOOOOOOOO')
     else:
         brain = {}
     return synapse_count, brain

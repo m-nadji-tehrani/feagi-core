@@ -459,7 +459,7 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
         y_coordinate_target_dst = dst_data[key]["location"][1]
         z_coordinate_target_dst = dst_data[key]["location"][2]
 
-    dest_projection_center = []
+    dest_projection_center = list()
     dest_projection_center.append(x_coordinate_key * coordinate_scales[0])
     dest_projection_center.append(y_coordinate_key * coordinate_scales[1])
     dest_projection_center.append(z_coordinate_key * coordinate_scales[2])

@@ -87,13 +87,11 @@ def main():
         print("Cortical area %s is has been cleared." % key)
 
     # Develop Neurons for various cortical areas defined in Genome
-    for key in blueprint:
+    for cortical_area in blueprint:
         timer = datetime.datetime.now()
-        neuron_count = architect.three_dim_growth(key)
+        neuron_count = architect.three_dim_growth(cortical_area)
         print("Neuron Creation for Cortical area %s is now complete. Count: %i  Duration: %s"
-              % (key, neuron_count, datetime.datetime.now() - timer))
-
-
+              % (cortical_area, neuron_count, datetime.datetime.now() - timer))
 
     # Build Synapses within all Cortical areas
     func1 = partial(build_synapse, settings.brain)
@@ -104,6 +102,8 @@ def main():
             synapse_creation_candidates.append(key)
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)
+
+    settings.save_brain_to_disk()
 
     pool1.map(func1, synapse_creation_candidates)
     pool1.close()

@@ -10,6 +10,7 @@ from stats import cortical_xyz_range
 
 # print("Settings has been initialized!")
 
+
 def init_timers():
     # Sleep timer for visualization delay
     global burst_timer
@@ -20,6 +21,9 @@ def init_timers():
 
     global auto_train_delay
     auto_train_delay = 3
+
+    global auto_train_delay2
+    auto_train_delay2 = 50
 
     global block_size
     block_size = 10
@@ -135,7 +139,6 @@ def init_settings():
     # global sobel_x, sobel_y
     # sobel_x = [[-1, 0, 1], [-2, 0, 1], [-1, 0, 1]]
     # sobel_y = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]]
-
 
 
 def init_burst_visualization():

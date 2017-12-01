@@ -350,6 +350,16 @@ if __name__ == '__main__':
                 process_6.start()
                 # process_5.join()
                 # process_6.join()
+            fcl = FCL_queue.get()
+            fcl_length = len(fcl)
+            FCL_queue.put(fcl)
+            # Placing training on hold till neuronal activities for previous training set is ramped down
+            while fcl_length > 0:
+                sleep(5)
+                fcl = FCL_queue.get()
+                fcl_length = len(fcl)
+                FCL_queue.put(fcl)
+
         training_duration = datetime.now() - training_start_time
         print("---------------------------------------------------------------------Auto training has been completed.")
         print("Training lasted %s " % training_duration)

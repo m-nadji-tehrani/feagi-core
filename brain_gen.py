@@ -36,6 +36,8 @@ def build_synapse(brain, key):
 
 def build_synapse_ext(brain, key):
     # Read Genome data
+    if key == 'utf8_memory':
+        print('Rule == ?')
     genome = settings.genome
     for mapped_cortical_area in genome["blueprint"][key]["cortical_mapping_dst"]:
         timer = datetime.datetime.now()

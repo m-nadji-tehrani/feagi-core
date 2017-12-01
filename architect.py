@@ -219,6 +219,8 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     :param cortical_area
     :return:
     """
+    if cortical_area == 'utf8_memory':
+        print('rule=', rule)
     # Input: neuron id of which we desire to find all candidate neurons for
     neighbor_candidates = []
 
@@ -247,6 +249,9 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, synap
     #    1. Ask for a direction
     #    2. For each neuron in path find a list of eligible candidates
     #    3. Update connectome to the candidates become neighbors of the source neuron
+
+    if cortical_area == 'utf8_memory':
+        print('..rule=', rule_id)
 
     # todo: Warning: Need to watch for the side effects on this line to make sure its not overwriting values
     if brain_gen:
@@ -304,17 +309,22 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     dst_data = settings.brain[cortical_area_dst]
     neighbor_candidates = []
 
-    # todo: Need to bring here concept of the projection center and find neurons around the block there
-    projection_coord = dst_projection_center(cortical_area_src, src_neuron_id, cortical_area_dst)
+    if settings.genome['blueprint'][cortical_area_dst]['location_generation_type'] == 'sequential':
+        for neuron in dst_data:
+            if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
+                            cortical_area_dst=cortical_area_dst, key=neuron, neuron_id=src_neuron_id):
+                neighbor_candidates.append(neuron)
+    else:
+        # todo: Need to bring here concept of the projection center and find neurons around the block there
+        projection_coord = dst_projection_center(cortical_area_src, src_neuron_id, cortical_area_dst)
 
-    # todo: move the block size and kernel size below to settings
-    proj_block_id = block_id_gen(projection_coord[0], projection_coord[1], projection_coord[2], block_size=10)
-    neuron_list = neurons_in_block_neighborhood_2(cortical_area_dst, proj_block_id, kernel_size=3)
-
-    for neuron in neuron_list:
-        if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
-                        cortical_area_dst=cortical_area_dst, key=neuron, neuron_id=src_neuron_id):
-            neighbor_candidates.append(neuron)
+        # todo: move the block size and kernel size below to settings
+        proj_block_id = block_id_gen(projection_coord[0], projection_coord[1], projection_coord[2], block_size=10)
+        neuron_list = neurons_in_block_neighborhood_2(cortical_area_dst, proj_block_id, kernel_size=3)
+        for neuron in neuron_list:
+            if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
+                            cortical_area_dst=cortical_area_dst, key=neuron, neuron_id=src_neuron_id):
+                neighbor_candidates.append(neuron)
 
     return neighbor_candidates
 
@@ -509,7 +519,6 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
                 (z_coordinate_target_dst > src_layer_index * dest_layer_height) and \
                 (z_coordinate_target_dst < ((src_layer_index + 1) * dest_layer_height)):
             is_candidate = True
-
     return is_candidate
 
 

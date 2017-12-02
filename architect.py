@@ -250,9 +250,6 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, synap
     #    2. For each neuron in path find a list of eligible candidates
     #    3. Update connectome to the candidates become neighbors of the source neuron
 
-    if cortical_area == 'utf8_memory':
-        print('..rule=', rule_id)
-
     # todo: Warning: Need to watch for the side effects on this line to make sure its not overwriting values
     if brain_gen:
         settings.brain = brain

@@ -350,10 +350,11 @@ if __name__ == '__main__':
                 process_6.start()
                 # process_5.join()
                 # process_6.join()
+
+            # Placing training on hold till neuronal activities for previous training set is ramped down
             fcl = FCL_queue.get()
             fcl_length = len(fcl)
             FCL_queue.put(fcl)
-            # Placing training on hold till neuronal activities for previous training set is ramped down
             while fcl_length > 0:
                 sleep(5)
                 fcl = FCL_queue.get()
@@ -366,6 +367,85 @@ if __name__ == '__main__':
         print("--------------------------------------------------------------")
         settings.user_input = 'x'
         return
+
+
+    def process_auto_test():
+        """
+        Test approach:
+        
+        - Ask user for number of times testing every digit call it x
+        - Inject each number x rounds with each round conclusion being a "Comprehensions"
+        - Count the number of True vs. False Comprehensions
+        - Collect stats for each number and report at the end of testing
+        
+        """
+
+        print('Testing Testing Testing', settings.comprehended_char)
+        import random
+        from time import sleep
+        from datetime import datetime
+        b = Brain()
+        testing_start_time = datetime.now()
+        print("---------------------------------------------------------------------Auto testing has been initiated.")
+
+        test_stats = list()
+
+        for number in range(10):
+            mnist_num, mnist_img = training_num_gen(number)
+            if settings.vis_show:
+                visualizer.cortical_heatmap(mnist.read_image(mnist_num), [])
+
+            # Following For loop test brain comprehension of a character x number of times
+            true_comprehensions = 0
+            total_comprehensions = 0
+            for x in range(int(settings.user_input_param)):
+                print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Testing round %i for number %s" % (x + 1, mnist_img[1]))
+                mnist_img_char = str(mnist_img[1])
+
+                # Periodically check to see what Character was comprehended and evaluate True or False
+                comprehension = False
+                while not comprehension:
+                    # The following process starts reading from MNIST and injecting it into the brain
+                    process_7 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
+                                           args=(mnist_img, FCL_queue, event_queue))
+                    process_7.start()
+
+                    # Read the flag to see if there has been comprehension
+                    comprehended_value = settings.comprehended_char
+                    print("$$$$$$      Current comlprehended value is:", settings.comprehended_char)
+                    if comprehended_value:
+                        total_comprehensions += 1
+                        if comprehended_value == mnist_img_char:
+                            true_comprehensions += 1
+                        settings.comprehended_char = ''
+
+                    sleep(settings.auto_test_delay)
+                    # process_5.join()
+                    # process_6.join()
+
+            test_stats.append([number, total_comprehensions, true_comprehensions])
+
+            # Placing training on hold till neuronal activities for previous training set is ramped down
+            fcl = FCL_queue.get()
+            fcl_length = len(fcl)
+            FCL_queue.put(fcl)
+            while fcl_length > 0:
+                sleep(5)
+                fcl = FCL_queue.get()
+                fcl_length = len(fcl)
+                FCL_queue.put(fcl)
+
+        testing_duration = datetime.now() - testing_start_time
+        print("---------------------------------------------------------------------Auto testing has been completed.")
+        print("Testing lasted %s " % testing_duration)
+        print("--------------------------------------------------------------")
+        print("Test Stats")
+        print(test_stats)
+        print("--------------------------------------------------------------")
+
+        settings.user_input = 'x'
+        return
+
 
 
     # Starting the burst machine
@@ -405,6 +485,11 @@ if __name__ == '__main__':
                 elif settings.user_input == 'a':
                     process_auto_training()
                     settings.user_input = ''
+
+                elif settings.user_input == 't':
+                    process_auto_test()
+                    settings.user_input = ''
+
 
                 else:
                     read_user_input()
@@ -454,6 +539,7 @@ if __name__ == '__main__':
 
 
 # Neuron functions - Physiology
+# todo: Let all the Neuron times be a factor of average Burst duration instead of fix number
 # todo: Create the pruner function
 # todo: Synaptic_strenght currently growing out of bound. Need to impose limits
 # todo: Handle burst scenarios where the input neuron does not have any neighbor neuron associated with

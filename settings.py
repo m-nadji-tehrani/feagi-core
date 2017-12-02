@@ -25,6 +25,9 @@ def init_timers():
     global auto_train_delay2
     auto_train_delay2 = 50
 
+    global auto_test_delay
+    auto_test_delay = 3
+
     global block_size
     block_size = 10
 
@@ -63,11 +66,13 @@ def init_user_interactions():
     global opu_char
     opu_char = 'X'
 
+    global comprehended_char
+    comprehended_char = ''
 
 def init_visualization():
     # Flag to show visualizations
     global vis_show
-    vis_show = True
+    vis_show = False
     if vis_show:
         init_burst_visualization()
 

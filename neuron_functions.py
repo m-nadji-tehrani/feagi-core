@@ -112,6 +112,8 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                         wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
                                                   dst_cortical_area='utf8_memory', dst_neuron=_[1])
 
+                        print(settings.Bcolors.FIRE + "..........................................................................A new memory was formed against utf8_memory location "
+                              + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory', _[1]) + settings.Bcolors.ENDC)
                         # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
                         # for dst_neuron_id in dst_neuron_id_list:
                         #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
@@ -224,8 +226,9 @@ def neuron_fire(cortical_area, id):
     settings.brain[cortical_area][id]["last_burst_num"] = burst_count
 
     if cortical_area == 'utf8_out':
+        settings.comprehended_char = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id)
         print("Comprehended character is:                 <<<     %s      >>>                 #*#*#*#*#*#*#"
-              % OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id))
+              % settings.comprehended_char)
 
     #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
         # settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x])

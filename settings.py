@@ -3,10 +3,12 @@
 This file contains all the Global settings and parameters used throughout the project
 """
 import json
+import datetime
 import os.path
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 from stats import cortical_xyz_range
+from genethesizer import genome_id_gen
 
 # print("Settings has been initialized!")
 
@@ -107,6 +109,12 @@ def init_data():
 
     global genome
     genome = load_genome_in_memory()
+
+    global genome_id
+    genome_id = ""
+
+    global genome_stats
+    genome_stats = {}
 
     global blueprint
     blueprint = cortical_list()
@@ -231,6 +239,7 @@ def genome_selector():
 
 
 def load_genome_in_memory():
+    global genome_id
     genome_id = genome_selector()
     global genome_file
     with open(genome_file, "r") as data_file:
@@ -293,18 +302,23 @@ def save_brain_to_disk(cortical_area='all'):
     return
 
 
-def save_genome_to_disk(genome_id = "genome_id_ABCD"):
+def save_genome_to_disk():
     with open(genome_file, "r+") as data_file:
         genome_db = json.load(data_file)
-        genome_properties = genome
-        genome_db[genome_id]["properties"] = genome_properties
 
-        print("Genome has been preserved for future generations!")
+        new_genome_id = genome_id_gen()
+
+        genome_db[new_genome_id] = {}
+        genome_db[new_genome_id]["generation_date"] = str(datetime.datetime.now())
+        genome_db[new_genome_id]["properties"] = genome
+        genome_db[new_genome_id]["stats"] = genome_stats
 
         # Saving changes to the connectome
         data_file.seek(0)  # rewind
         data_file.write(json.dumps(genome_db, indent=3))
         data_file.truncate()
+
+        print("Genome has been preserved for future generations!")
     return
 
 

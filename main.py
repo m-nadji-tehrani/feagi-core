@@ -213,6 +213,7 @@ if __name__ == '__main__':
     import mnist
     import neuron_functions
     import settings
+    from genethesizer import genome_id_gen
 
     mp.set_start_method('spawn')
 

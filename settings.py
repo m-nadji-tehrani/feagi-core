@@ -215,21 +215,28 @@ def vis_init():
 
 # Reads the list of all Cortical areas defined in Genome
 def cortical_list():
-    global genome_file
-    with open(genome_file, "r") as data_file:
-        data = json.load(data_file)
-        blueprint = []
-        for key in data['blueprint']:
-            blueprint.append(key)
+    blueprint = load_genome_in_memory()["blueprint"]
 
-    return blueprint
+    cortical_list = []
+    for key in blueprint:
+        cortical_list.append(key)
+
+    return cortical_list
+
+
+def genome_selector():
+    """ Need to add logics to this function to chose Genome using Genetic Algorithm"""
+    genome_id = "genome_id_ABCD"
+    return genome_id
 
 
 def load_genome_in_memory():
+    genome_id = genome_selector()
     global genome_file
     with open(genome_file, "r") as data_file:
-        genome = json.load(data_file)
-
+        genome_db = json.load(data_file)
+        genome = genome_db[genome_id]["properties"]
+        # genome_stats = genome_db[gene_id]["stats"]
     return genome
 
 
@@ -286,15 +293,17 @@ def save_brain_to_disk(cortical_area='all'):
     return
 
 
-def save_genome_to_disk():
+def save_genome_to_disk(genome_id = "genome_id_ABCD"):
     with open(genome_file, "r+") as data_file:
-        data = genome
+        genome_db = json.load(data_file)
+        genome_properties = genome
+        genome_db[genome_id]["properties"] = genome_properties
 
         print("Genome has been preserved for future generations!")
 
         # Saving changes to the connectome
         data_file.seek(0)  # rewind
-        data_file.write(json.dumps(data, indent=3))
+        data_file.write(json.dumps(genome_db, indent=3))
         data_file.truncate()
     return
 

@@ -518,6 +518,7 @@ if __name__ == '__main__':
 # todo: Brain is being loaded in memory too regularly
 
 # General Architecture - Anatomy
+# todo: Consider Headache and Sleep needs
 # todo: Move Rules to Genome
 # todo: Consider Synaptic capacity as a property of each neuron
 # todo: Account for Neuron morphology as a Neuron property

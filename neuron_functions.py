@@ -97,12 +97,15 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         #                                       src_neuron=src_neuron, dst_neuron=dst_neuron)
         #
 
+        # Building a bidirectional synapse between memory neurons who fire together within a cortical area
+        # todo: Read the following memory list from Genome
         memory_list = ['utf8_memory', 'vision_memory']
         for cortical_area in memory_list:
-            for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-                for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-                    if src_neuron != dst_neuron:
-                        wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
+            if settings.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
+                for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                    for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                        if src_neuron != dst_neuron:
+                            wire_neurons_together(cortical_area=cortical_area, src_neuron=src_neuron, dst_neuron=dst_neuron)
 
         # Wiring Vision memory to UIF-8 memory
         for _ in fire_candidate_list:
@@ -376,7 +379,7 @@ def wire_neurons_together_ext(src_cortical_area, src_neuron, dst_cortical_area, 
     genome = settings.genome
 
     synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron,
-            genome["blueprint"][src_cortical_area]["synaptic_strength"])
+            genome["blueprint"][src_cortical_area]["synaptic_strength_inc"])
 
     return
 

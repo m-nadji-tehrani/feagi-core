@@ -1,6 +1,9 @@
 """ This module contains functions capable of modifying and shaping the Genome"""
 
 import settings
+import datetime
+import random
+import string
 
 
 class GeneModifier:
@@ -34,6 +37,15 @@ class GeneModifier:
             settings.genome['blueprint'][cortical_area]['neuron_params']['snooze_length'] * change_percentage
         return
 
+
+def genome_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
+    """
+    This function generates a unique id which will be associated with each GEnome
+
+    """
+    # Rand gen source partially from:
+    # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+    return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_G'
 
 def generation_assessment():
     """ A collection of assessments to evaluate the performance of the Genome"""

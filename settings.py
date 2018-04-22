@@ -95,11 +95,9 @@ def init_data():
     global connectome_path
     connectome_path = './connectome/'
 
-
     # rules_path defines the folder where all connectome files reside
     global rules_path
     rules_path = './reproduction/rules.json'
-
 
     # Genome defines the json file name and location which is acting as Human Genome
     global genome_file
@@ -115,7 +113,7 @@ def init_data():
     genome_id = ""
 
     global genome_stats
-    genome_stats = {}
+    genome_stats = {"test_stats": {}, "performance_stats": {}}
 
     global blueprint
     blueprint = cortical_list()
@@ -138,13 +136,10 @@ def init_settings():
     auto_train = True
 
     global auto_test_comp_attempt_threshold
-    auto_test_comp_attempt_threshold = 5
+    auto_test_comp_attempt_threshold = 1
 
     global ready_to_exit_burst
     ready_to_exit_burst = False
-
-
-
 
     # >>>>>>>>>>>>   Items below here should not be needed anymore in Settings file    <<<<<<<<<<<<<<<
 
@@ -316,6 +311,7 @@ def save_genome_to_disk():
         genome_db[new_genome_id]["generation_date"] = str(datetime.datetime.now())
         genome_db[new_genome_id]["properties"] = genome
         genome_db[new_genome_id]["stats"] = genome_stats
+        genome_db["genome_metadata"]["most_recent_genome_id"] = new_genome_id
 
         # Saving changes to the connectome
         data_file.seek(0)  # rewind

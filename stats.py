@@ -10,6 +10,7 @@ Provides functions performing statistical analysis on the Connectome and Cortica
 # plt.style.use('ggplot')
 import settings
 
+
 def cortical_area_neuron_count(cortical_area):
     """
     Returns number of Neurons in the connectome
@@ -28,9 +29,6 @@ def connectome_neuron_count():
         total_neuron_count += 1
 
     return total_neuron_count
-
-
-
 
 
 def connectome_total_synapse_cnt(cortical_area):

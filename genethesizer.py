@@ -85,7 +85,6 @@ def genethesize():
          "param_2": 0
       }
    }
-
     return genome
 
 

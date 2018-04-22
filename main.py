@@ -213,6 +213,7 @@ if __name__ == '__main__':
     import mnist
     import neuron_functions
     import settings
+    import genethesizer
     from genethesizer import genome_id_gen
 
     mp.set_start_method('spawn')
@@ -415,8 +416,8 @@ if __name__ == '__main__':
                     comprehension_attempts += 1
                     print("This is comprehension attempt # %i" %comprehension_attempts)
                     if comprehension_attempts >= settings.auto_test_comp_attempt_threshold:
+                        print("Comprehension attempt threshold for this round has been exceeded!!")
                         break
-
                     # Read the flag to see if there has been comprehension
                     comprehended_value = settings.comprehended_char
                     if comprehended_value:
@@ -425,8 +426,8 @@ if __name__ == '__main__':
                         if comprehended_value == mnist_img_char:
                             true_comprehensions += 1
                         settings.comprehended_char = ''
-                    print("So far there were i% correct comprehension out of total of i%"
-                          %(true_comprehensions, total_comprehensions))
+                    print("So far there were %i correct comprehension out of total of %i"
+                          % (true_comprehensions, total_comprehensions))
 
                     sleep(settings.auto_test_delay)
                     # process_5.join()
@@ -451,6 +452,9 @@ if __name__ == '__main__':
         print("Test Stats")
         print(test_stats)
         print("--------------------------------------------------------------")
+
+        # logging stats into Genome
+        settings.genome_stats["test_stats"] = test_stats
 
         settings.user_input = 'x'
         return
@@ -498,7 +502,6 @@ if __name__ == '__main__':
                 elif settings.user_input == 't':
                     process_auto_test()
                     settings.user_input = ''
-
 
                 else:
                     read_user_input()

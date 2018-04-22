@@ -400,25 +400,33 @@ if __name__ == '__main__':
             true_comprehensions = 0
             total_comprehensions = 0
             for x in range(int(settings.user_input_param)):
-                print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Testing round %i for number %s" % (x + 1, mnist_img[1]))
+                print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Testing round %i out of %i for number %s"
+                      %(x + 1, int(settings.user_input_param), mnist_img[1]))
                 mnist_img_char = str(mnist_img[1])
 
                 # Periodically check to see what Character was comprehended and evaluate True or False
                 comprehension = False
+                comprehension_attempts = 0
                 while not comprehension:
                     # The following process starts reading from MNIST and injecting it into the brain
                     process_7 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                            args=(mnist_img, FCL_queue, event_queue))
                     process_7.start()
+                    comprehension_attempts += 1
+                    print("This is comprehension attempt # %i" %comprehension_attempts)
+                    if comprehension_attempts >= settings.auto_test_comp_attempt_threshold:
+                        break
 
                     # Read the flag to see if there has been comprehension
                     comprehended_value = settings.comprehended_char
-                    print("$$$$$$      Current comlprehended value is:", settings.comprehended_char)
                     if comprehended_value:
+                        print("$$$$$$      Current comprehended value is:", comprehended_value)
                         total_comprehensions += 1
                         if comprehended_value == mnist_img_char:
                             true_comprehensions += 1
                         settings.comprehended_char = ''
+                    print("So far there were i% correct comprehension out of total of i%"
+                          %(true_comprehensions, total_comprehensions))
 
                     sleep(settings.auto_test_delay)
                     # process_5.join()

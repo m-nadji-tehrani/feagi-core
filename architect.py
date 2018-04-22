@@ -512,9 +512,11 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
         src_total_layer_count = settings.genome['blueprint'][cortical_area_src]['total_layer_count']
         dest_layer_height = dest_lenghts[2] / src_total_layer_count
         if (sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
-                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param) and \
-                (z_coordinate_target_dst > src_layer_index * dest_layer_height) and \
-                (z_coordinate_target_dst < ((src_layer_index + 1) * dest_layer_height)):
+                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param):
+
+                # and \
+                # (z_coordinate_target_dst > src_layer_index * dest_layer_height) and \
+                # (z_coordinate_target_dst < ((src_layer_index + 1) * dest_layer_height)):
             is_candidate = True
     return is_candidate
 

@@ -4,8 +4,6 @@ from time import sleep
 import multiprocessing as mp
 import settings
 
-# print("Main function has been initiated ^^^vvv^^^")
-
 settings.init_burst_visualization()
 settings.init_data()
 settings.init_messaging()
@@ -14,6 +12,7 @@ settings.init_timers()
 settings.init_user_interactions()
 settings.init_visualization()
 
+print("Main is initializing...")
 
 """
 This file contains the main Brain control code
@@ -213,8 +212,8 @@ if __name__ == '__main__':
     import mnist
     import neuron_functions
     import settings
-    import genethesizer
-    from genethesizer import genome_id_gen
+
+    print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
     mp.set_start_method('spawn')
 
@@ -370,7 +369,6 @@ if __name__ == '__main__':
         settings.user_input = 'x'
         return
 
-
     def process_auto_test():
         """
         Test approach:
@@ -458,7 +456,6 @@ if __name__ == '__main__':
 
         settings.user_input = 'x'
         return
-
 
 
     # Starting the burst machine
@@ -573,6 +570,7 @@ if __name__ == '__main__':
 
 # Multi processing
 # todo: Look into  GPU leverage
+# todo: Main function is running with every process along with all the initializations. This needs optimization
 
 
 # Analysis

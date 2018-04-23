@@ -226,7 +226,7 @@ def vis_init():
 
 # Reads the list of all Cortical areas defined in Genome
 def cortical_list():
-    blueprint = load_genome_in_memory()["blueprint"]
+    blueprint = genome["blueprint"]
 
     cortical_list = []
     for key in blueprint:

@@ -91,7 +91,6 @@ def genethesize():
 
 def genome_selector():
     genome_id = settings.genome_metadata["most_recent_genome_id"]
-    print("Most recent genome id is", genome_id)
     return genome_id
 
 

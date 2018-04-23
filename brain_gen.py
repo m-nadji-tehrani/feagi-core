@@ -57,7 +57,7 @@ def build_synapse_ext(brain, key):
 def main():
 
     # Backup the old brain
-    def copyanything(src, dst):
+    def copyeverything(src, dst):
         try:
             shutil.copytree(src, dst)
         except OSError as exc:
@@ -67,7 +67,7 @@ def main():
                 raise
 
     # Backup the current folder
-    # copyanything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
+    # copyeverything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
 
     # Reset in-memory brain data
     settings.reset_brain()
@@ -95,7 +95,7 @@ def main():
 
     # Build Synapses within all Cortical areas
     func1 = partial(build_synapse, settings.brain)
-    pool1 = Pool(processes=7)
+    pool1 = Pool(processes=8)
     synapse_creation_candidates = []
     for key in blueprint:
         if data["blueprint"][key]["init_synapse_needed"] == "True":

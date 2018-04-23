@@ -47,6 +47,7 @@ def genome_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
     return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_G'
 
+
 def generation_assessment():
     """ A collection of assessments to evaluate the performance of the Genome"""
     return
@@ -88,6 +89,12 @@ def genethesize():
     return genome
 
 
+def genome_selector():
+    genome_id = settings.genome_metadata["most_recent_genome_id"]
+    print("Most recent genome id is", genome_id)
+    return genome_id
+
+
 def mutate():
     return
 
@@ -96,7 +103,7 @@ def crossover():
     return
 
 
-def tranlate_genotype2phenotype():
+def translate_genotype2phenotype():
     return
 
 
@@ -108,7 +115,7 @@ def calculate_survival_prob():
     return
 
 
-def sysnthesize_new_gen():
+def synthesize_new_gen():
     return
 
 

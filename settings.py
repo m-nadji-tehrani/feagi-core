@@ -72,6 +72,7 @@ def init_user_interactions():
     global comprehended_char
     comprehended_char = ''
 
+
 def init_visualization():
     # Flag to show visualizations
     global vis_show
@@ -103,8 +104,8 @@ def init_data():
     global genome_file
     genome_file = './reproduction/genome.json'
 
-    global brain
-    brain = load_brain_in_memory()
+    global genome_metadata
+    genome_metadata = load_genome_metadata_in_memory()
 
     global genome
     genome = load_genome_in_memory()
@@ -114,6 +115,9 @@ def init_data():
 
     global genome_stats
     genome_stats = {"test_stats": {}, "performance_stats": {}}
+
+    global brain
+    brain = load_brain_in_memory()
 
     global blueprint
     blueprint = cortical_list()
@@ -227,17 +231,20 @@ def cortical_list():
     cortical_list = []
     for key in blueprint:
         cortical_list.append(key)
-
     return cortical_list
 
 
-def genome_selector():
-    """ Need to add logics to this function to chose Genome using Genetic Algorithm"""
-    genome_id = "genome_id_ABCD"
-    return genome_id
+def load_genome_metadata_in_memory():
+    global genome_file
+    with open(genome_file, "r") as data_file:
+        genome_db = json.load(data_file)
+        global genome_metadata
+        genome_metadata = genome_db["genome_metadata"]
+    return genome_metadata
 
 
 def load_genome_in_memory():
+    from genethesizer import genome_selector
     global genome_id
     genome_id = genome_selector()
     global genome_file

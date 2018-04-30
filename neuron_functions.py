@@ -216,18 +216,22 @@ def neuron_fire(cortical_area, id):
         neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
                       settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
 
-    # Condition to snooze the neuron
+    # Placeholder for refractory period
+    # todo: Implement refractory period logic
+
+    # Condition to snooze the neuron if consecutive fire count reaches threshold
     if settings.brain[cortical_area][id]["consecutive_fire_cnt"] > \
             settings.genome["blueprint"][cortical_area]["neuron_params"]["consecutive_fire_cnt_max"]:
         snooze_till(cortical_area, id, burst_count +
                     settings.genome["blueprint"][cortical_area]["neuron_params"]["snooze_length"])
 
-    # Condition to increasing the consecutive fire count
+    # Condition to increase the consecutive fire count
     if burst_count == settings.brain[cortical_area][id]["last_burst_num"] + 1:
         settings.brain[cortical_area][id]["consecutive_fire_cnt"] += 1
 
     settings.brain[cortical_area][id]["last_burst_num"] = burst_count
 
+    # Condition to translate activity in utf8_out region as a character comprehension
     if cortical_area == 'utf8_out':
         settings.comprehended_char = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id)
         print("Comprehended character is:                 <<<     %s      >>>                 #*#*#*#*#*#*#"
@@ -385,7 +389,11 @@ def wire_neurons_together_ext(src_cortical_area, src_neuron, dst_cortical_area, 
 
 
 def snooze_till(cortical_area, neuron_id, burst_id):
-    """ Acting as an inhibitory neurotransmitter to supress firing of neuron till a later burst"""
+    """ Acting as an inhibitory neurotransmitter to suppress firing of neuron till a later burst
+
+    *** This function instead of inhibitory behavior is more inline with Neuron Refractory period
+
+    """
     settings.brain[cortical_area][neuron_id]["snooze_till_burst_num"] \
         = burst_id + settings.genome["blueprint"][cortical_area]["neuron_params"]["snooze_length"]
     # print("%s : %s has been snoozed!" % (cortical_area, neuron_id))

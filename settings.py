@@ -140,7 +140,7 @@ def init_settings():
     auto_train = True
 
     global auto_test_comp_attempt_threshold
-    auto_test_comp_attempt_threshold = 1
+    auto_test_comp_attempt_threshold = 3
 
     global ready_to_exit_burst
     ready_to_exit_burst = False

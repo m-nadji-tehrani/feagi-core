@@ -97,7 +97,9 @@ class Brain:
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
             for item in neuron_id_list:
                 init_fire_list.append([cortical_area, item])
+        # Event is an instance of time where an IPU event has occurred
         event_id = architect.event_id_gen()
+        print(" <> <> <> <> <> <> <> <> An event with following id has been triggered:", event_id)
         event_queue.put(event_id)
         # print('Initial Fire List:')
         # print(init_fire_list)
@@ -418,6 +420,7 @@ if __name__ == '__main__':
                         break
                     # Read the flag to see if there has been comprehension
                     comprehended_value = settings.comprehended_char
+                    print("++++++++   ++++  ++  + The value for settings.comprehended_char is currently: ", comprehended_value)
                     if comprehended_value:
                         print("$$$$$$      Current comprehended value is:", comprehended_value)
                         total_comprehensions += 1
@@ -537,7 +540,7 @@ if __name__ == '__main__':
 # todo: Define streams containing a chain of cortical areas for various functions such as vision, hearing, etc.
 # todo: find a way to speed up brain building when synapse creation is not needed e.g. memory, utf8
 # todo: Synapse creation takes a very long time in presence of large neurons. Think of a way to limit the scope. zipcode
-
+# todo: Build a cost function to measure the effectiveness and quality of relative synapse count in each layer
 
 # Input handling
 # todo: Use directional kernal analysis data as part of input data
@@ -575,6 +578,7 @@ if __name__ == '__main__':
 
 # Analysis
 # todo: Come up with a way to analyze and categorize output data
+# todo: Add ability to show activity percentage for each cortical area
 
 
 # Memory

@@ -67,11 +67,15 @@ def neuro_genesis(cortical_area, loc_blk):
     settings.brain[cortical_area][id]["last_timer_reset_time"] = str(datetime.datetime.now())
 
 
-#   settings.brain[cortical_area][id]["group_id"] = ""                   # consider using the group name part of Genome instead
-    settings.brain[cortical_area][id]["firing_pattern_id"] = genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
-    settings.brain[cortical_area][id]["activation_function_id"] = genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
-    settings.brain[cortical_area][id]["timer_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['timer_threshold']
-    settings.brain[cortical_area][id]["firing_threshold"] = genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
+#   settings.brain[cortical_area][id]["group_id"] = ""           # consider using the group name part of Genome instead
+    settings.brain[cortical_area][id]["firing_pattern_id"] = \
+        genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
+    settings.brain[cortical_area][id]["activation_function_id"] = \
+        genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
+    settings.brain[cortical_area][id]["depolarization_timer_threshold"] = \
+        genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold']
+    settings.brain[cortical_area][id]["firing_threshold"] = \
+        genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
 
     return
 

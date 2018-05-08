@@ -279,13 +279,12 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # todo: in rare cases the date conversion format is running into exception
     if (datetime.datetime.strptime(settings.brain[cortical_area][destination]["last_timer_reset_time"],
                                    "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(0,
-                                                                                settings.brain[cortical_area][destination]["timer_threshold"])) < datetime.datetime.now():
+                                                                                settings.brain[cortical_area][destination]["depolarization_timer_threshold"])) < datetime.datetime.now():
         settings.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
         settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
         if settings.verbose:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + destination +
                   ' got rest' + settings.Bcolors.ENDC)
-
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
@@ -373,7 +372,10 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
 
     # Append a Group ID so Memory clusters can be uniquely identified
     if settings.event_id:
-        settings.brain[cortical_area][src_neuron]["event_id"][settings.event_id] = ''
+        if settings.event_id in settings.brain[cortical_area][src_neuron]["event_id"]:
+            settings.brain[cortical_area][src_neuron]["event_id"][settings.event_id] +=1
+        else:
+            settings.brain[cortical_area][src_neuron]["event_id"][settings.event_id] = 1
 
     return
 

@@ -19,10 +19,10 @@ class GeneModifier:
             settings.genome['blueprint'][cortical_area]['neuron_params']['firing_threshold'] * change_percentage
         return
 
-    def change_timer_threshold(self, cortical_area, change_percentage):
+    def change_depolarization_timer_threshold(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron timer threshold in a given cortical area"""
-        settings.genome['blueprint'][cortical_area]['neuron_params']['timer_threshold'] += \
-            settings.genome['blueprint'][cortical_area]['neuron_params']['timer_threshold'] * change_percentage
+        settings.genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold'] += \
+            settings.genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold'] * change_percentage
         return
 
     def change_consecutive_fire_cnt_max(self, cortical_area, change_percentage):

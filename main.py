@@ -523,6 +523,10 @@ if __name__ == '__main__':
 #          <<<<<<<  T O   D O   L I S T   >>>>>>>>
 #
 
+# Key problem on hand
+# todo: The value from comprehended char from settings is keep reseting hence the correct value not being passed on
+# todo: Need to convert settings to a class based structure
+
 
 # Problems to fix
 # todo: Synaptic activities in Memory everntually get to a point that does not ramp down

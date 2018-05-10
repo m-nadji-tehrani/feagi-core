@@ -14,6 +14,22 @@ from genethesizer import genome_id_gen
 # print("Settings has been initialized!")
 
 
+class Info:
+    name = 'Mohammad!!!!'
+    goal = 'Become invincible'
+    print('Hahaha')
+
+
+class Init_timers2:
+    # Sleep timer for visualization delay
+    burst_timer = 1e-17
+    idle_burst_timer = 2
+    auto_train_delay = 3
+    auto_train_delay2 = 50
+    auto_test_delay = 3
+    block_size = 10
+
+
 def init_timers():
     # Sleep timer for visualization delay
     global burst_timer

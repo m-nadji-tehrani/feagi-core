@@ -34,21 +34,10 @@
     "ready_to_exit_burst": "False"
   },
   "InitData": {
-    "read_data_from_memory": "True"
-    "regenerate_brain": "True"
-    "connectome_path": "./connectome/"
-    "rules_path": "./reproduction/rules.json"
+    "read_data_from_memory": "True",
+    "regenerate_brain": "True",
+    "connectome_path": "./connectome/",
+    "rules_path": "./reproduction/rules.json",
     "genome_file": "./reproduction/genome.json"
-    "genome_metadata": universal_functions.load_genome_metadata_in_memory()
-    "genome" = universal_functions.load_genome_in_memory()
-    genome_id = ""
-    genome_stats = {"test_stats": {}, "performance_stats": {}}
-    brain = universal_functions.load_brain_in_memory()
-    blueprint = universal_functions.cortical_list()
-    event_id = '_'
-    cortical_areas = universal_functions.cortical_list()
-    rules = universal_functions.load_rules_in_memory()
-    # global max_xyz_range
-    # max_xyz_range = cortical_xyz_range()
   }
 }

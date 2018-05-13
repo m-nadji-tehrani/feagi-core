@@ -1,10 +1,19 @@
 
-import settings
 import json
 import datetime
 import os.path
-import matplotlib.pyplot as plt
+
 from genethesizer import genome_id_gen
+
+import matplotlib as mpl
+mpl.use('TkAgg')
+
+import matplotlib.pyplot as plt
+
+global parameters
+with open("parameters.json", "r") as data_file:
+    parameters = json.load(data_file)
+    print(parameters)
 
 
 def init_burst_visualization():
@@ -66,21 +75,20 @@ def vis_init():
         ax.set_zlabel('Z Label')
         fig.suptitle("Main plot")
 
-    settings.Switches.vis_init_status = True
+    parameters["Switches"]["vis_init_status"] = True
 
 
 # Reads the list of all Cortical areas defined in Genome
 def cortical_list():
-    blueprint = settings.InitData.genome["blueprint"]
+    blueprint = genome["blueprint"]
     cortical_list = []
     for key in blueprint:
         cortical_list.append(key)
-    return cortical_list\
-
+    return cortical_list
 
 
 def load_genome_metadata_in_memory():
-    with open(settings.InitData.genome_file, "r") as data_file:
+    with open(parameters["InitData"]["genome_file"], "r") as data_file:
         genome_db = json.load(data_file)
         genome_metadata = genome_db["genome_metadata"]
     return genome_metadata
@@ -89,29 +97,23 @@ def load_genome_metadata_in_memory():
 def load_genome_in_memory():
     from genethesizer import genome_selector
     genome_id = genome_selector()
-    with open(settings.InitData.genome_file, "r") as data_file:
+    with open(parameters["InitData"]["genome_file"], "r") as data_file:
         genome_db = json.load(data_file)
         genome = genome_db[genome_id]["properties"]
         # genome_stats = genome_db[gene_id]["stats"]
     return genome
 
 
-def load_parameters_in_memory():
-    with open("parameters.json", "r") as data_file:
-        parameters = json.load(data_file)
-    return parameters
-
-
 # Resets the in-memory brain for each cortical area
 def reset_brain():
     cortical_areas = cortical_list()
     for item in cortical_areas:
-        settings.InitData.brain[item] = {}
-    return settings.InitData.brain
+        brain[item] = {}
+    return brain
 
 
 def load_rules_in_memory():
-    with open(settings.InitData.rules_path, "r") as data_file:
+    with open(parameters["InitData"]["rules_path"], "r") as data_file:
         rules = json.load(data_file)
     # print("Rules has been successfully loaded into memory...")
     return rules
@@ -121,8 +123,8 @@ def load_brain_in_memory():
     cortical_areas = cortical_list()
     brain = {}
     for item in cortical_areas:
-        if os.path.isfile(settings.InitData.connectome_path + item + '.json'):
-            with open(settings.InitData.connectome_path + item + '.json', "r") as data_file:
+        if os.path.isfile(parameters["InitData"]["connectome_path"] + item + '.json'):
+            with open(parameters["InitData"]["connectome_path"] + item + '.json', "r") as data_file:
                 data = json.load(data_file)
                 brain[item] = data
     # print("Brain has been successfully loaded into memory...")
@@ -131,8 +133,8 @@ def load_brain_in_memory():
 
 def save_brain_to_disk(cortical_area='all'):
     if cortical_area != 'all':
-        with open(settings.InitData.connectome_path+cortical_area+'.json', "r+") as data_file:
-            data = settings.InitData.brain[cortical_area]
+        with open(parameters["InitData"]["connectome_path"]+cortical_area+'.json', "r+") as data_file:
+            data = brain[cortical_area]
 
             # print("...All data related to Cortical area %s is saved in connectome\n" % cortical_area)
             # Saving changes to the connectome
@@ -141,8 +143,8 @@ def save_brain_to_disk(cortical_area='all'):
             data_file.truncate()
     else:
         for cortical_area in cortical_list():
-            with open(settings.InitData.connectome_path+cortical_area+'.json', "r+") as data_file:
-                data = settings.InitData.brain[cortical_area]
+            with open(parameters["InitData"]["connectome_path"]+cortical_area+'.json', "r+") as data_file:
+                data = brain[cortical_area]
                 print(">>> >>> All data related to Cortical area %s is saved in connectome\n" % cortical_area)
                 # Saving changes to the connectome
                 data_file.seek(0)  # rewind
@@ -152,15 +154,15 @@ def save_brain_to_disk(cortical_area='all'):
 
 
 def save_genome_to_disk():
-    with open(settings.InitData.genome_file, "r+") as data_file:
+    with open(parameters["InitData"]["genome_file"], "r+") as data_file:
         genome_db = json.load(data_file)
 
         new_genome_id = genome_id_gen()
 
         genome_db[new_genome_id] = {}
         genome_db[new_genome_id]["generation_date"] = str(datetime.datetime.now())
-        genome_db[new_genome_id]["properties"] = settings.InitData.genome
-        genome_db[new_genome_id]["stats"] = settings.InitData.genome_stats
+        genome_db[new_genome_id]["properties"] = genome
+        genome_db[new_genome_id]["stats"] = genome_stats
         genome_db["genome_metadata"]["most_recent_genome_id"] = new_genome_id
 
         # Saving changes to the connectome
@@ -176,7 +178,35 @@ def reset_cumulative_counter_instances():
     """
     To reset the cumulative counter instances
     """
-    for cortical_area in settings.InitData.brain:
-        for neuron in settings.InitData.brain[cortical_area]:
-            settings.InitData.brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
+    for cortical_area in brain:
+        for neuron in brain[cortical_area]:
+            brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
     return
+
+
+global genome_metadata
+genome_metadata = load_genome_metadata_in_memory()
+
+global genome
+genome = load_genome_in_memory()
+
+global genome_id
+genome_id = ""
+
+global genome_stats
+genome_stats = {"test_stats": {}, "performance_stats": {}}
+
+global brain
+brain = load_brain_in_memory()
+
+global blueprint
+blueprint = cortical_list()
+
+global event_id
+event_id = '_'
+
+global cortical_areas
+cortical_areas = cortical_list()
+
+global rules
+rules = load_rules_in_memory()

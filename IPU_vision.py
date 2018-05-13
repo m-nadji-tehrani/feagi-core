@@ -13,7 +13,7 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 # import cv2
 import matplotlib.pyplot as plt
 
-import settings
+import universal_functions
 import architect
 
 
@@ -22,7 +22,7 @@ class Filter:
         new_image = np.zeros(image.shape)
         for x in range(image.shape[0]):
             for y in range(image.shape[1]):
-                if image[x, y] >= settings.genome["image_color_intensity_tolerance"]:
+                if image[x, y] >= universal_functions.genome["image_color_intensity_tolerance"]:
                     new_image[x, y] = image[x, y]
                 else:
                     new_image[x, y] = 1
@@ -44,7 +44,7 @@ def convert_image_to_coordinates(image):   # Image is currently assumed to be a 
     Function responsible for reading an image and converting the pixel values to coordinates
     """
     # Note: currently set to function based on Gray scale image
-    genome = settings.genome
+    genome = universal_functions.genome
 
     image_locations = []
     for x in range(image.shape[0]):
@@ -78,7 +78,7 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
     :return:
     """
 
-    genome = settings.genome
+    genome = universal_functions.genome
 
     neuron_id_list = []
     for x in range(len(image_locations)):
@@ -122,7 +122,7 @@ def kernel_direction(kernel_values):
 
     end_result = {}
     kernel_size = kernel_sizer(kernel_values)
-    for filter_entry in settings.genome["IPU_vision_filters"][str(kernel_size)]:
+    for filter_entry in universal_functions.genome["IPU_vision_filters"][str(kernel_size)]:
         end_result[filter_entry] = apply_direction_filter(kernel_values, kernel_size, filter_entry)
 
     tmpArray = []
@@ -149,7 +149,7 @@ def apply_direction_filter(kernel_values, kernel_size, direction_key):
     """Function to apply a particular filter to a kernel region of any size"""
     # end_result = {}
     result = np.zeros((kernel_size, kernel_size))
-    filter_value = settings.genome["IPU_vision_filters"][str(kernel_size)][direction_key]
+    filter_value = universal_functions.genome["IPU_vision_filters"][str(kernel_size)][direction_key]
     for i in range(0, kernel_size):
         for ii in range(0, kernel_size):
             result[i][ii] = kernel_values[i][ii] * filter_value[i][ii]

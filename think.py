@@ -1,10 +1,10 @@
 # Provides functions to support physiology of thinking
-import settings
+import universal_functions
 
 class Me:
     name = 'Mohammad'
     age = 38
 
 
-print(settings.Info.name)
-print(settings.Info.goal)
+print(universal_functions.Info.name)
+print(universal_functions.Info.goal)

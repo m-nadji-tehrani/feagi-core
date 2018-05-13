@@ -1,6 +1,6 @@
 """ This module contains functions capable of modifying and shaping the Genome"""
 
-import settings
+import universal_functions
 import datetime
 import random
 import string
@@ -9,32 +9,32 @@ import string
 class GeneModifier:
     def change_cortical_neuron_count(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron density aka Cortical Neuron Count in a given cortical area"""
-        settings.genome['blueprint'][cortical_area]['cortical_neuron_count'] += \
-            settings.genome['blueprint'][cortical_area]['cortical_neuron_count'] * change_percentage
+        universal_functions.genome['blueprint'][cortical_area]['cortical_neuron_count'] += \
+            universal_functions.genome['blueprint'][cortical_area]['cortical_neuron_count'] * change_percentage
         return
 
     def change_firing_threshold(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron firing threshold in a given cortical area"""
-        settings.genome['blueprint'][cortical_area]['neuron_params']['firing_threshold'] += \
-            settings.genome['blueprint'][cortical_area]['neuron_params']['firing_threshold'] * change_percentage
+        universal_functions.genome['blueprint'][cortical_area]['neuron_params']['firing_threshold'] += \
+            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['firing_threshold'] * change_percentage
         return
 
     def change_depolarization_timer_threshold(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron timer threshold in a given cortical area"""
-        settings.genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold'] += \
-            settings.genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold'] * change_percentage
+        universal_functions.genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold'] += \
+            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['depolarization_timer_threshold'] * change_percentage
         return
 
     def change_consecutive_fire_cnt_max(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron consecutive_fire_cnt_max in a given cortical area"""
-        settings.genome['blueprint'][cortical_area]['neuron_params']['consecutive_fire_cnt_max'] += \
-            settings.genome['blueprint'][cortical_area]['neuron_params']['consecutive_fire_cnt_max'] * change_percentage
+        universal_functions.genome['blueprint'][cortical_area]['neuron_params']['consecutive_fire_cnt_max'] += \
+            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['consecutive_fire_cnt_max'] * change_percentage
         return
 
     def change_snooze_length(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron snooze_length in a given cortical area"""
-        settings.genome['blueprint'][cortical_area]['neuron_params']['snooze_length'] += \
-            settings.genome['blueprint'][cortical_area]['neuron_params']['snooze_length'] * change_percentage
+        universal_functions.genome['blueprint'][cortical_area]['neuron_params']['snooze_length'] += \
+            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['snooze_length'] * change_percentage
         return
 
 
@@ -90,7 +90,7 @@ def genethesize():
 
 
 def genome_selector():
-    genome_id = settings.genome_metadata["most_recent_genome_id"]
+    genome_id = universal_functions.genome_metadata["most_recent_genome_id"]
     return genome_id
 
 

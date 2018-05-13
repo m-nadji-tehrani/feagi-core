@@ -45,7 +45,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
     settings.event_id = event_queue.get()
     settings.brain = brain_queue.get()
 
-    while not settings.ready_to_exit_burst:
+    while not settings.Switches.ready_to_exit_burst:
         burst_strt_time = datetime.datetime.now()
         global burst_count
 
@@ -56,12 +56,12 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         fire_candidate_list = fire_list.get()
 
         # Burst Visualization
-        if len(fire_candidate_list) > 0 and settings.vis_show:
+        if len(fire_candidate_list) > 0 and settings.Switches.vis_show:
             visualizer.burst_visualizer(fire_candidate_list)
 
         genome = settings.genome
 
-        if settings.verbose:
+        if settings.Switches.verbose:
             print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s'
                   % fire_candidate_list + settings.Bcolors.ENDC)
 
@@ -80,12 +80,12 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                   + settings.Bcolors.ENDC)
             if settings.genome['blueprint'][cortical_area]['group_id'] == 'Memory' and \
                             len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
-                sleep(settings.idle_burst_timer)
+                sleep(settings.Timers.idle_burst_timer)
 
         # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
 
         for x in list(fire_candidate_list):
-            if settings.verbose:
+            if settings.Switches.verbose:
                 print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
             neuron_fire(x[0], x[1])
 
@@ -130,7 +130,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
 
         # Add a delay if fire_candidate_list is empty
         if len(fire_candidate_list) < 1:
-            sleep(settings.idle_burst_timer)
+            sleep(settings.Timers.idle_burst_timer)
 
         while not user_input.empty():
             try:
@@ -139,27 +139,27 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                 if user_input_value == 'x':
                     print(settings.Bcolors.BURST + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                     burst_count = 0
-                    settings.ready_to_exit_burst = True
-                    settings.user_input = ''
+                    settings.Switches.ready_to_exit_burst = True
+                    settings.Input.user_input = ''
                 elif user_input_value == 'v':
-                    if settings.verbose:
-                        settings.verbose = False
+                    if settings.Switches.verbose:
+                        settings.Switches.verbose = False
                         print("Verbose mode is Turned OFF!")
-                        settings.user_input = ''
+                        settings.Input.user_input = ''
                     else:
-                        settings.verbose = True
+                        settings.Switches.verbose = True
                         print("Verbose mode is Turned ON!")
-                        settings.user_input = ''
+                        settings.Input.user_input = ''
 
                 elif user_input_value == 'g':
-                    if settings.verbose:
-                        settings.vis_show = False
+                    if settings.Switches.verbose:
+                        settings.Switches.vis_show = False
                         print("Visualization mode is Turned OFF!")
-                        settings.user_input = ''
+                        settings.Input.user_input = ''
                     else:
-                        settings.vis_show = True
+                        settings.Switches.vis_show = True
                         print("Visualization mode is Turned ON!")
-                        settings.user_input = ''
+                        settings.Input.user_input = ''
 
             finally:
                 break
@@ -195,7 +195,7 @@ def neuron_fire(cortical_area, id):
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     destination = settings.brain[cortical_area][id]["neighbors"]
-    if settings.verbose:
+    if settings.Switches.verbose:
         print(settings.Bcolors.FIRE + "Firing neuron %s using firing pattern %s"
           % (id, json.dumps(settings.brain[cortical_area][id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)
         print(settings.Bcolors.FIRE + "Neuron %s neighbors are %s" % (id, json.dumps(destination, indent=3)) +
@@ -211,7 +211,7 @@ def neuron_fire(cortical_area, id):
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     neuron_update_list = []
     for x in destination:
-        if settings.verbose:
+        if settings.Switches.verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
                       settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
@@ -233,9 +233,9 @@ def neuron_fire(cortical_area, id):
 
     # Condition to translate activity in utf8_out region as a character comprehension
     if cortical_area == 'utf8_out':
-        settings.comprehended_char = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id)
+        settings.Input.comprehended_char = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, id)
         print("Comprehended character is:                 <<<     %s      >>>                 #*#*#*#*#*#*#"
-              % settings.comprehended_char)
+              % settings.Input.comprehended_char)
 
     #     neuron_update_list.append([settings.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
         # settings.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x])
@@ -254,7 +254,7 @@ def neuron_fire(cortical_area, id):
     global fire_candidate_list
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, id]))
     # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, id]))
-    if settings.verbose:
+    if settings.Switches.verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
     # todo: add a check that if the firing neuron is part of OPU to perform an action
@@ -269,7 +269,7 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
-    if settings.verbose:
+    if settings.Switches.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"
           % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
               + settings.Bcolors.ENDC)
@@ -282,7 +282,7 @@ def neuron_update(cortical_area, synaptic_strength, destination):
                                                                                 settings.brain[cortical_area][destination]["depolarization_timer_threshold"])) < datetime.datetime.now():
         settings.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
         settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
-        if settings.verbose:
+        if settings.Switches.verbose:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + destination +
                   ' got rest' + settings.Bcolors.ENDC)
 
@@ -293,7 +293,7 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # print("cumulative_intake_sum_since_reset:", destination,
     #       ":", settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
 
-    if settings.verbose:
+    if settings.Switches.verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"
           % (destination, settings.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
               + settings.Bcolors.ENDC)
@@ -314,7 +314,7 @@ def neuron_update(cortical_area, synaptic_strength, destination):
         if settings.brain[cortical_area][destination]["snooze_till_burst_num"] <= burst_count:
            if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
                 fire_candidate_list.append([cortical_area, destination])
-                if settings.verbose:
+                if settings.Switches.verbose:
                     print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list
                           + settings.Bcolors.ENDC)
 
@@ -326,7 +326,7 @@ def neuron_prop(cortical_area, id):
 
     data = settings.brain[cortical_area]
 
-    if settings.verbose:
+    if settings.Switches.verbose:
         print('Listing Neuron Properties for %s:' % id)
         print(json.dumps(data[id], indent=3))
     return data[id]
@@ -337,7 +337,7 @@ def neuron_neighbors(cortical_area, id):
 
     data = settings.brain[cortical_area]
 
-    if settings.verbose:
+    if settings.Switches.verbose:
         print('Listing Neuron Neighbors for %s:' % id)
         print(json.dumps(data[id]["neighbors"], indent=3))
     return data[id]["neighbors"]

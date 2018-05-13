@@ -17,7 +17,7 @@ import neuron_functions
 
 def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
     """Visualizes the Neurons in the connectome"""
-    if not settings.vis_init_status:
+    if not settings.Switches.vis_init_status:
         settings.vis_init()
     neuron_locations = architect.connectome_location_data(cortical_area)
 
@@ -48,7 +48,7 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
                                     mutation_scale=10, lw=1, arrowstyle="->", color="r")
                         settings.ax.add_artist(a)
     settings.plt.show()
-    settings.plt.pause(settings.burst_timer)
+    settings.plt.pause(settings.Timers.burst_timer)
     return
 
 
@@ -158,7 +158,7 @@ def burst_visualizer(fire_candidate_list):
                 d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
 
     settings.plt.draw()
-    settings.plt.pause(settings.burst_timer)
+    settings.plt.pause(settings.Timers.burst_timer)
     settings.plt.clf()
     d_vision.cla()
     d_memory.cla()
@@ -169,7 +169,7 @@ def burst_visualizer(fire_candidate_list):
 
 def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
     """Visualizes the extent of Neuron activities"""
-    if not settings.vis_init_status:
+    if not settings.Switches.vis_init_status:
         settings.vis_init()
 
     # fig = settings.plt.figure()
@@ -203,7 +203,7 @@ def mnist_img_show(IPU_input):
     # plt.pause(10)
     # settings.plt.show()
     settings.plt.draw()
-    settings.plt.pause(settings.burst_timer)
+    settings.plt.pause(settings.Timers.burst_timer)
     return
 
 
@@ -213,7 +213,7 @@ def cortical_heatmap(IPU_input, cortical_areas):
     :param cortical_area:
     :return:
     """
-    # if not settings.vis_init_status:
+    # if not settings.Switches.vis_init_status:
     #     settings.vis_init()
     settings.plt.ion()
 

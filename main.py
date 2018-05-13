@@ -2,15 +2,18 @@
 
 from time import sleep
 import multiprocessing as mp
-import settings
+import universal_functions
 
-settings.init_burst_visualization()
-settings.init_data()
-settings.init_messaging()
-settings.init_settings()
-settings.init_timers()
-settings.init_user_interactions()
-settings.init_visualization()
+universal_functions.load_parameters_in_memory()
+
+# import settings
+# settings.init_burst_visualization()
+# settings.init_data()
+# settings.init_messaging()
+# settings.init_settings()
+# settings.init_timers()
+# settings.init_user_interactions()
+# settings.init_visualization()
 
 print("Main is initializing...")
 
@@ -37,11 +40,11 @@ class Brain:
         import stats
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
-        print("\rConnectome database =                  %s" % settings.connectome_path)
+        print("\rConnectome database =                  %s" % settings.InitData.connectome_path)
         print("\rInitial input Neuron trigger list 1 =    %s" % settings.input_neuron_list_1)
         print("\rInitial input Neuron trigger list 2 =    %s" % settings.input_neuron_list_2)
         print("\rTotal neuron count in the connectome  %s  is: %i" % (
-        settings.connectome_path + 'vision_v1.json', stats.connectome_neuron_count(cortical_area='vision_v1')))
+        settings.InitData.connectome_path + 'vision_v1.json', stats.connectome_neuron_count(cortical_area='vision_v1')))
         print(' \rexiting', cp.name, cp.pid)
         return
 
@@ -135,7 +138,7 @@ class Brain:
         old_settings = termios.tcgetattr(fd)
         try:
             setraw(sys.stdin.fileno())
-            settings.user_input = sys.stdin.read(1)
+            settings.Input.user_input = sys.stdin.read(1)
             sys.stdout.write("\r%s" % user_input_queue)
             print("hahaha______hehehe")
         finally:
@@ -221,13 +224,13 @@ if __name__ == '__main__':
 
     def submit_entry_fields():
         print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
-        if settings.user_input:
-            settings.previous_user_input = settings.user_input
-        if settings.previous_user_input:
-            settings.previous_user_input_param = settings.user_input_param
-        settings.user_input = e1.get()
-        settings.user_input_param = e2.get()
-        user_input_queue.put(settings.user_input)
+        if settings.Input.user_input:
+            settings.Input.previous_user_input = settings.Input.user_input
+        if settings.Input.previous_user_input:
+            settings.Input.previous_user_input_param = settings.Input.user_input_param
+        settings.Input.user_input = e1.get()
+        settings.Input.user_input_param = e2.get()
+        user_input_queue.put(settings.Input.user_input)
 
     master = tkinter.Tk()
 
@@ -246,7 +249,7 @@ if __name__ == '__main__':
     b = Brain()
 
     # Calling function to regenerate the Brain from the Genome
-    if settings.regenerate_brain:
+    if settings.InitData.regenerate_brain:
         brain_generation_start_time = datetime.now()
         brain_gen.main()
         brain_generation_duration = datetime.now() - brain_generation_start_time
@@ -292,33 +295,33 @@ if __name__ == '__main__':
         process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
         process_1.start()
         process_1.join()
-        settings.user_input = ''
+        settings.Input.user_input = ''
         return
 
     def process_show_cortical_areas():
         process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
         process_2.start()
         process_2.join()
-        settings.user_input = ''
+        settings.Input.user_input = ''
         return
 
     def process_see_from_mnist():
-        if settings.vis_show:
-            visualizer.cortical_heatmap(mnist.read_image(int(settings.user_input_param))[0], [])
-        mnist_img = mnist.read_image(int(settings.user_input_param))
+        if settings.Switches.vis_show:
+            visualizer.cortical_heatmap(mnist.read_image(int(settings.Input.user_input_param))[0], [])
+        mnist_img = mnist.read_image(int(settings.Input.user_input_param))
         process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                args=(mnist_img, FCL_queue, event_queue))
         process_3.start()
         process_3.join()
-        settings.user_input = ''
+        settings.Input.user_input = ''
         return
 
     def process_read_char():
         process_4 = mp.Process(name='Reading input char',
-                               target=Brain.read_char, args=(settings.user_input_param, FCL_queue))
+                               target=Brain.read_char, args=(settings.Input.user_input_param, FCL_queue))
         process_4.start()
         process_4.join()
-        settings.user_input = ''
+        settings.Input.user_input = ''
         return
 
     def training_num_gen(num):
@@ -339,17 +342,17 @@ if __name__ == '__main__':
         print("---------------------------------------------------------------------Auto training has been initiated.")
         for number in range(10):
             mnist_num, mnist_img = training_num_gen(number)
-            if settings.vis_show:
+            if settings.Switches.vis_show:
                 visualizer.cortical_heatmap(mnist.read_image(mnist_num), [])
             # Following for loop help to train for a single number n number of times
-            for x in range(int(settings.user_input_param)):
+            for x in range(int(settings.Input.user_input_param)):
                 print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Training round %i for number %s" % (x + 1, mnist_img[1]))
                 mnist_img_char = str(mnist_img[1])
                 process_5 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                        args=(mnist_img, FCL_queue, event_queue))
                 process_6 = mp.Process(name='Reading input char', target=b.read_char, args=(str(mnist_img_char), FCL_queue))
                 process_5.start()
-                sleep(settings.auto_train_delay)
+                sleep(settings.Timers.auto_train_delay)
                 process_6.start()
                 # process_5.join()
                 # process_6.join()
@@ -368,7 +371,7 @@ if __name__ == '__main__':
         print("---------------------------------------------------------------------Auto training has been completed.")
         print("Training lasted %s " % training_duration)
         print("--------------------------------------------------------------")
-        settings.user_input = 'x'
+        settings.Input.user_input = 'x'
         return
 
     def process_auto_test():
@@ -382,7 +385,7 @@ if __name__ == '__main__':
         
         """
 
-        print('Testing Testing Testing', settings.comprehended_char)
+        print('Testing Testing Testing', settings.Input.comprehended_char)
         import random
         from time import sleep
         from datetime import datetime
@@ -394,15 +397,15 @@ if __name__ == '__main__':
 
         for number in range(10):
             mnist_num, mnist_img = training_num_gen(number)
-            if settings.vis_show:
+            if settings.Switches.vis_show:
                 visualizer.cortical_heatmap(mnist.read_image(mnist_num), [])
 
             # Following For loop test brain comprehension of a character x number of times
             true_comprehensions = 0
             total_comprehensions = 0
-            for x in range(int(settings.user_input_param)):
+            for x in range(int(settings.Input.user_input_param)):
                 print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Testing round %i out of %i for number %s"
-                      %(x + 1, int(settings.user_input_param), mnist_img[1]))
+                      %(x + 1, int(settings.Input.user_input_param), mnist_img[1]))
                 mnist_img_char = str(mnist_img[1])
 
                 # Periodically check to see what Character was comprehended and evaluate True or False
@@ -415,22 +418,22 @@ if __name__ == '__main__':
                     process_7.start()
                     comprehension_attempts += 1
                     print("This is comprehension attempt # %i" %comprehension_attempts)
-                    if comprehension_attempts >= settings.auto_test_comp_attempt_threshold:
+                    if comprehension_attempts >= settings.Switches.auto_test_comp_attempt_threshold:
                         print("Comprehension attempt threshold for this round has been exceeded!!")
                         break
                     # Read the flag to see if there has been comprehension
-                    comprehended_value = settings.comprehended_char
-                    print("++++++++   ++++  ++  + The value for settings.comprehended_char is currently: ", comprehended_value)
+                    comprehended_value = settings.Input.comprehended_char
+                    print("++++++++   ++++  ++  + The value for settings.Input.comprehended_char is currently: ", comprehended_value)
                     if comprehended_value:
                         print("$$$$$$      Current comprehended value is:", comprehended_value)
                         total_comprehensions += 1
                         if comprehended_value == mnist_img_char:
                             true_comprehensions += 1
-                        settings.comprehended_char = ''
+                        settings.Input.comprehended_char = ''
                     print("So far there were %i correct comprehension out of total of %i"
                           % (true_comprehensions, total_comprehensions))
 
-                    sleep(settings.auto_test_delay)
+                    sleep(settings.Timers.auto_test_delay)
                     # process_5.join()
                     # process_6.join()
 
@@ -457,7 +460,7 @@ if __name__ == '__main__':
         # logging stats into Genome
         settings.genome_stats["test_stats"] = test_stats
 
-        settings.user_input = 'x'
+        settings.Input.user_input = 'x'
         return
 
 
@@ -474,34 +477,34 @@ if __name__ == '__main__':
     read_user_input()
 
     try:
-        while settings.user_input != 'q':
-            # if settings.user_input != settings.previous_user_input and \
-                 #           settings.user_input_param != settings.previous_user_input_param:
-            # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<", settings.user_input, settings.previous_user_input)
+        while settings.Input.user_input != 'q':
+            # if settings.Input.user_input != settings.Input.previous_user_input and \
+                 #           settings.Input.user_input_param != settings.Input.previous_user_input_param:
+            # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<", settings.Input.user_input, settings.Input.previous_user_input)
             try:
-                if settings.user_input == 'p':
+                if settings.Input.user_input == 'p':
                     process_print_basic_info()
-                    settings.user_input = ''
+                    settings.Input.user_input = ''
 
-                elif settings.user_input == 's':
+                elif settings.Input.user_input == 's':
                     process_show_cortical_areas()
-                    settings.user_input = ''
+                    settings.Input.user_input = ''
 
-                elif settings.user_input == 'i':
+                elif settings.Input.user_input == 'i':
                     process_see_from_mnist()
-                    settings.user_input = ''
+                    settings.Input.user_input = ''
 
-                elif settings.user_input == 'c':
+                elif settings.Input.user_input == 'c':
                     process_read_char()
-                    settings.user_input = ''
+                    settings.Input.user_input = ''
 
-                elif settings.user_input == 'a':
+                elif settings.Input.user_input == 'a':
                     process_auto_training()
-                    settings.user_input = ''
+                    settings.Input.user_input = ''
 
-                elif settings.user_input == 't':
+                elif settings.Input.user_input == 't':
                     process_auto_test()
-                    settings.user_input = ''
+                    settings.Input.user_input = ''
 
                 else:
                     read_user_input()

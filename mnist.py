@@ -102,7 +102,7 @@ def read_image(index):
             # cv_process.start()
             # cv_process.join()
             #
-            # if settings.vis_show:
+            # if settings.Switches.vis_show:
             #     plt.subplot(3, 3, 1), plt.imshow(img, cmap='gray')
             #     plt.title('Original'), plt.xticks([]), plt.yticks([])
             #     plt.subplot(3, 3, 2), plt.imshow(laplacian, cmap='gray')

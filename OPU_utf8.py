@@ -19,7 +19,7 @@ if __name__ == '__main__':
     import tkinter
     master = tkinter.Tk()
 
-    text = "Comprehended Character is: " + settings.opu_char
+    text = "Comprehended Character is: " + settings.Input.opu_char
     tkinter.Label(master, text=text, font=("Helvetica", 24)).grid(row=0)
 
 

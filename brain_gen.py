@@ -119,7 +119,7 @@ def main():
     print("Neuronal mapping across all Cortical areas has been completed!!")
 
     # # Visualize Neurons and Synapses
-    # if settings.vis_show:
+    # if settings.Switches.vis_show:
     #     for key in blueprint:
     #         visualizer.connectome_visualizer(cortical_area=key, neighbor_show='true')
 

@@ -295,6 +295,7 @@ if __name__ == '__main__':
 
     def process_see_from_mnist():
         if universal_functions.parameters["Switches"]["vis_show"]:
+            print(universal_functions.parameters["Switches"]["vis_show"])
             visualizer.cortical_heatmap(mnist.read_image(int(universal_functions.parameters["Input"]["user_input_param"]))[0], [])
         mnist_img = mnist.read_image(int(universal_functions.parameters["Input"]["user_input_param"]))
         process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,

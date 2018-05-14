@@ -14,12 +14,15 @@ from time import sleep
 # import multiprocessing as mp
 # import subprocess
 
-import visualizer
 import universal_functions
+
+if universal_functions.parameters["Switches"]["vis_show"]:
+    import visualizer
+
 from architect import synapse, neighbor_finder_ext
 import OPU_utf8
 import genethesizer
-
+import settings
 
 burst_count = 0
 
@@ -62,8 +65,8 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         genome = universal_functions.genome
 
         if universal_functions.parameters["Switches"]["verbose"]:
-            print(universal_functions.parameters["Bcolors"]["BURST"] + 'Current fire_candidate_list is %s'
-                  % fire_candidate_list + universal_functions.parameters["Bcolors"]["ENDC"])
+            print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s'
+                  % fire_candidate_list + settings.Bcolors.ENDC)
 
         burst_count += 1
         # Figure what you were thiking on the following
@@ -71,13 +74,14 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
 
-        print(universal_functions.parameters["Bcolors"]["BURST"] + 'Burst count = %i  --  Neuron count in FCL is %i'
-              % (burst_count, len(fire_candidate_list)) + universal_functions.parameters["Bcolors"]["ENDC"])
+        mohammad = settings.Bcolors.BURST
+        print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FCL is %i'
+              % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
 
         for cortical_area in set([i[0] for i in fire_candidate_list]):
-            print(universal_functions.parameters["Bcolors"]["BURST"] + '    %s : %i  '
+            print(settings.Bcolors.BURST + '    %s : %i  '
                   % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
-                  + universal_functions.parameters["Bcolors"]["ENDC"])
+                  + settings.Bcolors.ENDC)
             if universal_functions.genome['blueprint'][cortical_area]['group_id'] == 'Memory' and \
                             len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
                 sleep(universal_functions.parameters["Timers"]["idle_burst_timer"])
@@ -86,7 +90,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
 
         for x in list(fire_candidate_list):
             if universal_functions.parameters["Switches"]["verbose"]:
-                print(universal_functions.parameters["Bcolors"]["BURST"] + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + universal_functions.parameters["Bcolors"]["ENDC"])
+                print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
             neuron_fire(x[0], x[1])
 
         # for cortical_area in set([i[0] for i in fire_candidate_list]):
@@ -115,8 +119,8 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                         wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
                                                   dst_cortical_area='utf8_memory', dst_neuron=_[1])
 
-                        print(universal_functions.parameters["Bcolors"]["FIRE"] + "..........................................................................A new memory was formed against utf8_memory location "
-                              + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory', _[1]) + universal_functions.parameters["Bcolors"]["ENDC"])
+                        print(settings.Bcolors.FIRE + "..........................................................................A new memory was formed against utf8_memory location "
+                              + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory', _[1]) + settings.Bcolors.ENDC)
                         # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
                         # for dst_neuron_id in dst_neuron_id_list:
                         #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
@@ -137,7 +141,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                 user_input_value = user_input.get()
                 print("User input value is ", user_input_value)
                 if user_input_value == 'x':
-                    print(universal_functions.parameters["Bcolors"]["BURST"] + '>>>Burst Exit criteria has been met!   <<<' + universal_functions.parameters["Bcolors"]["ENDC"])
+                    print(settings.Bcolors.BURST + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                     burst_count = 0
                     universal_functions.parameters["Switches"]["ready_to_exit_burst"] = True
                     universal_functions.parameters["Input"]["user_input"] = ''
@@ -196,10 +200,10 @@ def neuron_fire(cortical_area, id):
     # Setting Destination to the list of Neurons connected to the firing Neuron
     destination = universal_functions.brain[cortical_area][id]["neighbors"]
     if universal_functions.parameters["Switches"]["verbose"]:
-        print(universal_functions.parameters["Bcolors"]["FIRE"] + "Firing neuron %s using firing pattern %s"
-          % (id, json.dumps(universal_functions.brain[cortical_area][id]["firing_pattern_id"], indent=3)) + universal_functions.parameters["Bcolors"]["ENDC"])
-        print(universal_functions.parameters["Bcolors"]["FIRE"] + "Neuron %s neighbors are %s" % (id, json.dumps(destination, indent=3)) +
-              universal_functions.parameters["Bcolors"]["ENDC"])
+        print(settings.Bcolors.FIRE + "Firing neuron %s using firing pattern %s"
+          % (id, json.dumps(universal_functions.brain[cortical_area][id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)
+        print(settings.Bcolors.FIRE + "Neuron %s neighbors are %s" % (id, json.dumps(destination, indent=3)) +
+              settings.Bcolors.ENDC)
 
     # After neuron fires all cumulative counters on Source gets reset
     universal_functions.brain[cortical_area][id]["cumulative_intake_sum_since_reset"] = 0
@@ -212,7 +216,7 @@ def neuron_fire(cortical_area, id):
     neuron_update_list = []
     for x in destination:
         if universal_functions.parameters["Switches"]["verbose"]:
-            print(universal_functions.parameters["Bcolors"]["FIRE"] + 'Updating connectome for Neuron ' + x + universal_functions.parameters["Bcolors"]["ENDC"])
+            print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(universal_functions.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
                       universal_functions.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
 
@@ -255,7 +259,7 @@ def neuron_fire(cortical_area, id):
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, id]))
     # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, id]))
     if universal_functions.parameters["Switches"]["verbose"]:
-        print(universal_functions.parameters["Bcolors"]["FIRE"] + "Fire Function triggered FCL: %s " % fire_candidate_list + universal_functions.parameters["Bcolors"]["ENDC"])
+        print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
     # todo: add a check that if the firing neuron is part of OPU to perform an action
 
@@ -270,9 +274,9 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # destination is the dendrite of the neighbor.
 
     if universal_functions.parameters["Switches"]["verbose"]:
-        print(universal_functions.parameters["Bcolors"]["UPDATE"] + "%s's Cumulative_intake_count value before update: %s"
+        print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"
           % (destination, universal_functions.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
-              + universal_functions.parameters["Bcolors"]["ENDC"])
+              + settings.Bcolors.ENDC)
 
     # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
     # Check if timer is expired on the destination Neuron and if so reset the counter
@@ -283,8 +287,8 @@ def neuron_update(cortical_area, synaptic_strength, destination):
         universal_functions.brain[cortical_area][destination]["last_timer_reset_time"] = str(datetime.datetime.now())
         universal_functions.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"] = 0  # Might be better to have a reset func.
         if universal_functions.parameters["Switches"]["verbose"]:
-            print(universal_functions.parameters["Bcolors"]["UPDATE"] + 'Cumulative counters for Neuron ' + destination +
-                  ' got rest' + universal_functions.parameters["Bcolors"]["ENDC"])
+            print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + destination +
+                  ' got rest' + settings.Bcolors.ENDC)
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
@@ -294,9 +298,9 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     #       ":", universal_functions.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
 
     if universal_functions.parameters["Switches"]["verbose"]:
-        print(universal_functions.parameters["Bcolors"]["UPDATE"] + "%s's Cumulative_intake_count value after update: %s"
+        print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s"
           % (destination, universal_functions.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
-              + universal_functions.parameters["Bcolors"]["ENDC"])
+              + settings.Bcolors.ENDC)
 
     # Add code to start a timer when neuron first receives a signal and reset counters when its expired
 
@@ -315,8 +319,8 @@ def neuron_update(cortical_area, synaptic_strength, destination):
            if fire_candidate_list.count([cortical_area, destination]) == 0:   # To prevent duplicate entries
                 fire_candidate_list.append([cortical_area, destination])
                 if universal_functions.parameters["Switches"]["verbose"]:
-                    print(universal_functions.parameters["Bcolors"]["UPDATE"] + "    Update Function triggered FCL: %s " % fire_candidate_list
-                          + universal_functions.parameters["Bcolors"]["ENDC"])
+                    print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list
+                          + settings.Bcolors.ENDC)
 
     return fire_candidate_list
 

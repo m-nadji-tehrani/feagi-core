@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 mpl.use('TkAgg')
 
-import matplotlib.pylab as pylab
+# import matplotlib.pylab as pylab
 from mpl_toolkits.mplot3d import proj3d
 
 
@@ -244,8 +244,8 @@ def cortical_heatmap(IPU_input, cortical_areas):
 
     fig2 = universal_functions.plt.figure(num=None, figsize=(8, 8), dpi=28, facecolor='w', edgecolor='k')
 
-    pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+20+300")
+    mpl.pylab.thismanager = mpl.pylab.get_current_fig_manager()
+    mpl.pylab.thismanager.window.wm_geometry("+20+300")
 
     for i in range(1, len(cortical_areas)+2):
         aa = fig2.add_subplot(1, len(cortical_areas)+1, i)

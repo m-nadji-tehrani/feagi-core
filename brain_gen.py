@@ -15,6 +15,7 @@ from multiprocessing import Pool, Process
 import architect
 import visualizer
 import universal_functions
+import settings
 
 
 def build_synapse(brain, key):
@@ -84,7 +85,8 @@ def main():
         with open(file_name, "w") as connectome:
             connectome.write(json.dumps({}))
             connectome.truncate()
-        print("Cortical area %s is has been cleared." % key)
+        print(settings.Bcolors.BURST + "Cortical area %s is has been cleared." % key
+              + settings.Bcolors.ENDC)
 
     # Develop Neurons for various cortical areas defined in Genome
     for cortical_area in blueprint:

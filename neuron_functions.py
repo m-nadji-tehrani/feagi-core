@@ -74,7 +74,6 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
 
-        mohammad = settings.Bcolors.BURST
         print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FCL is %i'
               % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
 
@@ -197,6 +196,8 @@ def neuron_fire(cortical_area, id):
 
     global burst_count
 
+    mybrain = universal_functions.brain
+
     # Setting Destination to the list of Neurons connected to the firing Neuron
     destination = universal_functions.brain[cortical_area][id]["neighbors"]
     if universal_functions.parameters["Switches"]["verbose"]:
@@ -215,8 +216,8 @@ def neuron_fire(cortical_area, id):
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     neuron_update_list = []
     for x in destination:
-        if universal_functions.parameters["Switches"]["verbose"]:
-            print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
+        # if universal_functions.parameters["Switches"]["verbose"]:
+        print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(universal_functions.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
                       universal_functions.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
 
@@ -272,6 +273,8 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # update the cumulative_intake_total, cumulative_intake_count and synaptic_strength between source and
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
+
+    print("Update request has been processed for: ", cortical_area, destination, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
 
     if universal_functions.parameters["Switches"]["verbose"]:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"

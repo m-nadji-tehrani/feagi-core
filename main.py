@@ -2,7 +2,9 @@
 
 from time import sleep
 import multiprocessing as mp
+import universal_functions
 
+# universal_functions.initialize_data()
 
 print("Main is initializing...")
 
@@ -253,6 +255,7 @@ if __name__ == '__main__':
         print("--------------------------------------------------------------")
 
     # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
+
 
     # Initializing queues
     user_input_queue = mp.Queue()

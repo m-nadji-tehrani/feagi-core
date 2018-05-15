@@ -94,6 +94,10 @@ def load_genome_metadata_in_memory():
     return genome_metadata
 
 
+global genome_metadata
+genome_metadata = load_genome_metadata_in_memory()
+
+
 def load_genome_in_memory():
     from genethesizer import genome_selector
     genome_id = genome_selector()
@@ -184,9 +188,6 @@ def reset_cumulative_counter_instances():
     return
 
 
-global genome_metadata
-genome_metadata = load_genome_metadata_in_memory()
-
 global genome
 genome = load_genome_in_memory()
 
@@ -196,11 +197,11 @@ genome_id = ""
 global genome_stats
 genome_stats = {"test_stats": {}, "performance_stats": {}}
 
-global brain
-brain = load_brain_in_memory()
-
 global blueprint
 blueprint = cortical_list()
+
+global brain
+brain = load_brain_in_memory()
 
 global event_id
 event_id = '_'

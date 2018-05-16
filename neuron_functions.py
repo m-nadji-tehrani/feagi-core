@@ -23,6 +23,7 @@ from architect import synapse, neighbor_finder_ext
 import OPU_utf8
 import genethesizer
 import settings
+import stats
 
 burst_count = 0
 
@@ -47,10 +48,13 @@ def burst(user_input, fire_list, brain_queue, event_queue):
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
     universal_functions.event_id = event_queue.get()
     universal_functions.brain = brain_queue.get()
+    mybrain = universal_functions.brain
 
     while not universal_functions.parameters["Switches"]["ready_to_exit_burst"]:
         burst_strt_time = datetime.datetime.now()
         global burst_count
+
+        print(datetime.datetime.now(), "Burst count = ", burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         global fire_candidate_list
@@ -74,8 +78,9 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
 
-        print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FCL is %i'
-              % (burst_count, len(fire_candidate_list)) + settings.Bcolors.ENDC)
+        brain_neuron_count, brain_synapse_count = stats.brain_total_synapse_cnt(verbose=False)
+        print(settings.Bcolors.BURST + 'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
+              % (burst_count, len(fire_candidate_list), brain_synapse_count) + settings.Bcolors.ENDC)
 
         for cortical_area in set([i[0] for i in fire_candidate_list]):
             print(settings.Bcolors.BURST + '    %s : %i  '
@@ -193,13 +198,13 @@ def fire_candidate_locations(fire_candidate_list):
 
 def neuron_fire(cortical_area, id):
     """This function initiate the firing of Neuron in a given cortical area"""
+    print(datetime.datetime.now(), " Firing...", cortical_area, id, file=open("./logs/fire.log", "a"))
 
     global burst_count
 
-    mybrain = universal_functions.brain
-
     # Setting Destination to the list of Neurons connected to the firing Neuron
     destination = universal_functions.brain[cortical_area][id]["neighbors"]
+    print(datetime.datetime.now(), "      Neighbors...", destination, file=open("./logs/fire.log", "a"))
     if universal_functions.parameters["Switches"]["verbose"]:
         print(settings.Bcolors.FIRE + "Firing neuron %s using firing pattern %s"
           % (id, json.dumps(universal_functions.brain[cortical_area][id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)
@@ -216,8 +221,8 @@ def neuron_fire(cortical_area, id):
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     neuron_update_list = []
     for x in destination:
-        # if universal_functions.parameters["Switches"]["verbose"]:
-        print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
+        if universal_functions.parameters["Switches"]["verbose"]:
+            print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + x + settings.Bcolors.ENDC)
         neuron_update(universal_functions.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
                       universal_functions.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
 
@@ -273,8 +278,8 @@ def neuron_update(cortical_area, synaptic_strength, destination):
     # update the cumulative_intake_total, cumulative_intake_count and synaptic_strength between source and
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
-
-    print("Update request has been processed for: ", cortical_area, destination, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
+    if universal_functions.parameters["Switches"]["verbose"]:
+        print("Update request has been processed for: ", cortical_area, destination, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
 
     if universal_functions.parameters["Switches"]["verbose"]:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value before update: %s"

@@ -2,11 +2,6 @@
 
 from time import sleep
 import multiprocessing as mp
-import universal_functions
-
-# universal_functions.initialize_data()
-
-print("Main is initializing...")
 
 """
 This file contains the main Brain control code
@@ -16,16 +11,6 @@ __author__ = 'Mohammad Nadji-tehrani'
 
 
 class Brain:
-    # def __init__(self):
-    #     import settings
-        # settings.init_burst_visualization()
-        # settings.init_data()
-        # settings.init_messaging()
-        # settings.init_settings()
-        # settings.init_timers()
-        # settings.init_user_interactions()
-        # settings.init_visualization()
-
     @staticmethod
     def print_basic_info():
         import stats
@@ -255,7 +240,6 @@ if __name__ == '__main__':
         print("--------------------------------------------------------------")
 
     # visualizer.cortical_activity_visualizer(['vision_v1', 'vision_v2', 'vision_IT', 'Memory'], x=30, y=30, z=30)
-
 
     # Initializing queues
     user_input_queue = mp.Queue()
@@ -520,7 +504,7 @@ if __name__ == '__main__':
 
 # Key problem on hand
 # todo: The value from comprehended char from settings is keep reseting hence the correct value not being passed on
-# todo: Need to convert settings to a class based structure
+# todo: Created synapses are not properly stored hence after firing the first round of neurons the signal is not spreading
 
 
 # Problems to fix

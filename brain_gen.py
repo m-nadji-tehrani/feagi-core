@@ -16,6 +16,7 @@ import architect
 import visualizer
 import universal_functions
 import settings
+import stats
 
 
 def build_synapse(brain, key):
@@ -74,7 +75,7 @@ def main():
     universal_functions.reset_brain()
 
     # Read Genome data, reset connectome and build it up
-    data = universal_functions.genome
+    genome_data = universal_functions.genome
     blueprint = universal_functions.cortical_list()
 
     print("Here is the list of all defined cortical areas: %s " % blueprint)
@@ -100,7 +101,7 @@ def main():
     pool1 = Pool(processes=8)
     synapse_creation_candidates = []
     for key in blueprint:
-        if data["blueprint"][key]["init_synapse_needed"] == "True":
+        if genome_data["blueprint"][key]["init_synapse_needed"] == "True":
             synapse_creation_candidates.append(key)
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)
@@ -111,6 +112,8 @@ def main():
     pool1.close()
     pool1.join()
 
+    stats.brain_total_synapse_cnt()
+
     # universal_functions.init_data()
     # Build Synapses across various Cortical areas
     func2 = partial(build_synapse_ext, universal_functions.brain)
@@ -119,6 +122,9 @@ def main():
     pool2.close()
     pool2.join()
     print("Neuronal mapping across all Cortical areas has been completed!!")
+
+
+    print("Total brain synapse count is: ", stats.brain_total_synapse_cnt())
 
     # # Visualize Neurons and Synapses
     # if universal_functions.parameters["Switches"]["vis_show"]:

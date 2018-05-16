@@ -33,14 +33,30 @@ def connectome_neuron_count():
 
 def connectome_total_synapse_cnt(cortical_area):
     """
-    Returns average number of Synapses for all Neurons in the connectome
+    Returns the total number of Neurons and Synapses for a given cortical area
     """
+    universal_functions.brain = universal_functions.load_brain_in_memory()
     data = universal_functions.brain[cortical_area]
     total_synapse_count = 0
+    total_neuron_count = 0
     for neuron in data:
+        total_neuron_count += 1
         for synapse in data[neuron]['neighbors']:
             total_synapse_count += 1
-    return total_synapse_count
+    return total_neuron_count, total_synapse_count
+
+
+def brain_total_synapse_cnt(verbose=True):
+    brain_synapse_cnt = 0
+    brain_neuron_cnt = 0
+    for cortical_area in universal_functions.brain:
+        neuron_count, synapse_count = connectome_total_synapse_cnt(cortical_area)
+        brain_neuron_cnt = brain_neuron_cnt + neuron_count
+        brain_synapse_cnt = brain_synapse_cnt + synapse_count
+        if verbose:
+            print("For %s, the Neuron count is %i and  Synapse count is %i" % (cortical_area, neuron_count, synapse_count))
+    print("\nFor the entire brain, total Neuron count is %i and  total Synapse count is %i\n" % (brain_neuron_cnt, brain_synapse_cnt))
+    return brain_neuron_cnt, brain_synapse_cnt
 
 
 def connectome_neighbor_histogram(cortical_area):
@@ -52,7 +68,7 @@ def connectome_neighbor_histogram(cortical_area):
         count = 0
         for y in data[key]['neighbors']:
             count += 1
-        raw.append([cortical_area, count])
+        # raw.append([cortical_area, count])
 
     return
 

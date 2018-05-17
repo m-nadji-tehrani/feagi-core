@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 global parameters
 with open("parameters.json", "r") as data_file:
     parameters = json.load(data_file)
-    print(parameters)
+    # print(parameters)
 
 
 def init_burst_visualization():

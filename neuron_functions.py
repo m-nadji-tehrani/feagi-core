@@ -198,13 +198,15 @@ def fire_candidate_locations(fire_candidate_list):
 
 def neuron_fire(cortical_area, id):
     """This function initiate the firing of Neuron in a given cortical area"""
-    print(datetime.datetime.now(), " Firing...", cortical_area, id, file=open("./logs/fire.log", "a"))
+    if universal_functions.parameters["Switches"]["logging_fire"]:
+        print(datetime.datetime.now(), " Firing...", cortical_area, id, file=open("./logs/fire.log", "a"))
 
     global burst_count
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     destination = universal_functions.brain[cortical_area][id]["neighbors"]
-    print(datetime.datetime.now(), "      Neighbors...", destination, file=open("./logs/fire.log", "a"))
+    if universal_functions.parameters["Switches"]["logging_fire"]:
+        print(datetime.datetime.now(), "      Neighbors...", destination, file=open("./logs/fire.log", "a"))
     if universal_functions.parameters["Switches"]["verbose"]:
         print(settings.Bcolors.FIRE + "Firing neuron %s using firing pattern %s"
           % (id, json.dumps(universal_functions.brain[cortical_area][id]["firing_pattern_id"], indent=3)) + settings.Bcolors.ENDC)

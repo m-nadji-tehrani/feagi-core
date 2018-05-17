@@ -55,7 +55,8 @@ def brain_total_synapse_cnt(verbose=True):
         brain_synapse_cnt = brain_synapse_cnt + synapse_count
         if verbose:
             print("For %s, the Neuron count is %i and  Synapse count is %i" % (cortical_area, neuron_count, synapse_count))
-    print("\nFor the entire brain, total Neuron count is %i and  total Synapse count is %i\n" % (brain_neuron_cnt, brain_synapse_cnt))
+    if verbose:
+        print("\nFor the entire brain, total Neuron count is %i and  total Synapse count is %i\n" % (brain_neuron_cnt, brain_synapse_cnt))
     return brain_neuron_cnt, brain_synapse_cnt
 
 

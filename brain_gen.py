@@ -101,7 +101,7 @@ def main():
     pool1 = Pool(processes=8)
     synapse_creation_candidates = []
     for key in blueprint:
-        if genome_data["blueprint"][key]["init_synapse_needed"] == "True":
+        if genome_data["blueprint"][key]["init_synapse_needed"]:
             synapse_creation_candidates.append(key)
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)

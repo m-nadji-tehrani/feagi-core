@@ -77,7 +77,7 @@ class Brain:
                 init_fire_list.append([cortical_area, item])
         # Event is an instance of time where an IPU event has occurred
         event_id = architect.event_id_gen()
-        print(" <> <> <> <> <> <> <> <> An event with following id has been triggered:", event_id)
+        print(" <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:", event_id)
         event_queue.put(event_id)
         # print('Initial Fire List:')
         # print(init_fire_list)
@@ -499,13 +499,12 @@ if __name__ == '__main__':
 
 #
 #
-#          <<<<<<<  T O   D O   L I S T   >>>>>>>>
+#          <<<<<<<   T O   D O   L I S T   >>>>>>>>
 #
 
 # Key problem on hand
 # todo: The value from comprehended char from settings is keep reseting hence the correct value not being passed on
-# todo: Created synapses are not properly stored hence after firing the first round of neurons the signal is not spreading
-
+# todo: Need a self tuning mechanism
 
 # Problems to fix
 # todo: Synaptic activities in Memory everntually get to a point that does not ramp down

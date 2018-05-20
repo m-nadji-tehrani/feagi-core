@@ -29,7 +29,7 @@ def build_synapse(brain, key):
                                                rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
                                                ["neighbor_locator_rule_id"]][genome["blueprint"][key]
                                                ["neighbor_locator_rule_param_id"]],
-                                               synaptic_strength=genome["blueprint"][key]["synaptic_strength"])
+                                               postsynaptic_potential=genome["blueprint"][key]["postsynaptic_potential"])
     print("Synapse creation for Cortical area %s is now complete. Count: %i  Duration: %s"
           % (key, synapse_count, datetime.datetime.now() - timer))
     universal_functions.save_brain_to_disk(key)
@@ -51,7 +51,7 @@ def build_synapse_ext(brain, key):
                                            ["neighbor_locator_rule_id"]][genome["blueprint"][key]
                                            ["cortical_mapping_dst"]
                                            [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
-                                           synaptic_strength=genome["blueprint"][key]["synaptic_strength"])
+                                           postsynaptic_potential=genome["blueprint"][key]["postsynaptic_potential"])
         print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
               % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     universal_functions.save_brain_to_disk(key)

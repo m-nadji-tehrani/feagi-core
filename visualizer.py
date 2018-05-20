@@ -42,7 +42,7 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
                 source_location = data[key]["location"]
                 for subkey in data[key]["neighbors"]:
                     if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (data[key]['neighbors']
-                                [subkey]['synaptic_strength'] > threshold):
+                                [subkey]['postsynaptic_potential'] > threshold):
                         destination_location = data[subkey]["location"]
                         a = universal_functions.Arrow3D([source_location[0], destination_location[0]], [source_location[1],
                                     destination_location[1]], [source_location[2], destination_location[2]],

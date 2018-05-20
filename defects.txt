@@ -20,7 +20,7 @@ Defect 1:
       File "/Users/MNT/PycharmProjects/Metis/neuron_functions.py", line 90, in burst
         neuron_fire(x[0], x[1])
       File "/Users/MNT/PycharmProjects/Metis/neuron_functions.py", line 212, in neuron_fire
-        universal_functions.brain[cortical_area][id]["neighbors"][x]["synaptic_strength"], x)
+        universal_functions.brain[cortical_area][id]["neighbors"][x]["postsynaptic_potential"], x)
       File "/Users/MNT/PycharmProjects/Metis/neuron_functions.py", line 271, in neuron_update
         "%Y-%m-%d %H:%M:%S.%f") + datetime.timedelta(0,
       File "/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/_strptime.py", line 565, in _strptime_datetime

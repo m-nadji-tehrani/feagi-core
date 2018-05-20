@@ -188,10 +188,13 @@ if __name__ == '__main__':
     import termios
     import brain_gen
     import tkinter
-    import visualizer
+
     import mnist
     import neuron_functions
     import universal_functions
+
+    if universal_functions.parameters["Switches"]["vis_show"]:
+        import visualizer
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 

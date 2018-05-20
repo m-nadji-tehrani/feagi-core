@@ -5,15 +5,16 @@ import os.path
 
 from genethesizer import genome_id_gen
 
-import matplotlib as mpl
-mpl.use('TkAgg')
-
-import matplotlib.pyplot as plt
 
 global parameters
 with open("parameters.json", "r") as data_file:
     parameters = json.load(data_file)
     # print(parameters)
+
+if parameters["Switches"]["vis_show"]:
+    import matplotlib as mpl
+    mpl.use('TkAgg')
+    import matplotlib.pyplot as plt
 
 
 def init_burst_visualization():

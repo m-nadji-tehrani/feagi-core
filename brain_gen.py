@@ -13,7 +13,7 @@ from multiprocessing import Pool, Process
 
 
 import architect
-import visualizer
+# import visualizer
 import universal_functions
 import settings
 import stats
@@ -41,15 +41,17 @@ def build_synapse_ext(brain, key):
     genome = universal_functions.genome
     for mapped_cortical_area in genome["blueprint"][key]["cortical_mapping_dst"]:
         timer = datetime.datetime.now()
-        synapse_count, universal_functions.brain = architect.neighbor_builder_ext(brain=brain, brain_gen=True, cortical_area_src=key,
-                                       cortical_area_dst=mapped_cortical_area,
-                                       rule=genome["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
-                                       ["neighbor_locator_rule_id"],
-                                       rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
-                                       ["cortical_mapping_dst"][mapped_cortical_area]
-                                       ["neighbor_locator_rule_id"]][genome["blueprint"][key]["cortical_mapping_dst"]
-                                       [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
-                                       synaptic_strength=genome["blueprint"][key]["synaptic_strength"])
+        synapse_count, universal_functions.brain = \
+            architect.neighbor_builder_ext(brain=brain, brain_gen=True, cortical_area_src=key,
+                                           cortical_area_dst=mapped_cortical_area,
+                                           rule=genome["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
+                                           ["neighbor_locator_rule_id"],
+                                           rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
+                                           ["cortical_mapping_dst"][mapped_cortical_area]
+                                           ["neighbor_locator_rule_id"]][genome["blueprint"][key]
+                                           ["cortical_mapping_dst"]
+                                           [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
+                                           synaptic_strength=genome["blueprint"][key]["synaptic_strength"])
         print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
               % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     universal_functions.save_brain_to_disk(key)
@@ -59,7 +61,7 @@ def build_synapse_ext(brain, key):
 def main():
 
     # Backup the old brain
-    def copyeverything(src, dst):
+    def folder_backup(src, dst):
         try:
             shutil.copytree(src, dst)
         except OSError as exc:
@@ -68,8 +70,9 @@ def main():
             else:
                 raise
 
-    # Backup the current folder
-    # copyeverything('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
+    if universal_functions.parameters["Switches"]["folder_backup"]:
+        # Backup the current folder
+        folder_backup('../Metis', '../Metis_archive/Metis_'+str(datetime.datetime.now()).replace(' ', '_'))
 
     # Reset in-memory brain data
     universal_functions.reset_brain()
@@ -123,7 +126,6 @@ def main():
     pool2.join()
     print("Neuronal mapping across all Cortical areas has been completed!!")
 
-
     print("Total brain synapse count is: ", stats.brain_total_synapse_cnt())
 
     # # Visualize Neurons and Synapses
@@ -132,4 +134,3 @@ def main():
     #         visualizer.connectome_visualizer(cortical_area=key, neighbor_show='true')
 
     # settings.save_brain_to_disk()
-

@@ -279,6 +279,7 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, synap
         brain = {}
     return synapse_count, brain
 
+
 def dst_projection_center(cortical_area_src, neuron_id, cortical_area_dst):
     """
     Returns the coordinates of a neuron projected into a target Cortical layer

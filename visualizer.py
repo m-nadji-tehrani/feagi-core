@@ -3,20 +3,17 @@
 This file contains all of the Visualization functions
 """
 
-import numpy as np
-import time
-import matplotlib.pyplot as plt
-
-import matplotlib as mpl
-mpl.use('TkAgg')
-
-# import matplotlib.pylab as pylab
-from mpl_toolkits.mplot3d import proj3d
-
-
 import universal_functions
-import architect
-import neuron_functions
+if universal_functions.parameters["Switches"]["vis_show"]:
+    import matplotlib.pyplot as plt
+    import matplotlib as mpl
+    mpl.use('TkAgg')
+    # import matplotlib.pylab as pylab
+    from mpl_toolkits.mplot3d import proj3d
+    import architect
+    import neuron_functions
+    import numpy as np
+    import time
 
 
 def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):

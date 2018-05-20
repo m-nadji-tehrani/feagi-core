@@ -4,9 +4,6 @@ This file contains all the Global settings and parameters used throughout the pr
 """
 
 
-from stats import cortical_xyz_range
-
-
 # class Timers:
 #     # Sleep timer for visualization delay
 #     burst_timer = 1e-17

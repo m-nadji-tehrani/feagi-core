@@ -6,8 +6,6 @@ This file contains the main Brain control code
 
 __author__ = 'Mohammad Nadji-tehrani'
 
-global FCL_queue
-global event_queue
 
 if __name__ == '__main__':
     from datetime import datetime
@@ -15,13 +13,11 @@ if __name__ == '__main__':
     import tkinter
     from time import sleep
     import multiprocessing as mp
-    import mnist
-    import neuron_functions
-    import brain_functions
-    import universal_functions
+    from PUs import mnist
+    from misc import brain_functions, auto_pilot, neuron_functions, universal_functions, visualizer
 
     if universal_functions.parameters["Switches"]["vis_show"]:
-        import visualizer
+        pass
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
@@ -79,8 +75,6 @@ if __name__ == '__main__':
     FCL_queue = mp.Queue()
     brain_queue = mp.Queue()
     event_queue = mp.Queue()
-
-    import auto_pilot
 
     # Initialize Fire Candidate List (FCL)
     FCL = []
@@ -152,8 +146,10 @@ if __name__ == '__main__':
     try:
         while universal_functions.parameters["Input"]["user_input"] != 'q':
             # if universal_functions.parameters["Input"]["user_input"] != settings.Input.previous_user_input and \
-                 #           universal_functions.parameters["Input"]["user_input"]_param != settings.Input.previous_user_input_param:
-            # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<", universal_functions.parameters["Input"]["user_input"], settings.Input.previous_user_input)
+            #           universal_functions.parameters["Input"]["user_input"]_param != \
+            # settings.Input.previous_user_input_param:
+            # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<",
+            # universal_functions.parameters["Input"]["user_input"], settings.Input.previous_user_input)
             try:
                 if universal_functions.parameters["Input"]["user_input"] == 'p':
                     process_print_basic_info()

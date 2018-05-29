@@ -11,9 +11,8 @@ import numpy as np
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 # import cv2
-import matplotlib.pyplot as plt
 
-import universal_functions
+from misc import universal_functions
 import architect
 
 

@@ -7,16 +7,13 @@ import json
 import shutil
 import errno
 import datetime
-import multiprocessing
 from functools import partial
-from multiprocessing import Pool, Process
-
+from multiprocessing import Pool
 
 import architect
 # import visualizer
-import universal_functions
-import settings
-import stats
+from misc import universal_functions, stats
+from configuration import settings
 
 
 def build_synapse(brain, key):
@@ -24,12 +21,14 @@ def build_synapse(brain, key):
     genome = universal_functions.genome
 
     timer = datetime.datetime.now()
-    synapse_count, universal_functions.brain = architect.neighbor_builder(brain=brain, brain_gen=True, cortical_area=key,
-                                               rule_id=genome["blueprint"][key]["neighbor_locator_rule_id"],
-                                               rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
-                                               ["neighbor_locator_rule_id"]][genome["blueprint"][key]
-                                               ["neighbor_locator_rule_param_id"]],
-                                               postsynaptic_potential=genome["blueprint"][key]["postsynaptic_potential"])
+    synapse_count, universal_functions.brain = \
+        architect.neighbor_builder(brain=brain, brain_gen=True, cortical_area=key,
+                                   rule_id=genome["blueprint"][key]["neighbor_locator_rule_id"],
+                                   rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
+                                                                                    ["neighbor_locator_rule_id"]]
+                                                                             [genome["blueprint"][key]
+                                                                                    ["neighbor_locator_rule_param_id"]],
+                                   postsynaptic_current=genome["blueprint"][key]["postsynaptic_current"])
     print("Synapse creation for Cortical area %s is now complete. Count: %i  Duration: %s"
           % (key, synapse_count, datetime.datetime.now() - timer))
     universal_functions.save_brain_to_disk(key)
@@ -46,12 +45,15 @@ def build_synapse_ext(brain, key):
                                            cortical_area_dst=mapped_cortical_area,
                                            rule=genome["blueprint"][key]["cortical_mapping_dst"][mapped_cortical_area]
                                            ["neighbor_locator_rule_id"],
-                                           rule_param=genome["neighbor_locator_rule"][genome["blueprint"][key]
-                                           ["cortical_mapping_dst"][mapped_cortical_area]
-                                           ["neighbor_locator_rule_id"]][genome["blueprint"][key]
-                                           ["cortical_mapping_dst"]
-                                           [mapped_cortical_area]["neighbor_locator_rule_param_id"]],
-                                           postsynaptic_potential=genome["blueprint"][key]["postsynaptic_potential"])
+                                           rule_param=genome["neighbor_locator_rule"]
+                                                            [genome["blueprint"][key]
+                                                                   ["cortical_mapping_dst"][mapped_cortical_area]
+                                                                   ["neighbor_locator_rule_id"]]
+                                                            [genome["blueprint"][key]
+                                                                   ["cortical_mapping_dst"]
+                                                                   [mapped_cortical_area]
+                                                                   ["neighbor_locator_rule_param_id"]],
+                                           postsynaptic_current=genome["blueprint"][key]["postsynaptic_current"])
         print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
               % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     universal_functions.save_brain_to_disk(key)

@@ -2,18 +2,14 @@
 """
 This file contains all of the Visualization functions
 """
-
 import universal_functions
+
 if universal_functions.parameters["Switches"]["vis_show"]:
-    import matplotlib.pyplot as plt
     import matplotlib as mpl
     mpl.use('TkAgg')
     # import matplotlib.pylab as pylab
-    from mpl_toolkits.mplot3d import proj3d
     import architect
-    import neuron_functions
-    import numpy as np
-    import time
+    from misc import neuron_functions, universal_functions
 
 
 def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
@@ -22,12 +18,15 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
         universal_functions.vis_init()
     neuron_locations = architect.connectome_location_data(cortical_area)
 
-    universal_functions.ax.set_xlim(universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
-                 universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1])
-    universal_functions.ax.set_ylim(universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
-                 universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1])
-    universal_functions.ax.set_zlim(universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
-                 universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
+    universal_functions.ax.set_xlim(
+        universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
+        universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1])
+    universal_functions.ax.set_ylim(
+        universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
+        universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1])
+    universal_functions.ax.set_zlim(
+        universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
+        universal_functions.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
 
     for location in neuron_locations:
         universal_functions.ax.scatter(location[0], location[1], location[2], c='b', marker='.')
@@ -42,11 +41,11 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
                 source_location = data[key]["location"]
                 for subkey in data[key]["neighbors"]:
                     if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (data[key]['neighbors']
-                                [subkey]['postsynaptic_potential'] > threshold):
+                                [subkey]['postsynaptic_current'] > threshold):
                         destination_location = data[subkey]["location"]
                         a = universal_functions.Arrow3D([source_location[0], destination_location[0]], [source_location[1],
-                                    destination_location[1]], [source_location[2], destination_location[2]],
-                                    mutation_scale=10, lw=1, arrowstyle="->", color="r")
+                                                                                                        destination_location[1]], [source_location[2], destination_location[2]],
+                                                        mutation_scale=10, lw=1, arrowstyle="->", color="r")
                         universal_functions.ax.add_artist(a)
     universal_functions.plt.show()
     universal_functions.plt.pause(universal_functions.parameters["Timers"]["burst_timer"])
@@ -68,12 +67,15 @@ def burst_visualizer(fire_candidate_list):
             if universal_functions.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
                 d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
-                d_vision.set_xlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                             universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
-                d_vision.set_ylim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                             universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
-                d_vision.set_zlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                             universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+                d_vision.set_xlim(
+                    universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                    universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+                d_vision.set_ylim(
+                    universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                    universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+                d_vision.set_zlim(
+                    universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                    universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
                 d_vision.set_xlabel('X Label')
                 d_vision.set_ylabel('Y Label')
                 d_vision.set_zlabel('Z Label')
@@ -112,12 +114,15 @@ def burst_visualizer(fire_candidate_list):
         elif universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
             d_memory = universal_functions.memory_figure.add_subplot(2, 1, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
             d_memory.set_title(entry[1])
-            d_memory.set_xlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
-            d_memory.set_ylim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
-            d_memory.set_zlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+            d_memory.set_xlim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+            d_memory.set_ylim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+            d_memory.set_zlim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
             d_memory.set_xlabel('X Label')
             d_memory.set_ylabel('Y Label')
             d_memory.set_zlabel('Z Label')
@@ -125,12 +130,15 @@ def burst_visualizer(fire_candidate_list):
         elif universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
             d_ipu = universal_functions.input_figure.add_subplot(1, 1, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
             d_ipu.set_title(entry[1])
-            d_ipu.set_xlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
-            d_ipu.set_ylim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
-            d_ipu.set_zlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+            d_ipu.set_xlim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+            d_ipu.set_ylim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+            d_ipu.set_zlim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
             d_ipu.set_xlabel('X Label')
             d_ipu.set_ylabel('Y Label')
             d_ipu.set_zlabel('Z Label')
@@ -138,12 +146,15 @@ def burst_visualizer(fire_candidate_list):
         elif universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
             d_opu = universal_functions.output_figure.add_subplot(1, 1, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
             d_opu.set_title(entry[1])
-            d_opu.set_xlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
-            d_opu.set_ylim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
-            d_opu.set_zlim(universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                         universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+            d_opu.set_xlim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+            d_opu.set_ylim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+            d_opu.set_zlim(
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
             d_opu.set_xlabel('X Label')
             d_opu.set_ylabel('Y Label')
             d_opu.set_zlabel('Z Label')

@@ -1,5 +1,6 @@
 # Provides functions to support physiology of thinking
-import universal_functions
+from misc import universal_functions
+
 
 class Me:
     name = 'Mohammad'

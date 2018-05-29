@@ -13,13 +13,13 @@ import json
 import datetime
 from time import sleep
 from architect import synapse
-import OPU_utf8
+from PUs import OPU_utf8
 import genethesizer
-import settings
-import stats
-import universal_functions as uf
+from configuration import settings
+from misc import universal_functions as uf, stats, visualizer
+
 if uf.parameters["Switches"]["vis_show"]:
-    import visualizer
+    pass
 
 
 burst_count = 0
@@ -32,7 +32,6 @@ def burst(user_input, fire_list, brain_queue, event_queue):
     # either the timeout is expired or the Firing threshold is met and neuron Fires
 
     # todo: Consider to have burst instances so multiple burst can happen simultaneously: No need just update FLC!!!
-
     # Function Overview:
     #     This function receives a collection of inputs from multiple neurons, performs processing and generate a new
     #     output targeting other neurons which will be fed back to the same function for similar processing.
@@ -59,6 +58,9 @@ def burst(user_input, fire_list, brain_queue, event_queue):
 
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
+        previous_fcl = fire_candidate_list
+
+        # todo: preserve fcl-1 and use that for LTP/LTD between memory and vision_IT
 
         # Burst Visualization
         if len(fire_candidate_list) > 0 and uf.parameters["Switches"]["vis_show"]:
@@ -104,24 +106,54 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         #                                       src_neuron=src_neuron, dst_neuron=dst_neuron)
         #
 
+        # ## The following section is related to neuro-plasticity ## #
+
+        # Plasticity between T1 and Vision memory
+        # todo: generalize this function
+        # Long Term Potentiation (LTP) between vision_IT and vision_memory
+        for _ in previous_fcl:
+            if _[0] == "vision_IT":
+                for neuron in fire_candidate_list:
+                    if neuron[0] == "vision_memory" and uf.brain["vision_IT"][_[1]]["neighbors"][neuron[1]]:
+                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=_[1],
+                                             dst_cortical_area='vision_memory', dst_neuron_id=neuron[1])
+
+                        print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                                      "...........LTP between vision_IT and vision_memory occurred "
+                              + settings.Bcolors.ENDC)
+
+        # Long Term Depression (LTD) between vision_IT and vision_memory
+        for _ in fire_candidate_list:
+            if _[0] == "vision_IT":
+                for neuron in previous_fcl:
+                    if neuron[0] == "vision_memory" and uf.brain["vision_IT"][_[1]]["neighbors"][neuron[1]]:
+                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=_[1],
+                                             dst_cortical_area='vision_memory', dst_neuron_id=neuron[1],
+                                             long_term_depression=True)
+
+                        print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                                      "...........LTD between vision_IT and vision_memory occurred "
+                              + settings.Bcolors.ENDC)
+
         # Building a bidirectional synapse between memory neurons who fire together within a cortical area
+        # todo: The following loop is very inefficient___ fix it!!
         # todo: Read the following memory list from Genome
         memory_list = ['utf8_memory', 'vision_memory']
         for cortical_area in memory_list:
             if uf.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
                 for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-                    for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                    for dst_neuron in set([j[1] for j in fire_candidate_list if j[0] == cortical_area]):
                         if src_neuron != dst_neuron:
-                            wire_neurons_together(cortical_area=cortical_area,
-                                                  src_neuron=src_neuron, dst_neuron=dst_neuron)
+                            apply_plasticity(cortical_area=cortical_area,
+                                             src_neuron=src_neuron, dst_neuron=dst_neuron)
 
         # Wiring Vision memory to UIF-8 memory
         for _ in fire_candidate_list:
             if _[0] == "utf8_memory":
                 for neuron in fire_candidate_list:
                     if neuron[0] == "vision_memory":
-                        wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                                                  dst_cortical_area='utf8_memory', dst_neuron=_[1])
+                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=neuron[1],
+                                             dst_cortical_area='utf8_memory', dst_neuron_id=_[1])
 
                         print(settings.Bcolors.FIRE + "..............................................................."
                                                       "...........A new memory was formed against utf8_memory location "
@@ -218,7 +250,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
               settings.Bcolors.ENDC)
 
     # After neuron fires all cumulative counters on Source gets reset
-    uf.brain[cortical_area][neuron_id]["cumulative_intake_sum_since_reset"] = 0
+    uf.brain[cortical_area][neuron_id]["membrane_potential"] = 0
     uf.brain[cortical_area][neuron_id]["last_timer_reset_time"] = str(datetime.datetime.now())
     uf.brain[cortical_area][neuron_id]["cumulative_fire_count"] += 1
     uf.brain[cortical_area][neuron_id]["cumulative_fire_count_inst"] += 1
@@ -230,9 +262,9 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
         if verbose:
             print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
-        neuron_update(dst_cortical_area,
-                      uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_potential"],
-                      dst_neuron_id, dst_neuron_obj=uf.brain[dst_cortical_area][dst_neuron_id], verbose=verbose)
+        neuron_update(dst_cortical_area, dst_neuron_id,
+                      uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+                      verbose=verbose)
 
     # Placeholder for refractory period
     # todo: Implement refractory period logic
@@ -258,7 +290,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
               % uf.parameters["Input"]["comprehended_char"])
 
     #     neuron_update_list.append([uf.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
-        # uf.brain[cortical_area][id]["neighbors"][x]["postsynaptic_potential"], x])
+        # uf.brain[cortical_area][id]["neighbors"][x]["postsynaptic_current"], x])
     #
     # pool = ThreadPool(4)
     # pool.starmap(neuron_update, neuron_update_list)
@@ -282,10 +314,12 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     return
 
 
-def neuron_update(cortical_area, postsynaptic_potential, dst_neuron_id, dst_neuron_obj, verbose=False):
+def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=False):
     """This function updates the destination parameters upon upstream Neuron firing"""
 
-    # update the cumulative_intake_total, cumulative_intake_count and postsynaptic_potential between source and
+    dst_neuron_obj = uf.brain[cortical_area][dst_neuron_id]
+
+    # update the cumulative_intake_total, cumulative_intake_count and postsynaptic_current between source and
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
@@ -293,7 +327,7 @@ def neuron_update(cortical_area, postsynaptic_potential, dst_neuron_id, dst_neur
         print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
         print(settings.Bcolors.UPDATE +
               "%s's Cumulative_intake_count value before update: %s" %
-              (dst_neuron_id, dst_neuron_obj["cumulative_intake_sum_since_reset"])
+              (dst_neuron_id, dst_neuron_obj["membrane_potential"])
               + settings.Bcolors.ENDC)
 
     # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
@@ -305,21 +339,21 @@ def neuron_update(cortical_area, postsynaptic_potential, dst_neuron_id, dst_neur
             datetime.datetime.now():
         dst_neuron_obj["last_timer_reset_time"] = str(datetime.datetime.now())
         # Might be better to have a reset func.
-        dst_neuron_obj["cumulative_intake_sum_since_reset"] = 0
+        dst_neuron_obj["membrane_potential"] = 0
         if verbose:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + dst_neuron_id +
                   ' got rest' + settings.Bcolors.ENDC)
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
-    uf.brain[cortical_area][dst_neuron_id]["cumulative_intake_sum_since_reset"] += postsynaptic_potential
+    uf.brain[cortical_area][dst_neuron_id]["membrane_potential"] += postsynaptic_current
 
-    # print("cumulative_intake_sum_since_reset:", destination,
-    #       ":", uf.brain[cortical_area][destination]["cumulative_intake_sum_since_reset"])
+    # print("membrane_potential:", destination,
+    #       ":", uf.brain[cortical_area][destination]["membrane_potential"])
 
     if verbose:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s" %
-              (dst_neuron_id, dst_neuron_obj["cumulative_intake_sum_since_reset"])
+              (dst_neuron_id, dst_neuron_obj["membrane_potential"])
               + settings.Bcolors.ENDC)
 
     # Add code to start a timer when neuron first receives a signal and reset counters when its expired
@@ -333,7 +367,7 @@ def neuron_update(cortical_area, postsynaptic_potential, dst_neuron_id, dst_neur
     # fire_candidate_list
     global fire_candidate_list
     global burst_count
-    if dst_neuron_obj["cumulative_intake_sum_since_reset"] > \
+    if dst_neuron_obj["membrane_potential"] > \
             dst_neuron_obj["firing_threshold"]:
         if dst_neuron_obj["snooze_till_burst_num"] <= burst_count:
             if fire_candidate_list.count([cortical_area, dst_neuron_id]) == 0:   # To prevent duplicate entries
@@ -367,10 +401,10 @@ def neuron_neighbors(cortical_area, neuron_id):
     return data[neuron_id]["neighbors"]
 
 
-def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
+def apply_plasticity(cortical_area, src_neuron, dst_neuron):
     """
     This function simulates neuron plasticity in a sense that when neurons in a given cortical area fire in the 
-     same burst they wire together. This is done by increasing the postsynaptic_potential associated with a link between
+     same burst they wire together. This is done by increasing the postsynaptic_current associated with a link between
      two neuron. Additionally an event id is associated to the neurons who have fired together.
     """
 
@@ -379,20 +413,22 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     # Since this function only targets Memory regions and neurons in memory regions do not have neighbor relationship
     # by default hence here we first need to synapse the source and destination together
     # Build neighbor relationship between the source and destination if its not already in place
+
     # Check if source and destination have an existing synapse if not create one here
     if dst_neuron not in uf.brain[cortical_area][src_neuron]["neighbors"]:
         synapse(cortical_area, src_neuron, cortical_area, dst_neuron,
-                genome["blueprint"][cortical_area]["postsynaptic_potential"])
+                genome["blueprint"][cortical_area]["postsynaptic_current"])
 
     # Every time source and destination neuron is fired at the same time which in case of the code architecture
-    # reside in the same burst, the postsynaptic_potential will be increased simulating Fire together, wire together.
-    uf.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_potential"] += \
-        genome["blueprint"][cortical_area]["synaptic_strength_inc"]
+    # reside in the same burst, the postsynaptic_current will be increased simulating the fire together, wire together.
+    # This phenomenon is also considered as long term potentiation or LTP
+    uf.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] += \
+        genome["blueprint"][cortical_area]["plasticity_constant"]
 
-    # Condition to cap the postsynaptic_potential and provide prohibitory reaction (Serotonin)
-    uf.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_potential"] = \
-        min(uf.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_potential"],
-            genome["blueprint"][cortical_area]["synaptic_strength_max"])
+    # Condition to cap the postsynaptic_current and provide prohibitory reaction
+    uf.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] = \
+        min(uf.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
+            genome["blueprint"][cortical_area]["postsynaptic_current_max"])
 
     # Append a Group ID so Memory clusters can be uniquely identified
     if uf.event_id:
@@ -404,12 +440,22 @@ def wire_neurons_together(cortical_area, src_neuron, dst_neuron):
     return
 
 
-def wire_neurons_together_ext(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron):
+def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
+                         dst_neuron_id, long_term_depression=False):
 
     genome = uf.genome
+    plasticity_constant = genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
-    synapse(src_cortical_area, src_neuron, dst_cortical_area, dst_neuron,
-            genome["blueprint"][src_cortical_area]["synaptic_strength_inc"])
+    if long_term_depression:
+        # When long term depression flag is set, there will be negative synaptic influence caused
+        plasticity_constant = plasticity_constant * (-1)
+
+    # Check if source and destination have an existing synapse if not create one here
+    if dst_neuron_id not in uf.brain[src_cortical_area][src_neuron_id]["neighbors"]:
+        synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
+
+    else:
+        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant)
 
     return
 

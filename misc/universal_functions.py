@@ -7,7 +7,7 @@ from genethesizer import genome_id_gen
 
 
 global parameters
-with open("parameters.json", "r") as data_file:
+with open("./configuration/parameters.json", "r") as data_file:
     parameters = json.load(data_file)
     # print(parameters)
 
@@ -47,8 +47,6 @@ def init_burst_visualization():
 def vis_init():
     from matplotlib.patches import FancyArrowPatch
     from mpl_toolkits.mplot3d import proj3d
-    from mpl_toolkits.mplot3d import axes3d
-    import matplotlib.patches as patches
 
     # plt.ion()
     print("Initializing plot...")

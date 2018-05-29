@@ -1,6 +1,4 @@
-
-import universal_functions
-
+from misc import universal_functions
 
 """
 Library of Output Proecssing Unit (OPU) functions responsible for translating neuronal activities into a read world 

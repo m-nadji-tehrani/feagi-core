@@ -1,6 +1,6 @@
 """ This module contains functions capable of modifying and shaping the Genome"""
 
-import universal_functions
+from misc import universal_functions
 import datetime
 import random
 import string
@@ -111,6 +111,10 @@ def calculate_fitness():
 
 
 def calculate_survival_prob():
+    return
+
+
+def compare_genomes():
     return
 
 

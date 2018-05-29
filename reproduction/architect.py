@@ -11,7 +11,7 @@ import datetime
 import string
 import random
 from math import sqrt, ceil, floor
-import universal_functions
+from misc import universal_functions
 
 
 def neuron_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -52,7 +52,7 @@ def neuro_genesis(cortical_area, loc_blk):
     universal_functions.brain[cortical_area][id] = {}
     universal_functions.brain[cortical_area][id]["neighbors"] = {}
     universal_functions.brain[cortical_area][id]["event_id"] = {}
-    universal_functions.brain[cortical_area][id]["cumulative_intake_sum_since_reset"] = 0
+    universal_functions.brain[cortical_area][id]["membrane_potential"] = 0
     universal_functions.brain[cortical_area][id]["cumulative_fire_count"] = 0
     universal_functions.brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
     universal_functions.brain[cortical_area][id]["cumulative_intake_total"] = 0
@@ -80,7 +80,7 @@ def neuro_genesis(cortical_area, loc_blk):
     return
 
 
-def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_potential):
+def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_current):
     """
     Function responsible for creating a synapse between a neuron and another one. In reality a single neuron can have
     many synapses with another individual neuron. Here we use synaptic strength to simulate the same
@@ -88,7 +88,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_p
     
     # Input: The id for source and destination Neuron plus the parameter defining connection strength
     # Source provides the Axon and connects to Destination Dendrite
-    # postsynaptic_potential is intended to provide the level of synaptic strength
+    # postsynaptic_current is intended to provide the level of synaptic strength
     """
 
     # Check to see if the source and destination ids are valid if not exit the function
@@ -97,7 +97,7 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_p
         return
 
     universal_functions.brain[src_cortical_area][src_id]["neighbors"][dst_id] = \
-        {"cortical_area": dst_cortical_area, "postsynaptic_potential": postsynaptic_potential}
+        {"cortical_area": dst_cortical_area, "postsynaptic_current": postsynaptic_current}
 
     return
 
@@ -239,7 +239,7 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     return neighbor_candidates
 
 
-def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, postsynaptic_potential):
+def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, postsynaptic_current):
     """
     Function responsible for crawling through Neurons and deciding where to build Synapses
     """
@@ -263,7 +263,7 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, posts
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder(cortical_area, src_id, rule_id, rule_param)
         for dst_id in neighbor_candidates:
-            synapse(cortical_area, src_id, cortical_area, dst_id, postsynaptic_potential)
+            synapse(cortical_area, src_id, cortical_area, dst_id, postsynaptic_current)
             synapse_count += 1
             # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
@@ -331,7 +331,7 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     return neighbor_candidates
 
 
-def neighbor_builder_ext(brain, brain_gen, cortical_area_src, cortical_area_dst, rule, rule_param, postsynaptic_potential=1):
+def neighbor_builder_ext(brain, brain_gen, cortical_area_src, cortical_area_dst, rule, rule_param, postsynaptic_current=1):
     """
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
     """
@@ -347,7 +347,7 @@ def neighbor_builder_ext(brain, brain_gen, cortical_area_src, cortical_area_dst,
             # Through a dice to decide for synapse creation. This is to limit the amount of synapses.
             if random.randrange(1, 100) < universal_functions.genome['blueprint'][cortical_area_dst]['synapse_attractivity']:
                 # Connect the source and destination neuron via creating a synapse
-                synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, postsynaptic_potential)
+                synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, postsynaptic_current)
                 synapse_count += 1
                 # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
@@ -437,8 +437,9 @@ def cortical_area_lengths(cortical_area):
     lenght = []
     coordinates = ['x', 'y', 'z']
     for _ in coordinates:
-        lenght.append(universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][1] -
-                      universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][0])
+        lenght.append(
+            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][1] -
+            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][0])
 
     return lenght
 

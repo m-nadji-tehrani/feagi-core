@@ -1,7 +1,6 @@
 # library to read a character from keyboard and have it converted to neuron firing
 
-from architect import neuron_finder
-import universal_functions
+from misc import universal_functions
 
 
 def convert_char_to_fire_list(char):

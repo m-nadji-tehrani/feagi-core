@@ -1,7 +1,7 @@
 
 
 import multiprocessing as mp
-import universal_functions
+from misc import universal_functions, stats, visualizer
 import sys
 from tty import setraw
 import termios
@@ -10,7 +10,6 @@ import termios
 class Brain:
     @staticmethod
     def print_basic_info():
-        import stats
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
         print("\rConnectome database =                  %s" %
@@ -23,7 +22,6 @@ class Brain:
 
     @staticmethod
     def show_cortical_areas():
-        import visualizer
         # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
         # visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
         # visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
@@ -44,9 +42,7 @@ class Brain:
     def read_from_mnist(mnist_img, event_queue):
         # print("Reading from MNIST")
         import architect
-        import IPU_vision
-        import universal_functions
-        import mnist
+        from PUs import IPU_vision
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         init_fire_list = []
 #        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ?????
@@ -95,7 +91,7 @@ class Brain:
 
     @staticmethod
     def read_char(char, fcl_queue):
-        import IPU_utf8
+        from PUs import IPU_utf8
         cp = mp.current_process()
         # print(' starting', cp.name, cp.pid)
         if char:

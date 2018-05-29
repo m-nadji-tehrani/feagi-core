@@ -8,7 +8,7 @@ Provides functions performing statistical analysis on the Connectome and Cortica
 # import matplotlib.pyplot as plt
 
 # plt.style.use('ggplot')
-import universal_functions
+from misc import universal_functions
 
 
 def cortical_area_neuron_count(cortical_area):

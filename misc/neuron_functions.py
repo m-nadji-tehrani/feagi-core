@@ -108,13 +108,15 @@ def burst(user_input, fire_list, brain_queue, event_queue):
 
         # ## The following section is related to neuro-plasticity ## #
 
+        print(len(previous_fcl), len(fire_candidate_list))
+
         # Plasticity between T1 and Vision memory
         # todo: generalize this function
         # Long Term Potentiation (LTP) between vision_IT and vision_memory
         for _ in previous_fcl:
             if _[0] == "vision_IT":
                 for neuron in fire_candidate_list:
-                    if neuron[0] == "vision_memory" and uf.brain["vision_IT"][_[1]]["neighbors"][neuron[1]]:
+                    if neuron[0] == "vision_memory" and neuron[1] in uf.brain["vision_IT"][_[1]]["neighbors"]:
                         apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=_[1],
                                              dst_cortical_area='vision_memory', dst_neuron_id=neuron[1])
 
@@ -126,7 +128,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         for _ in fire_candidate_list:
             if _[0] == "vision_IT":
                 for neuron in previous_fcl:
-                    if neuron[0] == "vision_memory" and uf.brain["vision_IT"][_[1]]["neighbors"][neuron[1]]:
+                    if neuron[0] == "vision_memory" and neuron[1] in uf.brain["vision_IT"][_[1]]["neighbors"]:
                         apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=_[1],
                                              dst_cortical_area='vision_memory', dst_neuron_id=neuron[1],
                                              long_term_depression=True)
@@ -331,7 +333,8 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
               + settings.Bcolors.ENDC)
 
     # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
-    # Check if timer is expired on the destination Neuron and if so reset the counter
+    # Check if timer is expired on the destination Neuron and if so reset the counter - Leaky behavior
+    # todo: Given time is quantized in this implementation, instead of absolute time need to consider using burst cnt.
     # todo: in rare cases the date conversion format is running into exception
     if (datetime.datetime.strptime(uf.brain[cortical_area]
                                            [dst_neuron_id]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f")

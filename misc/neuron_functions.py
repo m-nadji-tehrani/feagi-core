@@ -21,7 +21,7 @@ from misc import universal_functions as uf, stats, visualizer
 if uf.parameters["Switches"]["vis_show"]:
     pass
 
-
+global burst_count
 burst_count = 0
 
 
@@ -58,7 +58,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
 
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
-        previous_fcl = fire_candidate_list
+        previous_fcl = list(fire_candidate_list)
 
         # todo: preserve fcl-1 and use that for LTP/LTD between memory and vision_IT
 
@@ -73,7 +73,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                   % fire_candidate_list + settings.Bcolors.ENDC)
 
         burst_count += 1
-        # Figure what you were thiking on the following
+        # Figure what you were thinking on the following
         if burst_count % uf.genome['evolution_burst_count'] == 0:
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
@@ -96,6 +96,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         for x in list(fire_candidate_list):
             if verbose:
                 print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
+
             neuron_fire(x[0], x[1], verbose=verbose)
 
         # for cortical_area in set([i[0] for i in fire_candidate_list]):
@@ -253,7 +254,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
 
     # After neuron fires all cumulative counters on Source gets reset
     uf.brain[cortical_area][neuron_id]["membrane_potential"] = 0
-    uf.brain[cortical_area][neuron_id]["last_timer_reset_time"] = str(datetime.datetime.now())
+    uf.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
     uf.brain[cortical_area][neuron_id]["cumulative_fire_count"] += 1
     uf.brain[cortical_area][neuron_id]["cumulative_fire_count_inst"] += 1
 
@@ -306,7 +307,9 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
         #  to each other there is a bigger chance of this happening.
 
     global fire_candidate_list
+    # print("FCL before fire pop: ", len(fire_candidate_list))
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, neuron_id]))
+    # print("FCL after fire pop: ", len(fire_candidate_list))
     # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, neuron_id]))
     if verbose:
         print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
@@ -336,12 +339,19 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
     # Check if timer is expired on the destination Neuron and if so reset the counter - Leaky behavior
     # todo: Given time is quantized in this implementation, instead of absolute time need to consider using burst cnt.
     # todo: in rare cases the date conversion format is running into exception
-    if (datetime.datetime.strptime(uf.brain[cortical_area]
-                                           [dst_neuron_id]["last_timer_reset_time"], "%Y-%m-%d %H:%M:%S.%f")
-        + datetime.timedelta(0, dst_neuron_obj["depolarization_timer_threshold"])) < \
-            datetime.datetime.now():
-        dst_neuron_obj["last_timer_reset_time"] = str(datetime.datetime.now())
-        # Might be better to have a reset func.
+    # if (datetime.datetime.strptime(uf.brain[cortical_area]
+    #                                        [dst_neuron_id]["last_membrane_potential_reset_time"], "%Y-%m-%d %H:%M:%S.%f")
+    #     + datetime.timedelta(0, dst_neuron_obj["depolarization_timer_threshold"])) < \
+    #         datetime.datetime.now():
+
+    global burst_count
+
+    # To simulate a leaky neuron membrane, after x number of burst passing the membrane potential resets to zero
+    if burst_count - uf.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"] > \
+            uf.brain[cortical_area][dst_neuron_id]["depolarization_threshold"]:
+        dst_neuron_obj["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
+        dst_neuron_obj["last_membrane_potential_reset_burst"] = burst_count
+        # todo: Might be better to have a reset func.
         dst_neuron_obj["membrane_potential"] = 0
         if verbose:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + dst_neuron_id +
@@ -369,7 +379,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to
     # fire_candidate_list
     global fire_candidate_list
-    global burst_count
+
     if dst_neuron_obj["membrane_potential"] > \
             dst_neuron_obj["firing_threshold"]:
         if dst_neuron_obj["snooze_till_burst_num"] <= burst_count:
@@ -458,7 +468,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
 
     else:
-        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant)
+        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant, verbose=False)
 
     return
 

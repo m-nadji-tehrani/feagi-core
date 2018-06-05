@@ -51,7 +51,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         burst_start_time = datetime.datetime.now()
         global burst_count
 
-        print(datetime.datetime.now(), "Burst count = ", burst_count, file=open("./logs/burst.log", "a"))
+        # print(datetime.datetime.now(), "Burst count = ", burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         global fire_candidate_list
@@ -60,123 +60,115 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         fire_candidate_list = fire_list.get()
         previous_fcl = list(fire_candidate_list)
 
-        # todo: preserve fcl-1 and use that for LTP/LTD between memory and vision_IT
-
-        # Burst Visualization
-        if len(fire_candidate_list) > 0 and uf.parameters["Switches"]["vis_show"]:
-            visualizer.burst_visualizer(fire_candidate_list)
-
-        # genome = uf.genome
-
-        if verbose:
-            print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s'
-                  % fire_candidate_list + settings.Bcolors.ENDC)
-
         burst_count += 1
+
         # Figure what you were thinking on the following
         if burst_count % uf.genome['evolution_burst_count'] == 0:
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
 
-        # brain_neuron_count, brain_synapse_count = stats.brain_total_synapse_cnt(verbose=False)
-        # print(settings.Bcolors.BURST +
-        #       'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
-        #       % (burst_count, len(fire_candidate_list), brain_synapse_count) + settings.Bcolors.ENDC)
+        # Add a delay if fire_candidate_list is empty
+        if len(fire_candidate_list) < 1:
+            sleep(uf.parameters["Timers"]["idle_burst_timer"])
+            print("FLC is empty!")
+        else:
+            # Burst Visualization
+            if len(fire_candidate_list) > 0 and uf.parameters["Switches"]["vis_show"]:
+                visualizer.burst_visualizer(fire_candidate_list)
 
-        for cortical_area in set([i[0] for i in fire_candidate_list]):
-            print(settings.Bcolors.BURST + '    %s : %i  '
-                  % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
-                  + settings.Bcolors.ENDC)
-            if uf.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
-                    and len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
-                sleep(uf.parameters["Timers"]["idle_burst_timer"])
+            # genome = uf.genome
 
-        # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
-
-        for x in list(fire_candidate_list):
             if verbose:
-                print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
-            neuron_fire(x[0], x[1], verbose=verbose)
+                print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s'
+                      % fire_candidate_list + settings.Bcolors.ENDC)
 
-        # for cortical_area in set([i[0] for i in fire_candidate_list]):
-        #     for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-        #         for dst_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-        #             if src_neuron != dst_neuron:
-        #                 wire_neurons_together(cortical_area=cortical_area,
-        #                                       src_neuron=src_neuron, dst_neuron=dst_neuron)
-        #
+            # brain_neuron_count, brain_synapse_count = stats.brain_total_synapse_cnt(verbose=False)
+            # print(settings.Bcolors.BURST +
+            #       'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
+            #       % (burst_count, len(fire_candidate_list), brain_synapse_count) + settings.Bcolors.ENDC)
 
-        # ## The following section is related to neuro-plasticity ## #
+            for cortical_area in set([i[0] for i in fire_candidate_list]):
+                print(settings.Bcolors.BURST + '    %s : %i  '
+                      % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
+                      + settings.Bcolors.ENDC)
+                # if uf.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
+                #         and len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
+                #     sleep(uf.parameters["Timers"]["idle_burst_timer"])
 
-        print(len(previous_fcl), len(fire_candidate_list))
+            # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
 
-        # Plasticity between T1 and Vision memory
-        # todo: generalize this function
-        # Long Term Potentiation (LTP) between vision_IT and vision_memory
-        for src_neuron in previous_fcl:
-            if src_neuron[0] == "vision_IT":
-                for dst_neuron in fire_candidate_list:
-                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-                            in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
+            # Firing all neurons in the Fire Candidate List
+            for x in list(fire_candidate_list):
+                if verbose:
+                    print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
+                neuron_fire(x[0], x[1], verbose=verbose)
 
-                        print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
-                                                      "...........LTP between vision_IT and vision_memory occurred "
-                              + settings.Bcolors.ENDC)
+            # ## The following section is related to neuro-plasticity ## #
+            plasticity = True
+            if plasticity:
+                # Plasticity between T1 and Vision memory
+                # todo: generalize this function
+                # Long Term Potentiation (LTP) between vision_IT and vision_memory
+                for src_neuron in previous_fcl:
+                    if src_neuron[0] == "vision_IT":
+                        for dst_neuron in fire_candidate_list:
+                            if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+                                    in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+                                apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+                                                     dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
 
-        # Long Term Depression (LTD) between vision_IT and vision_memory
-        for src_neuron in fire_candidate_list:
-            if src_neuron[0] == "vision_IT":
-                for dst_neuron in previous_fcl:
-                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-                            in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
-                                             long_term_depression=True)
+                                print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                                              "...........LTP between vision_IT and vision_memory occurred "
+                                      + settings.Bcolors.ENDC)
 
-                        print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
-                                                      "...........LTD between vision_IT and vision_memory occurred "
-                              + settings.Bcolors.ENDC)
-
-        # Building a bidirectional synapse between memory neurons who fire together within a cortical area
-        # todo: The following loop is very inefficient___ fix it!!
-        # todo: Read the following memory list from Genome
-        memory_list = ['utf8_memory', 'vision_memory']
-        for cortical_area in memory_list:
-            if uf.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
-                for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-                    for dst_neuron in set([j[1] for j in fire_candidate_list if j[0] == cortical_area]):
-                        if src_neuron != dst_neuron:
-                            apply_plasticity(cortical_area=cortical_area,
-                                             src_neuron=src_neuron, dst_neuron=dst_neuron)
-
-        # Wiring Vision memory to UIF-8 memory
-        for dst_neuron in fire_candidate_list:
-            if dst_neuron[0] == "utf8_memory":
+                # Long Term Depression (LTD) between vision_IT and vision_memory
                 for src_neuron in fire_candidate_list:
-                    if src_neuron[0] == "vision_memory":
-                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+                    if src_neuron[0] == "vision_IT":
+                        for dst_neuron in previous_fcl:
+                            if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+                                    in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+                                apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+                                                     dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
+                                                     long_term_depression=True)
 
-                        print(settings.Bcolors.FIRE + "..............................................................."
-                                                      "...........A new memory was formed against utf8_memory location "
-                              + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
-                                                                              dst_neuron[1]) + settings.Bcolors.ENDC)
-                        # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
-                        # for dst_neuron_id in dst_neuron_id_list:
-                        #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                        #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+                                print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                                              "...........LTD between vision_IT and vision_memory occurred "
+                                      + settings.Bcolors.ENDC)
+
+                # Building a bidirectional synapse between memory neurons who fire together within a cortical area
+                # todo: The following loop is very inefficient___ fix it!!
+                # todo: Read the following memory list from Genome
+                memory_list = ['utf8_memory', 'vision_memory']
+                for cortical_area in memory_list:
+                    if uf.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
+                        for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                            for dst_neuron in set([j[1] for j in fire_candidate_list if j[0] == cortical_area]):
+                                if src_neuron != dst_neuron:
+                                    apply_plasticity(cortical_area=cortical_area,
+                                                     src_neuron=src_neuron, dst_neuron=dst_neuron)
+
+                # Wiring Vision memory to UIF-8 memory
+                for dst_neuron in fire_candidate_list:
+                    if dst_neuron[0] == "utf8_memory":
+                        for src_neuron in fire_candidate_list:
+                            if src_neuron[0] == "vision_memory":
+                                apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
+                                                     dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+
+                                print(settings.Bcolors.FIRE + "..............................................................."
+                                                              "...........A new memory was formed against utf8_memory location "
+                                      + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
+                                                                                      dst_neuron[1]) + settings.Bcolors.ENDC)
+                                # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
+                                # for dst_neuron_id in dst_neuron_id_list:
+                                #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                                #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
         burst_duration = datetime.datetime.now() - burst_start_time
         print(">>> Burst duration: %s" % burst_duration)
 
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(fire_candidate_list)
-
-        # Add a delay if fire_candidate_list is empty
-        if len(fire_candidate_list) < 1:
-            sleep(uf.parameters["Timers"]["idle_burst_timer"])
 
         while not user_input.empty():
             try:

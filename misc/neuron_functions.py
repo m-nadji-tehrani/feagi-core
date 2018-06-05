@@ -96,7 +96,6 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         for x in list(fire_candidate_list):
             if verbose:
                 print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
-
             neuron_fire(x[0], x[1], verbose=verbose)
 
         # for cortical_area in set([i[0] for i in fire_candidate_list]):
@@ -114,24 +113,26 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         # Plasticity between T1 and Vision memory
         # todo: generalize this function
         # Long Term Potentiation (LTP) between vision_IT and vision_memory
-        for _ in previous_fcl:
-            if _[0] == "vision_IT":
-                for neuron in fire_candidate_list:
-                    if neuron[0] == "vision_memory" and neuron[1] in uf.brain["vision_IT"][_[1]]["neighbors"]:
-                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=_[1],
-                                             dst_cortical_area='vision_memory', dst_neuron_id=neuron[1])
+        for src_neuron in previous_fcl:
+            if src_neuron[0] == "vision_IT":
+                for dst_neuron in fire_candidate_list:
+                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+                            in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
 
                         print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
                                                       "...........LTP between vision_IT and vision_memory occurred "
                               + settings.Bcolors.ENDC)
 
         # Long Term Depression (LTD) between vision_IT and vision_memory
-        for _ in fire_candidate_list:
-            if _[0] == "vision_IT":
-                for neuron in previous_fcl:
-                    if neuron[0] == "vision_memory" and neuron[1] in uf.brain["vision_IT"][_[1]]["neighbors"]:
-                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=_[1],
-                                             dst_cortical_area='vision_memory', dst_neuron_id=neuron[1],
+        for src_neuron in fire_candidate_list:
+            if src_neuron[0] == "vision_IT":
+                for dst_neuron in previous_fcl:
+                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+                            in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
                                              long_term_depression=True)
 
                         print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
@@ -151,17 +152,17 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                                              src_neuron=src_neuron, dst_neuron=dst_neuron)
 
         # Wiring Vision memory to UIF-8 memory
-        for _ in fire_candidate_list:
-            if _[0] == "utf8_memory":
-                for neuron in fire_candidate_list:
-                    if neuron[0] == "vision_memory":
-                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=neuron[1],
-                                             dst_cortical_area='utf8_memory', dst_neuron_id=_[1])
+        for dst_neuron in fire_candidate_list:
+            if dst_neuron[0] == "utf8_memory":
+                for src_neuron in fire_candidate_list:
+                    if src_neuron[0] == "vision_memory":
+                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
+                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
 
                         print(settings.Bcolors.FIRE + "..............................................................."
                                                       "...........A new memory was formed against utf8_memory location "
                               + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
-                                                                              _[1]) + settings.Bcolors.ENDC)
+                                                                              dst_neuron[1]) + settings.Bcolors.ENDC)
                         # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
                         # for dst_neuron_id in dst_neuron_id_list:
                         #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],

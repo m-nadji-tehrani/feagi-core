@@ -20,7 +20,6 @@ if __name__ == '__main__':
     text = "Comprehended Character is: " + universal_functions.parameters["Input"]["opu_char"]
     tkinter.Label(master, text=text, font=("Helvetica", 24)).grid(row=0)
 
-
     # master.update_idletasks()
     # master.update()
 

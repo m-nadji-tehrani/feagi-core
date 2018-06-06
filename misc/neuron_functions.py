@@ -73,7 +73,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             print("FLC is empty!")
         else:
             # Burst Visualization
-            if len(fire_candidate_list) > 0 and uf.parameters["Switches"]["vis_show"]:
+            if uf.parameters["Switches"]["vis_show"]:
                 visualizer.burst_visualizer(fire_candidate_list)
 
             # genome = uf.genome

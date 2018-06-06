@@ -23,7 +23,7 @@ import random
 # import multiprocessing as mp
 
 
-def read(dataset = "training", path = "../MNIST/"):
+def read(dataset="training", path="../MNIST/"):
     """
     Python function for importing the MNIST data set.  It returns an iterator
     of 2-tuples with the first element being the label and the second element
@@ -36,7 +36,7 @@ def read(dataset = "training", path = "../MNIST/"):
         fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
         fname_lbl = os.path.join(path, 't10k-labels.idx1-ubyte')
     else:
-        raise Exception(ValueError, "dataset must be 'testing' or 'training'")
+        raise Exception(ValueError, "data set must be 'testing' or 'training'")
 
     # Load everything in some numpy arrays
     with open(fname_lbl, 'rb') as flbl:
@@ -60,6 +60,57 @@ def read_training_img_from_mnist():
     return training_image
 
 
+def read_image(index):
+    tmp = 1
+    image_db = read()
+    for labeledImage in image_db:
+        tmp += 1
+        if tmp == index:
+            # print(i[1])
+            img = labeledImage[1]
+            label = labeledImage[0]
+
+    return img, label
+
+
+# def cv_code(img):
+#     laplacian = cv2.Laplacian(img, cv2.CV_64F)
+#
+#     sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+#     sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+#
+#     edges = cv2.Canny(img, 1, 1)
+#
+#     rows, cols = img.shape
+#     r45 = cv2.getRotationMatrix2D((cols/2, rows/2), 45, 1)
+#     rotate45 = cv2.warpAffine(img, r45, (cols, rows))
+#
+#     rows, cols = img.shape
+#     r90 = cv2.getRotationMatrix2D((cols/2, rows/2), 90, 1)
+#     rotate90 = cv2.warpAffine(img, r90, (cols, rows))
+#     return laplacian, sobelx, sobely, edges, rows, r45, rotate45, rotate90
+#
+# cv_process = mp.Process(name='CV Process', target=cv_code, args=(img,))
+# cv_process.start()
+# cv_process.join()
+#
+# if universal_functions.parameters["Switches"]["vis_show"]:
+#     plt.subplot(3, 3, 1), plt.imshow(img, cmap='gray')
+#     plt.title('Original'), plt.xticks([]), plt.yticks([])
+#     plt.subplot(3, 3, 2), plt.imshow(laplacian, cmap='gray')
+#     plt.title('Laplacian'), plt.xticks([]), plt.yticks([])
+#     plt.subplot(3, 3, 3), plt.imshow(sobelx, cmap='gray')
+#     plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
+#     plt.subplot(3, 3, 4), plt.imshow(sobely, cmap='gray')
+#     plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
+#     plt.subplot(3, 3, 5), plt.imshow(edges, cmap='gray')
+#     plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
+#     plt.subplot(3, 3, 6), plt.imshow(rotate45, cmap='gray')
+#     plt.title('Rotate 45'), plt.xticks([]), plt.yticks([])
+#     plt.subplot(3, 3, 7), plt.imshow(rotate90, cmap='gray')
+#     plt.title('Rotate 90'), plt.xticks([]), plt.yticks([])
+
+
 # def show(image):
 #     """
 #     Render a given numpy.uint8 2D array of pixel data.
@@ -71,57 +122,3 @@ def read_training_img_from_mnist():
 #     ax.xaxis.set_ticks_position('top')
 #     ax.yaxis.set_ticks_position('left')
 #     pyplot.show()
-
-def read_image(index):
-    tmp = 1
-    for i in read():
-        tmp += 1
-        if tmp == index:
-            # print(i[1])
-            img = i[1]
-            label = i[0]
-
-            # def cv_code(img):
-            #     laplacian = cv2.Laplacian(img, cv2.CV_64F)
-            #
-            #     sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
-            #     sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
-            #
-            #     edges = cv2.Canny(img, 1, 1)
-            #
-            #     rows, cols = img.shape
-            #     r45 = cv2.getRotationMatrix2D((cols/2, rows/2), 45, 1)
-            #     rotate45 = cv2.warpAffine(img, r45, (cols, rows))
-            #
-            #     rows, cols = img.shape
-            #     r90 = cv2.getRotationMatrix2D((cols/2, rows/2), 90, 1)
-            #     rotate90 = cv2.warpAffine(img, r90, (cols, rows))
-            #     return laplacian, sobelx, sobely, edges, rows, r45, rotate45, rotate90
-            #
-            # cv_process = mp.Process(name='CV Process', target=cv_code, args=(img,))
-            # cv_process.start()
-            # cv_process.join()
-            #
-            # if universal_functions.parameters["Switches"]["vis_show"]:
-            #     plt.subplot(3, 3, 1), plt.imshow(img, cmap='gray')
-            #     plt.title('Original'), plt.xticks([]), plt.yticks([])
-            #     plt.subplot(3, 3, 2), plt.imshow(laplacian, cmap='gray')
-            #     plt.title('Laplacian'), plt.xticks([]), plt.yticks([])
-            #     plt.subplot(3, 3, 3), plt.imshow(sobelx, cmap='gray')
-            #     plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
-            #     plt.subplot(3, 3, 4), plt.imshow(sobely, cmap='gray')
-            #     plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
-            #     plt.subplot(3, 3, 5), plt.imshow(edges, cmap='gray')
-            #     plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
-            #     plt.subplot(3, 3, 6), plt.imshow(rotate45, cmap='gray')
-            #     plt.title('Rotate 45'), plt.xticks([]), plt.yticks([])
-            #     plt.subplot(3, 3, 7), plt.imshow(rotate90, cmap='gray')
-            #     plt.title('Rotate 90'), plt.xticks([]), plt.yticks([])
-
-    return img, label
-
-
-
-
-
-

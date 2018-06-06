@@ -46,7 +46,7 @@ def auto_train(fcl_queue, event_queue):
         fcl = fcl_queue.get()
         fcl_length = len(fcl)
         fcl_queue.put(fcl)
-        while fcl_length > 0:
+        while fcl_length > 10:
             sleep(5)
             fcl = fcl_queue.get()
             fcl_length = len(fcl)

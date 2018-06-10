@@ -11,7 +11,7 @@ import os
 import struct
 import numpy as np
 import random
-
+from universal_functions import mnist_data as mnist_data
 
 # import sys
 # sys.path.append('/usr/local/opt/opencv3/lib/python3.6/site-packages/')
@@ -23,7 +23,7 @@ import random
 # import multiprocessing as mp
 
 
-def read(dataset="training", path="../MNIST/"):
+def read_mnist_raw(dataset="training", path="../MNIST/"):
     """
     Python function for importing the MNIST data set.  It returns an iterator
     of 2-tuples with the first element being the label and the second element
@@ -54,23 +54,9 @@ def read(dataset="training", path="../MNIST/"):
         yield get_img(i)
 
 
-def read_training_img_from_mnist():
-    image_num = random.randrange(10, 500, 1)
-    training_image = read_image(image_num)
-    return training_image
 
 
-def read_image(index):
-    tmp = 1
-    image_db = read()
-    for labeledImage in image_db:
-        tmp += 1
-        if tmp == index:
-            # print(i[1])
-            img = labeledImage[1]
-            label = labeledImage[0]
 
-    return img, label
 
 
 # def cv_code(img):

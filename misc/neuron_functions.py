@@ -19,7 +19,7 @@ from PUs import IPU_utf8
 import brain_functions
 from configuration import settings
 from misc import universal_functions as uf, stats, visualizer
-from auto_pilot import training_num_gen
+from IPU_vision import mnist_img_fetcher
 
 if uf.parameters["Switches"]["vis_show"]:
     pass
@@ -68,30 +68,40 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         # Auto training controls
         if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
             # 1. Logging
-            print("Training in progress...##^^^###...")
+            if uf.training_has_begun:
+                print("----------------------------------------Training  has begun------------------------------------")
+                uf.training_has_begun = False
+                uf.training_start_time = datetime.datetime.now()
+                labeled_image = mnist_img_fetcher(uf.number_to_train)
+
             # 2. Keep track of how many times the number needs to be trained etc.
             uf.training_counter -= 1
             print("training counter is: ", uf.training_counter)
             # 3. Read image and the label from MNIST
             print("Number to train is: ", uf.number_to_train)
-            image_index, labeled_image = training_num_gen(uf.number_to_train)
+
             print("Labeled image has been loaded")
-            uf.number_to_train += 1
+            if uf.training_counter == 0:
+                uf.number_to_train += 1
+                uf.training_counter = uf.training_counter_default
+                uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
             # 4. Convert image to neuron activity
-            neuron_list = brain_functions.Brain.retina(labeled_image, event_queue)
+            neuron_list = brain_functions.Brain.retina(uf.labeled_image, event_queue)
             print("image has been converted to neuronal activities...")
             # 5. inject neuron activity to FCL
             fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
             print("Activities caused by image are now part of the FCL")
             # 6. inject label to FCL
-            print("the image label and its type are: ", labeled_image[1], type(str(labeled_image[1])))
-            neuron_list = IPU_utf8.convert_char_to_fire_list(str(labeled_image[1]))
+            neuron_list = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
             fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
             print("Activities caused by image label are now part of the FCL")
             # Exit condition
             if uf.number_to_train > 9:
                 uf.parameters["Switches"]["auto_train"] = False
-                uf.training_counter = uf.training_counter_default
+                training_duration = datetime.datetime.now() - uf.training_start_time
+                print("----------------------------All training rounds has been completed-----------------------------")
+                print("Total training duration was: ", training_duration)
+                print("-----------------------------------------------------------------------------------------------")
 
         # Figure what you were thinking on the following
         if burst_count % uf.genome['evolution_burst_count'] == 0:
@@ -232,8 +242,10 @@ def burst(user_input, fire_list, brain_queue, event_queue):
 
                 elif user_input_value == 'a':
                         uf.parameters["Switches"]["auto_train"] = True
+                        uf.training_has_begon = True
                         print("Automatic training has been turned ON!")
                         uf.parameters["Input"]["user_input"] = ''
+                        uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
 
                 elif user_input_value == 'z':
                     uf.parameters["Switches"]["auto_train"] = True
@@ -520,11 +532,10 @@ def snooze_till(cortical_area, neuron_id, burst_id):
 
 
 def inject_to_fcl(neuron_list, flc):
-    print("Injecting to FCL.../\/\/\/")
-    print("Neuron list is: ", neuron_list)
+    # print("Injecting to FCL.../\/\/\/")
+    # print("Neuron list is: ", neuron_list)
     # Update FCL with new input data. FCL is read from the Queue and updated
     for item in neuron_list:
-        print("Ey vay!")
         flc.append(item)
-    print("Injected to FCL.../\/\/\/")
+    # print("Injected to FCL.../\/\/\/")
     return flc

@@ -13,7 +13,7 @@ if __name__ == '__main__':
     import tkinter
     from time import sleep
     import multiprocessing as mp
-    from PUs import mnist
+    from PUs import IPU_vision
     from misc import brain_functions, auto_pilot, neuron_functions, universal_functions, visualizer
 
     if universal_functions.parameters["Switches"]["vis_show"]:
@@ -120,9 +120,9 @@ if __name__ == '__main__':
     def process_see_from_mnist():
         if universal_functions.parameters["Switches"]["vis_show"]:
             print(universal_functions.parameters["Switches"]["vis_show"])
-            visualizer.cortical_heatmap(mnist.read_image(int(universal_functions.parameters["Input"]
+            visualizer.cortical_heatmap(IPU_vision.read_image(int(universal_functions.parameters["Input"]
                                                              ["user_input_param"]))[0], [])
-        mnist_img = mnist.read_image(int(universal_functions.parameters["Input"]["user_input_param"]))
+        mnist_img = IPU_vision.mnist_img_fetcher(int(universal_functions.parameters["Input"]["user_input_param"]))
         process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
                                args=(mnist_img, FCL_queue, event_queue))
         process_3.start()
@@ -281,3 +281,6 @@ if __name__ == '__main__':
 
 # Speech
 # todo: Make it learn to Speak!
+
+# Auto training
+# todo: Compare results if you randomly show different variation of the same number vs one at a time

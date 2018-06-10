@@ -2,8 +2,9 @@
 import json
 import datetime
 import os.path
-
+from datetime import datetime
 from genethesizer import genome_id_gen
+import IPU_vision
 
 
 global parameters
@@ -15,7 +16,16 @@ with open("./configuration/parameters.json", "r") as data_file:
 number_to_train = 0
 training_counter_default = 10
 training_counter = training_counter_default
+training_start_time = datetime.now()
+training_has_begun = False
+labeled_image = []
 
+# Load a copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
+mnist_iterator = IPU_vision.read_mnist_raw()
+mnist_array = []
+for _ in mnist_iterator:
+    mnist_array.append(_)
+print(len(mnist_array))
 
 if parameters["Switches"]["vis_show"]:
     import matplotlib as mpl
@@ -169,7 +179,7 @@ def save_genome_to_disk():
         new_genome_id = genome_id_gen()
 
         genome_db[new_genome_id] = {}
-        genome_db[new_genome_id]["generation_date"] = str(datetime.datetime.now())
+        genome_db[new_genome_id]["generation_date"] = str(datetime.now())
         genome_db[new_genome_id]["properties"] = genome
         genome_db[new_genome_id]["stats"] = genome_stats
         genome_db["genome_metadata"]["most_recent_genome_id"] = new_genome_id

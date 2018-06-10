@@ -11,6 +11,12 @@ with open("./configuration/parameters.json", "r") as data_file:
     parameters = json.load(data_file)
     # print(parameters)
 
+
+number_to_train = 0
+training_counter_default = 10
+training_counter = training_counter_default
+
+
 if parameters["Switches"]["vis_show"]:
     import matplotlib as mpl
     mpl.use('TkAgg')

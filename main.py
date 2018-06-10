@@ -34,6 +34,14 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = e1.get()
         universal_functions.parameters["Input"]["user_input_param"] = e2.get()
         user_input_queue.put(universal_functions.parameters["Input"]["user_input"])
+        # print("Current value for user_input field under parameters is : ",
+        #       universal_functions.parameters["Input"]["user_input"])
+        # print("Previous value for user_input field under parameters was : ",
+        #       universal_functions.parameters["Input"]["previous_user_input"])
+        # print("Current value for user_input_param field under parameters is : ",
+        #       universal_functions.parameters["Input"]["user_input_param"])
+        # print("Previous value for user_input field under parameters was : ",
+        #       universal_functions.parameters["Input"]["previous_user_input_param"])
 
     master = tkinter.Tk()
 
@@ -167,9 +175,10 @@ if __name__ == '__main__':
                     process_read_char()
                     universal_functions.parameters["Input"]["user_input"] = ''
 
-                elif universal_functions.parameters["Input"]["user_input"] == 'a':
-                    auto_pilot.auto_train(FCL_queue, event_queue)
-                    universal_functions.parameters["Input"]["user_input"] = ''
+                # elif universal_functions.parameters["Input"]["user_input"] == 'a':
+                #     # auto_pilot.auto_train(FCL_queue, event_queue)
+                #     universal_functions.parameters["Switches"]["auto_train"] = True
+                #     universal_functions.parameters["Input"]["user_input"] = ''
 
                 elif universal_functions.parameters["Input"]["user_input"] == 't':
                     auto_pilot.auto_test(FCL_queue, event_queue)

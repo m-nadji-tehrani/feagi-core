@@ -205,6 +205,7 @@ if __name__ == '__main__':
 #
 
 # Key problem on hand
+# todo: Neuron finder is too inefficient
 # todo: The value from comprehended char from settings is keep reseting hence the correct value not being passed on
 # todo: Need a self tuning mechanism
 

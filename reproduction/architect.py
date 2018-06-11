@@ -46,7 +46,6 @@ def neuro_genesis(cortical_area, loc_blk):
 
     genome = universal_functions.genome
 
-
     id = neuron_id_gen()
 
     universal_functions.brain[cortical_area][id] = {}
@@ -201,14 +200,21 @@ def three_dim_growth(cortical_area):
     # This code segment creates a new Neuron per every location in neuron_loc_list
     neuron_loc_list = location_collector(cortical_area)
     neuron_blk_list = []
+    cortical_area_dim = []
+    geometric_boundaries = universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
+    for coordinate in geometric_boundaries:
+        cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
 
     for _ in neuron_loc_list:
-        neuron_blk_list.append(block_id_gen(_[0], _[1], _[2]))
+        # neuron_blk_list.append(block_id_gen(_[0], _[1], _[2]))
+        neuron_blk_list.append(block_id_gen2(_, space_dimensions=cortical_area_dim))
 
     neuron_loc_blk = zip(neuron_loc_list, neuron_blk_list)
 
     neuron_count = 0
     for __ in neuron_loc_blk:
+        if cortical_area == 'vision_v1-7':
+            print(">><<>><<", __)
         neuro_genesis(cortical_area, __)        # Create a new Neuron in target destination
         neuron_count += 1
 
@@ -371,7 +377,6 @@ def field_set(cortical_area, field_name, field_value):
     #     universal_functions.brain[cortical_area][key][field_name] = field_value
     #
 
-
     return
 
 
@@ -402,6 +407,16 @@ def neuron_finder(cortical_area, location, radius):
         if sqrt((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
             if neuron_list.count(key) == 0:
                 neuron_list.append(key)
+
+    return neuron_list
+
+
+def neuron_finder2(cortical_area, location, radius):
+
+    cortical_area_dims = cortical_area_lengths(cortical_area)
+    block_id = block_id_gen2(location, cortical_area_dims)
+
+    neuron_list = neurons_in_the_block(cortical_area, block_id)
 
     return neuron_list
 
@@ -528,7 +543,7 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
     return is_candidate
 
 
-def block_id_gen(x, y, z, block_size=10):
+def block_id_gen(x, y, z, block_size=28):
     """
     Generating a block id so it can be used for faster neighbor detection
     """
@@ -538,13 +553,26 @@ def block_id_gen(x, y, z, block_size=10):
     return [bx, by, bz]
 
 
+def block_id_gen2(coordinate, space_dimensions, block_size=28):
+    """
+    Generating a block id so it can be used for faster neighbor detection
+    """
+    block_id = []
+    index = 0
+    for location in coordinate:
+        block_id.append(ceil(location / ceil(space_dimensions[index] / block_size)))
+        index += 1
+    return block_id
+
+
 def neurons_in_same_block(cortical_area, neuron_id):
     """
     Generates a list of Neurons in the same block as the given one
     """
     neuron_list = []
     for _ in universal_functions.brain[cortical_area]:
-        if universal_functions.brain[cortical_area][_]['block'] == universal_functions.brain[cortical_area][neuron_id]['block']:
+        if universal_functions.brain[cortical_area][_]['block'] == \
+                universal_functions.brain[cortical_area][neuron_id]['block']:
             if _ != neuron_id:
                 neuron_list.append(_)
     return neuron_list
@@ -578,9 +606,9 @@ def neighboring_blocks(block_id, kernel_size):
             for iii in range(0, kernel_size):
                 neighbor_block_id = [seed_id[0] + i, seed_id[1] + ii, seed_id[2] + iii]
                 if neighbor_block_id != block_id and \
-                                neighbor_block_id[0] > 0 and \
-                                neighbor_block_id[1] > 0 and \
-                                neighbor_block_id[2] > 0:
+                        neighbor_block_id[0] > 0 and \
+                        neighbor_block_id[1] > 0 and \
+                        neighbor_block_id[2] > 0:
                     block_list.append(neighbor_block_id)
 
     return block_list
@@ -598,6 +626,7 @@ def neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3):
         for __ in neurons_in_block:
             neuron_list.append(__)
     return neuron_list
+
 
 def neurons_in_block_neighborhood_2(cortical_area, block_id, kernel_size=3):
     """

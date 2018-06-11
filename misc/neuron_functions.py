@@ -80,23 +80,23 @@ def burst(user_input, fire_list, brain_queue, event_queue):
             # 3. Read image and the label from MNIST
             print("Number to train is: ", uf.number_to_train)
 
-            print("Labeled image has been loaded")
+            # print("Labeled image has been loaded")
             if uf.training_counter == 0:
                 uf.number_to_train += 1
                 uf.training_counter = uf.training_counter_default
                 uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
             # 4. Convert image to neuron activity
             neuron_list = brain_functions.Brain.retina(uf.labeled_image, event_queue)
-            print("image has been converted to neuronal activities...")
+            # print("image has been converted to neuronal activities...")
             # 5. inject neuron activity to FCL
             fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
-            print("Activities caused by image are now part of the FCL")
+            # print("Activities caused by image are now part of the FCL")
             # 6. inject label to FCL
             neuron_list = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
             fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
-            print("Activities caused by image label are now part of the FCL")
+            # print("Activities caused by image label are now part of the FCL")
             # Exit condition
-            if uf.number_to_train > 9:
+            if uf.number_to_train == 9 and uf.training_counter == 1:
                 uf.parameters["Switches"]["auto_train"] = False
                 training_duration = datetime.datetime.now() - uf.training_start_time
                 print("----------------------------All training rounds has been completed-----------------------------")

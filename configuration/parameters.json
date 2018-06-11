@@ -27,7 +27,7 @@
   },
   "InitData": {
     "read_data_from_memory": true,
-    "regenerate_brain": true,
+    "regenerate_brain": false,
     "connectome_path": "./connectome/",
     "rules_path": "./reproduction/rules.json",
     "genome_file": "./reproduction/genome.json"

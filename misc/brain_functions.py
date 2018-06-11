@@ -82,7 +82,7 @@ class Brain:
     def retina(mnist_labled_image, event_queue):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         from datetime import datetime
-        retina_start_time = datetime.now()
+
 
         from architect import event_id_gen
         from PUs import IPU_vision
@@ -112,19 +112,24 @@ class Brain:
 
             cortical_direction_sensitivity = universal_functions.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
-            kernel_size = 7
+            kernel_size = 3
+
+
+
+            retina_start_time = datetime.now()
             polarized_image = IPU_vision.create_direction_matrix(filtered_image, kernel_size,
                                                                  cortical_direction_sensitivity)
+
+            print("Conversion of image locations to neuron id: ", datetime.now() - retina_start_time, cortical_area)
+
+
+
             # print("Polarized image for :", cortical_area)
             # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
 
             ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
 
-
-
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
-
-
 
             for item in neuron_id_list:
                 init_fire_list.append([cortical_area, item])

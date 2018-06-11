@@ -141,8 +141,6 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
     :param image_locations:
     :return:
     """
-    # retina_start_time = datetime.now()
-
     genome = universal_functions.genome
 
     neuron_id_list = []
@@ -153,7 +151,6 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
                 if (item is not None) and (neuron_id_list.count(item) == 0):
                     neuron_id_list.append(item)
 
-    # print("Conversion of image locations to neuron id: ", datetime.now() - retina_start_time, cortical_area)
     return neuron_id_list
 
 

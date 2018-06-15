@@ -63811,7 +63811,7 @@
                "kernel_size": 3,
                "cortical_neuron_count": 500,
                "location_generation_type": "random",
-               "synapse_attractivity": 50,
+               "synapse_attractivity": 100,
                "init_synapse_needed": true,
                "postsynaptic_current": 1,
                "plasticity_constant": 1,

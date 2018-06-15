@@ -112,7 +112,7 @@ class Brain:
 
             cortical_direction_sensitivity = universal_functions.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
-            kernel_size = 3
+            kernel_size = 5
 
 
 

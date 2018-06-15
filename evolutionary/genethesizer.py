@@ -94,8 +94,20 @@ def genome_selector():
     return genome_id
 
 
-def mutate():
-    return
+def mutate(genome):
+    factor_1 = random(1,50,1)
+    factor_2 = random(1,50,1)
+    factor_3 = random(1,50,1)
+    factor_4 = random(1,50,1)
+    factor_5 = random(1,50,1)
+
+    for cortical_area in universal_functions.cortical_list():
+        GeneModifier.change_consecutive_fire_cnt_max(cortical_area, factor_1)
+        GeneModifier.change_cortical_neuron_count(cortical_area, factor_2)
+        GeneModifier.change_depolarization_timer_threshold(cortical_area, factor_3)
+        GeneModifier.change_firing_threshold(cortical_area, factor_4)
+        GeneModifier.change_snooze_length(cortical_area, factor_5)
+    return genome
 
 
 def crossover():

@@ -20,6 +20,7 @@ training_start_time = datetime.now()
 training_has_begun = False
 labeled_image = []
 
+
 # Load a copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
 mnist_iterator = IPU_vision.read_mnist_raw()
 mnist_array = []

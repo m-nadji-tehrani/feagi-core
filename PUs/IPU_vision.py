@@ -15,6 +15,7 @@ import random
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 # import cv2
 
+
 from misc import universal_functions
 import architect
 
@@ -222,6 +223,7 @@ def apply_direction_filter(kernel_values, kernel_size, direction_key):
     # end_result[direction_key] = result
 
     return result
+
 
 
 def create_direction_matrix(image, kernel_size, direction_sensitivity=''):

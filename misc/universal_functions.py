@@ -28,6 +28,7 @@ for _ in mnist_iterator:
     mnist_array.append(_)
 print(len(mnist_array))
 
+
 if parameters["Switches"]["vis_show"]:
     import matplotlib as mpl
     mpl.use('TkAgg')
@@ -101,6 +102,14 @@ def cortical_list():
     for key in blueprint:
         cortical_list.append(key)
     return cortical_list
+
+
+def cortical_group_members(group):
+    members = []
+    for item in cortical_list():
+        if genome['blueprint'][item]['sub_group_id'] == group:
+            members.append(item)
+    return members
 
 
 def load_genome_metadata_in_memory():

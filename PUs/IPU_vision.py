@@ -61,8 +61,7 @@ def mnist_img_fetcher(num):
     # Returns a random image from MNIST matching the requested number
     img_lbl = ''
     print("An image is being fetched from MNIST")
-    while img_lbl != num:
-        # print(">>>", img_lbl, num)
+    while img_lbl != int(num):
         img_index = random.randrange(10, len(universal_functions.mnist_array), 1)
         img_lbl, img_data = universal_functions.mnist_array[img_index]
     print("The image for number %s has been fetched." %str(num))
@@ -223,7 +222,6 @@ def apply_direction_filter(kernel_values, kernel_size, direction_key):
     # end_result[direction_key] = result
 
     return result
-
 
 
 def create_direction_matrix(image, kernel_size, direction_sensitivity=''):

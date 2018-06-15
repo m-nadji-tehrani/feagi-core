@@ -15,6 +15,7 @@ if __name__ == '__main__':
     import multiprocessing as mp
     from PUs import IPU_vision
     from misc import brain_functions, auto_pilot, neuron_functions, universal_functions, visualizer
+    from architect import event_id_gen
 
     if universal_functions.parameters["Switches"]["vis_show"]:
         pass
@@ -34,6 +35,8 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = e1.get()
         universal_functions.parameters["Input"]["user_input_param"] = e2.get()
         user_input_queue.put(universal_functions.parameters["Input"]["user_input"])
+        user_input_param_queue.put(universal_functions.parameters["Input"]["user_input_param"])
+
         # print("Current value for user_input field under parameters is : ",
         #       universal_functions.parameters["Input"]["user_input"])
         # print("Previous value for user_input field under parameters was : ",
@@ -79,7 +82,7 @@ if __name__ == '__main__':
 
     # Initializing queues
     user_input_queue = mp.Queue()
-
+    user_input_param_queue = mp.Queue()
     FCL_queue = mp.Queue()
     brain_queue = mp.Queue()
     event_queue = mp.Queue()
@@ -142,7 +145,13 @@ if __name__ == '__main__':
     # Starting the burst machine
     # pool = mp.Pool(max(1, mp.cpu_count()))
 
-    process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, FCL_queue, brain_queue, event_queue,))
+    process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
+                                                        FCL_queue, brain_queue, event_queue,))
+    print("The burst engine has been started...")
+
+    event_id = event_id_gen()
+    print(" <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:", event_id)
+    event_queue.put(event_id)
 
     # process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
     #                            args=(user_input_queue, FCL_queue, brain_queue, event_queue))
@@ -163,13 +172,13 @@ if __name__ == '__main__':
                     process_print_basic_info()
                     universal_functions.parameters["Input"]["user_input"] = ''
 
-                elif universal_functions.parameters["Input"]["user_input"] == 's':
-                    process_show_cortical_areas()
-                    universal_functions.parameters["Input"]["user_input"] = ''
+                # elif universal_functions.parameters["Input"]["user_input"] == 's':
+                #     process_show_cortical_areas()
+                #     universal_functions.parameters["Input"]["user_input"] = ''
 
-                elif universal_functions.parameters["Input"]["user_input"] == 'i':
-                    process_see_from_mnist()
-                    universal_functions.parameters["Input"]["user_input"] = ''
+                # elif universal_functions.parameters["Input"]["user_input"] == 'i':
+                #     process_see_from_mnist()
+                #     universal_functions.parameters["Input"]["user_input"] = ''
 
                 elif universal_functions.parameters["Input"]["user_input"] == 'c':
                     process_read_char()

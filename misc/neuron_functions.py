@@ -12,7 +12,7 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 import json
 import datetime
 from time import sleep
-from architect import synapse
+from architect import synapse, event_id_gen
 from PUs import OPU_utf8
 import genethesizer
 from PUs import IPU_utf8
@@ -28,7 +28,7 @@ global burst_count
 burst_count = 0
 
 
-def burst(user_input, fire_list, brain_queue, event_queue):
+def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -45,6 +45,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
     # Function processing:
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
+
     uf.event_id = event_queue.get()
     uf.brain = brain_queue.get()
     # my_brain = uf.brain
@@ -111,7 +112,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         # Add a delay if fire_candidate_list is empty
         if len(fire_candidate_list) < 1:
             sleep(uf.parameters["Timers"]["idle_burst_timer"])
-            print("FLC is empty!")
+            print("FCL is empty!")
         else:
             # Burst Visualization
             if uf.parameters["Switches"]["vis_show"]:
@@ -214,6 +215,7 @@ def burst(user_input, fire_list, brain_queue, event_queue):
         while not user_input.empty():
             try:
                 user_input_value = user_input.get()
+                user_input_value_param = user_input_param.get()
                 print("User input value is ", user_input_value)
                 if user_input_value == 'x':
                     print(settings.Bcolors.BURST + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
@@ -251,6 +253,24 @@ def burst(user_input, fire_list, brain_queue, event_queue):
                     uf.parameters["Switches"]["auto_train"] = True
                     print("Auto training module has been turned on!")
                     uf.parameters["Input"]["user_input"] = ''
+
+                elif user_input_value == 'r':
+                    print("Planning to read an image associated with :", user_input_value_param)
+                    fire_candidate_list = fire_list.get()
+                    mnist_labled_image = mnist_img_fetcher(user_input_value_param)
+                    neuron_list = brain_functions.Brain.retina(mnist_labled_image)
+                    print("Neuron list: ", neuron_list)
+                    fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
+                    fire_list.put(fire_candidate_list)
+                    print("Fire list: ", fire_candidate_list)
+                    print("An image was read from MNIST database associated with number ", user_input_value_param)
+                    event_id = event_id_gen()
+                    print(
+                        " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
+                        event_id)
+                    event_queue.put(event_id)
+                    uf.parameters["Input"]["user_input"] = ''
+                    uf.parameters["Input"]["user_input_param"] = ''
 
             finally:
                 break
@@ -531,11 +551,11 @@ def snooze_till(cortical_area, neuron_id, burst_id):
     return
 
 
-def inject_to_fcl(neuron_list, flc):
+def inject_to_fcl(neuron_list, fcl):
     # print("Injecting to FCL.../\/\/\/")
     # print("Neuron list is: ", neuron_list)
     # Update FCL with new input data. FCL is read from the Queue and updated
     for item in neuron_list:
-        flc.append(item)
+        fcl.append(item)
     # print("Injected to FCL.../\/\/\/")
-    return flc
+    return fcl

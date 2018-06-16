@@ -65764,7 +65764,7 @@
             },
             "rule_4": {
                "param_1": 25,
-               "param_2": 50
+               "param_2": 100
             },
             "rule_5": {
                "param_1": 700,
@@ -65774,6 +65774,10 @@
                "param_5": 700,
                "param_6": 700,
                "param_7": 700
+            },
+            "rule_6": {
+               "param_1": 0,
+               "param_2": 0
             }
          },
          "IPU_vision_filters": {
@@ -66969,8 +66973,8 @@
                "neighbor_locator_rule_param_id": "param_2",
                "cortical_mapping_dst": {
                   "vision_IT": {
-                     "neighbor_locator_rule_id": "rule_4",
-                     "neighbor_locator_rule_param_id": "param_2"
+                     "neighbor_locator_rule_id": "rule_6",
+                     "neighbor_locator_rule_param_id": "param_1"
                   }
                },
                "neuron_params": {

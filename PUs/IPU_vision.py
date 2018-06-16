@@ -146,7 +146,7 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
     neuron_id_list = []
     for x in range(len(image_locations)):
             # call the function to find neuron candidates for a given location
-            tmp = architect.neuron_finder2(cortical_area, image_locations[x], genome["location_tolerance"])
+            tmp = architect.neuron_finder(cortical_area, image_locations[x], genome["location_tolerance"])
             for item in tmp:
                 if (item is not None) and (neuron_id_list.count(item) == 0):
                     neuron_id_list.append(item)

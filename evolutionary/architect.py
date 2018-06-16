@@ -236,10 +236,14 @@ def neighbor_finder(cortical_area, neuron_id, rule, rule_param):
     # Narrow down the search scope to only few blocks
     neighbors_in_block = neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3)
 
-    for key in neighbors_in_block:
-        if rule_matcher(rule_id=rule, rule_param=rule_param,
-                        cortical_area_src=cortical_area, cortical_area_dst=cortical_area, neuron_id=neuron_id, key=key):
-            neighbor_candidates.append(key)
+    for dst_neuron_id in neighbors_in_block:
+        if rule_matcher(rule_id=rule,
+                        rule_param=rule_param,
+                        cortical_area_src=cortical_area,
+                        cortical_area_dst=cortical_area,
+                        src_neuron_id=neuron_id,
+                        dst_neuron_id=dst_neuron_id):
+            neighbor_candidates.append(dst_neuron_id)
 
     return neighbor_candidates
 
@@ -317,10 +321,10 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     neighbor_candidates = []
 
     if universal_functions.genome['blueprint'][cortical_area_dst]['location_generation_type'] == 'sequential':
-        for neuron in dst_data:
+        for dst_neuron_id in dst_data:
             if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
-                            cortical_area_dst=cortical_area_dst, key=neuron, neuron_id=src_neuron_id):
-                neighbor_candidates.append(neuron)
+                            cortical_area_dst=cortical_area_dst, dst_neuron_id=dst_neuron_id, src_neuron_id=src_neuron_id):
+                neighbor_candidates.append(dst_neuron_id)
     else:
         # todo: Need to bring here concept of the projection center and find neurons around the block there
         projection_coord = dst_projection_center(cortical_area_src, src_neuron_id, cortical_area_dst)
@@ -328,10 +332,10 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
         # todo: move the block size and kernel size below to settings
         proj_block_id = block_id_gen(projection_coord[0], projection_coord[1], projection_coord[2], block_size=10)
         neuron_list = neurons_in_block_neighborhood_2(cortical_area_dst, proj_block_id, kernel_size=3)
-        for neuron in neuron_list:
+        for dst_neuron_id in neuron_list:
             if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
-                            cortical_area_dst=cortical_area_dst, key=neuron, neuron_id=src_neuron_id):
-                neighbor_candidates.append(neuron)
+                            cortical_area_dst=cortical_area_dst, dst_neuron_id=dst_neuron_id, src_neuron_id=src_neuron_id):
+                neighbor_candidates.append(dst_neuron_id)
 
     return neighbor_candidates
 
@@ -458,7 +462,7 @@ def cortical_area_lengths(cortical_area):
     return lenght
 
 
-def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key, neuron_id):
+def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_neuron_id, src_neuron_id):
 
     src_data = universal_functions.brain[cortical_area_src]
     dst_data = universal_functions.brain[cortical_area_dst]
@@ -472,19 +476,19 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
     coordinate_scales = [a/b for a, b in zip(dest_lenghts, src_lenghts)]
 
     if cortical_area_src == cortical_area_dst:
-        x_coordinate_key = src_data[key]["location"][0]
-        x_coordinate_target = src_data[neuron_id]["location"][0]
-        y_coordinate_key = src_data[key]["location"][1]
-        y_coordinate_target = src_data[neuron_id]["location"][1]
-        z_coordinate_key = src_data[key]["location"][2]
-        z_coordinate_target = src_data[neuron_id]["location"][2]
+        x_coordinate_key = src_data[dst_neuron_id]["location"][0]
+        x_coordinate_target = src_data[src_neuron_id]["location"][0]
+        y_coordinate_key = src_data[dst_neuron_id]["location"][1]
+        y_coordinate_target = src_data[src_neuron_id]["location"][1]
+        z_coordinate_key = src_data[dst_neuron_id]["location"][2]
+        z_coordinate_target = src_data[src_neuron_id]["location"][2]
     else:
-        x_coordinate_key = src_data[neuron_id]["location"][0]
-        y_coordinate_key = src_data[neuron_id]["location"][1]
-        z_coordinate_key = src_data[neuron_id]["location"][2]
-        x_coordinate_target_dst = dst_data[key]["location"][0]
-        y_coordinate_target_dst = dst_data[key]["location"][1]
-        z_coordinate_target_dst = dst_data[key]["location"][2]
+        x_coordinate_key = src_data[src_neuron_id]["location"][0]
+        y_coordinate_key = src_data[src_neuron_id]["location"][1]
+        z_coordinate_key = src_data[src_neuron_id]["location"][2]
+        x_coordinate_target_dst = dst_data[dst_neuron_id]["location"][0]
+        y_coordinate_target_dst = dst_data[dst_neuron_id]["location"][1]
+        z_coordinate_target_dst = dst_data[dst_neuron_id]["location"][2]
 
     dest_projection_center = list()
     dest_projection_center.append(x_coordinate_key * coordinate_scales[0])
@@ -499,7 +503,7 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
                       ((y_coordinate_key - y_coordinate_target) ** 2) +
                       ((z_coordinate_key - z_coordinate_target) ** 2))
         if radius < rule_param:
-            print("This is the neuron id you were looking for:", neuron_id)
+            print("This is the neuron id you were looking for:", src_neuron_id)
             is_candidate = True
 
     # Rule 1: Selects only neurons within rule_param unit limits forward of source Neuron in z direction
@@ -538,6 +542,17 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, key,
                 # (z_coordinate_target_dst > src_layer_index * dest_layer_height) and \
                 # (z_coordinate_target_dst < ((src_layer_index + 1) * dest_layer_height)):
             is_candidate = True
+
+    # Rule 6: Maps XY blocks from one layer to another
+    if rule_id == 'rule_6':
+        src_blk_x = universal_functions.brain[cortical_area_src][src_neuron_id]["block"][0]
+        src_blk_y = universal_functions.brain[cortical_area_src][src_neuron_id]["block"][1]
+        dst_blk_x = universal_functions.brain[cortical_area_dst][dst_neuron_id]["block"][0]
+        dst_blk_y = universal_functions.brain[cortical_area_dst][dst_neuron_id]["block"][1]
+        # print(src_blk_x, dst_blk_x, "---", src_blk_y, dst_blk_y)
+        if abs(src_blk_x - dst_blk_x) < 8 and abs(src_blk_y - dst_blk_y) < 8:
+            is_candidate = True
+
     return is_candidate
 
 

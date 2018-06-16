@@ -213,8 +213,6 @@ def three_dim_growth(cortical_area):
 
     neuron_count = 0
     for __ in neuron_loc_blk:
-        if cortical_area == 'vision_v1-7':
-            print(">><<>><<", __)
         neuro_genesis(cortical_area, __)        # Create a new Neuron in target destination
         neuron_count += 1
 
@@ -584,9 +582,9 @@ def neurons_in_the_block(cortical_area, block_id):
     block_id to be entered as [x,y,z]
     """
     neuron_list = []
-    for _ in universal_functions.brain[cortical_area]:
-        if universal_functions.brain[cortical_area][_]['block'] == block_id:
-            neuron_list.append(_)
+    for neuron_id in universal_functions.brain[cortical_area]:
+        if universal_functions.brain[cortical_area][neuron_id]['block'] == block_id:
+            neuron_list.append(neuron_id)
     return neuron_list
 
 

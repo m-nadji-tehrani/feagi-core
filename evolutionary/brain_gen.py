@@ -91,7 +91,7 @@ def main():
         with open(file_name, "w") as connectome:
             connectome.write(json.dumps({}))
             connectome.truncate()
-        print(settings.Bcolors.BURST + "Cortical area %s is has been cleared." % key
+        print(settings.Bcolors.YELLOW + "Cortical area %s is has been cleared." % key
               + settings.Bcolors.ENDC)
 
     # Develop Neurons for various cortical areas defined in Genome

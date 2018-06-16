@@ -226,7 +226,7 @@ def apply_direction_filter(kernel_values, kernel_size, direction_key):
 
 def create_direction_matrix(image, kernel_size, direction_sensitivity=''):
     """
-    Generates a Matrix where each element outlines the Direction detected by the Kernel filters against each 
+    Generates a Matrix where each element outlines the direction detected by the Kernel filters against each
     corresponding pixel in the image. 
     :param image: 
     :param kernel_size: 

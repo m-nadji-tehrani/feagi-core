@@ -68,17 +68,16 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
 
         # Auto training controls
         if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
-            # 1. Logging
+            # Logging
             if uf.training_has_begun:
                 print("----------------------------------------Training  has begun------------------------------------")
                 uf.training_has_begun = False
                 uf.training_start_time = datetime.datetime.now()
-                labeled_image = mnist_img_fetcher(uf.number_to_train)
 
-            # 2. Keep track of how many times the number needs to be trained etc.
+            # Keep track of how many times the number needs to be trained etc.
             uf.training_counter -= 1
             print("training counter is: ", uf.training_counter)
-            # 3. Read image and the label from MNIST
+            # Read image and the label from MNIST
             print("Number to train is: ", uf.number_to_train)
 
             # print("Labeled image has been loaded")
@@ -86,13 +85,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 uf.number_to_train += 1
                 uf.training_counter = uf.training_counter_default
                 uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-            # 4. Convert image to neuron activity
-            neuron_list = brain_functions.Brain.retina(uf.labeled_image, event_queue)
+            # Convert image to neuron activity
+            neuron_list = brain_functions.Brain.retina(uf.labeled_image)
             # print("image has been converted to neuronal activities...")
-            # 5. inject neuron activity to FCL
+            # inject neuron activity to FCL
             fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
             # print("Activities caused by image are now part of the FCL")
-            # 6. inject label to FCL
+            # inject label to FCL
             neuron_list = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
             fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
             # print("Activities caused by image label are now part of the FCL")
@@ -104,7 +103,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 print("Total training duration was: ", training_duration)
                 print("-----------------------------------------------------------------------------------------------")
 
-        # Figure what you were thinking on the following
+        # todo: The following is to have a chkpnt to assess the perf of the in-use genome and make on the fly adj.
         if burst_count % uf.genome['evolution_burst_count'] == 0:
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
@@ -121,16 +120,16 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
             # genome = uf.genome
 
             if verbose:
-                print(settings.Bcolors.BURST + 'Current fire_candidate_list is %s'
+                print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % fire_candidate_list + settings.Bcolors.ENDC)
 
             # brain_neuron_count, brain_synapse_count = stats.brain_total_synapse_cnt(verbose=False)
-            # print(settings.Bcolors.BURST +
+            # print(settings.Bcolors.YELLOW +
             #       'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
             #       % (burst_count, len(fire_candidate_list), brain_synapse_count) + settings.Bcolors.ENDC)
 
             for cortical_area in set([i[0] for i in fire_candidate_list]):
-                print(settings.Bcolors.BURST + '    %s : %i  '
+                print(settings.Bcolors.YELLOW + '    %s : %i  '
                       % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
                       + settings.Bcolors.ENDC)
                 # if uf.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
@@ -142,7 +141,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
             # Firing all neurons in the Fire Candidate List
             for x in list(fire_candidate_list):
                 if verbose:
-                    print(settings.Bcolors.BURST + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
+                    print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1], verbose=verbose)
 
             # ## The following section is related to neuro-plasticity ## #
@@ -159,7 +158,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                                 apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
                                                      dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
 
-                                print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
                                                               "...........LTP between vision_IT and vision_memory occurred "
                                       + settings.Bcolors.ENDC)
 
@@ -173,7 +172,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                                                      dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
                                                      long_term_depression=True)
 
-                                print(settings.Bcolors.FIRE + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
                                                               "...........LTD between vision_IT and vision_memory occurred "
                                       + settings.Bcolors.ENDC)
 
@@ -197,7 +196,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                                 apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                                      dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
 
-                                print(settings.Bcolors.FIRE + "..............................................................."
+                                print(settings.Bcolors.RED + "..............................................................."
                                                               "...........A new memory was formed against utf8_memory location "
                                       + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
                                                                                       dst_neuron[1]) + settings.Bcolors.ENDC)
@@ -218,7 +217,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 user_input_value_param = user_input_param.get()
                 print("User input value is ", user_input_value)
                 if user_input_value == 'x':
-                    print(settings.Bcolors.BURST + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+                    print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                     burst_count = 0
                     uf.parameters["Switches"]["ready_to_exit_burst"] = True
                     uf.parameters["Input"]["user_input"] = ''
@@ -259,10 +258,10 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                     fire_candidate_list = fire_list.get()
                     mnist_labled_image = mnist_img_fetcher(user_input_value_param)
                     neuron_list = brain_functions.Brain.retina(mnist_labled_image)
-                    print("Neuron list: ", neuron_list)
+                    # print("Neuron list: ", neuron_list)
                     fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
                     fire_list.put(fire_candidate_list)
-                    print("Fire list: ", fire_candidate_list)
+                    # print("Fire list: ", fire_candidate_list)
                     print("An image was read from MNIST database associated with number ", user_input_value_param)
                     event_id = event_id_gen()
                     print(
@@ -311,11 +310,11 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     if uf.parameters["Switches"]["logging_fire"]:
         print(datetime.datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
     if verbose:
-        print(settings.Bcolors.FIRE +
+        print(settings.Bcolors.RED +
               "Firing neuron %s using firing pattern %s" %
               (neuron_id, json.dumps(uf.brain[cortical_area][neuron_id]["firing_pattern_id"], indent=3)) +
               settings.Bcolors.ENDC)
-        print(settings.Bcolors.FIRE + "Neuron %s neighbors are %s" % (neuron_id, json.dumps(neighbor_list, indent=3)) +
+        print(settings.Bcolors.RED + "Neuron %s neighbors are %s" % (neuron_id, json.dumps(neighbor_list, indent=3)) +
               settings.Bcolors.ENDC)
 
     # After neuron fires all cumulative counters on Source gets reset
@@ -329,7 +328,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     # neuron_update_list = []
     for dst_neuron_id in neighbor_list:
         if verbose:
-            print(settings.Bcolors.FIRE + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
+            print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         neuron_update(dst_cortical_area, dst_neuron_id,
                       uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
@@ -378,7 +377,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     # print("FCL after fire pop: ", len(fire_candidate_list))
     # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, neuron_id]))
     if verbose:
-        print(settings.Bcolors.FIRE + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
+        print(settings.Bcolors.RED + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
     # todo: add a check that if the firing neuron is part of OPU to perform an action
 

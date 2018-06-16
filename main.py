@@ -120,18 +120,18 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = ''
         return
 
-    def process_see_from_mnist():
-        if universal_functions.parameters["Switches"]["vis_show"]:
-            print(universal_functions.parameters["Switches"]["vis_show"])
-            visualizer.cortical_heatmap(IPU_vision.read_image(int(universal_functions.parameters["Input"]
-                                                             ["user_input_param"]))[0], [])
-        mnist_img = IPU_vision.mnist_img_fetcher(int(universal_functions.parameters["Input"]["user_input_param"]))
-        process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
-                               args=(mnist_img, FCL_queue, event_queue))
-        process_3.start()
-        process_3.join()
-        universal_functions.parameters["Input"]["user_input"] = ''
-        return
+    # def process_see_from_mnist():
+    #     if universal_functions.parameters["Switches"]["vis_show"]:
+    #         print(universal_functions.parameters["Switches"]["vis_show"])
+    #         visualizer.cortical_heatmap(IPU_vision.read_image(int(universal_functions.parameters["Input"]
+    #                                                          ["user_input_param"]))[0], [])
+    #     mnist_img = IPU_vision.mnist_img_fetcher(int(universal_functions.parameters["Input"]["user_input_param"]))
+    #     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
+    #                            args=(mnist_img, FCL_queue, event_queue))
+    #     process_3.start()
+    #     process_3.join()
+    #     universal_functions.parameters["Input"]["user_input"] = ''
+    #     return
 
     def process_read_char():
         process_4 = mp.Process(name='Reading input char',

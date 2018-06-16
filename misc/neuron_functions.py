@@ -196,7 +196,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                                 apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                                      dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
 
-                                print(settings.Bcolors.RED + "..............................................................."
+                                print(settings.Bcolors.OKGREEN + "..............................................................."
                                                               "...........A new memory was formed against utf8_memory location "
                                       + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
                                                                                       dst_neuron[1]) + settings.Bcolors.ENDC)

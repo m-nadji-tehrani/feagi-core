@@ -103,10 +103,14 @@ class Brain:
         filter = IPU_vision.Filter()
 
         np.set_printoptions(linewidth=200)
-        print("Original image:\n", image)
+
+        if universal_functions.parameters['Logs']['print_seen_img']:
+            print("Original image:\n", image)
+
         # image = filter.brightness(image)
 
-        print("Filtered image:\n", image)
+        if universal_functions.parameters['Logs']['print_seen_img']:
+            print("Filtered image:\n", image)
 
         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
         for cortical_area in vision_group:
@@ -117,13 +121,15 @@ class Brain:
 
             # retina_start_time = datetime.now()
             polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
-            print("\nPrinting polarized image for ", cortical_area)
-            for row in polarized_image:
-                print(" ***")
-                for item in row:
-                    print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
-                    if item == '':
-                        print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
+
+            if universal_functions.parameters['Logs']['print_polarized_img']:
+                print("\nPrinting polarized image for ", cortical_area)
+                for row in polarized_image:
+                    print(" ***")
+                    for item in row:
+                        print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
+                        if item == '':
+                            print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
 
             # print("Conversion of image locations to neuron id: ", datetime.now() - retina_start_time, cortical_area)
             # print("Polarized image for :", cortical_area)
@@ -131,11 +137,13 @@ class Brain:
 
             ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
 
-            print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
+            if universal_functions.parameters['Logs']['print_activation_counters']:
+                print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
-            print("Neuron id count activated in layer %s is %i\n\n" %(cortical_area, len(neuron_id_list)))
+            if universal_functions.parameters['Logs']['print_activation_counters']:
+                print("Neuron id count activated in layer %s is %i\n\n" %(cortical_area, len(neuron_id_list)))
 
             for item in neuron_id_list:
                 neuron_list.append([cortical_area, item])

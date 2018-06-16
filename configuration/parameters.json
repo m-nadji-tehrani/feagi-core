@@ -27,9 +27,14 @@
   },
   "InitData": {
     "read_data_from_memory": true,
-    "regenerate_brain": true,
+    "regenerate_brain": false,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
     "genome_file": "./evolutionary/genome.json"
+  },
+  "Logs":{
+    "print_polarized_img": false,
+    "print_seen_img": false,
+    "print_activation_counters": false
   }
 }

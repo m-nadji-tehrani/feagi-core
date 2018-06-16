@@ -32,62 +32,11 @@ class Brain:
         visualizer.connectome_visualizer(cortical_area='vision_memory', neighbor_show='true')
         return
 
-#     def see_from_mnist(self, mnist_img, fcl_queue, event_queue):
-#         cp = mp.current_process()
-#         # print(' starting', cp.name, cp.pid)
-# #        settings.reset_cumulative_counter_instances()   # ????
-#         fire_list= self.convert_img_to_neuron_list(mnist_img, event_queue)
-#         self.inject_to_fcl(fire_list, fcl_queue)
-#         # print(' exiting', cp.name, cp.pid)
-#         return
-
-#     @staticmethod
-#     def convert_img_to_neuron_list(mnist_img, event_queue):
-#         # print("Reading from MNIST")
-#         # todo: This function is a duplicate of Retina function
-#         import architect
-#         from PUs import IPU_vision
-#         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
-#         init_fire_list = []
-# #        IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ???
-#         cortical_list = universal_functions.cortical_list()
-#         vision_group = []
-#         for item in cortical_list:
-#             if universal_functions.genome['blueprint'][item]['sub_group_id'] == 'vision_v1':
-#                 vision_group.append(item)
-#         # print('vision group is: ', vision_group)
-#         image_ = mnist_img
-#         # image_ = mnist.read_image(image_number)
-#         image = image_[0]
-#         # print("*** Image read from MNIST was :", image_[1])
-#         # print('image :\n ', np.array2string(image, max_line_width=np.inf))
-#         filter = IPU_vision.Filter()
-#         filtered_image = filter.brightness(image)
-#         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
-#         for cortical_area in vision_group:
-#             cortical_direction_sensitivity = universal_functions.genome['blueprint'][cortical_area]['direction_sensitivity']
-#             kernel_size = 7
-#             polarized_image = IPU_vision.create_direction_matrix(filtered_image, kernel_size, cortical_direction_sensitivity)
-#             # print("Polarized image for :", cortical_area)
-#             # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
-#             ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
-#             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
-#             for item in neuron_id_list:
-#                 init_fire_list.append([cortical_area, item])
-#         # Event is an instance of time where an IPU event has occurred
-#         event_id = architect.event_id_gen()
-#         print(" <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:", event_id)
-#         event_queue.put(event_id)
-#         # print('Initial Fire List:')
-#         # print(init_fire_list)
-#         return init_fire_list
-
     @staticmethod
     def retina(mnist_labled_image):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         # from datetime import datetime
         # from architect import event_id_gen
-
 
         print("Retina has been exposed to a version of :", mnist_labled_image[1])
         neuron_list = []

@@ -353,8 +353,8 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     if cortical_area == 'utf8_out':
         uf.parameters["Input"]["comprehended_char"] = \
             OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
-        print("UTF8 out was stimulated with the following character:    "
-              "                            <<<     %s      >>>                 #*#*#*#*#*#*#"
+        print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
+              "                            <<<     %s      >>>                 #*#*#*#*#*#*#" + settings.Bcolors.ENDC
               % uf.parameters["Input"]["comprehended_char"])
 
     #     neuron_update_list.append([uf.brain[cortical_area][id]["neighbors"][x]["cortical_area"],

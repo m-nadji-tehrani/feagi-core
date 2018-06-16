@@ -9,13 +9,13 @@ __author__ = 'Mohammad Nadji-tehrani'
 
 if __name__ == '__main__':
     from datetime import datetime
-    import brain_gen
     import tkinter
     from time import sleep
     import multiprocessing as mp
-    from PUs import IPU_vision
+    # from PUs import IPU_vision
+    from evolutionary import brain_gen
     from misc import brain_functions, auto_pilot, neuron_functions, universal_functions, visualizer
-    from architect import event_id_gen
+    from evolutionary.architect import event_id_gen
 
     if universal_functions.parameters["Switches"]["vis_show"]:
         pass
@@ -120,19 +120,6 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = ''
         return
 
-    # def process_see_from_mnist():
-    #     if universal_functions.parameters["Switches"]["vis_show"]:
-    #         print(universal_functions.parameters["Switches"]["vis_show"])
-    #         visualizer.cortical_heatmap(IPU_vision.read_image(int(universal_functions.parameters["Input"]
-    #                                                          ["user_input_param"]))[0], [])
-    #     mnist_img = IPU_vision.mnist_img_fetcher(int(universal_functions.parameters["Input"]["user_input_param"]))
-    #     process_3 = mp.Process(name='Seeing_MNIST_image', target=b.see_from_mnist,
-    #                            args=(mnist_img, FCL_queue, event_queue))
-    #     process_3.start()
-    #     process_3.join()
-    #     universal_functions.parameters["Input"]["user_input"] = ''
-    #     return
-
     def process_read_char():
         process_4 = mp.Process(name='Reading input char',
                                target=brain_functions.Brain.read_char,
@@ -176,18 +163,9 @@ if __name__ == '__main__':
                 #     process_show_cortical_areas()
                 #     universal_functions.parameters["Input"]["user_input"] = ''
 
-                # elif universal_functions.parameters["Input"]["user_input"] == 'i':
-                #     process_see_from_mnist()
-                #     universal_functions.parameters["Input"]["user_input"] = ''
-
                 elif universal_functions.parameters["Input"]["user_input"] == 'c':
                     process_read_char()
                     universal_functions.parameters["Input"]["user_input"] = ''
-
-                # elif universal_functions.parameters["Input"]["user_input"] == 'a':
-                #     # auto_pilot.auto_train(FCL_queue, event_queue)
-                #     universal_functions.parameters["Switches"]["auto_train"] = True
-                #     universal_functions.parameters["Input"]["user_input"] = ''
 
                 elif universal_functions.parameters["Input"]["user_input"] == 't':
                     auto_pilot.auto_test(FCL_queue, event_queue)
@@ -214,13 +192,13 @@ if __name__ == '__main__':
 #
 
 # Key problem on hand
+# todo: One number's visual memory is resembling all others
 # todo: Neuron finder is too inefficient
-# todo: The value from comprehended char from settings is keep reseting hence the correct value not being passed on
 # todo: Need a self tuning mechanism
 
 # Problems to fix
 # todo: Synaptic activities in Memory everntually get to a point that does not ramp down
-# todo: One number's visual memory is resembling all others
+
 # todo: Brain is being loaded in memory too regularly
 
 # General Architecture - Anatomy

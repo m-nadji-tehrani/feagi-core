@@ -23,7 +23,8 @@
     "auto_test_comp_attempt_threshold": 3,
     "ready_to_exit_burst": false,
     "logging_fire": false,
-    "folder_backup": false
+    "folder_backup": false,
+    "plasticity": true
   },
   "InitData": {
     "read_data_from_memory": true,

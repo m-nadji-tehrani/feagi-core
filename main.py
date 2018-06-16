@@ -192,12 +192,15 @@ if __name__ == '__main__':
 #
 
 # Key problem on hand
+# todo: only when the right portion of cell assembly is activated the rest shold become active
 # todo: One number's visual memory is resembling all others
 # todo: Neuron finder is too inefficient
 # todo: Need a self tuning mechanism
+# todo: find a way to measure layer level effectiveness metrics so it can be used for evolution
 
 # Problems to fix
 # todo: Synaptic activities in Memory everntually get to a point that does not ramp down
+# todo: Event queue and events in general are not being used for any application or stored anywhere
 
 # todo: Brain is being loaded in memory too regularly
 

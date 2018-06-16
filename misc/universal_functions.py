@@ -14,6 +14,7 @@ with open("./configuration/parameters.json", "r") as data_file:
 
 
 number_to_train = 0
+training_neuron_list = []
 training_counter_default = 10
 training_counter = training_counter_default
 training_start_time = datetime.now()

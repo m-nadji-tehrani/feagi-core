@@ -73,6 +73,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 print("----------------------------------------Training  has begun------------------------------------")
                 uf.training_has_begun = False
                 uf.training_start_time = datetime.datetime.now()
+                # Convert image to neuron activity
+                uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
 
             # Keep track of how many times the number needs to be trained etc.
             uf.training_counter -= 1
@@ -85,15 +87,15 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 uf.number_to_train += 1
                 uf.training_counter = uf.training_counter_default
                 uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-            # Convert image to neuron activity
-            neuron_list = brain_functions.Brain.retina(uf.labeled_image)
+                # Convert image to neuron activity
+                uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
             # print("image has been converted to neuronal activities...")
             # inject neuron activity to FCL
-            fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
+            fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
             # print("Activities caused by image are now part of the FCL")
             # inject label to FCL
-            neuron_list = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
-            fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
+            uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
+            fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
             # print("Activities caused by image label are now part of the FCL")
             # Exit condition
             if uf.number_to_train == 9 and uf.training_counter == 1:
@@ -102,6 +104,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 print("----------------------------All training rounds has been completed-----------------------------")
                 print("Total training duration was: ", training_duration)
                 print("-----------------------------------------------------------------------------------------------")
+                uf.number_to_train = 0
 
         # todo: The following is to have a chkpnt to assess the perf of the in-use genome and make on the fly adj.
         if burst_count % uf.genome['evolution_burst_count'] == 0:
@@ -144,9 +147,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1], verbose=verbose)
 
-            # ## The following section is related to neuro-plasticity ## #
-            plasticity = True
-            if plasticity:
+            # The following handles neuro-plasticity
+            if uf.parameters["Switches"]["plasticity"]:
                 # Plasticity between T1 and Vision memory
                 # todo: generalize this function
                 # Long Term Potentiation (LTP) between vision_IT and vision_memory
@@ -243,7 +245,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
 
                 elif user_input_value == 'a':
                         uf.parameters["Switches"]["auto_train"] = True
-                        uf.training_has_begon = True
+                        uf.training_has_begun = True
                         print("Automatic training has been turned ON!")
                         uf.parameters["Input"]["user_input"] = ''
                         uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
@@ -272,6 +274,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                     uf.parameters["Input"]["user_input_param"] = ''
 
             finally:
+                print("Finally something has happened")
                 break
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
@@ -354,8 +357,8 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
         uf.parameters["Input"]["comprehended_char"] = \
             OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
         print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
-              "                            <<<     %s      >>>                 #*#*#*#*#*#*#" + settings.Bcolors.ENDC
-              % uf.parameters["Input"]["comprehended_char"])
+              "                            <<<     %s      >>>                 #*#*#*#*#*#*#"
+              % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
 
     #     neuron_update_list.append([uf.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
         # uf.brain[cortical_area][id]["neighbors"][x]["postsynaptic_current"], x])

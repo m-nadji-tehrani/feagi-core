@@ -71,8 +71,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # todo: create a number feeder
 
         # todo: need to break down the training function into peices with one feeding a streem of data
-        if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
-            auto_trainer_2()
+        if uf.parameters["Auto_injector"]["injector_status"]:
+            auto_injector()
 
         # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
         if burst_count % uf.genome['evolution_burst_count'] == 0:
@@ -123,66 +123,133 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(fire_candidate_list)
 
-        user_input_processing(user_input, user_input_param, fire_list, event_queue, verbose)
+        user_input_processing(user_input, user_input_param)
 
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
 
 
-def auto_injector(rounds, repeats, mode):
+def injection_manager(injection_mode, injection_param):
     """
-    This function has three modes l1, l2 & l3.
+    This function has three modes l1, l2, r and c.
     Mode l1: Assist in learning numbers from 0 to 9
     Mode l2: Assist in learning variations of the same number
     Mode l3: Assist in learning variations of numbers from 0..9 (Not implemented yet)
     """
-    if uf.training_has_begun:
+    try:
+        if injection_mode == 'l1':
+            uf.InjectorParams.injection_mode = "l1"
+            print("Automatic learning for 0..9 has been turned ON!")
+            uf.InjectorParams.img_flag = True
+            uf.InjectorParams.utf_flag = True
+            uf.InjectorParams.utf_handler = True
+            uf.InjectorParams.variation_handler = True
+            uf.InjectorParams.variation_counter = uf.parameters["Auto_injector"]["variation_default"]
+            uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
+            uf.InjectorParams.utf_counter = uf.parameters["Auto_injector"]["utf_default"]
+            uf.InjectorParams.utf_counter_actual = uf.parameters["Auto_injector"]["utf_default"]
+            uf.InjectorParams.num_to_inject = uf.InjectorParams.utf_counter
+
+        elif injection_mode == 'l2':
+            uf.InjectorParams.injection_mode = "l2"
+            uf.InjectorParams.img_flag = True
+            uf.InjectorParams.utf_flag = True
+            uf.InjectorParams.utf_handler = False
+            uf.InjectorParams.variation_handler = True
+            uf.InjectorParams.variation_counter = uf.parameters["Auto_injector"]["variation_default"]
+            uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
+            uf.InjectorParams.utf_counter = -1
+            uf.InjectorParams.utf_counter_actual = -1
+            uf.InjectorParams.num_to_inject = int(injection_param)
+            print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
+                  % injection_param)
+
+        elif injection_mode == 'r':
+            uf.InjectorParams.injection_mode = "r"
+            uf.InjectorParams.variation_handler = False
+            uf.InjectorParams.img_flag = True
+            uf.InjectorParams.utf_flag = False
+            uf.InjectorParams.variation_counter = 0
+            uf.InjectorParams.variation_counter_actual = 0
+            uf.InjectorParams.utf_counter = -1
+            uf.InjectorParams.utf_counter_actual = -1
+            uf.InjectorParams.num_to_inject = injection_param
+
+        elif injection_mode == 'c':
+            uf.InjectorParams.injection_mode = "c"
+            uf.InjectorParams.variation_handler = False
+            uf.InjectorParams.utf_handler = False
+            uf.InjectorParams.img_flag = False
+            uf.InjectorParams.utf_flag = True
+            uf.InjectorParams.utf_to_inject = injection_param
+            uf.InjectorParams.variation_counter = 0
+            uf.InjectorParams.variation_counter_actual = 0
+            uf.InjectorParams.utf_counter = -1
+            uf.InjectorParams.utf_counter_actual = -1
+
+        else:
+            print("Error detecting the injection mode...")
+            return
+
+    finally:
+        uf.toggle_injection_mode()
+        uf.InjectorParams.injection_has_begun = True
+        print("You should only seem me once!!")
+
+
+def auto_injector():
+    if uf.InjectorParams.injection_has_begun:
+        # Beginning of a injection process
         print("----------------------------------------Data injection has begun------------------------------------")
-        uf.training_has_begun = False
-        uf.training_start_time = datetime.datetime.now()
+        uf.InjectorParams.injection_has_begun = False
+        uf.InjectorParams.injection_start_time = datetime.datetime.now()
+        if uf.InjectorParams.img_flag:
+            DataFeeder.image_feeder(uf.InjectorParams.num_to_inject)
 
+    # Exposure counter
+    uf.InjectorParams.exposure_counter_actual -= 1
 
-def auto_trainer_2():
-    """
-    This function has three modes l1, l2 & l3.
-    Mode l1: Assist in learning numbers from 0 to 9
-    Mode l2: Assist in learning variations of the same number
-    Mode l3: Assist in learning variations of numbers from 0..9 (Not implemented yet)
-    """
+    # Variation counter
+    if uf.InjectorParams.exposure_counter_actual < 0:
+        uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
+        if uf.InjectorParams.variation_handler:
+            uf.InjectorParams.variation_counter_actual -= 1
+            if uf.InjectorParams.img_flag:
+                DataFeeder.image_feeder(uf.InjectorParams.num_to_inject)
 
-    if uf.training_has_begun:
-        print("----------------------------------------Training  has begun------------------------------------")
-        uf.training_has_begun = False
-        uf.training_start_time = datetime.datetime.now()
+    # UTF counter
+    if uf.InjectorParams.variation_counter_actual < 0 and uf.InjectorParams.variation_handler:
+        uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
+        uf.InjectorParams.variation_counter_actual = uf.InjectorParams.variation_counter
+        if uf.InjectorParams.utf_handler:
+            uf.InjectorParams.utf_counter_actual -= 1
+            if uf.InjectorParams.utf_flag:
+                uf.InjectorParams.num_to_inject -= 1
 
-        DataFeeder.image_feeder(uf.number_to_train)
+    print(uf.InjectorParams.utf_counter,
+          uf.InjectorParams.variation_counter,
+          uf.InjectorParams.exposure_counter)
 
-    uf.training_counter -= 1
-    print("training counter is: ", uf.training_counter)
-    print("training round is: ", uf.training_rounds)
-    print("Number to train is: ", uf.number_to_train)
+    print(uf.InjectorParams.utf_counter_actual,
+          uf.InjectorParams.variation_counter_actual,
+          uf.InjectorParams.exposure_counter_actual)
 
-    if uf.training_counter == 0:
-        if uf.training_mode == "l1":
-            uf.number_to_train += 1
-        uf.training_rounds -= 1
-        uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
-
-        DataFeeder.image_feeder(uf.number_to_train)
-
-    DataFeeder.neuron_list_feeder()
-    DataFeeder.utf8_feeder()
-
-    # Exit condition
-    if (uf.training_mode == 'l1' and uf.training_rounds == 1 and uf.training_counter == 1) or \
-            (uf.training_mode == 'l2' and uf.training_rounds == 1):
-        uf.toggle_training_mode()
-        uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
-        training_duration = datetime.datetime.now() - uf.training_start_time
-        print("----------------------------All training rounds has been completed-----------------------------")
-        print("Total training duration was: ", training_duration)
+    if uf.InjectorParams.utf_counter_actual == -1 and \
+            uf.InjectorParams.variation_counter_actual == 0 and \
+            uf.InjectorParams.exposure_counter_actual == 0:
+        uf.parameters["Auto_injector"]["injector_status"] = False
+        uf.InjectorParams.exposure_counter_actual = uf.parameters["Auto_injector"]["exposure_default"]
+        uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
+        uf.InjectorParams.utf_counter_actual = uf.parameters["Auto_injector"]["utf_default"]
+        injection_duration = datetime.datetime.now() - uf.InjectorParams.injection_start_time
+        print("----------------------------All injection rounds has been completed-----------------------------")
+        print("Total injection duration was: ", injection_duration)
         print("-----------------------------------------------------------------------------------------------")
-        uf.number_to_train = 0
+
+    if uf.InjectorParams.img_flag:
+        DataFeeder.img_neuron_list_feeder()
+    if uf.InjectorParams.utf_flag:
+        DataFeeder.utf8_feeder()
 
 
 class DataFeeder:
@@ -190,12 +257,15 @@ class DataFeeder:
     def utf8_feeder():
         # inject label to FCL
         global fire_candidate_list
-        uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
+        if uf.InjectorParams.injection_mode == 'c':
+            uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(uf.InjectorParams.utf_to_inject)
+        else:
+            uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
         fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
         # print("Activities caused by image label are now part of the FCL")
 
     @staticmethod
-    def neuron_list_feeder():
+    def img_neuron_list_feeder():
         global fire_candidate_list
         # inject neuron activity to FCL
         fire_candidate_list = inject_to_fcl(uf.training_neuron_list_img, fire_candidate_list)
@@ -275,12 +345,15 @@ def neuro_plasticity():
                         #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
 
-def user_input_processing(user_input, user_input_param, fire_list, event_queue, verbose):
+def user_input_processing(user_input, user_input_param):
     while not user_input.empty():
         try:
             user_input_value = user_input.get()
             user_input_value_param = user_input_param.get()
+
             print("User input value is ", user_input_value)
+            print("User input param is ", user_input_value_param)
+
             if user_input_value == 'x':
                 print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
                 global burst_count
@@ -293,49 +366,10 @@ def user_input_processing(user_input, user_input_param, fire_list, event_queue, 
             elif user_input_value == 'g':
                 uf.toggle_visualization_mode()
 
-            elif user_input_value == 'l1':
-                uf.toggle_training_mode()
-                uf.training_mode = "l1"
-                uf.training_has_begun = True
-                print("Automatic learning for 0..9 has been turned ON!")
-
-            elif user_input_value == 'l2':
-                uf.toggle_training_mode()
-                uf.training_mode = "l2"
-                uf.training_has_begun = True
-                uf.number_to_train = int(user_input_value_param)
-                print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
-                      % user_input_value_param)
-
-            elif user_input_value == 'r':
-                print("Planning to read an image associated with :", user_input_value_param)
-                fire_candidate_list = fire_list.get()
-                mnist_labled_image = mnist_img_fetcher(user_input_value_param)
-                neuron_list = brain_functions.Brain.retina(mnist_labled_image)
-                # print("Neuron list: ", neuron_list)
-                fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
-                fire_list.put(fire_candidate_list)
-                # print("Fire list: ", fire_candidate_list)
-                print("An image was read from MNIST database associated with number ", user_input_value_param)
-                event_id = event_id_gen()
-                print(
-                    " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
-                    event_id)
-                event_queue.put(event_id)
-
-            elif user_input_value == 'c':
-                fire_candidate_list = fire_list.get()
-                neuron_list = IPU_utf8.convert_char_to_fire_list(user_input_value_param)
-                fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
-                fire_list.put(fire_candidate_list)
-                event_id = event_id_gen()
-                print(
-                    " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
-                    event_id)
-                event_queue.put(event_id)
+            elif user_input_value in ['l1', 'l2', 'r', 'c']:
+                injection_manager(injection_mode=user_input_value, injection_param=user_input_value_param)
 
         finally:
-            print("Finally something has happened")
             uf.parameters["Input"]["user_input"] = ''
             uf.parameters["Input"]["user_input_param"] = ''
             break
@@ -468,8 +502,8 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
     # Check if timer is expired on the destination Neuron and if so reset the counter - Leaky behavior
     # todo: Given time is quantized in this implementation, instead of absolute time need to consider using burst cnt.
     # todo: in rare cases the date conversion format is running into exception
-    # if (datetime.datetime.strptime(uf.brain[cortical_area]
-    #                                        [dst_neuron_id]["last_membrane_potential_reset_time"], "%Y-%m-%d %H:%M:%S.%f")
+    # if (datetime.datetime.strptime(uf.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_time"]
+    # , "%Y-%m-%d %H:%M:%S.%f")
     #     + datetime.timedelta(0, dst_neuron_obj["depolarization_timer_threshold"])) < \
     #         datetime.datetime.now():
 

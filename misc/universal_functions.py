@@ -14,13 +14,31 @@ if 'parameters' not in globals():
         print("Parameters has been read from file")
 
 
-number_to_train = 0
+class InjectorParams:
+    img_flag = False
+    utf_flag = False
+    injection_has_begun = False
+    variation_handler = True
+    exposure_handler = True
+    utf_handler = True
+
+    variation_counter = parameters["Auto_injector"]["variation_default"]
+    exposure_counter = parameters["Auto_injector"]["exposure_default"]
+    utf_counter = parameters["Auto_injector"]["utf_default"]
+
+    variation_counter_actual = variation_counter
+    exposure_counter_actual = exposure_counter
+    utf_counter_actual = utf_counter
+
+    injection_start_time = datetime.now()
+
+    num_to_inject = ''
+    utf_to_inject = ''
+    injection_mode = ''
+
+
+training_neuron_list_utf = []
 training_neuron_list_img = []
-training_counter = parameters["InitData"]["training_counter_default"]
-training_rounds = parameters["InitData"]["training_rounds_default"]
-training_start_time = datetime.now()
-training_has_begun = False
-training_mode = ""
 labeled_image = []
 
 
@@ -242,12 +260,12 @@ def toggle_visualization_mode():
         print("Visualization mode is Turned On!")
 
 
-def toggle_training_mode():
-    if parameters["Switches"]["auto_train"]:
-        parameters["Switches"]["auto_train"] = False
+def toggle_injection_mode():
+    if parameters["Auto_injector"]["injector_status"]:
+        parameters["Auto_injector"]["injector_status"] = False
         print("Auto_train mode is Turned OFF!")
     else:
-        parameters["Switches"]["auto_train"] = True
+        parameters["Auto_injector"]["injector_status"] = True
         print("Auto_train mode is Turned On!")
 
 

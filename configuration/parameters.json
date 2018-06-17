@@ -31,11 +31,13 @@
     "regenerate_brain": false,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
-    "genome_file": "./evolutionary/genome.json"
+    "genome_file": "./evolutionary/genome.json",
+    "training_counter_default": 10,
+    "training_rounds_default": 10
   },
   "Logs":{
     "print_polarized_img": false,
-    "print_seen_img": false,
+    "print_seen_img": true,
     "print_activation_counters": false
   }
 }

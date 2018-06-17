@@ -167,7 +167,7 @@ if __name__ == '__main__':
                     process_read_char()
                     universal_functions.parameters["Input"]["user_input"] = ''
 
-                elif universal_functions.parameters["Input"]["user_input"] == 't':
+                elif universal_functions.parameters["Input"]["user_input"] == 'test':
                     auto_pilot.auto_test(FCL_queue, event_queue)
                     universal_functions.parameters["Input"]["user_input"] = ''
 

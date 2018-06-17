@@ -41,8 +41,8 @@ class Brain:
         print("Retina has been exposed to a version of :", mnist_labled_image[1])
         neuron_list = []
 
-        # IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])    # todo  ?????
-        vision_group = universal_functions.cortical_group_members('vision_v1')
+        # IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])   # todo  ?????
+        vision_group = universal_functions.cortical_sub_group_members('vision_v1')
 
         image = mnist_labled_image[0]
         print("*** Image label from MNIST was :", mnist_labled_image[1])

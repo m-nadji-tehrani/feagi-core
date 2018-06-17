@@ -8,17 +8,19 @@ import IPU_vision
 
 
 global parameters
-with open("./configuration/parameters.json", "r") as data_file:
-    parameters = json.load(data_file)
-    # print(parameters)
+if 'parameters' not in globals():
+    with open("./configuration/parameters.json", "r") as data_file:
+        parameters = json.load(data_file)
+        print("Parameters has been read from file")
 
 
 number_to_train = 0
 training_neuron_list = []
-training_counter_default = 10
-training_counter = training_counter_default
+training_counter = parameters["InitData"]["training_counter_default"]
+training_rounds = parameters["InitData"]["training_rounds_default"]
 training_start_time = datetime.now()
 training_has_begun = False
+training_mode = ""
 labeled_image = []
 
 
@@ -108,6 +110,14 @@ def cortical_list():
 def cortical_group_members(group):
     members = []
     for item in cortical_list():
+        if genome['blueprint'][item]['group_id'] == group:
+            members.append(item)
+    return members
+
+
+def cortical_sub_group_members(group):
+    members = []
+    for item in cortical_list():
         if genome['blueprint'][item]['sub_group_id'] == group:
             members.append(item)
     return members
@@ -175,7 +185,7 @@ def save_brain_to_disk(cortical_area='all'):
         for cortical_area in cortical_list():
             with open(parameters["InitData"]["connectome_path"]+cortical_area+'.json', "r+") as data_file:
                 data = brain[cortical_area]
-                print(">>> >>> All data related to Cortical area %s is saved in connectome\n" % cortical_area)
+                print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
                 # Saving changes to the connectome
                 data_file.seek(0)  # rewind
                 data_file.write(json.dumps(data, indent=3))

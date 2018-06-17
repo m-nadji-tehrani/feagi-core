@@ -59,6 +59,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         global fire_candidate_list
+        global previous_fcl
 
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
@@ -66,47 +67,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
 
         burst_count += 1
 
-        # Auto training controls
+        # todo: Currently feeding a single random number n times. Add the ability to train variations of the same number
+        # todo: create a number feeder
+
         if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
-            # Logging
-            if uf.training_has_begun:
-                print("----------------------------------------Training  has begun------------------------------------")
-                uf.training_has_begun = False
-                uf.training_start_time = datetime.datetime.now()
-                # Convert image to neuron activity
-                uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
+            auto_trainer()
 
-            # Keep track of how many times the number needs to be trained etc.
-            uf.training_counter -= 1
-            print("training counter is: ", uf.training_counter)
-            # Read image and the label from MNIST
-            print("Number to train is: ", uf.number_to_train)
-
-            # print("Labeled image has been loaded")
-            if uf.training_counter == 0:
-                uf.number_to_train += 1
-                uf.training_counter = uf.training_counter_default
-                uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-                # Convert image to neuron activity
-                uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
-            # print("image has been converted to neuronal activities...")
-            # inject neuron activity to FCL
-            fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
-            # print("Activities caused by image are now part of the FCL")
-            # inject label to FCL
-            uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
-            fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
-            # print("Activities caused by image label are now part of the FCL")
-            # Exit condition
-            if uf.number_to_train == 9 and uf.training_counter == 1:
-                uf.parameters["Switches"]["auto_train"] = False
-                training_duration = datetime.datetime.now() - uf.training_start_time
-                print("----------------------------All training rounds has been completed-----------------------------")
-                print("Total training duration was: ", training_duration)
-                print("-----------------------------------------------------------------------------------------------")
-                uf.number_to_train = 0
-
-        # todo: The following is to have a chkpnt to assess the perf of the in-use genome and make on the fly adj.
+        # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
         if burst_count % uf.genome['evolution_burst_count'] == 0:
             print('Evolution phase reached...')
             genethesizer.generation_assessment()
@@ -119,8 +86,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
             # Burst Visualization
             if uf.parameters["Switches"]["vis_show"]:
                 visualizer.burst_visualizer(fire_candidate_list)
-
-            # genome = uf.genome
 
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
@@ -135,77 +100,21 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
                 print(settings.Bcolors.YELLOW + '    %s : %i  '
                       % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
                       + settings.Bcolors.ENDC)
+            for entry in fire_candidate_list:
+                if uf.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
+                    print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)
                 # if uf.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
                 #         and len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
                 #     sleep(uf.parameters["Timers"]["idle_burst_timer"])
 
             # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
-
             # Firing all neurons in the Fire Candidate List
             for x in list(fire_candidate_list):
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1], verbose=verbose)
 
-            # The following handles neuro-plasticity
-            if uf.parameters["Switches"]["plasticity"]:
-                # Plasticity between T1 and Vision memory
-                # todo: generalize this function
-                # Long Term Potentiation (LTP) between vision_IT and vision_memory
-                for src_neuron in previous_fcl:
-                    if src_neuron[0] == "vision_IT":
-                        for dst_neuron in fire_candidate_list:
-                            if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-                                    in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-                                apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-                                                     dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
-
-                                print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
-                                                              "...........LTP between vision_IT and vision_memory occurred "
-                                      + settings.Bcolors.ENDC)
-
-                # Long Term Depression (LTD) between vision_IT and vision_memory
-                for src_neuron in fire_candidate_list:
-                    if src_neuron[0] == "vision_IT":
-                        for dst_neuron in previous_fcl:
-                            if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-                                    in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-                                apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-                                                     dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
-                                                     long_term_depression=True)
-
-                                print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
-                                                              "...........LTD between vision_IT and vision_memory occurred "
-                                      + settings.Bcolors.ENDC)
-
-                # Building a bidirectional synapse between memory neurons who fire together within a cortical area
-                # todo: The following loop is very inefficient___ fix it!!
-                # todo: Read the following memory list from Genome
-                memory_list = ['utf8_memory', 'vision_memory']
-                for cortical_area in memory_list:
-                    if uf.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
-                        for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
-                            for dst_neuron in set([j[1] for j in fire_candidate_list if j[0] == cortical_area]):
-                                if src_neuron != dst_neuron:
-                                    apply_plasticity(cortical_area=cortical_area,
-                                                     src_neuron=src_neuron, dst_neuron=dst_neuron)
-
-                # Wiring Vision memory to UIF-8 memory
-                for dst_neuron in fire_candidate_list:
-                    if dst_neuron[0] == "utf8_memory":
-                        for src_neuron in fire_candidate_list:
-                            if src_neuron[0] == "vision_memory":
-                                apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
-                                                     dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
-
-                                print(settings.Bcolors.OKGREEN + "..............................................................."
-                                                              "...........A new memory was formed against utf8_memory location "
-                                      + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
-                                                                                      dst_neuron[1]) + settings.Bcolors.ENDC)
-                                # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
-                                # for dst_neuron_id in dst_neuron_id_list:
-                                #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                                #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+            neuro_plasticity()
 
         burst_duration = datetime.datetime.now() - burst_start_time
         print(">>> Burst duration: %s" % burst_duration)
@@ -213,71 +122,226 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(fire_candidate_list)
 
-        while not user_input.empty():
-            try:
-                user_input_value = user_input.get()
-                user_input_value_param = user_input_param.get()
-                print("User input value is ", user_input_value)
-                if user_input_value == 'x':
-                    print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-                    burst_count = 0
-                    uf.parameters["Switches"]["ready_to_exit_burst"] = True
-                    uf.parameters["Input"]["user_input"] = ''
-                elif user_input_value == 'v':
-                    if verbose:
-                        uf.parameters["Switches"]["verbose"] = False
-                        print("Verbose mode is Turned OFF!")
-                        uf.parameters["Input"]["user_input"] = ''
-                    else:
-                        uf.parameters["Switches"]["verbose"] = True
-                        print("Verbose mode is Turned ON!")
-                        uf.parameters["Input"]["user_input"] = ''
+        user_input_processing(user_input, user_input_param, fire_list, event_queue, verbose)
 
-                elif user_input_value == 'g':
-                    if verbose:
-                        uf.parameters["Switches"]["vis_show"] = False
-                        print("Visualization mode is Turned OFF!")
-                        uf.parameters["Input"]["user_input"] = ''
-                    else:
-                        uf.parameters["Switches"]["vis_show"] = True
-                        print("Visualization mode is Turned ON!")
-                        uf.parameters["Input"]["user_input"] = ''
-
-                elif user_input_value == 'a':
-                        uf.parameters["Switches"]["auto_train"] = True
-                        uf.training_has_begun = True
-                        print("Automatic training has been turned ON!")
-                        uf.parameters["Input"]["user_input"] = ''
-                        uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-
-                elif user_input_value == 'z':
-                    uf.parameters["Switches"]["auto_train"] = True
-                    print("Auto training module has been turned on!")
-                    uf.parameters["Input"]["user_input"] = ''
-
-                elif user_input_value == 'r':
-                    print("Planning to read an image associated with :", user_input_value_param)
-                    fire_candidate_list = fire_list.get()
-                    mnist_labled_image = mnist_img_fetcher(user_input_value_param)
-                    neuron_list = brain_functions.Brain.retina(mnist_labled_image)
-                    # print("Neuron list: ", neuron_list)
-                    fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
-                    fire_list.put(fire_candidate_list)
-                    # print("Fire list: ", fire_candidate_list)
-                    print("An image was read from MNIST database associated with number ", user_input_value_param)
-                    event_id = event_id_gen()
-                    print(
-                        " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
-                        event_id)
-                    event_queue.put(event_id)
-                    uf.parameters["Input"]["user_input"] = ''
-                    uf.parameters["Input"]["user_input_param"] = ''
-
-            finally:
-                print("Finally something has happened")
-                break
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
+
+
+def auto_trainer():
+    global fire_candidate_list
+    # Logging
+    if uf.training_has_begun:
+        print("----------------------------------------Training  has begun------------------------------------")
+        uf.training_has_begun = False
+        uf.training_start_time = datetime.datetime.now()
+        # Convert image to neuron activity
+        uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
+
+    if uf.training_mode == "l1":
+        # Keep track of how many times the number needs to be trained etc.
+        uf.training_counter -= 1
+        print("training counter is: ", uf.training_counter)
+        print("training round is: ", uf.training_rounds)
+        # Read image and the label from MNIST
+        print("Number to train is: ", uf.number_to_train)
+
+        # print("Labeled image has been loaded")
+        if uf.training_counter == 0:
+            uf.number_to_train += 1
+            uf.training_rounds -= 1
+            uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
+            uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
+            # Convert image to neuron activity
+            uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
+        # print("image has been converted to neuronal activities...")
+        # inject neuron activity to FCL
+        fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
+        # print("Activities caused by image are now part of the FCL")
+        # inject label to FCL
+        uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
+        fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
+        # print("Activities caused by image label are now part of the FCL")
+        # Exit condition
+        if uf.training_rounds == 1 and uf.training_counter == 1:
+            uf.parameters["Switches"]["auto_train"] = False
+            uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
+            training_duration = datetime.datetime.now() - uf.training_start_time
+            print("----------------------------All training rounds has been completed-----------------------------")
+            print("Total training duration was: ", training_duration)
+            print("-----------------------------------------------------------------------------------------------")
+            uf.number_to_train = 0
+
+    elif uf.training_mode == "l2":
+        # Keep track of how many times the number needs to be trained etc.
+        uf.training_counter -= 1
+        print("training counter is: ", uf.training_counter)
+        print("training round is: ", uf.training_rounds)
+        # Read image and the label from MNIST
+        print("Number to train is: ", uf.number_to_train)
+
+        # print("Labeled image has been loaded")
+        if uf.training_counter == 1:
+            # uf.number_to_train += 1
+            uf.training_rounds -= 1
+            uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
+            uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
+            # Convert image to neuron activity
+            uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
+        # print("image has been converted to neuronal activities...")
+        # inject neuron activity to FCL
+        fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
+        # print("Activities caused by image are now part of the FCL")
+        # inject label to FCL
+        uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
+        fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
+        # print("Activities caused by image label are now part of the FCL")
+        # Exit condition
+        if uf.training_rounds == 1:
+            uf.parameters["Switches"]["auto_train"] = False
+            uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
+            training_duration = datetime.datetime.now() - uf.training_start_time
+            print("----------------------------All training rounds has been completed-----------------------------")
+            print("Total training duration was: ", training_duration)
+            print("-----------------------------------------------------------------------------------------------")
+            uf.number_to_train = 0
+
+
+def neuro_plasticity():
+    # The following handles neuro-plasticity
+    global fire_candidate_list
+    global previous_fcl
+    if uf.parameters["Switches"]["plasticity"]:
+        # Plasticity between T1 and Vision memory
+        # todo: generalize this function
+        # Long Term Potentiation (LTP) between vision_IT and vision_memory
+        for src_neuron in previous_fcl:
+            if src_neuron[0] == "vision_IT":
+                for dst_neuron in fire_candidate_list:
+                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+                            in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
+
+                        print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                                     "...........LTP between vision_IT and vision_memory occurred "
+                              + settings.Bcolors.ENDC)
+
+        # Long Term Depression (LTD) between vision_IT and vision_memory
+        for src_neuron in fire_candidate_list:
+            if src_neuron[0] == "vision_IT":
+                for dst_neuron in previous_fcl:
+                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+                            in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
+                                             long_term_depression=True)
+
+                        print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
+                                                     "...........LTD between vision_IT and vision_memory occurred "
+                              + settings.Bcolors.ENDC)
+
+        # Building a bidirectional synapse between memory neurons who fire together within a cortical area
+        # todo: The following loop is very inefficient___ fix it!!
+        # todo: Read the following memory list from Genome
+        memory_list = uf.cortical_group_members('Memory')
+        # memory_list = ['utf8_memory', 'vision_memory']
+        for cortical_area in memory_list:
+            if uf.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
+                for src_neuron in set([i[1] for i in fire_candidate_list if i[0] == cortical_area]):
+                    for dst_neuron in set([j[1] for j in fire_candidate_list if j[0] == cortical_area]):
+                        if src_neuron != dst_neuron:
+                            apply_plasticity(cortical_area=cortical_area,
+                                             src_neuron=src_neuron, dst_neuron=dst_neuron)
+
+        # Wiring Vision memory to UIF-8 memory
+        for dst_neuron in fire_candidate_list:
+            if dst_neuron[0] == "utf8_memory":
+                for src_neuron in fire_candidate_list:
+                    if src_neuron[0] == "vision_memory":
+                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
+                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+
+                        print(
+                            settings.Bcolors.OKGREEN + "..............................................................."
+                                                       "..........A new memory was formed against utf8_memory location "
+                            + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
+                                                                            dst_neuron[1]) + settings.Bcolors.ENDC)
+                        # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
+                        # for dst_neuron_id in dst_neuron_id_list:
+                        #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                        #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+
+
+def user_input_processing(user_input, user_input_param, fire_list, event_queue, verbose):
+    while not user_input.empty():
+        try:
+            user_input_value = user_input.get()
+            user_input_value_param = user_input_param.get()
+            print("User input value is ", user_input_value)
+            if user_input_value == 'x':
+                print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+                global burst_count
+                burst_count = 0
+                uf.parameters["Switches"]["ready_to_exit_burst"] = True
+
+            elif user_input_value == 'v':
+                if verbose:
+                    uf.parameters["Switches"]["verbose"] = False
+                    print("Verbose mode is Turned OFF!")
+                else:
+                    uf.parameters["Switches"]["verbose"] = True
+                    print("Verbose mode is Turned ON!")
+
+            elif user_input_value == 'g':
+                if verbose:
+                    uf.parameters["Switches"]["vis_show"] = False
+                    print("Visualization mode is Turned OFF!")
+                else:
+                    uf.parameters["Switches"]["vis_show"] = True
+                    print("Visualization mode is Turned ON!")
+
+            elif user_input_value == 'l1':
+                uf.parameters["Switches"]["auto_train"] = True
+                uf.training_mode = "l1"
+                uf.training_has_begun = True
+                print("Automatic learning for 0..9 has been turned ON!")
+                uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
+
+            elif user_input_value == 'l2':
+                uf.parameters["Switches"]["auto_train"] = True
+                uf.training_mode = "l2"
+                uf.training_has_begun = True
+                uf.number_to_train = int(user_input_value_param)
+                print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
+                      % user_input_value_param)
+                uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
+
+            elif user_input_value == 'z':
+                uf.parameters["Switches"]["auto_train"] = True
+                print("Auto training module has been turned on!")
+
+            elif user_input_value == 'r':
+                print("Planning to read an image associated with :", user_input_value_param)
+                fire_candidate_list = fire_list.get()
+                mnist_labled_image = mnist_img_fetcher(user_input_value_param)
+                neuron_list = brain_functions.Brain.retina(mnist_labled_image)
+                # print("Neuron list: ", neuron_list)
+                fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
+                fire_list.put(fire_candidate_list)
+                # print("Fire list: ", fire_candidate_list)
+                print("An image was read from MNIST database associated with number ", user_input_value_param)
+                event_id = event_id_gen()
+                print(
+                    " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
+                    event_id)
+                event_queue.put(event_id)
+
+        finally:
+            print("Finally something has happened")
+            uf.parameters["Input"]["user_input"] = ''
+            uf.parameters["Input"]["user_input_param"] = ''
+            break
 
 
 #  >>>>>> Review this function against what we had in past

@@ -130,6 +130,21 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
     brain_queue.put(uf.brain)
 
 
+def data_injector(rounds, repeats, mode):
+    """
+    This function has three modes l1, l2 & l3.
+    Mode l1: Assist in learning numbers from 0 to 9
+    Mode l2: Assist in learning variations of the same number
+    Mode l3: Assist in learning variations of numbers from 0..9 (Not implemented yet)
+    """
+    if uf.training_has_begun:
+        print("----------------------------------------Data injection has begun------------------------------------")
+        uf.training_has_begun = False
+        uf.training_start_time = datetime.datetime.now()
+
+
+
+
 def auto_trainer_2():
     """
     This function has three modes l1, l2 & l3.
@@ -305,11 +320,6 @@ def user_input_processing(user_input, user_input_param, fire_list, event_queue, 
                 print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
                       % user_input_value_param)
 
-
-            elif user_input_value == 'z':
-                uf.parameters["Switches"]["auto_train"] = True
-                print("Auto training module has been turned on!")
-
             elif user_input_value == 'r':
                 print("Planning to read an image associated with :", user_input_value_param)
                 fire_candidate_list = fire_list.get()
@@ -320,6 +330,17 @@ def user_input_processing(user_input, user_input_param, fire_list, event_queue, 
                 fire_list.put(fire_candidate_list)
                 # print("Fire list: ", fire_candidate_list)
                 print("An image was read from MNIST database associated with number ", user_input_value_param)
+                event_id = event_id_gen()
+                print(
+                    " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
+                    event_id)
+                event_queue.put(event_id)
+
+            elif user_input_value == 'c':
+                fire_candidate_list = fire_list.get()
+                neuron_list = IPU_utf8.convert_char_to_fire_list(user_input_value_param)
+                fire_candidate_list = inject_to_fcl(neuron_list, fire_candidate_list)
+                fire_list.put(fire_candidate_list)
                 event_id = event_id_gen()
                 print(
                     " <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",

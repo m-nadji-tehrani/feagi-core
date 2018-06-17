@@ -120,18 +120,8 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = ''
         return
 
-    def process_read_char():
-        process_4 = mp.Process(name='Reading input char',
-                               target=brain_functions.Brain.read_char,
-                               args=(universal_functions.parameters["Input"]["user_input_param"], FCL_queue))
-        process_4.start()
-        process_4.join()
-        universal_functions.parameters["Input"]["user_input"] = ''
-        return
-
     # Starting the burst machine
     # pool = mp.Pool(max(1, mp.cpu_count()))
-
     process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
                                                         FCL_queue, brain_queue, event_queue,))
     print("The burst engine has been started...")
@@ -162,10 +152,6 @@ if __name__ == '__main__':
                 # elif universal_functions.parameters["Input"]["user_input"] == 's':
                 #     process_show_cortical_areas()
                 #     universal_functions.parameters["Input"]["user_input"] = ''
-
-                elif universal_functions.parameters["Input"]["user_input"] == 'c':
-                    process_read_char()
-                    universal_functions.parameters["Input"]["user_input"] = ''
 
                 elif universal_functions.parameters["Input"]["user_input"] == 'test':
                     auto_pilot.auto_test(FCL_queue, event_queue)

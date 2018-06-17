@@ -26,48 +26,6 @@ def training_num_gen(num):
     return rand_img_index, labeled_img
 
 
-def auto_train(fcl_queue, event_queue):
-    b = brain_functions.Brain()
-    training_start_time = datetime.now()
-    print("---------------------------------------------------------------------Auto training has been initiated.")
-    for number in range(10):
-        mnist_num, mnist_img = training_num_gen(number)
-        if universal_functions.parameters["Switches"]["vis_show"]:
-            visualizer.cortical_heatmap(IPU_vision.read_image(mnist_num), [])
-        # Following for loop help to train for a single number n number of times
-        for x in range(int(universal_functions.parameters["Input"]["user_input_param"])):
-            print(">>  >>  >>  >>  >>  >>  >>  >>  >>  Training round %i for number %s" % (x + 1, mnist_img[1]))
-            mnist_img_char = str(mnist_img[1])
-            process_5 = mp.Process(name='Seeing_MNIST_image',
-                                   target=b.see_from_mnist,
-                                   args=(mnist_img, fcl_queue, event_queue))
-            process_6 = mp.Process(name='Reading input char',
-                                   target=b.read_char,
-                                   args=(str(mnist_img_char), fcl_queue))
-            process_5.start()
-            sleep(universal_functions.parameters["Timers"]["auto_train_delay"])
-            process_6.start()
-            # process_5.join()
-            # process_6.join()
-
-        # Placing training on hold till neuronal activities for previous training set is ramped down
-        fcl = fcl_queue.get()
-        fcl_length = len(fcl)
-        fcl_queue.put(fcl)
-        while fcl_length > 10:
-            sleep(5)
-            fcl = fcl_queue.get()
-            fcl_length = len(fcl)
-            fcl_queue.put(fcl)
-
-    training_duration = datetime.now() - training_start_time
-    print("---------------------------------------------------------------------Auto training has been completed.")
-    print("Training lasted %s " % training_duration)
-    print("--------------------------------------------------------------")
-    universal_functions.parameters["Input"]["user_input"] = 'x'
-    return
-
-
 def auto_test(fcl_queue, event_queue):
     """
     Test approach:

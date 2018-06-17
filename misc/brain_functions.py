@@ -119,18 +119,6 @@ class Brain:
         return
 
     @staticmethod
-    def read_char(char, fcl_queue):
-        from PUs import IPU_utf8
-        cp = mp.current_process()
-        # print(' starting', cp.name, cp.pid)
-        if char:
-            fire_list = IPU_utf8.convert_char_to_fire_list(char)
-            print(fire_list)
-            print("% % % % % % % % % % % % % % % % % % Injecting character >>>  %s <<<" % char)
-            Brain.inject_to_fcl(fire_list, fcl_queue)
-        # print(' exiting', cp.name, cp.pid)
-
-    @staticmethod
     def read_user_input():
         print("Func: read_user_input : start")
         fd = sys.stdin.fileno()

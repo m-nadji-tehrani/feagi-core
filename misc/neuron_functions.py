@@ -70,7 +70,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # todo: Currently feeding a single random number n times. Add the ability to train variations of the same number
         # todo: create a number feeder
 
-
         # todo: need to break down the training function into peices with one feeding a streem of data
         if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
             auto_trainer_2()
@@ -130,7 +129,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
     brain_queue.put(uf.brain)
 
 
-def data_injector(rounds, repeats, mode):
+def auto_injector(rounds, repeats, mode):
     """
     This function has three modes l1, l2 & l3.
     Mode l1: Assist in learning numbers from 0 to 9
@@ -141,8 +140,6 @@ def data_injector(rounds, repeats, mode):
         print("----------------------------------------Data injection has begun------------------------------------")
         uf.training_has_begun = False
         uf.training_start_time = datetime.datetime.now()
-
-
 
 
 def auto_trainer_2():
@@ -179,7 +176,7 @@ def auto_trainer_2():
     # Exit condition
     if (uf.training_mode == 'l1' and uf.training_rounds == 1 and uf.training_counter == 1) or \
             (uf.training_mode == 'l2' and uf.training_rounds == 1):
-        uf.parameters["Switches"]["auto_train"] = False
+        uf.toggle_training_mode()
         uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
         training_duration = datetime.datetime.now() - uf.training_start_time
         print("----------------------------All training rounds has been completed-----------------------------")
@@ -291,29 +288,19 @@ def user_input_processing(user_input, user_input_param, fire_list, event_queue, 
                 uf.parameters["Switches"]["ready_to_exit_burst"] = True
 
             elif user_input_value == 'v':
-                if verbose:
-                    uf.parameters["Switches"]["verbose"] = False
-                    print("Verbose mode is Turned OFF!")
-                else:
-                    uf.parameters["Switches"]["verbose"] = True
-                    print("Verbose mode is Turned ON!")
+                uf.toggle_verbose_mode()
 
             elif user_input_value == 'g':
-                if verbose:
-                    uf.parameters["Switches"]["vis_show"] = False
-                    print("Visualization mode is Turned OFF!")
-                else:
-                    uf.parameters["Switches"]["vis_show"] = True
-                    print("Visualization mode is Turned ON!")
+                uf.toggle_visualization_mode()
 
             elif user_input_value == 'l1':
-                uf.parameters["Switches"]["auto_train"] = True
+                uf.toggle_training_mode()
                 uf.training_mode = "l1"
                 uf.training_has_begun = True
                 print("Automatic learning for 0..9 has been turned ON!")
 
             elif user_input_value == 'l2':
-                uf.parameters["Switches"]["auto_train"] = True
+                uf.toggle_training_mode()
                 uf.training_mode = "l2"
                 uf.training_has_begun = True
                 uf.number_to_train = int(user_input_value_param)

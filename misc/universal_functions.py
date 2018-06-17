@@ -224,6 +224,33 @@ def reset_cumulative_counter_instances():
     return
 
 
+def toggle_verbose_mode():
+    if parameters["Switches"]["verbose"]:
+        parameters["Switches"]["verbose"] = False
+        print("Verbose mode is Turned OFF!")
+    else:
+        parameters["Switches"]["verbose"] = True
+        print("Verbose mode is Turned On!")
+
+
+def toggle_visualization_mode():
+    if parameters["Switches"]["vis_show"]:
+        parameters["Switches"]["vis_show"] = False
+        print("Visualization mode is Turned OFF!")
+    else:
+        parameters["Switches"]["vis_show"] = True
+        print("Visualization mode is Turned On!")
+
+
+def toggle_training_mode():
+    if parameters["Switches"]["auto_train"]:
+        parameters["Switches"]["auto_train"] = False
+        print("Auto_train mode is Turned OFF!")
+    else:
+        parameters["Switches"]["auto_train"] = True
+        print("Auto_train mode is Turned On!")
+
+
 global genome
 genome = load_genome_in_memory()
 

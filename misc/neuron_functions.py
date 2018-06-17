@@ -71,7 +71,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # todo: create a number feeder
 
         if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
-            auto_trainer()
+            auto_trainer_2()
 
         # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
         if burst_count % uf.genome['evolution_burst_count'] == 0:
@@ -128,7 +128,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
     brain_queue.put(uf.brain)
 
 
-def auto_trainer():
+def auto_trainer_2():
+    """
+    This function has three modes l1, l2 & l3.
+    Mode l1: Assist in learning numbers from 0 to 9
+    Mode l2: Assist in learning variations of the same number
+    Mode l3: Assist in learning variations of numbers from 0..9 (Not implemented yet)
+    """
     global fire_candidate_list
     # Logging
     if uf.training_has_begun:
@@ -138,73 +144,41 @@ def auto_trainer():
         # Convert image to neuron activity
         uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
 
-    if uf.training_mode == "l1":
-        # Keep track of how many times the number needs to be trained etc.
-        uf.training_counter -= 1
-        print("training counter is: ", uf.training_counter)
-        print("training round is: ", uf.training_rounds)
-        # Read image and the label from MNIST
-        print("Number to train is: ", uf.number_to_train)
+    # Keep track of how many times the number needs to be trained etc.
+    uf.training_counter -= 1
+    print("training counter is: ", uf.training_counter)
+    print("training round is: ", uf.training_rounds)
+    # Read image and the label from MNIST
+    print("Number to train is: ", uf.number_to_train)
 
-        # print("Labeled image has been loaded")
-        if uf.training_counter == 0:
+    # print("Labeled image has been loaded")
+    if uf.training_counter == 0:
+        if uf.training_mode == "l1":
             uf.number_to_train += 1
-            uf.training_rounds -= 1
-            uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
-            uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-            # Convert image to neuron activity
-            uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
-        # print("image has been converted to neuronal activities...")
-        # inject neuron activity to FCL
-        fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
-        # print("Activities caused by image are now part of the FCL")
-        # inject label to FCL
-        uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
-        fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
-        # print("Activities caused by image label are now part of the FCL")
-        # Exit condition
-        if uf.training_rounds == 1 and uf.training_counter == 1:
-            uf.parameters["Switches"]["auto_train"] = False
-            uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
-            training_duration = datetime.datetime.now() - uf.training_start_time
-            print("----------------------------All training rounds has been completed-----------------------------")
-            print("Total training duration was: ", training_duration)
-            print("-----------------------------------------------------------------------------------------------")
-            uf.number_to_train = 0
+        uf.training_rounds -= 1
+        uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
+        uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
+        # Convert image to neuron activity
+        uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
+    # print("image has been converted to neuronal activities...")
+    # inject neuron activity to FCL
+    fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
+    # print("Activities caused by image are now part of the FCL")
+    # inject label to FCL
+    uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
+    fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
+    # print("Activities caused by image label are now part of the FCL")
 
-    elif uf.training_mode == "l2":
-        # Keep track of how many times the number needs to be trained etc.
-        uf.training_counter -= 1
-        print("training counter is: ", uf.training_counter)
-        print("training round is: ", uf.training_rounds)
-        # Read image and the label from MNIST
-        print("Number to train is: ", uf.number_to_train)
-
-        # print("Labeled image has been loaded")
-        if uf.training_counter == 1:
-            # uf.number_to_train += 1
-            uf.training_rounds -= 1
-            uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
-            uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-            # Convert image to neuron activity
-            uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
-        # print("image has been converted to neuronal activities...")
-        # inject neuron activity to FCL
-        fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
-        # print("Activities caused by image are now part of the FCL")
-        # inject label to FCL
-        uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
-        fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
-        # print("Activities caused by image label are now part of the FCL")
-        # Exit condition
-        if uf.training_rounds == 1:
-            uf.parameters["Switches"]["auto_train"] = False
-            uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
-            training_duration = datetime.datetime.now() - uf.training_start_time
-            print("----------------------------All training rounds has been completed-----------------------------")
-            print("Total training duration was: ", training_duration)
-            print("-----------------------------------------------------------------------------------------------")
-            uf.number_to_train = 0
+    # Exit condition
+    if (uf.training_mode == 'l1' and uf.training_rounds == 1 and uf.training_counter == 1) or \
+            (uf.training_mode == 'l2' and uf.training_rounds == 1):
+        uf.parameters["Switches"]["auto_train"] = False
+        uf.training_rounds = uf.parameters["InitData"]["training_rounds_default"]
+        training_duration = datetime.datetime.now() - uf.training_start_time
+        print("----------------------------All training rounds has been completed-----------------------------")
+        print("Total training duration was: ", training_duration)
+        print("-----------------------------------------------------------------------------------------------")
+        uf.number_to_train = 0
 
 
 def neuro_plasticity():

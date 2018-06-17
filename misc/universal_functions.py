@@ -15,7 +15,7 @@ if 'parameters' not in globals():
 
 
 number_to_train = 0
-training_neuron_list = []
+training_neuron_list_img = []
 training_counter = parameters["InitData"]["training_counter_default"]
 training_rounds = parameters["InitData"]["training_rounds_default"]
 training_start_time = datetime.now()

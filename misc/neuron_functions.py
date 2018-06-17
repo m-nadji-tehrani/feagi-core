@@ -70,6 +70,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # todo: Currently feeding a single random number n times. Add the ability to train variations of the same number
         # todo: create a number feeder
 
+
+        # todo: need to break down the training function into peices with one feeding a streem of data
         if uf.parameters["Switches"]["auto_train"] and uf.training_counter > 0:
             auto_trainer_2()
 
@@ -135,39 +137,29 @@ def auto_trainer_2():
     Mode l2: Assist in learning variations of the same number
     Mode l3: Assist in learning variations of numbers from 0..9 (Not implemented yet)
     """
-    global fire_candidate_list
-    # Logging
+
     if uf.training_has_begun:
         print("----------------------------------------Training  has begun------------------------------------")
         uf.training_has_begun = False
         uf.training_start_time = datetime.datetime.now()
-        # Convert image to neuron activity
-        uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
 
-    # Keep track of how many times the number needs to be trained etc.
+        DataFeeder.image_feeder(uf.number_to_train)
+
     uf.training_counter -= 1
     print("training counter is: ", uf.training_counter)
     print("training round is: ", uf.training_rounds)
-    # Read image and the label from MNIST
     print("Number to train is: ", uf.number_to_train)
 
-    # print("Labeled image has been loaded")
     if uf.training_counter == 0:
         if uf.training_mode == "l1":
             uf.number_to_train += 1
         uf.training_rounds -= 1
         uf.training_counter = uf.parameters["InitData"]["training_counter_default"]
-        uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
-        # Convert image to neuron activity
-        uf.training_neuron_list = brain_functions.Brain.retina(uf.labeled_image)
-    # print("image has been converted to neuronal activities...")
-    # inject neuron activity to FCL
-    fire_candidate_list = inject_to_fcl(uf.training_neuron_list, fire_candidate_list)
-    # print("Activities caused by image are now part of the FCL")
-    # inject label to FCL
-    uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
-    fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
-    # print("Activities caused by image label are now part of the FCL")
+
+        DataFeeder.image_feeder(uf.number_to_train)
+
+    DataFeeder.neuron_list_feeder()
+    DataFeeder.utf8_feeder()
 
     # Exit condition
     if (uf.training_mode == 'l1' and uf.training_rounds == 1 and uf.training_counter == 1) or \
@@ -179,6 +171,30 @@ def auto_trainer_2():
         print("Total training duration was: ", training_duration)
         print("-----------------------------------------------------------------------------------------------")
         uf.number_to_train = 0
+
+
+class DataFeeder:
+    @staticmethod
+    def utf8_feeder():
+        # inject label to FCL
+        global fire_candidate_list
+        uf.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(uf.labeled_image[1]))
+        fire_candidate_list = inject_to_fcl(uf.training_neuron_list_utf, fire_candidate_list)
+        # print("Activities caused by image label are now part of the FCL")
+
+    @staticmethod
+    def neuron_list_feeder():
+        global fire_candidate_list
+        # inject neuron activity to FCL
+        fire_candidate_list = inject_to_fcl(uf.training_neuron_list_img, fire_candidate_list)
+        # print("Activities caused by image are now part of the FCL")
+
+    @staticmethod
+    def image_feeder(num):
+        uf.labeled_image = mnist_img_fetcher(num)
+        # Convert image to neuron activity
+        uf.training_neuron_list_img = brain_functions.Brain.retina(uf.labeled_image)
+        # print("image has been converted to neuronal activities...")
 
 
 def neuro_plasticity():
@@ -280,7 +296,6 @@ def user_input_processing(user_input, user_input_param, fire_list, event_queue, 
                 uf.training_mode = "l1"
                 uf.training_has_begun = True
                 print("Automatic learning for 0..9 has been turned ON!")
-                uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
 
             elif user_input_value == 'l2':
                 uf.parameters["Switches"]["auto_train"] = True
@@ -289,7 +304,7 @@ def user_input_processing(user_input, user_input_param, fire_list, event_queue, 
                 uf.number_to_train = int(user_input_value_param)
                 print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
                       % user_input_value_param)
-                uf.labeled_image = mnist_img_fetcher(uf.number_to_train)
+
 
             elif user_input_value == 'z':
                 uf.parameters["Switches"]["auto_train"] = True

@@ -255,9 +255,11 @@ if __name__ == '__main__':
 # Visualization
 # todo: Fix issue where some cortical activities are not showing up    <<<  NEXT !!!!!
 
+# Vision
+# todo: Print visual memory to output in the form of pixels
 
 # Speech
-# todo: Make it learn to Speak!
+# todo: Make it learn to speak!
 
 # Auto training
 # todo: Compare results if you randomly show different variation of the same number vs one at a time

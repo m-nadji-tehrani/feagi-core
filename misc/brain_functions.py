@@ -58,7 +58,7 @@ class Brain:
 
         # image = filter.brightness(image)
 
-        if universal_functions.parameters['Logs']['print_seen_img']:
+        if universal_functions.parameters['Logs']['print_filtered_img']:
             print("Filtered image:\n", image)
 
         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))

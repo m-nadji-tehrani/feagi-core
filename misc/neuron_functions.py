@@ -20,6 +20,7 @@ import brain_functions
 from configuration import settings
 from misc import universal_functions as uf, stats, visualizer
 from IPU_vision import mnist_img_fetcher
+from auto_pilot import training_num_gen
 
 if uf.parameters["Switches"]["vis_show"]:
     pass
@@ -73,6 +74,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
         # todo: need to break down the training function into peices with one feeding a streem of data
         if uf.parameters["Auto_injector"]["injector_status"]:
             auto_injector()
+
+        if uf.parameters["Auto_tester"]["tester_status"]:
+            auto_tester()
 
         # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
         if burst_count % uf.genome['evolution_burst_count'] == 0:
@@ -129,12 +133,128 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
     brain_queue.put(uf.brain)
 
 
+def test_manager(test_mode, test_param):
+    """
+    This function has three modes t1, t2.
+    Mode t1: Assist in learning numbers from 0 to 9
+    Mode t2: Assist in learning variations of the same number
+    """
+    try:
+        if test_mode == 't1':
+            uf.TesterParams.test_mode = "t1"
+            print("Automatic learning for 0..9 has been turned ON!")
+            uf.TesterParams.img_flag = True
+            uf.TesterParams.utf_flag = True
+            uf.TesterParams.utf_handler = True
+            uf.TesterParams.variation_handler = True
+            uf.TesterParams.variation_counter = uf.parameters["Auto_tester"]["variation_default"]
+            uf.TesterParams.variation_counter_actual = uf.parameters["Auto_tester"]["variation_default"]
+            uf.TesterParams.utf_counter = uf.parameters["Auto_tester"]["utf_default"]
+            uf.TesterParams.utf_counter_actual = uf.parameters["Auto_tester"]["utf_default"]
+            uf.TesterParams.num_to_inject = uf.TesterParams.utf_counter
+
+        elif test_mode == 't2':
+            uf.TesterParams.test_mode = "t2"
+            uf.TesterParams.img_flag = True
+            uf.TesterParams.utf_flag = True
+            uf.TesterParams.utf_handler = False
+            uf.TesterParams.variation_handler = True
+            uf.TesterParams.variation_counter = uf.parameters["Auto_tester"]["variation_default"]
+            uf.TesterParams.variation_counter_actual = uf.parameters["Auto_tester"]["variation_default"]
+            uf.TesterParams.utf_counter = -1
+            uf.TesterParams.utf_counter_actual = -1
+            uf.TesterParams.num_to_inject = int(test_param)
+            print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
+                  % test_param)
+
+        else:
+            print("Error detecting the test mode...")
+            return
+
+    finally:
+        uf.toggle_test_mode()
+        uf.TesterParams.testing_has_begun = True
+
+
+def auto_tester():
+    """
+    Test approach:
+
+    - Ask user for number of times testing every digit call it x
+    - Inject each number x rounds with each round conclusion being a "Comprehensions"
+    - Count the number of True vs. False Comprehensions
+    - Collect stats for each number and report at the end of testing
+
+    """
+    if uf.TesterParams.testing_has_begun:
+        # Beginning of a injection process
+        print("----------------------------------------Data injection has begun------------------------------------")
+        uf.TesterParams.testing_has_begun = False
+        uf.TesterParams.test_start_time = datetime.datetime.now()
+        if uf.TesterParams.img_flag:
+            DataFeeder.image_feeder(uf.TesterParams.num_to_inject)
+
+    # Exposure counter
+    uf.TesterParams.exposure_counter_actual -= 1
+
+    # Variation counter
+    if uf.TesterParams.exposure_counter_actual < 0:
+        # Comprehension logic
+        if uf.parameters["Input"]["comprehended_char"] == uf.TesterParams.num_to_inject:
+            print(settings.Bcolors.HEADER +
+                  ">> >> >> The Brain successfully identified the image as > %s < !!!!"
+                  % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
+            uf.TesterParams.comprehension_counter += 1
+            uf.TesterParams.test_stats.append([uf.TesterParams.num_to_inject, uf.TesterParams.comprehension_counter])
+        uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
+        if uf.TesterParams.variation_handler:
+            uf.TesterParams.variation_counter_actual -= 1
+            if uf.TesterParams.img_flag:
+                DataFeeder.image_feeder(uf.TesterParams.num_to_inject)
+
+    # UTF counter
+    if uf.TesterParams.variation_counter_actual < 0 and uf.TesterParams.variation_handler:
+        uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
+        uf.TesterParams.variation_counter_actual = uf.TesterParams.variation_counter
+        if uf.TesterParams.utf_handler:
+            uf.TesterParams.utf_counter_actual -= 1
+            if uf.TesterParams.utf_flag:
+                uf.TesterParams.num_to_inject -= 1
+
+    print(uf.TesterParams.utf_counter,
+          uf.TesterParams.variation_counter,
+          uf.TesterParams.exposure_counter)
+
+    print(uf.TesterParams.utf_counter_actual,
+          uf.TesterParams.variation_counter_actual,
+          uf.TesterParams.exposure_counter_actual)
+
+    if uf.TesterParams.utf_counter_actual == -1 and \
+            uf.TesterParams.variation_counter_actual == 0 and \
+            uf.TesterParams.exposure_counter_actual == 0:
+        uf.parameters["Auto_tester"]["tester_status"] = False
+        uf.TesterParams.exposure_counter_actual = uf.parameters["Auto_tester"]["exposure_default"]
+        uf.TesterParams.variation_counter_actual = uf.parameters["Auto_tester"]["variation_default"]
+        uf.TesterParams.utf_counter_actual = uf.parameters["Auto_tester"]["utf_default"]
+        test_duration = datetime.datetime.now() - uf.TesterParams.test_start_time
+        print("----------------------------All testing rounds has been completed-----------------------------")
+        print("Total test duration was: ", test_duration)
+        print("-----------------------------------------------------------------------------------------------")
+        print("Test statistics are as follows:\n", uf.TesterParams.test_stats)
+        print("-----------------------------------------------------------------------------------------------")
+        # logging stats into Genome
+        uf.genome_stats["test_stats"] = uf.TesterParams.test_stats
+    if uf.TesterParams.img_flag:
+        DataFeeder.img_neuron_list_feeder()
+
+
 def injection_manager(injection_mode, injection_param):
     """
     This function has three modes l1, l2, r and c.
     Mode l1: Assist in learning numbers from 0 to 9
     Mode l2: Assist in learning variations of the same number
-    Mode l3: Assist in learning variations of numbers from 0..9 (Not implemented yet)
+    Mode r: Assist in exposing a single image to the brain for a number of bursts
+    Mode c: Assist in exposing a single utf8 char to the brain for a number of bursts
     """
     try:
         if injection_mode == 'l1':
@@ -194,7 +314,6 @@ def injection_manager(injection_mode, injection_param):
     finally:
         uf.toggle_injection_mode()
         uf.InjectorParams.injection_has_begun = True
-        print("You should only seem me once!!")
 
 
 def auto_injector():
@@ -368,6 +487,9 @@ def user_input_processing(user_input, user_input_param):
 
             elif user_input_value in ['l1', 'l2', 'r', 'c']:
                 injection_manager(injection_mode=user_input_value, injection_param=user_input_value_param)
+
+            elif user_input_value in ['t1', 't2']:
+                test_manager(test_mode=user_input_value, test_param=user_input_value_param)
 
         finally:
             uf.parameters["Input"]["user_input"] = ''

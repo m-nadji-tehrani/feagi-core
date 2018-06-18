@@ -13,6 +13,10 @@ if 'parameters' not in globals():
         parameters = json.load(data_file)
         print("Parameters has been read from file")
 
+training_neuron_list_utf = []
+training_neuron_list_img = []
+labeled_image = []
+
 
 class InjectorParams:
     img_flag = False
@@ -21,25 +25,37 @@ class InjectorParams:
     variation_handler = True
     exposure_handler = True
     utf_handler = True
-
     variation_counter = parameters["Auto_injector"]["variation_default"]
     exposure_counter = parameters["Auto_injector"]["exposure_default"]
     utf_counter = parameters["Auto_injector"]["utf_default"]
-
     variation_counter_actual = variation_counter
     exposure_counter_actual = exposure_counter
     utf_counter_actual = utf_counter
-
     injection_start_time = datetime.now()
-
     num_to_inject = ''
     utf_to_inject = ''
     injection_mode = ''
 
 
-training_neuron_list_utf = []
-training_neuron_list_img = []
-labeled_image = []
+class TesterParams:
+    img_flag = False
+    utf_flag = False
+    testing_has_begun = False
+    variation_handler = True
+    exposure_handler = True
+    utf_handler = True
+    variation_counter = parameters["Auto_tester"]["variation_default"]
+    exposure_counter = parameters["Auto_tester"]["exposure_default"]
+    utf_counter = parameters["Auto_tester"]["utf_default"]
+    variation_counter_actual = variation_counter
+    exposure_counter_actual = exposure_counter
+    utf_counter_actual = utf_counter
+    test_start_time = datetime.now()
+    num_to_inject = ''
+    # utf_to_inject = ''
+    test_mode = ''
+    test_stats = list()
+    comprehension_counter = 0
 
 
 # Load a copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
@@ -267,6 +283,15 @@ def toggle_injection_mode():
     else:
         parameters["Auto_injector"]["injector_status"] = True
         print("Auto_train mode is Turned On!")
+
+
+def toggle_test_mode():
+    if parameters["Auto_tester"]["tester_status"]:
+        parameters["Auto_tester"]["tester_status"] = False
+        print("Auto_test mode is Turned OFF!")
+    else:
+        parameters["Auto_tester"]["tester_status"] = True
+        print("Auto_test mode is Turned On!")
 
 
 global genome

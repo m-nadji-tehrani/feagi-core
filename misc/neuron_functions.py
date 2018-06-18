@@ -18,13 +18,10 @@ import genethesizer
 from PUs import IPU_utf8
 import brain_functions
 from configuration import settings
-from misc import universal_functions as uf, stats, visualizer
+from misc import universal_functions as uf, stats
 from IPU_vision import mnist_img_fetcher
 from architect import test_id_gen, run_id_gen
 
-
-if uf.parameters["Switches"]["vis_show"]:
-    pass
 
 global burst_count
 burst_count = 0
@@ -97,10 +94,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             sleep(uf.parameters["Timers"]["idle_burst_timer"])
             print("FCL is empty!")
         else:
-            # Burst Visualization
-            if uf.parameters["Switches"]["vis_show"]:
-                visualizer.burst_visualizer(fire_candidate_list)
-
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % fire_candidate_list + settings.Bcolors.ENDC)

@@ -1,6 +1,6 @@
 {
   "Timers": {
-    "burst_timer": 1e-17,
+    "burst_timer": 0.1,
     "idle_burst_timer": 1,
     "auto_train_delay": 3,
     "auto_train_delay2": 50,
@@ -17,7 +17,7 @@
   },
   "Switches": {
     "verbose": false,
-    "vis_show": false,
+    "vis_show": true,
     "auto_train": false,
     "vis_init_status": false,
     "auto_test_comp_attempt_threshold": 3,
@@ -25,7 +25,8 @@
     "logging_fire": false,
     "folder_backup": false,
     "plasticity": true,
-    "capture_brain_activities": true
+    "capture_brain_activities": true,
+    "visualize_latest_file": true
   },
   "InitData": {
     "read_data_from_memory": true,
@@ -33,6 +34,7 @@
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
     "genome_file": "./evolutionary/genome.json",
+    "fcl_to_visualize": "./fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" ,
     "training_counter_default": 10,
     "training_rounds_default": 10
   },

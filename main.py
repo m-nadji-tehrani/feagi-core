@@ -17,9 +17,6 @@ if __name__ == '__main__':
     from misc import brain_functions, auto_pilot, neuron_functions, universal_functions, visualizer
     from evolutionary.architect import event_id_gen
 
-    if universal_functions.parameters["Switches"]["vis_show"]:
-        pass
-
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
     mp.set_start_method('spawn')
@@ -123,20 +120,24 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = ''
         return
 
-    # Starting the burst machine
-    # pool = mp.Pool(max(1, mp.cpu_count()))
-    process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
-                                                        FCL_queue, brain_queue, event_queue, genome_stats_queue,))
-    print("The burst engine has been started...")
 
-    event_id = event_id_gen()
-    print(" <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:", event_id)
-    event_queue.put(event_id)
+    if universal_functions.parameters["Switches"]["vis_show"]:
+        print("Burst engine has not initiated given brain is in visualization mode.")
+    else:
+        # Starting the burst machine
+        # pool = mp.Pool(max(1, mp.cpu_count()))
+        process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
+                                                            FCL_queue, brain_queue, event_queue, genome_stats_queue,))
+        print("The burst engine has been started...")
 
-    # process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
-    #                            args=(user_input_queue, FCL_queue, genome_stats_queue, event_queue))
+        event_id = event_id_gen()
+        print(" <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:", event_id)
+        event_queue.put(event_id)
 
-    process_burst.deamon = False
+        # process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
+        #                            args=(user_input_queue, FCL_queue, genome_stats_queue, event_queue))
+
+        process_burst.deamon = False
 
     read_user_input()
 
@@ -156,8 +157,11 @@ if __name__ == '__main__':
                 #     process_show_cortical_areas()
                 #     universal_functions.parameters["Input"]["user_input"] = ''
 
-                elif universal_functions.parameters["Input"]["user_input"] == 'test':
-                    auto_pilot.auto_test(FCL_queue, event_queue)
+                elif universal_functions.parameters["Input"]["user_input"] == 'z':
+                    print("......................................................Starting the visualization manager..")
+                    universal_functions.vis_init()
+                    universal_functions.init_burst_visualization()
+                    visualizer.burst_visualization_manager()
                     universal_functions.parameters["Input"]["user_input"] = ''
 
                 else:
@@ -172,7 +176,8 @@ if __name__ == '__main__':
         print("Finally!")
         universal_functions.brain = brain_queue.get()
         universal_functions.genome_stats = genome_stats_queue.get()
-        join_processes()
+        if not universal_functions.parameters["Switches"]["vis_show"]:
+            join_processes()
         universal_functions.save_brain_to_disk()
         universal_functions.save_genome_to_disk()
 

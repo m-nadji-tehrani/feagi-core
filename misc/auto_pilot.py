@@ -1,12 +1,5 @@
 import random
 from PUs import IPU_vision
-from datetime import datetime
-from time import sleep
-import multiprocessing as mp
-from misc import brain_functions, universal_functions, visualizer
-
-if universal_functions.parameters["Switches"]["vis_show"]:
-    pass
 
 
 def training_num_gen(num):

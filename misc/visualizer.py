@@ -7,7 +7,7 @@ import universal_functions
 if universal_functions.parameters["Switches"]["vis_show"]:
     import matplotlib as mpl
     mpl.use('TkAgg')
-    # import matplotlib.pylab as pylab
+    import matplotlib.pylab as pylab
     import architect
     from misc import neuron_functions, universal_functions
 
@@ -52,6 +52,28 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
     return
 
 
+def burst_visualization_manager():
+    global figure
+    figure = pylab.figure(figsize=pylab.figaspect(.15))
+
+    pylab.thismanager = pylab.get_current_fig_manager()
+    pylab.thismanager.window.wm_geometry("+80+800")
+
+    if universal_functions.parameters["Switches"]["visualize_latest_file"]:
+        fcl_file = universal_functions.latest_fcl_file()
+    else:
+        fcl_file = universal_functions.parameters["InitData"]["fcl_to_visualize"]
+
+    fcl_burst_data = universal_functions.load_fcl_in_memory(fcl_file)
+    for burst in fcl_burst_data:
+        fcl = fcl_burst_data[burst]
+        print("")
+        if len(fcl) > 0:
+            burst_visualizer(fcl)
+        else:
+            print("Need to add a sleep here >>>>>")
+
+
 def burst_visualizer(fire_candidate_list):
     neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
@@ -65,7 +87,8 @@ def burst_visualizer(fire_candidate_list):
 
         if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'vision':
             if universal_functions.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
-                d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
+                d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint']
+                [entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(
                     universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -81,7 +104,8 @@ def burst_visualizer(fire_candidate_list):
                 d_vision.set_zlabel('Z Label')
 
             elif universal_functions.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v2':
-                d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
+                d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint']
+                [entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(
                     universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -96,7 +120,8 @@ def burst_visualizer(fire_candidate_list):
                 d_vision.set_ylabel('Y Label')
                 d_vision.set_zlabel('Z Label')
             elif universal_functions.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_IT':
-                d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d', aspect='equal')
+                d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint']
+                [entry[1]]['plot_index'], projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(
                     universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -112,7 +137,8 @@ def burst_visualizer(fire_candidate_list):
                 d_vision.set_zlabel('Z Label')
 
         elif universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
-            d_memory = universal_functions.memory_figure.add_subplot(2, 1, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+            d_memory = universal_functions.memory_figure.add_subplot(2, 1, universal_functions.genome['blueprint']
+            [entry[1]]['plot_index'], projection='3d')
             d_memory.set_title(entry[1])
             d_memory.set_xlim(
                 universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -128,7 +154,8 @@ def burst_visualizer(fire_candidate_list):
             d_memory.set_zlabel('Z Label')
 
         elif universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-            d_ipu = universal_functions.input_figure.add_subplot(1, 1, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+            d_ipu = universal_functions.input_figure.add_subplot(1, 1, universal_functions.genome['blueprint']
+            [entry[1]]['plot_index'], projection='3d')
             d_ipu.set_title(entry[1])
             d_ipu.set_xlim(
                 universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
@@ -144,7 +171,8 @@ def burst_visualizer(fire_candidate_list):
             d_ipu.set_zlabel('Z Label')
 
         elif universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-            d_opu = universal_functions.output_figure.add_subplot(1, 1, universal_functions.genome['blueprint'][entry[1]]['plot_index'], projection='3d')
+            d_opu = universal_functions.output_figure.add_subplot(1, 1, universal_functions.genome['blueprint']
+            [entry[1]]['plot_index'], projection='3d')
             d_opu.set_title(entry[1])
             d_opu.set_xlim(
                 universal_functions.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],

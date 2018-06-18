@@ -2,6 +2,7 @@
 import json
 import datetime
 import os.path
+import glob
 import pickle
 from datetime import datetime
 from genethesizer import genome_id_gen
@@ -91,21 +92,25 @@ def init_burst_visualization():
     # plt.thismanager = plt.get_current_fig_manager()
     # plt.thismanager.window.wm_geometry("+80+800")
 
+    global input_figure
     input_figure = plt.figure(figsize=(2, 3))
     plt.thismanager = plt.get_current_fig_manager()
     plt.thismanager.window.wm_geometry("+20+600")
     plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
+    global vision_figure
     vision_figure = plt.figure(figsize=(6, 10))
     plt.thismanager = plt.get_current_fig_manager()
     plt.thismanager.window.wm_geometry("+300+20")
     plt.subplots_adjust(left=0, bottom=0, right=1, top=.98, wspace=0.2, hspace=0)
 
+    global memory_figure
     memory_figure = plt.figure(figsize=(2, 6))
     plt.thismanager = plt.get_current_fig_manager()
     plt.thismanager.window.wm_geometry("+920+300")
     plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
 
+    global output_figure
     output_figure = plt.figure(figsize=(2, 3))
     plt.thismanager = plt.get_current_fig_manager()
     plt.thismanager.window.wm_geometry("+1200+600")
@@ -320,7 +325,6 @@ def toggle_brain_status():
 
 def save_fcl_to_disk():
     global fcl_history
-    print("fcl histiry is:", fcl_history)
     global brain_run_id
     with open("./fcl_repo/fcl-" + brain_run_id + ".json", 'w') as fcl_file:
         # Saving changes to the connectome
@@ -329,6 +333,18 @@ def save_fcl_to_disk():
         fcl_file.truncate()
 
     print("Brain activities has been preserved!")
+
+
+def load_fcl_in_memory(file_name):
+    with open(file_name, 'r') as fcl_file:
+        fcl_data = json.load(fcl_file)
+    return fcl_data
+
+
+def latest_fcl_file():
+    list_of_files = glob.glob('./fcl_repo/*.json')  # * means all if need specific format then *.csv
+    latest_file = max(list_of_files, key=os.path.getctime)
+    return latest_file
 
 
 def pickler(data, id):

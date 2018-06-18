@@ -51,6 +51,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     if not uf.brain_is_running:
         uf.toggle_brain_status()
         uf.brain_run_id = run_id_gen()
+        if uf.parameters["Switches"]["capture_brain_activities"]:
+            print(settings.Bcolors.HEADER + " *** Warning!!! *** Brain activities are being recorded!!" +
+                  settings.Bcolors.ENDC)
 
     uf.event_id = event_queue.get()
     uf.brain = brain_queue.get()
@@ -133,9 +136,11 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(fire_candidate_list)
 
+        # todo: *** Danger *** The following section could cause considerable memory expansion. Need to add limitations.
+        # Condition to save FCL data to disk
         user_input_processing(user_input, user_input_param)
         if uf.parameters["Switches"]["capture_brain_activities"]:
-            uf.pickler(fire_candidate_list, uf.brain_run_id)
+            uf.fcl_history[burst_count] = fire_candidate_list
 
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
@@ -503,6 +508,8 @@ def user_input_processing(user_input, user_input_param):
                 global burst_count
                 burst_count = 0
                 uf.parameters["Switches"]["ready_to_exit_burst"] = True
+                if uf.parameters["Switches"]["capture_brain_activities"]:
+                    uf.save_fcl_to_disk()
 
             elif user_input_value == 'v':
                 uf.toggle_verbose_mode()

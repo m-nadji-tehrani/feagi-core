@@ -6,6 +6,7 @@ import pickle
 from datetime import datetime
 from genethesizer import genome_id_gen
 import IPU_vision
+import settings
 
 
 global parameters
@@ -21,6 +22,10 @@ labeled_image = []
 global brain_is_running
 brain_is_running = False
 brain_run_id = ""
+
+if parameters["Switches"]["capture_brain_activities"]:
+    global fcl_history
+    fcl_history = {}
 
 
 class InjectorParams:
@@ -311,6 +316,19 @@ def toggle_brain_status():
     else:
         brain_is_running = True
         print("Brain is now running!!!")
+
+
+def save_fcl_to_disk():
+    global fcl_history
+    print("fcl histiry is:", fcl_history)
+    global brain_run_id
+    with open("./fcl_repo/fcl-" + brain_run_id + ".json", 'w') as fcl_file:
+        # Saving changes to the connectome
+        fcl_file.seek(0)  # rewind
+        fcl_file.write(json.dumps(fcl_history, indent=3))
+        fcl_file.truncate()
+
+    print("Brain activities has been preserved!")
 
 
 def pickler(data, id):

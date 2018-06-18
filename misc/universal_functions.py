@@ -52,13 +52,16 @@ class TesterParams:
     utf_counter_actual = utf_counter
     test_start_time = datetime.now()
     num_to_inject = ''
-    # utf_to_inject = ''
     test_mode = ''
-    test_stats = list()
     comprehension_counter = 0
+    test_attempt_counter = 0
+    temp_stats = []
+    test_stats = {}
+    test_id = ""
+
+    # Load copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
 
 
-# Load a copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
 mnist_iterator = IPU_vision.read_mnist_raw()
 mnist_array = []
 for _ in mnist_iterator:

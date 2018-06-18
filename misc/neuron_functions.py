@@ -20,6 +20,7 @@ import brain_functions
 from configuration import settings
 from misc import universal_functions as uf, stats, visualizer
 from IPU_vision import mnist_img_fetcher
+from architect import test_id_gen
 from auto_pilot import training_num_gen
 
 if uf.parameters["Switches"]["vis_show"]:
@@ -173,6 +174,15 @@ def test_manager(test_mode, test_param):
 
     finally:
         uf.toggle_test_mode()
+        test_id = test_id_gen()
+        uf.TesterParams.test_id = test_id
+        num_list = []
+        for _ in range(0, 10):
+            num_list.append([_, 0, 0])
+        uf.TesterParams.test_stats[test_id] = num_list
+        uf.TesterParams.temp_stats = num_list
+
+        uf.TesterParams.test_id = test_id_gen()
         uf.TesterParams.testing_has_begun = True
 
 
@@ -188,7 +198,7 @@ def auto_tester():
     """
     if uf.TesterParams.testing_has_begun:
         # Beginning of a injection process
-        print("----------------------------------------Data injection has begun------------------------------------")
+        print("----------------------------------------Testing has begun------------------------------------")
         uf.TesterParams.testing_has_begun = False
         uf.TesterParams.test_start_time = datetime.datetime.now()
         if uf.TesterParams.img_flag:
@@ -199,14 +209,18 @@ def auto_tester():
 
     # Variation counter
     if uf.TesterParams.exposure_counter_actual < 0:
+        uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
+        uf.TesterParams.test_attempt_counter += 1
         # Comprehension logic
-        if uf.parameters["Input"]["comprehended_char"] == uf.TesterParams.num_to_inject:
+        print("> ", uf.parameters["Input"]["comprehended_char"], "> ", uf.TesterParams.num_to_inject)
+        if uf.parameters["Input"]["comprehended_char"] == str(uf.TesterParams.num_to_inject):
             print(settings.Bcolors.HEADER +
                   ">> >> >> The Brain successfully identified the image as > %s < !!!!"
                   % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
             uf.TesterParams.comprehension_counter += 1
-            uf.TesterParams.test_stats.append([uf.TesterParams.num_to_inject, uf.TesterParams.comprehension_counter])
-        uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
+        uf.TesterParams.temp_stats[uf.TesterParams.num_to_inject] = [uf.TesterParams.num_to_inject,
+                                                                     uf.TesterParams.test_attempt_counter,
+                                                                     uf.TesterParams.comprehension_counter]
         if uf.TesterParams.variation_handler:
             uf.TesterParams.variation_counter_actual -= 1
             if uf.TesterParams.img_flag:
@@ -242,6 +256,9 @@ def auto_tester():
         print("-----------------------------------------------------------------------------------------------")
         print("Test statistics are as follows:\n", uf.TesterParams.test_stats)
         print("-----------------------------------------------------------------------------------------------")
+        uf.TesterParams.test_stats[uf.TesterParams.test_id] = uf.TesterParams.temp_stats
+        uf.TesterParams.test_attempt_counter = 0
+        uf.TesterParams.comprehension_counter = 0
         # logging stats into Genome
         uf.genome_stats["test_stats"] = uf.TesterParams.test_stats
     if uf.TesterParams.img_flag:

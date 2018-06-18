@@ -30,7 +30,7 @@ global burst_count
 burst_count = 0
 
 
-def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
+def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, genome_stats_queue):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -50,6 +50,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
 
     uf.event_id = event_queue.get()
     uf.brain = brain_queue.get()
+    uf.genome_stats = genome_stats_queue.get()
     # my_brain = uf.brain
     verbose = uf.parameters["Switches"]["verbose"]
 
@@ -132,6 +133,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue):
 
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
+    genome_stats_queue.put(uf.genome_stats)
 
 
 def test_manager(test_mode, test_param):

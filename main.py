@@ -86,6 +86,7 @@ if __name__ == '__main__':
     FCL_queue = mp.Queue()
     brain_queue = mp.Queue()
     event_queue = mp.Queue()
+    genome_stats_queue = mp.Queue()
 
     # Initialize Fire Candidate List (FCL)
     FCL = []
@@ -95,6 +96,8 @@ if __name__ == '__main__':
     brain_data = universal_functions.brain
     brain_queue.put(brain_data)
 
+    genome_stats = {}
+    genome_stats_queue.put(genome_stats)
 
     def read_user_input():
         master.update_idletasks()
@@ -123,7 +126,7 @@ if __name__ == '__main__':
     # Starting the burst machine
     # pool = mp.Pool(max(1, mp.cpu_count()))
     process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
-                                                        FCL_queue, brain_queue, event_queue,))
+                                                        FCL_queue, brain_queue, event_queue, genome_stats_queue,))
     print("The burst engine has been started...")
 
     event_id = event_id_gen()
@@ -131,7 +134,7 @@ if __name__ == '__main__':
     event_queue.put(event_id)
 
     # process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
-    #                            args=(user_input_queue, FCL_queue, brain_queue, event_queue))
+    #                            args=(user_input_queue, FCL_queue, genome_stats_queue, event_queue))
 
     process_burst.deamon = False
 
@@ -168,6 +171,7 @@ if __name__ == '__main__':
     finally:
         print("Finally!")
         universal_functions.brain = brain_queue.get()
+        universal_functions.genome_stats = genome_stats_queue.get()
         join_processes()
         universal_functions.save_brain_to_disk()
         universal_functions.save_genome_to_disk()

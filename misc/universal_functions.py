@@ -177,7 +177,6 @@ def load_genome_in_memory():
     with open(parameters["InitData"]["genome_file"], "r") as data_file:
         genome_db = json.load(data_file)
         genome = genome_db[genome_id]["properties"]
-        # genome_stats = genome_db[gene_id]["stats"]
     return genome
 
 
@@ -231,6 +230,7 @@ def save_brain_to_disk(cortical_area='all'):
 
 
 def save_genome_to_disk():
+    global genome_stats, genome
     with open(parameters["InitData"]["genome_file"], "r+") as data_file:
         genome_db = json.load(data_file)
 
@@ -239,6 +239,7 @@ def save_genome_to_disk():
         genome_db[new_genome_id] = {}
         genome_db[new_genome_id]["generation_date"] = str(datetime.now())
         genome_db[new_genome_id]["properties"] = genome
+
         genome_db[new_genome_id]["stats"] = genome_stats
         genome_db["genome_metadata"]["most_recent_genome_id"] = new_genome_id
 
@@ -297,14 +298,14 @@ def toggle_test_mode():
         print("Auto_test mode is Turned On!")
 
 
-global genome
-genome = load_genome_in_memory()
-
 global genome_id
 genome_id = ""
 
+global genome
+genome = load_genome_in_memory()
+
 global genome_stats
-genome_stats = {"test_stats": {}, "performance_stats": {}}
+genome_stats = {}
 
 global blueprint
 blueprint = cortical_list()

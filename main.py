@@ -267,3 +267,6 @@ if __name__ == '__main__':
 
 # Auto training
 # todo: Compare results if you randomly show different variation of the same number vs one at a time
+
+# Cloud execution
+# todo: Explore services like Digital ocean, AWS, Spark, etc.

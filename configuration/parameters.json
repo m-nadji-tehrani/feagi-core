@@ -24,7 +24,8 @@
     "ready_to_exit_burst": false,
     "logging_fire": false,
     "folder_backup": false,
-    "plasticity": true
+    "plasticity": true,
+    "capture_brain_activities": true
   },
   "InitData": {
     "read_data_from_memory": true,

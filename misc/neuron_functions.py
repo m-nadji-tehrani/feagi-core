@@ -20,8 +20,8 @@ import brain_functions
 from configuration import settings
 from misc import universal_functions as uf, stats, visualizer
 from IPU_vision import mnist_img_fetcher
-from architect import test_id_gen
-from auto_pilot import training_num_gen
+from architect import test_id_gen, run_id_gen
+
 
 if uf.parameters["Switches"]["vis_show"]:
     pass
@@ -47,6 +47,10 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     # Function processing:
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
+
+    if not uf.brain_is_running:
+        uf.toggle_brain_status()
+        uf.brain_run_id = run_id_gen()
 
     uf.event_id = event_queue.get()
     uf.brain = brain_queue.get()
@@ -130,6 +134,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         fire_list.put(fire_candidate_list)
 
         user_input_processing(user_input, user_input_param)
+        if uf.parameters["Switches"]["capture_brain_activities"]:
+            uf.pickler(fire_candidate_list, uf.brain_run_id)
 
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)

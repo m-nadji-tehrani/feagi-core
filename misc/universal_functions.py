@@ -2,6 +2,7 @@
 import json
 import datetime
 import os.path
+import pickle
 from datetime import datetime
 from genethesizer import genome_id_gen
 import IPU_vision
@@ -16,6 +17,10 @@ if 'parameters' not in globals():
 training_neuron_list_utf = []
 training_neuron_list_img = []
 labeled_image = []
+
+global brain_is_running
+brain_is_running = False
+brain_run_id = ""
 
 
 class InjectorParams:
@@ -296,6 +301,31 @@ def toggle_test_mode():
     else:
         parameters["Auto_tester"]["tester_status"] = True
         print("Auto_test mode is Turned On!")
+
+
+def toggle_brain_status():
+    global brain_is_running
+    if brain_is_running:
+        brain_is_running = False
+        print("Brain is not running!")
+    else:
+        brain_is_running = True
+        print("Brain is now running!!!")
+
+
+def pickler(data, id):
+    id = brain_run_id
+    with open("./pickle_jar/fcl-" + id + ".pkl", 'wb') as output:
+        pickle.dump(data, output)
+
+
+def unpickler(data_type, id):
+    if data_type == 'fcl':
+        with open("./pickle_jar/fcl-" + id + ".pkl", 'rb') as input_data:
+            data = pickle.load(input_data)
+    else:
+        print("Error: Type not found!")
+    return data
 
 
 global genome_id

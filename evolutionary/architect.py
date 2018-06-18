@@ -50,6 +50,18 @@ def test_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_T'
 
 
+def run_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
+    """
+    This function generates a unique id which will be associated with each neuron
+    :param size:
+    :param chars:
+    :return:
+    """
+    # Rand gen source partially from:
+    # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
+    return str(datetime.datetime.now()).replace(' ', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_R'
+
+
 def neuro_genesis(cortical_area, loc_blk):
     """
     Responsible for adding a Neuron to connectome

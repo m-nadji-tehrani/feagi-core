@@ -74,10 +74,10 @@ def burst_visualization_manager():
             print("Need to add a sleep here >>>>>")
 
 
-def burst_visualizer(fire_candidate_list):
-    neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
-
+def setup_canvas():
     index = 0
+    global indexed_cortical_list, d_vision, d_ipu, d_memory, d_opu
+
     indexed_cortical_list = []
     for key in universal_functions.cortical_areas:
         indexed_cortical_list.append([index, key])
@@ -187,6 +187,14 @@ def burst_visualizer(fire_candidate_list):
             d_opu.set_ylabel('Y Label')
             d_opu.set_zlabel('Z Label')
 
+
+def burst_visualizer(fire_candidate_list):
+    global indexed_cortical_list
+    neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
+
+    setup_canvas()
+
+    for entry in indexed_cortical_list:
         for location in neuron_locations[entry[1]]:
             if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'vision':
                 d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')

@@ -1,6 +1,6 @@
 {
   "Timers": {
-    "burst_timer": 0.1,
+    "burst_timer": 0.01,
     "idle_burst_timer": 1,
     "auto_train_delay": 3,
     "auto_train_delay2": 50,
@@ -26,7 +26,7 @@
     "folder_backup": false,
     "plasticity": true,
     "capture_brain_activities": true,
-    "visualize_latest_file": true
+    "visualize_latest_file": false
   },
   "InitData": {
     "read_data_from_memory": true,

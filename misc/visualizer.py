@@ -8,6 +8,7 @@ if universal_functions.parameters["Switches"]["vis_show"]:
     import matplotlib as mpl
     mpl.use('TkAgg')
     import matplotlib.pylab as pylab
+    import matplotlib.animation as animation
     import architect
     from misc import neuron_functions, universal_functions
 
@@ -53,25 +54,18 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
 
 
 def burst_visualization_manager():
-    global figure
-    figure = pylab.figure(figsize=pylab.figaspect(.15))
+    # global figure
+    # figure = pylab.figure(figsize=pylab.figaspect(.15))
+    #
+    # pylab.thismanager = pylab.get_current_fig_manager()
+    # pylab.thismanager.window.wm_geometry("+80+800")
 
-    pylab.thismanager = pylab.get_current_fig_manager()
-    pylab.thismanager.window.wm_geometry("+80+800")
+    setup_canvas()
 
-    if universal_functions.parameters["Switches"]["visualize_latest_file"]:
-        fcl_file = universal_functions.latest_fcl_file()
-    else:
-        fcl_file = universal_functions.parameters["InitData"]["fcl_to_visualize"]
+    ani = animation.FuncAnimation(universal_functions.fig, animate, interval=1000)
 
-    fcl_burst_data = universal_functions.load_fcl_in_memory(fcl_file)
-    for burst in fcl_burst_data:
-        fcl = fcl_burst_data[burst]
-        print("")
-        if len(fcl) > 0:
-            burst_visualizer(fcl)
-        else:
-            print("Need to add a sleep here >>>>>")
+    universal_functions.ax.figure.canvas.draw()
+    pylab.plt.show()
 
 
 def setup_canvas():
@@ -84,7 +78,6 @@ def setup_canvas():
         index += 1
 
     for entry in indexed_cortical_list:
-
         if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'vision':
             if universal_functions.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
                 d_vision = universal_functions.vision_figure.add_subplot(7, 3, universal_functions.genome['blueprint']
@@ -187,32 +180,40 @@ def setup_canvas():
             d_opu.set_ylabel('Y Label')
             d_opu.set_zlabel('Z Label')
 
+            # universal_functions.ax.figure.canvas.draw()
+            # pylab.plt.show()
 
-def burst_visualizer(fire_candidate_list):
-    global indexed_cortical_list
-    neuron_locations = neuron_functions.fire_candidate_locations(fire_candidate_list)
 
-    setup_canvas()
+def burst_iterator():
+    for burst_data in universal_functions.fcl_burst_data_set:
+        yield universal_functions.fcl_burst_data_set[burst_data]
 
-    for entry in indexed_cortical_list:
-        for location in neuron_locations[entry[1]]:
-            if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'vision':
-                d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
-            if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
-                d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
-            if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-                d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
-            if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-                d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
 
-    universal_functions.plt.draw()
-    universal_functions.plt.pause(universal_functions.parameters["Timers"]["burst_timer"])
-    universal_functions.plt.clf()
-    d_vision.cla()
-    d_memory.cla()
-    d_ipu.cla()
-    d_opu.cla()
-    return
+def animate(i):
+    if i == 0:
+        fcl = next(burst_iterator())
+    else:
+        counter = i + 1
+        fcl = burst_iterator().send(counter)
+    print("<> ^V^V^V^V^ <>", fcl)
+    if len(fcl) > 0:
+        for entry in indexed_cortical_list:
+            neuron_locations = neuron_functions.fire_candidate_locations(fcl)
+            for location in neuron_locations[entry[1]]:
+                if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'vision':
+                    d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
+                if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
+                    d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
+                if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+                    d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
+                if universal_functions.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+                    d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
+
+    else:
+        print("Need a sleep func here...")
+
+    d_vision.clear()
+
 
 
 def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):

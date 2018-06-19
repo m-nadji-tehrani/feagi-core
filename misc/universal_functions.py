@@ -24,6 +24,7 @@ global brain_is_running
 brain_is_running = False
 brain_run_id = ""
 
+
 if parameters["Switches"]["capture_brain_activities"]:
     global fcl_history
     fcl_history = {}
@@ -137,7 +138,9 @@ def vis_init():
             FancyArrowPatch.draw(self, renderer)
 
         # plt.ion()
+        global fig
         fig = plt.figure()
+        global ax
         ax = fig.add_subplot(111, projection='3d')
         ax.set_xlim(0, 30)
         ax.set_ylim(0, 30)
@@ -360,6 +363,15 @@ def unpickler(data_type, id):
     else:
         print("Error: Type not found!")
     return data
+
+
+if parameters["Switches"]["vis_show"]:
+    if parameters["Switches"]["visualize_latest_file"]:
+        fcl_file = latest_fcl_file()
+    else:
+        fcl_file = parameters["InitData"]["fcl_to_visualize"]
+
+    fcl_burst_data_set = load_fcl_in_memory(fcl_file)
 
 
 global genome_id

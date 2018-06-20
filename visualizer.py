@@ -7,6 +7,8 @@ import os.path
 os.chdir("/Users/mntehrani/Documents/PycharmProjects/Metis/")
 
 from time import sleep
+import json
+
 import matplotlib as mpl
 mpl.use('TkAgg')
 
@@ -30,8 +32,6 @@ else:
 
 fcl_burst_data_set = load_fcl_in_memory(fcl_file)
 
-global fcl
-fcl = []
 
 def vis_init():
     # plt.ion()
@@ -143,16 +143,49 @@ def burst_visualization_manager():
     #
     # pylab.thismanager = pylab.get_current_fig_manager()
     # pylab.thismanager.window.wm_geometry("+80+800")
-    global fcl
+
     setup_canvas()
 
     ani = animation.FuncAnimation(fig, animate, interval=1000)
 
     ax.figure.canvas.draw()
+    pylab.plt.cla()
     pylab.plt.show()
 
-    for burst in burst_iterator():
-        fcl = burst
+    # for burst in burst_iterator():
+    #     fcl = burst
+    #     print("FCL from the mrg func:", fcl)
+
+
+# def burst_iterator():
+#     for burst_data in fcl_burst_data_set:
+#         yield fcl_burst_data_set[burst_data]
+
+
+def animate(i):
+
+    with open('./fcl_repo/fcl.json', 'r') as fcl_file:
+        fcl = json.load(fcl_file)
+        # print("*****************************************\n", fcl)
+        # print("*****************************************\n")
+    # ax.clear()
+    if len(fcl) > 0:
+        for entry in indexed_cortical_list:
+            neuron_locations = fire_candidate_locations(fcl)
+            print("neuron locations:", neuron_locations)
+            for location in neuron_locations[entry[1]]:
+                if genome['blueprint'][entry[1]]['group_id'] == 'vision':
+                    d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
+                if genome['blueprint'][entry[1]]['group_id'] == 'Memory':
+                    d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
+                if genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+                    d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
+                if genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+                    d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
+
+    else:
+        sleep(1)
+        # print("haha")
 
 
 def setup_canvas():
@@ -269,34 +302,6 @@ def setup_canvas():
 
             # ax.figure.canvas.draw()
             # pylab.plt.show()
-
-
-def burst_iterator():
-    for burst_data in fcl_burst_data_set:
-        yield fcl_burst_data_set[burst_data]
-
-
-def animate(i):
-    global fcl
-    print("<> ^V^V^V^V^ <>", fcl)
-    if len(fcl) > 0:
-        for entry in indexed_cortical_list:
-            neuron_locations = fire_candidate_locations(fcl)
-            print("neuron locations:", neuron_locations)
-            for location in neuron_locations[entry[1]]:
-                if genome['blueprint'][entry[1]]['group_id'] == 'vision':
-                    d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
-                if genome['blueprint'][entry[1]]['group_id'] == 'Memory':
-                    d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
-                if genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-                    d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
-                if genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-                    d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
-
-    else:
-        sleep(1)
-
-    ax.clear()
 
 
 def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):

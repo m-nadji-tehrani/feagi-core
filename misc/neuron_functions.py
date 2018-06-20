@@ -135,6 +135,11 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         if uf.parameters["Switches"]["capture_brain_activities"]:
             uf.fcl_history[burst_count] = fire_candidate_list
 
+        if uf.parameters["Switches"]["save_fcl_to_disk"]:
+            with open('./fcl_repo/fcl.json', 'w') as fcl_file:
+                fcl_file.write(json.dumps(fire_candidate_list))
+                fcl_file.truncate()
+
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
     genome_stats_queue.put(uf.genome_stats)

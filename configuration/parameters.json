@@ -25,8 +25,9 @@
     "logging_fire": false,
     "folder_backup": false,
     "plasticity": true,
-    "capture_brain_activities": true,
-    "visualize_latest_file": true
+    "capture_brain_activities": false,
+    "visualize_latest_file": false,
+    "save_fcl_to_disk": true
   },
   "InitData": {
     "read_data_from_memory": true,

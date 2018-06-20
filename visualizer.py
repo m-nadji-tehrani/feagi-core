@@ -5,9 +5,8 @@ This file contains all of the Visualization functions
 
 import os.path
 os.chdir("/Users/mntehrani/Documents/PycharmProjects/Metis/")
-print("****************** ", os.getcwd())
 
-
+from time import sleep
 import matplotlib as mpl
 mpl.use('TkAgg')
 
@@ -15,11 +14,13 @@ import matplotlib.pylab as pylab
 import matplotlib.animation as animation
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
+from matplotlib import style
+
+# style.use('dark_background')
 
 from architect import connectome_location_data
 from misc.neuron_functions import fire_candidate_locations
 from misc.universal_functions import brain, genome, parameters, cortical_areas, latest_fcl_file, load_fcl_in_memory
-
 
 
 if parameters["Switches"]["visualize_latest_file"]:
@@ -29,6 +30,8 @@ else:
 
 fcl_burst_data_set = load_fcl_in_memory(fcl_file)
 
+global fcl
+fcl = []
 
 def vis_init():
     # plt.ion()
@@ -140,13 +143,16 @@ def burst_visualization_manager():
     #
     # pylab.thismanager = pylab.get_current_fig_manager()
     # pylab.thismanager.window.wm_geometry("+80+800")
-
+    global fcl
     setup_canvas()
 
     ani = animation.FuncAnimation(fig, animate, interval=1000)
 
     ax.figure.canvas.draw()
     pylab.plt.show()
+
+    for burst in burst_iterator():
+        fcl = burst
 
 
 def setup_canvas():
@@ -271,7 +277,7 @@ def burst_iterator():
 
 
 def animate(i):
-    fcl = next(burst_iterator())
+    global fcl
     print("<> ^V^V^V^V^ <>", fcl)
     if len(fcl) > 0:
         for entry in indexed_cortical_list:
@@ -288,7 +294,7 @@ def animate(i):
                     d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
 
     else:
-        print("Need a sleep func here...")
+        sleep(1)
 
     ax.clear()
 

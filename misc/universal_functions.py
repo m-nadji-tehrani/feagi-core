@@ -7,7 +7,6 @@ import pickle
 from datetime import datetime
 from genethesizer import genome_id_gen
 import IPU_vision
-import settings
 
 
 global parameters
@@ -79,78 +78,6 @@ mnist_array = []
 for _ in mnist_iterator:
     mnist_array.append(_)
 print(len(mnist_array))
-
-
-if parameters["Switches"]["vis_show"]:
-    import matplotlib as mpl
-    mpl.use('TkAgg')
-    import matplotlib.pyplot as plt
-
-
-def init_burst_visualization():
-    # global burst_figure
-    # burst_figure = plt.figure(figsize=plt.figaspect(.15))
-    # plt.thismanager = plt.get_current_fig_manager()
-    # plt.thismanager.window.wm_geometry("+80+800")
-
-    global input_figure
-    input_figure = plt.figure(figsize=(2, 3))
-    plt.thismanager = plt.get_current_fig_manager()
-    plt.thismanager.window.wm_geometry("+20+600")
-    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
-
-    global vision_figure
-    vision_figure = plt.figure(figsize=(6, 10))
-    plt.thismanager = plt.get_current_fig_manager()
-    plt.thismanager.window.wm_geometry("+300+20")
-    plt.subplots_adjust(left=0, bottom=0, right=1, top=.98, wspace=0.2, hspace=0)
-
-    global memory_figure
-    memory_figure = plt.figure(figsize=(2, 6))
-    plt.thismanager = plt.get_current_fig_manager()
-    plt.thismanager.window.wm_geometry("+920+300")
-    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
-
-    global output_figure
-    output_figure = plt.figure(figsize=(2, 3))
-    plt.thismanager = plt.get_current_fig_manager()
-    plt.thismanager.window.wm_geometry("+1200+600")
-    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
-
-
-def vis_init():
-    from matplotlib.patches import FancyArrowPatch
-    from mpl_toolkits.mplot3d import proj3d
-
-    # plt.ion()
-    print("Initializing plot...")
-    # global Arrow3D
-
-    class Arrow3D(FancyArrowPatch):
-        def __init__(self, xs, ys, zs, *args, **kwargs):
-            FancyArrowPatch.__init__(self, (0, 0), (0, 0), *args, **kwargs)
-            self._verts3d = xs, ys, zs
-
-        def draw(self, renderer):
-            xs3d, ys3d, zs3d = self._verts3d
-            xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
-            self.set_positions((xs[0], ys[0]), (xs[1], ys[1]))
-            FancyArrowPatch.draw(self, renderer)
-
-        # plt.ion()
-        global fig
-        fig = plt.figure()
-        global ax
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlim(0, 30)
-        ax.set_ylim(0, 30)
-        ax.set_zlim(0, 30)
-        ax.set_xlabel('X Label')
-        ax.set_ylabel('Y Label')
-        ax.set_zlabel('Z Label')
-        fig.suptitle("Main plot")
-
-    parameters["Switches"]["vis_init_status"] = True
 
 
 # Reads the list of all Cortical areas defined in Genome
@@ -289,15 +216,6 @@ def toggle_verbose_mode():
         print("Verbose mode is Turned On!")
 
 
-def toggle_visualization_mode():
-    if parameters["Switches"]["vis_show"]:
-        parameters["Switches"]["vis_show"] = False
-        print("Visualization mode is Turned OFF!")
-    else:
-        parameters["Switches"]["vis_show"] = True
-        print("Visualization mode is Turned On!")
-
-
 def toggle_injection_mode():
     if parameters["Auto_injector"]["injector_status"]:
         parameters["Auto_injector"]["injector_status"] = False
@@ -363,15 +281,6 @@ def unpickler(data_type, id):
     else:
         print("Error: Type not found!")
     return data
-
-
-if parameters["Switches"]["vis_show"]:
-    if parameters["Switches"]["visualize_latest_file"]:
-        fcl_file = latest_fcl_file()
-    else:
-        fcl_file = parameters["InitData"]["fcl_to_visualize"]
-
-    fcl_burst_data_set = load_fcl_in_memory(fcl_file)
 
 
 global genome_id

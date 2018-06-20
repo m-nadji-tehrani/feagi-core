@@ -36,11 +36,11 @@ def read_mnist_raw(dataset="training", path="../MNIST/"):
         raise Exception(ValueError, "data set must be 'testing' or 'training'")
 
     # Load everything in some numpy arrays
-    with open(fname_lbl, 'rb') as flbl:
+    with open("/Users/mntehrani/Documents/PycharmProjects/MNIST/" + fname_lbl, 'rb') as flbl:
         magic, num = struct.unpack(">II", flbl.read(8))
         lbl = np.fromfile(flbl, dtype=np.int8)
 
-    with open(fname_img, 'rb') as fimg:
+    with open("/Users/mntehrani/Documents/PycharmProjects/MNIST/" + fname_img, 'rb') as fimg:
         magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
         img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
 

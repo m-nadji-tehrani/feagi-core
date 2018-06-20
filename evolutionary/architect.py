@@ -11,7 +11,8 @@ import datetime
 import string
 import random
 from math import sqrt, ceil, floor
-from misc import universal_functions
+from misc.universal_functions import brain as uf_brain
+from misc.universal_functions import genome as uf_genome
 
 
 def neuron_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -68,37 +69,37 @@ def neuro_genesis(cortical_area, loc_blk):
 
     """
 
-    genome = universal_functions.genome
+    genome = uf_genome
 
     id = neuron_id_gen()
 
-    universal_functions.brain[cortical_area][id] = {}
-    universal_functions.brain[cortical_area][id]["neighbors"] = {}
-    universal_functions.brain[cortical_area][id]["event_id"] = {}
-    universal_functions.brain[cortical_area][id]["membrane_potential"] = 0
-    universal_functions.brain[cortical_area][id]["cumulative_fire_count"] = 0
-    universal_functions.brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
-    universal_functions.brain[cortical_area][id]["cumulative_intake_total"] = 0
-    universal_functions.brain[cortical_area][id]["cumulative_intake_count"] = 0
-    universal_functions.brain[cortical_area][id]["consecutive_fire_cnt"] = 0
-    universal_functions.brain[cortical_area][id]["snooze_till_burst_num"] = 0
-    universal_functions.brain[cortical_area][id]["last_burst_num"] = 0
+    uf_brain[cortical_area][id] = {}
+    uf_brain[cortical_area][id]["neighbors"] = {}
+    uf_brain[cortical_area][id]["event_id"] = {}
+    uf_brain[cortical_area][id]["membrane_potential"] = 0
+    uf_brain[cortical_area][id]["cumulative_fire_count"] = 0
+    uf_brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
+    uf_brain[cortical_area][id]["cumulative_intake_total"] = 0
+    uf_brain[cortical_area][id]["cumulative_intake_count"] = 0
+    uf_brain[cortical_area][id]["consecutive_fire_cnt"] = 0
+    uf_brain[cortical_area][id]["snooze_till_burst_num"] = 0
+    uf_brain[cortical_area][id]["last_burst_num"] = 0
 
-    universal_functions.brain[cortical_area][id]["location"] = loc_blk[0]
-    universal_functions.brain[cortical_area][id]["block"] = loc_blk[1]
-    universal_functions.brain[cortical_area][id]["status"] = "Passive"
-    universal_functions.brain[cortical_area][id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
-    universal_functions.brain[cortical_area][id]["last_membrane_potential_reset_burst"] = 0
+    uf_brain[cortical_area][id]["location"] = loc_blk[0]
+    uf_brain[cortical_area][id]["block"] = loc_blk[1]
+    uf_brain[cortical_area][id]["status"] = "Passive"
+    uf_brain[cortical_area][id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
+    uf_brain[cortical_area][id]["last_membrane_potential_reset_burst"] = 0
 
 
-    #   universal_functions.brain[cortical_area][id]["group_id"] = ""           # consider using the group name part of Genome instead
-    universal_functions.brain[cortical_area][id]["firing_pattern_id"] = \
+    #   uf_brain[cortical_area][id]["group_id"] = ""           # consider using the group name part of Genome instead
+    uf_brain[cortical_area][id]["firing_pattern_id"] = \
         genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
-    universal_functions.brain[cortical_area][id]["activation_function_id"] = \
+    uf_brain[cortical_area][id]["activation_function_id"] = \
         genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
-    universal_functions.brain[cortical_area][id]["depolarization_threshold"] = \
+    uf_brain[cortical_area][id]["depolarization_threshold"] = \
         genome['blueprint'][cortical_area]['neuron_params']['depolarization_threshold']
-    universal_functions.brain[cortical_area][id]["firing_threshold"] = \
+    uf_brain[cortical_area][id]["firing_threshold"] = \
         genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
 
     return
@@ -116,11 +117,11 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_c
     """
 
     # Check to see if the source and destination ids are valid if not exit the function
-    if src_id not in universal_functions.brain[src_cortical_area]:
+    if src_id not in uf_brain[src_cortical_area]:
         print("Source or Destination neuron not found")
         return
 
-    universal_functions.brain[src_cortical_area][src_id]["neighbors"][dst_id] = \
+    uf_brain[src_cortical_area][src_id]["neighbors"][dst_id] = \
         {"cortical_area": dst_cortical_area, "postsynaptic_current": postsynaptic_current}
 
     return
@@ -153,7 +154,7 @@ def location_collector(cortical_area):
         # Need to come up with an algorithm to populate the space within the object with random neurons given density
         # Output is expected to be a N x 3 matrix containing dimensions for N neurons to be created
 
-    genome = universal_functions.genome
+    genome = uf_genome
 
     if genome["blueprint"].get(cortical_area) is None:
         print("Cortical area %s not found!" % cortical_area)
@@ -225,7 +226,7 @@ def three_dim_growth(cortical_area):
     neuron_loc_list = location_collector(cortical_area)
     neuron_blk_list = []
     cortical_area_dim = []
-    geometric_boundaries = universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
+    geometric_boundaries = uf_genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
     for coordinate in geometric_boundaries:
         cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
 
@@ -289,10 +290,10 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, posts
 
     # todo: Warning: Need to watch for the side effects on this line to make sure its not overwriting values
     if brain_gen:
-        universal_functions.brain = brain
+        uf_brain = brain
 
     synapse_count = 0
-    for src_id in universal_functions.brain[cortical_area]:
+    for src_id in uf_brain[cortical_area]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder(cortical_area, src_id, rule_id, rule_param)
         for dst_id in neighbor_candidates:
@@ -301,7 +302,7 @@ def neighbor_builder(brain, brain_gen, cortical_area, rule_id, rule_param, posts
             # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
     if brain_gen:
-        brain = universal_functions.brain
+        brain = uf_brain
 
         synapse_count2 = 0
         for area in brain:
@@ -323,9 +324,9 @@ def dst_projection_center(cortical_area_src, neuron_id, cortical_area_dst):
     dst_lengths = cortical_area_lengths(cortical_area_dst)
     coordinate_scales = [a/b for a, b in zip(dst_lengths, src_lengths)]
 
-    x_coordinate_src = universal_functions.brain[cortical_area_src][neuron_id]["location"][0]
-    y_coordinate_src = universal_functions.brain[cortical_area_src][neuron_id]["location"][1]
-    z_coordinate_src = universal_functions.brain[cortical_area_src][neuron_id]["location"][2]
+    x_coordinate_src = uf_brain[cortical_area_src][neuron_id]["location"][0]
+    y_coordinate_src = uf_brain[cortical_area_src][neuron_id]["location"][1]
+    z_coordinate_src = uf_brain[cortical_area_src][neuron_id]["location"][2]
 
     dst_projection_center = list()
     dst_projection_center.append(x_coordinate_src * coordinate_scales[0])
@@ -341,10 +342,10 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     """
 
     # Input: neuron id of which we desire to find all candidate neurons for from another cortical region
-    dst_data = universal_functions.brain[cortical_area_dst]
+    dst_data = uf_brain[cortical_area_dst]
     neighbor_candidates = []
 
-    if universal_functions.genome['blueprint'][cortical_area_dst]['location_generation_type'] == 'sequential':
+    if uf_genome['blueprint'][cortical_area_dst]['location_generation_type'] == 'sequential':
         for dst_neuron_id in dst_data:
             if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
                             cortical_area_dst=cortical_area_dst, dst_neuron_id=dst_neuron_id, src_neuron_id=src_neuron_id):
@@ -370,22 +371,22 @@ def neighbor_builder_ext(brain, brain_gen, cortical_area_src, cortical_area_dst,
     """
 
     if brain_gen:
-        universal_functions.brain = brain
+        uf_brain = brain
 
     synapse_count = 0
-    for src_id in universal_functions.brain[cortical_area_src]:
+    for src_id in uf_brain[cortical_area_src]:
         # Cycle thru the neighbor_candidate_list and establish Synapses
         neighbor_candidates = neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_id, rule, rule_param)
         for dst_id in neighbor_candidates:
             # Through a dice to decide for synapse creation. This is to limit the amount of synapses.
-            if random.randrange(1, 100) < universal_functions.genome['blueprint'][cortical_area_dst]['synapse_attractivity']:
+            if random.randrange(1, 100) < uf_genome['blueprint'][cortical_area_dst]['synapse_attractivity']:
                 # Connect the source and destination neuron via creating a synapse
                 synapse(cortical_area_src, src_id, cortical_area_dst, dst_id, postsynaptic_current)
                 synapse_count += 1
                 # print("Made a Synapse between %s and %s" % (src_id, dst_id))
 
     if brain_gen:
-        brain = universal_functions.brain
+        brain = uf_brain
     else:
         brain = {}
     return synapse_count, brain
@@ -398,9 +399,9 @@ def field_set(cortical_area, field_name, field_value):
     *** Incomplete ***
     
     """
-    # universal_functions.brain[cortical_area] = universal_functions.brain[cortical_area]
-    # for key in universal_functions.brain[cortical_area]:
-    #     universal_functions.brain[cortical_area][key][field_name] = field_value
+    # uf_brain[cortical_area] = uf_brain[cortical_area]
+    # for key in uf_brain[cortical_area]:
+    #     uf_brain[cortical_area][key][field_name] = field_value
     #
 
     return
@@ -411,8 +412,8 @@ def neighbor_reset(cortical_area):
     This function deletes all the neighbor relationships in the connectome
     """
 
-    for key in universal_functions.brain[cortical_area]:
-        universal_functions.brain[cortical_area][key]["neighbors"] = {}
+    for key in uf_brain[cortical_area]:
+        uf_brain[cortical_area][key]["neighbors"] = {}
 
     return
 
@@ -424,10 +425,10 @@ def neuron_finder(cortical_area, location, radius):
 
     neuron_list = []
 
-    for key in universal_functions.brain[cortical_area]:
-        x = universal_functions.brain[cortical_area][key]['location'][0]
-        y = universal_functions.brain[cortical_area][key]['location'][1]
-        z = universal_functions.brain[cortical_area][key]['location'][2]
+    for key in uf_brain[cortical_area]:
+        x = uf_brain[cortical_area][key]['location'][0]
+        y = uf_brain[cortical_area][key]['location'][1]
+        z = uf_brain[cortical_area][key]['location'][2]
 
         # Searching only the XY plane for candidate neurons         ????
         if sqrt((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):
@@ -453,9 +454,9 @@ def connectome_location_data(cortical_area):
     """
 
     neuron_locations = []
-    for key in universal_functions.brain[cortical_area]:
-        location_data = universal_functions.brain[cortical_area][key]["location"]
-        location_data.append(universal_functions.brain[cortical_area][key]["cumulative_fire_count"])
+    for key in uf_brain[cortical_area]:
+        location_data = uf_brain[cortical_area][key]["location"]
+        location_data.append(uf_brain[cortical_area][key]["cumulative_fire_count"])
         neuron_locations.append(location_data)
 
     return neuron_locations
@@ -480,16 +481,16 @@ def cortical_area_lengths(cortical_area):
     coordinates = ['x', 'y', 'z']
     for _ in coordinates:
         lenght.append(
-            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][1] -
-            universal_functions.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][0])
+            uf_genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][1] -
+            uf_genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][0])
 
     return lenght
 
 
 def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_neuron_id, src_neuron_id):
 
-    src_data = universal_functions.brain[cortical_area_src]
-    dst_data = universal_functions.brain[cortical_area_dst]
+    src_data = uf_brain[cortical_area_src]
+    dst_data = uf_brain[cortical_area_dst]
 
     if cortical_area_dst == 'vision_v2' and cortical_area_src == 'vision_v1-1':
         1 == 1
@@ -556,8 +557,8 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_
 
     # Rule 5: Helps mapping multiple layers to a single layer
     if rule_id == 'rule_5':
-        src_layer_index = universal_functions.genome['blueprint'][cortical_area_src]['layer_index']
-        src_total_layer_count = universal_functions.genome['blueprint'][cortical_area_src]['total_layer_count']
+        src_layer_index = uf_genome['blueprint'][cortical_area_src]['layer_index']
+        src_total_layer_count = uf_genome['blueprint'][cortical_area_src]['total_layer_count']
         dest_layer_height = dest_lenghts[2] / src_total_layer_count
         if (sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
                 ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param):
@@ -569,10 +570,10 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_
 
     # Rule 6: Maps XY blocks from one layer to another
     if rule_id == 'rule_6':
-        src_blk_x = universal_functions.brain[cortical_area_src][src_neuron_id]["block"][0]
-        src_blk_y = universal_functions.brain[cortical_area_src][src_neuron_id]["block"][1]
-        dst_blk_x = universal_functions.brain[cortical_area_dst][dst_neuron_id]["block"][0]
-        dst_blk_y = universal_functions.brain[cortical_area_dst][dst_neuron_id]["block"][1]
+        src_blk_x = uf_brain[cortical_area_src][src_neuron_id]["block"][0]
+        src_blk_y = uf_brain[cortical_area_src][src_neuron_id]["block"][1]
+        dst_blk_x = uf_brain[cortical_area_dst][dst_neuron_id]["block"][0]
+        dst_blk_y = uf_brain[cortical_area_dst][dst_neuron_id]["block"][1]
         # print(src_blk_x, dst_blk_x, "---", src_blk_y, dst_blk_y)
         if abs(src_blk_x - dst_blk_x) < 8 and abs(src_blk_y - dst_blk_y) < 8:
             is_candidate = True
@@ -607,9 +608,9 @@ def neurons_in_same_block(cortical_area, neuron_id):
     Generates a list of Neurons in the same block as the given one
     """
     neuron_list = []
-    for _ in universal_functions.brain[cortical_area]:
-        if universal_functions.brain[cortical_area][_]['block'] == \
-                universal_functions.brain[cortical_area][neuron_id]['block']:
+    for _ in uf_brain[cortical_area]:
+        if uf_brain[cortical_area][_]['block'] == \
+                uf_brain[cortical_area][neuron_id]['block']:
             if _ != neuron_id:
                 neuron_list.append(_)
     return neuron_list
@@ -621,8 +622,8 @@ def neurons_in_the_block(cortical_area, block_id):
     block_id to be entered as [x,y,z]
     """
     neuron_list = []
-    for neuron_id in universal_functions.brain[cortical_area]:
-        if universal_functions.brain[cortical_area][neuron_id]['block'] == block_id:
+    for neuron_id in uf_brain[cortical_area]:
+        if uf_brain[cortical_area][neuron_id]['block'] == block_id:
             neuron_list.append(neuron_id)
     return neuron_list
 
@@ -656,7 +657,7 @@ def neurons_in_block_neighborhood(cortical_area, neuron_id, kernel_size=3):
     Provides the list of all neurons within the surrounding blocks given the kernel size with default being 3
     """
     neuron_list = list()
-    neuron_block_id = universal_functions.brain[cortical_area][neuron_id]['block']
+    neuron_block_id = uf_brain[cortical_area][neuron_id]['block']
     block_list = neighboring_blocks(neuron_block_id, kernel_size)
     for _ in block_list:
         neurons_in_block = neurons_in_the_block(cortical_area, _)

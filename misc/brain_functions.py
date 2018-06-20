@@ -1,7 +1,7 @@
 
 
 import multiprocessing as mp
-from misc import universal_functions, stats, visualizer
+from misc import universal_functions, stats
 import sys
 from tty import setraw
 import termios
@@ -21,15 +21,6 @@ class Brain:
               (universal_functions.parameters["InitData"]["connectome_path"] + 'vision_v1.json',
                stats.connectome_neuron_count(cortical_area='vision_v1')))
         print(' \rexiting', cp.name, cp.pid)
-        return
-
-    @staticmethod
-    def show_cortical_areas():
-        # The following visualizes the connectome. Pass neighbor_show='true' as a parameter to view neuron relationships
-        # visualizer.connectome_visualizer(cortical_area='vision_v1', neighbor_show='true')
-        # visualizer.connectome_visualizer(cortical_area='vision_v2', neighbor_show='true')
-        # visualizer.connectome_visualizer(cortical_area='vision_IT', neighbor_show='true')
-        visualizer.connectome_visualizer(cortical_area='vision_memory', neighbor_show='true')
         return
 
     @staticmethod

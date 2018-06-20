@@ -11,7 +11,6 @@ from functools import partial
 from multiprocessing import Pool
 
 import architect
-# import visualizer
 from misc import universal_functions, stats
 from configuration import settings
 
@@ -130,9 +129,3 @@ def main():
 
     print("Total brain synapse count is: ", stats.brain_total_synapse_cnt())
 
-    # # Visualize Neurons and Synapses
-    # if universal_functions.parameters["Switches"]["vis_show"]:
-    #     for key in blueprint:
-    #         visualizer.connectome_visualizer(cortical_area=key, neighbor_show='true')
-
-    # settings.save_brain_to_disk()

@@ -129,3 +129,4 @@ def main():
 
     print("Total brain synapse count is: ", stats.brain_total_synapse_cnt())
 
+    # universal_functions.save_brain_to_disk()

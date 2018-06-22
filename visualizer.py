@@ -3,6 +3,7 @@
 This file contains all of the Visualization functions
 """
 
+import ast
 import os.path
 os.chdir("/Users/mntehrani/Documents/PycharmProjects/Metis/")
 
@@ -146,35 +147,25 @@ def burst_visualization_manager():
 
     setup_canvas()
 
-    ani = animation.FuncAnimation(fig, animate, interval=1000)
+    ani = animation.FuncAnimation(fig, animate, 19, interval=40, blit=True)
 
-    ax.figure.canvas.draw()
-    pylab.plt.cla()
-    # pylab.plt.show()
-
-    # for burst in burst_iterator():
-    #     fcl = burst
-    #     print("FCL from the mrg func:", fcl)
-
-
-# def burst_iterator():
-#     for burst_data in fcl_burst_data_set:
-#         yield fcl_burst_data_set[burst_data]
+    # ax.figure.canvas.draw()
+    # pylab.plt.cla()
+    pylab.plt.show()
 
 
 def animate(i):
 
     with open('./fcl_repo/fcl.json', 'r') as fcl_file:
-        fcl = fcl_file.read()
-        # print("*****************************************\n", fcl)
-        # print("*****************************************\n")
+        fcl = ast.literal_eval(fcl_file.read())
     # ax.clear()
-    print("*****************************************\n", fcl)
-    if len(fcl) > 0:
+    # pylab.plt.cla()
+    print("Num of objs in FCL: ", len(fcl))
+    if len(fcl) > 2:
         for entry in indexed_cortical_list:
             try:
                 neuron_locations = fire_candidate_locations(fcl)
-                print("neuron locations:", neuron_locations)
+                # print("neuron locations:", neuron_locations)
                 for location in neuron_locations[entry[1]]:
                     if genome['blueprint'][entry[1]]['group_id'] == 'vision':
                         d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
@@ -189,7 +180,6 @@ def animate(i):
 
     else:
         sleep(1)
-        # print("haha")
 
 
 def setup_canvas():

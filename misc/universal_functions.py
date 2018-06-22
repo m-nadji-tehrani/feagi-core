@@ -13,7 +13,7 @@ global parameters
 if 'parameters' not in globals():
     with open("./configuration/parameters.json", "r") as data_file:
         parameters = json.load(data_file)
-        print("Parameters has been read from file")
+        # print("Parameters has been read from file")
 
 training_neuron_list_utf = []
 training_neuron_list_img = []
@@ -77,7 +77,7 @@ mnist_iterator = IPU_vision.read_mnist_raw()
 mnist_array = []
 for _ in mnist_iterator:
     mnist_array.append(_)
-print(len(mnist_array))
+# print(len(mnist_array))
 
 
 # Reads the list of all Cortical areas defined in Genome

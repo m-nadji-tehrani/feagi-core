@@ -558,7 +558,7 @@ def neuron_fire(cortical_area, neuron_id):
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     neighbor_list = uf.brain[cortical_area][neuron_id]["neighbors"]
-    print("Neighbor list:", neighbor_list)
+    # print("Neighbor list:", neighbor_list)
     if uf.parameters["Switches"]["logging_fire"]:
         print(datetime.datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
     if uf.parameters["Verbose"]["neuron_functions-neuron_fire"]:
@@ -784,7 +784,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
 
     else:
-        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant, verbose=False)
+        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant)
 
     return
 

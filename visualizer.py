@@ -25,12 +25,12 @@ from misc.neuron_functions import fire_candidate_locations
 from misc.universal_functions import brain, genome, parameters, cortical_areas, latest_fcl_file, load_fcl_in_memory
 
 
-if parameters["Switches"]["visualize_latest_file"]:
-    fcl_file = latest_fcl_file()
-else:
-    fcl_file = parameters["InitData"]["fcl_to_visualize"]
-
-fcl_burst_data_set = load_fcl_in_memory(fcl_file)
+# if parameters["Switches"]["visualize_latest_file"]:
+#     fcl_file = latest_fcl_file()
+# else:
+#     fcl_file = parameters["InitData"]["fcl_to_visualize"]
+#
+# fcl_burst_data_set = load_fcl_in_memory(fcl_file)
 
 
 def vis_init():
@@ -150,7 +150,7 @@ def burst_visualization_manager():
 
     ax.figure.canvas.draw()
     pylab.plt.cla()
-    pylab.plt.show()
+    # pylab.plt.show()
 
     # for burst in burst_iterator():
     #     fcl = burst
@@ -165,23 +165,27 @@ def burst_visualization_manager():
 def animate(i):
 
     with open('./fcl_repo/fcl.json', 'r') as fcl_file:
-        fcl = json.load(fcl_file)
+        fcl = fcl_file.read()
         # print("*****************************************\n", fcl)
         # print("*****************************************\n")
     # ax.clear()
+    print("*****************************************\n", fcl)
     if len(fcl) > 0:
         for entry in indexed_cortical_list:
-            neuron_locations = fire_candidate_locations(fcl)
-            print("neuron locations:", neuron_locations)
-            for location in neuron_locations[entry[1]]:
-                if genome['blueprint'][entry[1]]['group_id'] == 'vision':
-                    d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
-                if genome['blueprint'][entry[1]]['group_id'] == 'Memory':
-                    d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
-                if genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-                    d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
-                if genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-                    d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
+            try:
+                neuron_locations = fire_candidate_locations(fcl)
+                print("neuron locations:", neuron_locations)
+                for location in neuron_locations[entry[1]]:
+                    if genome['blueprint'][entry[1]]['group_id'] == 'vision':
+                        d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
+                    if genome['blueprint'][entry[1]]['group_id'] == 'Memory':
+                        d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
+                    if genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+                        d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
+                    if genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+                        d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
+            finally:
+                pass
 
     else:
         sleep(1)

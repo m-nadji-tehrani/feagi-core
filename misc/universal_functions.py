@@ -153,10 +153,10 @@ def load_brain_in_memory():
 
 
 def save_brain_to_disk(cortical_area='all'):
+    global brain
     if cortical_area != 'all':
         with open(parameters["InitData"]["connectome_path"]+cortical_area+'.json', "r+") as data_file:
             data = brain[cortical_area]
-
             # print("...All data related to Cortical area %s is saved in connectome\n" % cortical_area)
             # Saving changes to the connectome
             data_file.seek(0)  # rewind

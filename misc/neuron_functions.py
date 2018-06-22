@@ -119,7 +119,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             for x in list(fire_candidate_list):
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
-                neuron_fire(x[0], x[1], verbose=verbose)
+                neuron_fire(x[0], x[1])
 
             neuro_plasticity()
 
@@ -139,6 +139,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             with open('./fcl_repo/fcl.json', 'w') as fcl_file:
                 fcl_file.write(json.dumps(fire_candidate_list))
                 fcl_file.truncate()
+            sleep(0.5)
 
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
@@ -373,13 +374,13 @@ def auto_injector():
             if uf.InjectorParams.utf_flag:
                 uf.InjectorParams.num_to_inject -= 1
 
-    print(uf.InjectorParams.utf_counter,
-          uf.InjectorParams.variation_counter,
-          uf.InjectorParams.exposure_counter)
-
-    print(uf.InjectorParams.utf_counter_actual,
-          uf.InjectorParams.variation_counter_actual,
-          uf.InjectorParams.exposure_counter_actual)
+    # print(uf.InjectorParams.utf_counter,
+    #       uf.InjectorParams.variation_counter,
+    #       uf.InjectorParams.exposure_counter)
+    #
+    # print(uf.InjectorParams.utf_counter_actual,
+    #       uf.InjectorParams.variation_counter_actual,
+    #       uf.InjectorParams.exposure_counter_actual)
 
     if uf.InjectorParams.utf_counter_actual == -1 and \
             uf.InjectorParams.variation_counter_actual == 0 and \
@@ -548,7 +549,7 @@ def fire_candidate_locations(fire_cnd_list):
     return neuron_locations
 
 
-def neuron_fire(cortical_area, neuron_id, verbose=False):
+def neuron_fire(cortical_area, neuron_id):
     """This function initiate the firing of Neuron in a given cortical area"""
     if uf.parameters["Switches"]["logging_fire"]:
         print(datetime.datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
@@ -557,9 +558,10 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     neighbor_list = uf.brain[cortical_area][neuron_id]["neighbors"]
+    print("Neighbor list:", neighbor_list)
     if uf.parameters["Switches"]["logging_fire"]:
         print(datetime.datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
-    if verbose:
+    if uf.parameters["Verbose"]["neuron_functions-neuron_fire"]:
         print(settings.Bcolors.RED +
               "Firing neuron %s using firing pattern %s" %
               (neuron_id, json.dumps(uf.brain[cortical_area][neuron_id]["firing_pattern_id"], indent=3)) +
@@ -577,12 +579,11 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     # neuron_update_list = []
     for dst_neuron_id in neighbor_list:
-        if verbose:
+        if uf.parameters["Verbose"]["neuron_functions-neuron_fire"]:
             print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         neuron_update(dst_cortical_area, dst_neuron_id,
-                      uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
-                      verbose=verbose)
+                      uf.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
 
     # Placeholder for refractory period
     # todo: Implement refractory period logic
@@ -626,7 +627,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     fire_candidate_list.pop(fire_candidate_list.index([cortical_area, neuron_id]))
     # print("FCL after fire pop: ", len(fire_candidate_list))
     # np.delete(fire_candidate_list, fire_candidate_list.index([cortical_area, neuron_id]))
-    if verbose:
+    if uf.parameters["Verbose"]["neuron_functions-neuron_fire"]:
         print(settings.Bcolors.RED + "Fire Function triggered FCL: %s " % fire_candidate_list + settings.Bcolors.ENDC)
 
     # todo: add a check that if the firing neuron is part of OPU to perform an action
@@ -634,7 +635,7 @@ def neuron_fire(cortical_area, neuron_id, verbose=False):
     return
 
 
-def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=False):
+def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
     """This function updates the destination parameters upon upstream Neuron firing"""
 
     dst_neuron_obj = uf.brain[cortical_area][dst_neuron_id]
@@ -643,7 +644,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
-    if verbose:
+    if uf.parameters["Verbose"]["neuron_functions-neuron_update"]:
         print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
         print(settings.Bcolors.UPDATE +
               "%s's Cumulative_intake_count value before update: %s" %
@@ -668,7 +669,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
         dst_neuron_obj["last_membrane_potential_reset_burst"] = burst_count
         # todo: Might be better to have a reset func.
         dst_neuron_obj["membrane_potential"] = 0
-        if verbose:
+        if uf.parameters["Verbose"]["neuron_functions-neuron_update"]:
             print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + dst_neuron_id +
                   ' got rest' + settings.Bcolors.ENDC)
 
@@ -679,7 +680,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
     # print("membrane_potential:", destination,
     #       ":", uf.brain[cortical_area][destination]["membrane_potential"])
 
-    if verbose:
+    if uf.parameters["Verbose"]["neuron_functions-neuron_update"]:
         print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s" %
               (dst_neuron_id, dst_neuron_obj["membrane_potential"])
               + settings.Bcolors.ENDC)
@@ -700,7 +701,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, verbose=Fa
         if dst_neuron_obj["snooze_till_burst_num"] <= burst_count:
             if fire_candidate_list.count([cortical_area, dst_neuron_id]) == 0:   # To prevent duplicate entries
                 fire_candidate_list.append([cortical_area, dst_neuron_id])
-                if verbose:
+                if uf.parameters["Verbose"]["neuron_functions-neuron_update"]:
                     print(settings.Bcolors.UPDATE + "    Update Function triggered FCL: %s " % fire_candidate_list
                           + settings.Bcolors.ENDC)
 

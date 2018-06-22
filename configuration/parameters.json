@@ -27,11 +27,11 @@
     "plasticity": true,
     "capture_brain_activities": false,
     "visualize_latest_file": false,
-    "save_fcl_to_disk": true
+    "save_fcl_to_disk": false
   },
   "InitData": {
     "read_data_from_memory": true,
-    "regenerate_brain": false,
+    "regenerate_brain": true,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
     "genome_file": "./evolutionary/genome.json",
@@ -41,7 +41,7 @@
   },
   "Auto_injector":{
     "variation_default": 20,
-    "exposure_default": 20,
+    "exposure_default": 1,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
@@ -58,5 +58,10 @@
     "print_seen_img": false,
     "print_filtered_img": true,
     "print_activation_counters": false
+  },
+  "Verbose":{
+    "neuron_functions-neuron_update": true,
+    "neuron_functions-neuron_fire": false
   }
+
 }

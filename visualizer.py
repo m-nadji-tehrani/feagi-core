@@ -26,6 +26,9 @@ from misc.neuron_functions import fire_candidate_locations
 from misc.universal_functions import brain, genome, parameters, cortical_areas, latest_fcl_file, load_fcl_in_memory
 
 
+# global fig
+# fig = pylab.plt.figure()
+
 # if parameters["Switches"]["visualize_latest_file"]:
 #     fcl_file = latest_fcl_file()
 # else:
@@ -139,28 +142,22 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
 
 
 def burst_visualization_manager():
-    # global figure
-    # figure = pylab.figure(figsize=pylab.figaspect(.15))
-    #
-    # pylab.thismanager = pylab.get_current_fig_manager()
-    # pylab.thismanager.window.wm_geometry("+80+800")
 
     setup_canvas()
 
-    ani = animation.FuncAnimation(fig, animate, 19, interval=40, blit=True)
+    while 1==1:
+        animate()
 
-    # ax.figure.canvas.draw()
-    # pylab.plt.cla()
     pylab.plt.show()
 
 
-def animate(i):
+def animate():
 
     with open('./fcl_repo/fcl.json', 'r') as fcl_file:
         fcl = ast.literal_eval(fcl_file.read())
     # ax.clear()
     # pylab.plt.cla()
-    print("Num of objs in FCL: ", len(fcl))
+    # print("Num of objs in FCL: ", len(fcl))
     if len(fcl) > 2:
         for entry in indexed_cortical_list:
             try:
@@ -180,6 +177,14 @@ def animate(i):
 
     else:
         sleep(1)
+
+    fig.canvas.draw_idle()
+    pylab.plt.pause(1)
+    pylab.plt.clf()
+    d_vision.cla()
+    d_memory.cla()
+    d_ipu.cla()
+    d_opu.cla()
 
 
 def setup_canvas():

@@ -219,33 +219,42 @@ def auto_tester():
     # Exposure counter
     uf.TesterParams.exposure_counter_actual -= 1
 
-    # Variation counter
-    if uf.TesterParams.exposure_counter_actual < 0:
-        uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
-        uf.TesterParams.test_attempt_counter += 1
-        # Comprehension logic
-        print("> ", uf.parameters["Input"]["comprehended_char"], "> ", uf.TesterParams.num_to_inject)
-        if uf.parameters["Input"]["comprehended_char"] == str(uf.TesterParams.num_to_inject):
-            print(settings.Bcolors.HEADER +
-                  ">> >> >> The Brain successfully identified the image as > %s < !!!!"
-                  % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
-            uf.TesterParams.comprehension_counter += 1
-        uf.TesterParams.temp_stats[uf.TesterParams.num_to_inject] = [uf.TesterParams.num_to_inject,
-                                                                     uf.TesterParams.test_attempt_counter,
-                                                                     uf.TesterParams.comprehension_counter]
-        if uf.TesterParams.variation_handler:
+    print("Exposure counter actual: ", uf.TesterParams.exposure_counter_actual)
+    print("Variation counter actual: ", uf.TesterParams.variation_counter_actual,
+          uf.TesterParams.variation_handler)
+    print("UTF counter actual: ", uf.TesterParams.utf_counter_actual, uf.TesterParams.utf_handler)
+
+    # Exit condition
+    if test_exit_condition():
+        test_exit_process()
+
+    # Test stats
+    uf.TesterParams.temp_stats[uf.TesterParams.num_to_inject] = [uf.TesterParams.num_to_inject,
+                                                                 uf.TesterParams.test_attempt_counter,
+                                                                 uf.TesterParams.comprehension_counter]
+
+    # Counter logic
+    if uf.TesterParams.variation_handler:
+        if uf.TesterParams.exposure_counter_actual < 1 and not test_exit_condition():
+            uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
+            uf.TesterParams.test_attempt_counter += 1
+            test_comprehension_logic()
+
+            # Variation counter
             uf.TesterParams.variation_counter_actual -= 1
             if uf.TesterParams.img_flag:
                 DataFeeder.image_feeder(uf.TesterParams.num_to_inject)
 
-    # UTF counter
-    if uf.TesterParams.variation_counter_actual < 0 and uf.TesterParams.variation_handler:
-        uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
-        uf.TesterParams.variation_counter_actual = uf.TesterParams.variation_counter
-        if uf.TesterParams.utf_handler:
-            uf.TesterParams.utf_counter_actual -= 1
-            if uf.TesterParams.utf_flag:
-                uf.TesterParams.num_to_inject -= 1
+        if uf.TesterParams.utf_handler \
+                and uf.TesterParams.variation_counter_actual < 0  \
+                and not test_exit_condition():
+                uf.TesterParams.exposure_counter_actual = uf.TesterParams.exposure_counter
+                uf.TesterParams.variation_counter_actual = uf.TesterParams.variation_counter
+                uf.TesterParams.test_attempt_counter = 0
+                # UTF counter
+                uf.TesterParams.utf_counter_actual -= 1
+                if uf.TesterParams.utf_flag:
+                    uf.TesterParams.num_to_inject -= 1
 
     print(uf.TesterParams.utf_counter,
           uf.TesterParams.variation_counter,
@@ -255,26 +264,60 @@ def auto_tester():
           uf.TesterParams.variation_counter_actual,
           uf.TesterParams.exposure_counter_actual)
 
+    if uf.TesterParams.img_flag:
+        DataFeeder.img_neuron_list_feeder()
+
+
+def test_comprehension_logic():
+    # Comprehension logic
+    print("> ", uf.parameters["Input"]["comprehended_char"], "> ", uf.TesterParams.num_to_inject)
+    if uf.parameters["Input"]["comprehended_char"] == str(uf.TesterParams.num_to_inject):
+        print(settings.Bcolors.HEADER +
+              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+              + settings.Bcolors.ENDC)
+        print(settings.Bcolors.HEADER +
+              ">> >> >>                                                   << << <<"
+              + settings.Bcolors.ENDC)
+        print(settings.Bcolors.HEADER +
+              ">> >> >> The Brain successfully identified the image as > %s < !!!!"
+              % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
+        print(settings.Bcolors.HEADER +
+              ">> >> >>                                                   << << <<"
+              + settings.Bcolors.ENDC)
+        print(settings.Bcolors.HEADER +
+              "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+              + settings.Bcolors.ENDC)
+        uf.TesterParams.comprehension_counter += 1
+
+
+def test_exit_condition():
     if uf.TesterParams.utf_counter_actual == -1 and \
             uf.TesterParams.variation_counter_actual == 0 and \
             uf.TesterParams.exposure_counter_actual == 0:
-        uf.parameters["Auto_tester"]["tester_status"] = False
-        uf.TesterParams.exposure_counter_actual = uf.parameters["Auto_tester"]["exposure_default"]
-        uf.TesterParams.variation_counter_actual = uf.parameters["Auto_tester"]["variation_default"]
-        uf.TesterParams.utf_counter_actual = uf.parameters["Auto_tester"]["utf_default"]
-        test_duration = datetime.datetime.now() - uf.TesterParams.test_start_time
-        print("----------------------------All testing rounds has been completed-----------------------------")
-        print("Total test duration was: ", test_duration)
-        print("-----------------------------------------------------------------------------------------------")
-        print("Test statistics are as follows:\n", uf.TesterParams.test_stats)
-        print("-----------------------------------------------------------------------------------------------")
-        uf.TesterParams.test_stats[uf.TesterParams.test_id] = uf.TesterParams.temp_stats
-        uf.TesterParams.test_attempt_counter = 0
-        uf.TesterParams.comprehension_counter = 0
-        # logging stats into Genome
-        uf.genome_stats["test_stats"] = uf.TesterParams.test_stats
-    if uf.TesterParams.img_flag:
-        DataFeeder.img_neuron_list_feeder()
+        exit_condition = True
+        print(">> Test exit condition has been met <<")
+    else:
+        exit_condition = False
+
+    return exit_condition
+
+
+def test_exit_process():
+    uf.parameters["Auto_tester"]["tester_status"] = False
+    uf.TesterParams.exposure_counter_actual = uf.parameters["Auto_tester"]["exposure_default"]
+    uf.TesterParams.variation_counter_actual = uf.parameters["Auto_tester"]["variation_default"]
+    uf.TesterParams.utf_counter_actual = uf.parameters["Auto_tester"]["utf_default"]
+    test_duration = datetime.datetime.now() - uf.TesterParams.test_start_time
+    print("----------------------------All testing rounds has been completed-----------------------------")
+    print("Total test duration was: ", test_duration)
+    print("-----------------------------------------------------------------------------------------------")
+    print("Test statistics are as follows:\n", uf.TesterParams.test_stats)
+    print("-----------------------------------------------------------------------------------------------")
+    uf.TesterParams.test_stats[uf.TesterParams.test_id] = uf.TesterParams.temp_stats
+    uf.TesterParams.test_attempt_counter = 0
+    uf.TesterParams.comprehension_counter = 0
+    # logging stats into Genome
+    uf.genome_stats["test_stats"] = uf.TesterParams.test_stats
 
 
 def injection_manager(injection_mode, injection_param):
@@ -362,14 +405,16 @@ def auto_injector():
     # Exposure counter
     uf.InjectorParams.exposure_counter_actual -= 1
 
-    # Exit condition
     print("Exposure counter actual: ", uf.InjectorParams.exposure_counter_actual)
     print("Variation counter actual: ", uf.InjectorParams.variation_counter_actual,
           uf.InjectorParams.variation_handler)
     print("UTF counter actual: ", uf.InjectorParams.utf_counter_actual, uf.InjectorParams.utf_handler)
+
+    # Exit condition
     if injection_exit_condition():
         injection_exit_process()
 
+    # Counter logic
     if uf.InjectorParams.variation_handler:
         if uf.InjectorParams.exposure_counter_actual < 1 and not injection_exit_condition():
             uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter

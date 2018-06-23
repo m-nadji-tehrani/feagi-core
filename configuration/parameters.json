@@ -27,7 +27,7 @@
     "plasticity": true,
     "capture_brain_activities": false,
     "visualize_latest_file": false,
-    "save_fcl_to_disk": true
+    "save_fcl_to_disk": false
   },
   "InitData": {
     "read_data_from_memory": true,
@@ -40,15 +40,15 @@
     "training_rounds_default": 10
   },
   "Auto_injector":{
-    "variation_default": 3,
-    "exposure_default": 5,
+    "variation_default": 10,
+    "exposure_default": 10,
     "utf_default": 0,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 50,
-    "exposure_default": 20,
+    "variation_default": 2,
+    "exposure_default": 4,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false

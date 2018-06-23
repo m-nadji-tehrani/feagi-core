@@ -136,6 +136,11 @@ if __name__ == '__main__':
 
     read_user_input()
 
+    # todo: implement the following using multiprocessing
+    if universal_functions.parameters["Switches"]["vis_show"]:
+        import visualizer
+        visualizer.main()
+
     try:
         while universal_functions.parameters["Input"]["user_input"] != 'q':
             # if universal_functions.parameters["Input"]["user_input"] != settings.Input.previous_user_input and \

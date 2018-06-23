@@ -358,15 +358,30 @@ def auto_injector():
     uf.InjectorParams.exposure_counter_actual -= 1
 
     # Variation counter
+    print("exposure counter actual: ", uf.InjectorParams.exposure_counter_actual)
     if uf.InjectorParams.exposure_counter_actual < 0:
         uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
         if uf.InjectorParams.variation_handler:
+            print("var counter just reduced....^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
             uf.InjectorParams.variation_counter_actual -= 1
             if uf.InjectorParams.img_flag:
                 DataFeeder.image_feeder(uf.InjectorParams.num_to_inject)
 
+    # Exit condition
+    print("UTF counter actual: ", uf.InjectorParams.utf_counter_actual)
+    if uf.InjectorParams.utf_counter_actual < 1:
+        uf.parameters["Auto_injector"]["injector_status"] = False
+        uf.InjectorParams.exposure_counter_actual = uf.parameters["Auto_injector"]["exposure_default"]
+        uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
+        uf.InjectorParams.utf_counter_actual = uf.parameters["Auto_injector"]["utf_default"]
+        injection_duration = datetime.datetime.now() - uf.InjectorParams.injection_start_time
+        print("----------------------------All injection rounds has been completed-----------------------------")
+        print("Total injection duration was: ", injection_duration)
+        print("-----------------------------------------------------------------------------------------------")
+
     # UTF counter
-    if uf.InjectorParams.variation_counter_actual < 0 and uf.InjectorParams.variation_handler:
+    print("var counter actual: ", uf.InjectorParams.variation_counter_actual)
+    if uf.InjectorParams.variation_counter_actual == 0 and uf.InjectorParams.variation_handler:
         uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
         uf.InjectorParams.variation_counter_actual = uf.InjectorParams.variation_counter
         if uf.InjectorParams.utf_handler:
@@ -382,17 +397,6 @@ def auto_injector():
     #       uf.InjectorParams.variation_counter_actual,
     #       uf.InjectorParams.exposure_counter_actual)
 
-    if uf.InjectorParams.utf_counter_actual == -1 and \
-            uf.InjectorParams.variation_counter_actual == 0 and \
-            uf.InjectorParams.exposure_counter_actual == 0:
-        uf.parameters["Auto_injector"]["injector_status"] = False
-        uf.InjectorParams.exposure_counter_actual = uf.parameters["Auto_injector"]["exposure_default"]
-        uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
-        uf.InjectorParams.utf_counter_actual = uf.parameters["Auto_injector"]["utf_default"]
-        injection_duration = datetime.datetime.now() - uf.InjectorParams.injection_start_time
-        print("----------------------------All injection rounds has been completed-----------------------------")
-        print("Total injection duration was: ", injection_duration)
-        print("-----------------------------------------------------------------------------------------------")
 
     if uf.InjectorParams.img_flag:
         DataFeeder.img_neuron_list_feeder()
@@ -421,6 +425,10 @@ class DataFeeder:
 
     @staticmethod
     def image_feeder(num):
+        if num < 0:
+            num = 0
+            print(settings.Bcolors.RED + "Error: image feeder has been fed a less than 0 number" +
+                  settings.Bcolors.ENDC)
         uf.labeled_image = mnist_img_fetcher(num)
         # Convert image to neuron activity
         uf.training_neuron_list_img = brain_functions.Brain.retina(uf.labeled_image)

@@ -40,9 +40,9 @@
     "training_rounds_default": 10
   },
   "Auto_injector":{
-    "variation_default": 20,
+    "variation_default": 1,
     "exposure_default": 1,
-    "utf_default": 9,
+    "utf_default": 0,
     "burst_skip": 0,
     "injector_status": false
   },

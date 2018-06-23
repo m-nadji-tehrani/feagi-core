@@ -26,17 +26,6 @@ from misc.neuron_functions import fire_candidate_locations
 from misc.universal_functions import brain, genome, parameters, cortical_areas, latest_fcl_file, load_fcl_in_memory
 
 
-# global fig
-# fig = pylab.plt.figure()
-
-# if parameters["Switches"]["visualize_latest_file"]:
-#     fcl_file = latest_fcl_file()
-# else:
-#     fcl_file = parameters["InitData"]["fcl_to_visualize"]
-#
-# fcl_burst_data_set = load_fcl_in_memory(fcl_file)
-
-
 def vis_init():
     # plt.ion()
     print("Initializing plot...")
@@ -69,7 +58,7 @@ def vis_init():
     parameters["Switches"]["vis_init_status"] = True
 
 
-def init_burst_visualization():
+def init_figures():
     # global burst_figure
     # burst_figure = plt.figure(figsize=plt.figaspect(.15))
     # plt.thismanager = plt.get_current_fig_manager()
@@ -226,6 +215,7 @@ def burst_visualization_manager():
 
 def animate():
     global d_vision, d_ipu, d_memory, d_opu
+
     with open('./fcl_repo/fcl.json', 'r') as fcl_file:
         raw_data = fcl_file.read()
         success = False
@@ -236,9 +226,8 @@ def animate():
             if not success:
                 fcl = []
 
-    neuron_locations = fire_candidate_locations(fcl)
-
     if len(fcl) > 2:
+        neuron_locations = fire_candidate_locations(fcl)
         for entry in indexed_cortical_list:
             try:
                 setup_canvas(entry)
@@ -255,16 +244,16 @@ def animate():
             finally:
                 pass
 
+        fig.canvas.draw()
+        pylab.plt.pause(0.1)
+        pylab.plt.clf()
+        d_vision.cla()
+        d_memory.cla()
+        d_ipu.cla()
+        d_opu.cla()
+
     else:
         sleep(1)
-
-    fig.canvas.draw()
-    pylab.plt.pause(1)
-    pylab.plt.clf()
-    d_vision.cla()
-    d_memory.cla()
-    d_ipu.cla()
-    d_opu.cla()
 
 
 def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
@@ -396,6 +385,13 @@ def cortical_heatmap(IPU_input, cortical_areas):
     return
 
 
-vis_init()
-init_burst_visualization()
-burst_visualization_manager()
+def main():
+    vis_init()
+    init_figures()
+    burst_visualization_manager()
+
+
+if __name__ == '__main__':
+    vis_init()
+    init_figures()
+    burst_visualization_manager()

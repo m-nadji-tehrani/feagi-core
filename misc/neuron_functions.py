@@ -307,8 +307,8 @@ def injection_manager(injection_mode, injection_param):
             uf.InjectorParams.variation_handler = True
             uf.InjectorParams.variation_counter = uf.parameters["Auto_injector"]["variation_default"]
             uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
-            uf.InjectorParams.utf_counter = -1
-            uf.InjectorParams.utf_counter_actual = -1
+            uf.InjectorParams.utf_counter = 1
+            uf.InjectorParams.utf_counter_actual = 1
             uf.InjectorParams.num_to_inject = int(injection_param)
             print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
                   % injection_param)
@@ -354,54 +354,73 @@ def auto_injector():
         if uf.InjectorParams.img_flag:
             DataFeeder.image_feeder(uf.InjectorParams.num_to_inject)
 
+    print("Exposure, Variation, and UTF counters actual values are: ",
+          uf.InjectorParams.exposure_counter_actual,
+          uf.InjectorParams.variation_counter_actual,
+          uf.InjectorParams.utf_counter_actual)
+
     # Exposure counter
     uf.InjectorParams.exposure_counter_actual -= 1
 
-    # Variation counter
-    print("exposure counter actual: ", uf.InjectorParams.exposure_counter_actual)
-    if uf.InjectorParams.exposure_counter_actual < 0:
-        uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
-        if uf.InjectorParams.variation_handler:
-            print("var counter just reduced....^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    # Exit condition
+    print("Exposure counter actual: ", uf.InjectorParams.exposure_counter_actual)
+    print("Variation counter actual: ", uf.InjectorParams.variation_counter_actual,
+          uf.InjectorParams.variation_handler)
+    print("UTF counter actual: ", uf.InjectorParams.utf_counter_actual, uf.InjectorParams.utf_handler)
+    if injection_exit_condition():
+        injection_exit_process()
+
+    if uf.InjectorParams.variation_handler:
+        if uf.InjectorParams.exposure_counter_actual < 1 and not injection_exit_condition():
+            uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
+            # Variation counter
             uf.InjectorParams.variation_counter_actual -= 1
             if uf.InjectorParams.img_flag:
                 DataFeeder.image_feeder(uf.InjectorParams.num_to_inject)
-
-    # Exit condition
-    print("UTF counter actual: ", uf.InjectorParams.utf_counter_actual)
-    if uf.InjectorParams.utf_counter_actual < 1:
-        uf.parameters["Auto_injector"]["injector_status"] = False
-        uf.InjectorParams.exposure_counter_actual = uf.parameters["Auto_injector"]["exposure_default"]
-        uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
-        uf.InjectorParams.utf_counter_actual = uf.parameters["Auto_injector"]["utf_default"]
-        injection_duration = datetime.datetime.now() - uf.InjectorParams.injection_start_time
-        print("----------------------------All injection rounds has been completed-----------------------------")
-        print("Total injection duration was: ", injection_duration)
-        print("-----------------------------------------------------------------------------------------------")
-
-    # UTF counter
-    print("var counter actual: ", uf.InjectorParams.variation_counter_actual)
-    if uf.InjectorParams.variation_counter_actual == 0 and uf.InjectorParams.variation_handler:
-        uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
-        uf.InjectorParams.variation_counter_actual = uf.InjectorParams.variation_counter
-        if uf.InjectorParams.utf_handler:
-            uf.InjectorParams.utf_counter_actual -= 1
-            if uf.InjectorParams.utf_flag:
-                uf.InjectorParams.num_to_inject -= 1
-
-    # print(uf.InjectorParams.utf_counter,
-    #       uf.InjectorParams.variation_counter,
-    #       uf.InjectorParams.exposure_counter)
-    #
-    # print(uf.InjectorParams.utf_counter_actual,
-    #       uf.InjectorParams.variation_counter_actual,
-    #       uf.InjectorParams.exposure_counter_actual)
-
+        if uf.InjectorParams.utf_handler \
+                and uf.InjectorParams.variation_counter_actual < 0  \
+                and not injection_exit_condition():
+                uf.InjectorParams.exposure_counter_actual = uf.InjectorParams.exposure_counter
+                uf.InjectorParams.variation_counter_actual = uf.InjectorParams.variation_counter
+                # UTF counter
+                uf.InjectorParams.utf_counter_actual -= 1
+                if uf.InjectorParams.utf_flag:
+                    uf.InjectorParams.num_to_inject -= 1
 
     if uf.InjectorParams.img_flag:
         DataFeeder.img_neuron_list_feeder()
     if uf.InjectorParams.utf_flag:
         DataFeeder.utf8_feeder()
+
+
+def injection_exit_condition():
+    if (uf.InjectorParams.utf_handler and
+        uf.InjectorParams.utf_counter_actual < 1 and
+        uf.InjectorParams.variation_counter_actual < 1 and
+        uf.InjectorParams.exposure_counter_actual < 1) or \
+            (not uf.InjectorParams.utf_handler and
+             uf.InjectorParams.variation_handler and
+             uf.InjectorParams.variation_counter_actual < 1 and
+             uf.InjectorParams.exposure_counter_actual < 1) or \
+            (not uf.InjectorParams.utf_handler and
+             not uf.InjectorParams.variation_handler and
+             uf.InjectorParams.exposure_counter_actual < 1):
+        exit_condition = True
+        print(">> Injection exit condition has been met <<")
+    else:
+        exit_condition = False
+    return exit_condition
+
+
+def injection_exit_process():
+    uf.parameters["Auto_injector"]["injector_status"] = False
+    uf.InjectorParams.exposure_counter_actual = uf.parameters["Auto_injector"]["exposure_default"]
+    uf.InjectorParams.variation_counter_actual = uf.parameters["Auto_injector"]["variation_default"]
+    uf.InjectorParams.utf_counter_actual = uf.parameters["Auto_injector"]["utf_default"]
+    injection_duration = datetime.datetime.now() - uf.InjectorParams.injection_start_time
+    print("----------------------------All injection rounds has been completed-----------------------------")
+    print("Total injection duration was: ", injection_duration)
+    print("-----------------------------------------------------------------------------------------------")
 
 
 class DataFeeder:
@@ -425,7 +444,7 @@ class DataFeeder:
 
     @staticmethod
     def image_feeder(num):
-        if num < 0:
+        if int(num) < 0:
             num = 0
             print(settings.Bcolors.RED + "Error: image feeder has been fed a less than 0 number" +
                   settings.Bcolors.ENDC)

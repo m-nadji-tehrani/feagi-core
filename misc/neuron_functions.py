@@ -532,7 +532,7 @@ def user_input_processing(user_input, user_input_param):
 def fire_candidate_locations(fire_cnd_list):
     """Extracts Neuron locations from the fire_candidate_list"""
 
-    print('***')
+    # print('***')
     # print(fire_cnd_list)
 
     neuron_locations = {}

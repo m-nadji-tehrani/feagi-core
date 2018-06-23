@@ -154,7 +154,14 @@ def burst_visualization_manager():
 def animate():
 
     with open('./fcl_repo/fcl.json', 'r') as fcl_file:
-        fcl = ast.literal_eval(fcl_file.read())
+        raw_data = fcl_file.read()
+        success = False
+        try:
+            fcl = ast.literal_eval(raw_data)
+            success = True
+        finally:
+            if not success:
+                fcl = []
     # ax.clear()
     # pylab.plt.cla()
     # print("Num of objs in FCL: ", len(fcl))
@@ -165,13 +172,14 @@ def animate():
                 # print("neuron locations:", neuron_locations)
                 for location in neuron_locations[entry[1]]:
                     if genome['blueprint'][entry[1]]['group_id'] == 'vision':
-                        d_vision.scatter(location[0], location[1], location[2], c='r', marker='^')
+                        # pylab.plt.subplot(7, 3, genome['blueprint'][entry[1]]['plot_index'])
+                        d_vision.scatter3D(location[0], location[1], location[2], c='r', marker='^')
                     if genome['blueprint'][entry[1]]['group_id'] == 'Memory':
-                        d_memory.scatter(location[0], location[1], location[2], c='r', marker='^')
+                        d_memory.scatter3D(location[0], location[1], location[2], c='r', marker='^')
                     if genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-                        d_ipu.scatter(location[0], location[1], location[2], c='r', marker='^')
+                        d_ipu.scatter3D(location[0], location[1], location[2], c='r', marker='^')
                     if genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-                        d_opu.scatter(location[0], location[1], location[2], c='r', marker='^')
+                        d_opu.scatter3D(location[0], location[1], location[2], c='r', marker='^')
             finally:
                 pass
 
@@ -199,8 +207,10 @@ def setup_canvas():
     for entry in indexed_cortical_list:
         if genome['blueprint'][entry[1]]['group_id'] == 'vision':
             if genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
-                d_vision = vision_figure.add_subplot(7, 3, genome['blueprint']
-                [entry[1]]['plot_index'], projection='3d', aspect='equal')
+                d_vision = vision_figure.add_subplot(7,
+                                                     3,
+                                                     genome['blueprint'][entry[1]]['plot_index'],
+                                                     projection='3d', aspect='equal')
                 d_vision.set_title(entry[1])
                 d_vision.set_xlim(
                     genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],

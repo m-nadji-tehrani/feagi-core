@@ -291,9 +291,9 @@ def test_comprehension_logic():
 
 
 def test_exit_condition():
-    if uf.TesterParams.utf_counter_actual == -1 and \
-            uf.TesterParams.variation_counter_actual == 0 and \
-            uf.TesterParams.exposure_counter_actual == 0:
+    if uf.TesterParams.utf_counter_actual < 1 and \
+            uf.TesterParams.variation_counter_actual < 1 and \
+            uf.TesterParams.exposure_counter_actual < 1:
         exit_condition = True
         print(">> Test exit condition has been met <<")
     else:

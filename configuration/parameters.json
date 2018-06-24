@@ -31,7 +31,7 @@
   },
   "InitData": {
     "read_data_from_memory": true,
-    "regenerate_brain": false,
+    "regenerate_brain": true,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
     "genome_file": "./evolutionary/genome.json",
@@ -47,8 +47,8 @@
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 2,
-    "exposure_default": 4,
+    "variation_default": 1,
+    "exposure_default": 10,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false

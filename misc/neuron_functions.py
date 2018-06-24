@@ -311,7 +311,9 @@ def test_exit_process():
     print("----------------------------All testing rounds has been completed-----------------------------")
     print("Total test duration was: ", test_duration)
     print("-----------------------------------------------------------------------------------------------")
-    print("Test statistics are as follows:\n", uf.TesterParams.test_stats)
+    print("Test statistics are as follows:\n")
+    for test in uf.TesterParams.test_stats:
+        print(test, "\n", uf.TesterParams.test_stats[test])
     print("-----------------------------------------------------------------------------------------------")
     uf.TesterParams.test_stats[uf.TesterParams.test_id] = uf.TesterParams.temp_stats
     uf.TesterParams.test_attempt_counter = 0

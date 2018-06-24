@@ -7,6 +7,7 @@ import pickle
 from datetime import datetime
 from genethesizer import genome_id_gen
 import IPU_vision
+import db_handler
 
 
 global parameters
@@ -117,12 +118,12 @@ genome_metadata = load_genome_metadata_in_memory()
 
 
 def load_genome_in_memory():
-    from genethesizer import genome_selector
-    genome_id = genome_selector()
-    with open(parameters["InitData"]["genome_file"], "r") as data_file:
-        genome_db = json.load(data_file)
-        genome = genome_db[genome_id]["properties"]
-    return genome
+    # todo: update genethesizer to work with mongodb
+    # from genethesizer import genome_selector
+    # genome_id = genome_selector()
+    mongo = db_handler.MongoManagement()
+    genome = mongo.latest_genome()
+    return genome["properties"]
 
 
 # Resets the in-memory brain for each cortical area
@@ -175,25 +176,18 @@ def save_brain_to_disk(cortical_area='all'):
 
 
 def save_genome_to_disk():
+    mongo = db_handler.MongoManagement()
     global genome_stats, genome
-    with open(parameters["InitData"]["genome_file"], "r+") as data_file:
-        genome_db = json.load(data_file)
 
-        new_genome_id = genome_id_gen()
+    genome_db = {}
+    genome_db["generation_date"] = str(datetime.now())
+    genome_db["properties"] = genome
+    genome_db["stats"] = genome_stats
 
-        genome_db[new_genome_id] = {}
-        genome_db[new_genome_id]["generation_date"] = str(datetime.now())
-        genome_db[new_genome_id]["properties"] = genome
+    mongo.insert_genome(genome_db)
 
-        genome_db[new_genome_id]["stats"] = genome_stats
-        genome_db["genome_metadata"]["most_recent_genome_id"] = new_genome_id
+    print("Genome has been preserved for future generations!")
 
-        # Saving changes to the connectome
-        data_file.seek(0)  # rewind
-        data_file.write(json.dumps(genome_db, indent=3))
-        data_file.truncate()
-
-        print("Genome has been preserved for future generations!")
     return
 
 

@@ -16,6 +16,7 @@ if __name__ == '__main__':
     from evolutionary import brain_gen
     from misc import brain_functions, neuron_functions, universal_functions
     from evolutionary.architect import event_id_gen
+    from genethesizer import genome_id_gen
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
@@ -74,6 +75,8 @@ if __name__ == '__main__':
         print("--------------------------------------------------------------")
         print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
         print("--------------------------------------------------------------")
+    else:
+        universal_functions.genome_id = genome_id_gen()
 
     # Initializing queues
     user_input_queue = mp.Queue()
@@ -92,6 +95,10 @@ if __name__ == '__main__':
     brain_queue.put(brain_data)
 
     genome_stats = {}
+    genome_stats["test_stats"] = []
+
+    genome_test_stats = []
+
     genome_stats_queue.put(genome_stats)
 
     def read_user_input():
@@ -168,7 +175,7 @@ if __name__ == '__main__':
     finally:
         print("Finally!")
         universal_functions.brain = brain_queue.get()
-        universal_functions.genome_stats = genome_stats_queue.get()
+        universal_functions.genome_test_stats = genome_stats_queue.get()
         join_processes()
         universal_functions.save_brain_to_disk()
         universal_functions.save_genome_to_disk()

@@ -3,9 +3,15 @@ from pymongo import MongoClient
 
 class MongoManagement:
     def __init__(self):
+        print("*** Conncting to database ***")
         self.client = MongoClient('localhost', 27017)
         self.db = self.client['metis']
         self.collection_genome = self.db['genomes']
+        self.collection_test_stats = self.db['test_stats']
+        print(">> Connected successfully to database.")
+
+    def insert_test_stats(self, stats_data):
+        self.collection_test_stats.insert_one(stats_data)
 
     def insert_genome(self, genome_data):
         self.collection_genome.insert_one(genome_data)
@@ -1557,9 +1563,13 @@ if __name__ == "__main__":
 
     # Mongo.insert_genome(genome_data=genome_data)
     #
-    latest_genome = mongo.latest_genome()
+    # latest_genome = mongo.latest_genome()
     #
-    print(type(latest_genome))
-    print(latest_genome["properties"])
+    # print(type(latest_genome))
+    # print(latest_genome["properties"])
     # for _ in latest_genome:
     #     print(_)
+
+    test = [{'a': 9}, {'b': 5}, {'c':7}]
+    for _ in test:
+       mongo.insert_test_stats(_)

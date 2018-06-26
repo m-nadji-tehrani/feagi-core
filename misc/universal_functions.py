@@ -67,7 +67,7 @@ class TesterParams:
     test_mode = ''
     comprehension_counter = 0
     test_attempt_counter = 0
-    temp_stats = []
+    # temp_stats = []
     test_stats = {}
     test_id = ""
 
@@ -123,6 +123,8 @@ def load_genome_in_memory():
     # genome_id = genome_selector()
     mongo = db_handler.MongoManagement()
     genome = mongo.latest_genome()
+    global genome_id
+    genome_id = genome["genome_id"]
     return genome["properties"]
 
 
@@ -177,18 +179,23 @@ def save_brain_to_disk(cortical_area='all'):
 
 def save_genome_to_disk():
     mongo = db_handler.MongoManagement()
-    global genome_stats, genome
+    global genome_test_stats, genome, genome_id
 
     genome_db = {}
+    genome_db["genome_id"] = genome_id
     genome_db["generation_date"] = str(datetime.now())
     genome_db["properties"] = genome
-    genome_db["stats"] = genome_stats
 
     mongo.insert_genome(genome_db)
+
+    for stat in genome_test_stats:
+        stat_to_save = stat
+        mongo.insert_test_stats(stat_to_save)
 
     print("Genome has been preserved for future generations!")
 
     return
+
 
 
 def reset_cumulative_counter_instances():
@@ -285,6 +292,10 @@ genome = load_genome_in_memory()
 
 global genome_stats
 genome_stats = {}
+
+global genome_test_stats
+genome_test_stats = []
+
 
 global blueprint
 blueprint = cortical_list()

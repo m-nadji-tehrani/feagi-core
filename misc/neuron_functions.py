@@ -61,7 +61,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     while not uf.parameters["Switches"]["ready_to_exit_burst"]:
         burst_start_time = datetime.datetime.now()
         global burst_count
-
         # print(datetime.datetime.now(), "Burst count = ", burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
@@ -141,9 +140,10 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 fcl_file.truncate()
             sleep(0.5)
 
+
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
-    genome_stats_queue.put(uf.genome_stats)
+    genome_stats_queue.put(uf.genome_test_stats)
 
 
 def test_manager(test_mode, test_param):
@@ -186,15 +186,9 @@ def test_manager(test_mode, test_param):
 
     finally:
         uf.toggle_test_mode()
-        test_id = test_id_gen()
-        uf.TesterParams.test_id = test_id
-        num_list = []
-        for _ in range(0, 10):
-            num_list.append([_, 0, 0])
-        uf.TesterParams.test_stats[test_id] = num_list
-        uf.TesterParams.temp_stats = num_list
-
         uf.TesterParams.test_id = test_id_gen()
+        uf.TesterParams.test_stats["genome_id"] = uf.genome_id
+        uf.TesterParams.test_stats["test_id"] = uf.TesterParams.test_id
         uf.TesterParams.testing_has_begun = True
 
 
@@ -224,14 +218,12 @@ def auto_tester():
           uf.TesterParams.variation_handler)
     print("UTF counter actual: ", uf.TesterParams.utf_counter_actual, uf.TesterParams.utf_handler)
 
+    # Test stats
+    update_test_stats()
+
     # Exit condition
     if test_exit_condition():
         test_exit_process()
-
-    # Test stats
-    uf.TesterParams.temp_stats[uf.TesterParams.num_to_inject] = [uf.TesterParams.num_to_inject,
-                                                                 uf.TesterParams.test_attempt_counter,
-                                                                 uf.TesterParams.comprehension_counter]
 
     # Counter logic
     if uf.TesterParams.variation_handler:
@@ -266,6 +258,20 @@ def auto_tester():
 
     if uf.TesterParams.img_flag:
         DataFeeder.img_neuron_list_feeder()
+
+
+def update_test_stats():
+    utf_exposed = str(uf.TesterParams.num_to_inject) + '_exposed'
+    utf_comprehended = str(uf.TesterParams.num_to_inject) + '_comprehended'
+
+    if utf_exposed not in uf.TesterParams.test_stats:
+        uf.TesterParams.test_stats[utf_exposed] = 1
+
+    if utf_comprehended not in uf.TesterParams.test_stats:
+        uf.TesterParams.test_stats[utf_exposed] = 0
+
+    uf.TesterParams.test_stats[utf_exposed] = uf.TesterParams.test_attempt_counter
+    uf.TesterParams.test_stats[utf_comprehended] = uf.TesterParams.comprehension_counter
 
 
 def test_comprehension_logic():
@@ -315,12 +321,12 @@ def test_exit_process():
     for test in uf.TesterParams.test_stats:
         print(test, "\n", uf.TesterParams.test_stats[test])
     print("-----------------------------------------------------------------------------------------------")
-    uf.TesterParams.test_stats[uf.TesterParams.test_id] = uf.TesterParams.temp_stats
+
     uf.TesterParams.test_attempt_counter = 0
     uf.TesterParams.comprehension_counter = 0
     # logging stats into Genome
-    uf.genome_stats["test_stats"] = uf.TesterParams.test_stats
-
+    uf.genome_test_stats.append(uf.TesterParams.test_stats.copy())
+    uf.TesterParams.test_stats = {}
 
 def injection_manager(injection_mode, injection_param):
     """

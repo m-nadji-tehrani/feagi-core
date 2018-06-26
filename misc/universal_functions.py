@@ -5,7 +5,7 @@ import os.path
 import glob
 import pickle
 from datetime import datetime
-from genethesizer import genome_id_gen
+from genethesizer import calculate_fitness
 import IPU_vision
 import db_handler
 
@@ -186,6 +186,11 @@ def save_genome_to_disk():
     genome_db["generation_date"] = str(datetime.now())
     genome_db["properties"] = genome
 
+    brain_fitness = calculate_fitness(genome_test_stats)
+    genome_db["fitness"] = brain_fitness
+
+    print("Brain fitness factor was evaluated as: ", brain_fitness)
+
     mongo.insert_genome(genome_db)
 
     for stat in genome_test_stats:
@@ -195,7 +200,6 @@ def save_genome_to_disk():
     print("Genome has been preserved for future generations!")
 
     return
-
 
 
 def reset_cumulative_counter_instances():

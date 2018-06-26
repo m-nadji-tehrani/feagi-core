@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/documentation/test.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/configuration/parameters.json" afterPath="$PROJECT_DIR$/configuration/parameters.json" />
+      <change beforePath="$PROJECT_DIR$/connectome/vision_IT.json" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" />
+      <change beforePath="$PROJECT_DIR$/connectome/vision_v2.json" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" />
+      <change beforePath="$PROJECT_DIR$/documentation/test.json" afterPath="" />
       <change beforePath="$PROJECT_DIR$/evolutionary/genethesizer.py" afterPath="$PROJECT_DIR$/evolutionary/genethesizer.py" />
+      <change beforePath="$PROJECT_DIR$/misc/universal_functions.py" afterPath="$PROJECT_DIR$/misc/universal_functions.py" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,8 +30,9 @@
     <SUITE FILE_PATH="coverage/My_Brian$read.coverage" NAME="read Coverage Results" MODIFIED="1501513738668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$settings.coverage" NAME="settings Coverage Results" MODIFIED="1524443115413" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$think.coverage" NAME="think Coverage Results" MODIFIED="1525836746235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1529986828630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1530034903947" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$genome_functions.coverage" NAME="genome_functions Coverage Results" MODIFIED="1491589109785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$test.coverage" NAME="test Coverage Results" MODIFIED="1530034538504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/documentation" />
     <SUITE FILE_PATH="coverage/My_Brian$.coverage" NAME=" Coverage Results" MODIFIED="1501604042733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/My_Brian$logic_handler.coverage" NAME="logic_handler Coverage Results" MODIFIED="1504891847335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$auto_train.coverage" NAME="auto_train Coverage Results" MODIFIED="1503343535417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -36,7 +43,7 @@
     <SUITE FILE_PATH="coverage/My_Brian$OPU_utf8.coverage" NAME="OPU_utf8 Coverage Results" MODIFIED="1502472243019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$brain_gen.coverage" NAME="brain_gen Coverage Results" MODIFIED="1502338111580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$multiprocess_test.coverage" NAME="multiprocess_test Coverage Results" MODIFIED="1501639743328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Brian$genethesizer.coverage" NAME="genethesizer Coverage Results" MODIFIED="1529990387782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evolutionary" />
+    <SUITE FILE_PATH="coverage/My_Brian$genethesizer.coverage" NAME="genethesizer Coverage Results" MODIFIED="1530033477918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evolutionary" />
     <SUITE FILE_PATH="coverage/My_Brian$mnist_helper_maker.coverage" NAME="mnist_helper_maker Coverage Results" MODIFIED="1528647448771" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
     <SUITE FILE_PATH="coverage/My_Brian$getchar.coverage" NAME="getchar Coverage Results" MODIFIED="1501374246460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$print_test.coverage" NAME="print_test Coverage Results" MODIFIED="1501434580084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -64,26 +71,26 @@
     <favorites_list name="My_Brian" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.58462673">
+    <splitter split-orientation="horizontal" split-proportion="0.81005174">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="universal_functions.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="universal_functions.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/misc/universal_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-2827">
-                  <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+                <state relative-caret-position="238">
+                  <caret line="182" column="0" lean-forward="true" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
                   <folding>
                     <element signature="e#1#12#0" expanded="true" />
-                    <element signature="e#670#1269#0" expanded="false" />
-                    <element signature="e#2320#2459#0" expanded="false" />
-                    <element signature="e#2501#2657#0" expanded="false" />
-                    <element signature="e#2703#2863#0" expanded="false" />
-                    <element signature="e#3584#3690#0" expanded="false" />
-                    <element signature="e#3945#4373#0" expanded="false" />
-                    <element signature="e#5951#6170#0" expanded="false" />
-                    <element signature="e#6204#6439#0" expanded="false" />
-                    <element signature="e#6475#6755#0" expanded="false" />
-                    <element signature="e#7086#7289#0" expanded="false" />
+                    <element signature="e#674#1273#0" expanded="false" />
+                    <element signature="e#2324#2463#0" expanded="false" />
+                    <element signature="e#2505#2661#0" expanded="false" />
+                    <element signature="e#2707#2867#0" expanded="false" />
+                    <element signature="e#3588#3694#0" expanded="false" />
+                    <element signature="e#3949#4377#0" expanded="false" />
+                    <element signature="e#6122#6341#0" expanded="false" />
+                    <element signature="e#6375#6610#0" expanded="false" />
+                    <element signature="e#6646#6926#0" expanded="false" />
+                    <element signature="e#7257#7460#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -93,7 +100,7 @@
             <entry file="file://$PROJECT_DIR$/misc/db_handler.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="274">
-                  <caret line="39" column="0" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+                  <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#54#0" expanded="true" />
                     <element signature="e#1210#53888#0" expanded="false" />
@@ -102,16 +109,25 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="genethesizer.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="genethesizer.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="256">
-                  <caret line="113" column="16" lean-forward="false" selection-start-line="113" selection-start-column="16" selection-end-line="113" selection-end-column="16" />
+                <state relative-caret-position="315">
+                  <caret line="198" column="32" lean-forward="false" selection-start-line="198" selection-start-column="32" selection-end-line="198" selection-end-column="32" />
                   <folding>
                     <element signature="e#83#119#0" expanded="true" />
-                    <element signature="e#2964#3607#0" expanded="false" />
-                    <element signature="e#4381#5199#0" expanded="false" />
+                    <element signature="e#3708#4351#0" expanded="false" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/documentation/test.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="354">
+                  <caret line="54" column="36" lean-forward="false" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -119,8 +135,8 @@
           <file leaf-file-name="neuron_functions.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="461">
-                  <caret line="327" column="66" lean-forward="false" selection-start-line="327" selection-start-column="66" selection-end-line="327" selection-end-column="66" />
+                <state relative-caret-position="116">
+                  <caret line="304" column="9" lean-forward="false" selection-start-line="304" selection-start-column="9" selection-end-line="304" selection-end-column="9" />
                   <folding>
                     <element signature="e#10332#11376#0" expanded="false" />
                     <element signature="e#15069#18324#0" expanded="false" />
@@ -139,6 +155,16 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/main.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="423">
+                  <caret line="174" column="12" lean-forward="false" selection-start-line="174" selection-start-column="12" selection-end-line="174" selection-end-column="12" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -147,7 +173,7 @@
             <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="227">
-                  <caret line="26" column="23" lean-forward="false" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
+                  <caret line="26" column="20" lean-forward="false" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -176,10 +202,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>injection_param</find>
-      <find>stat</find>
-      <find>load</find>
-      <find>load_geno</find>
       <find>.</find>
       <find>2018-06-18_09:17:13.078213_CSU0T2_T</find>
       <find>str(datetime.datetime.now()).replace(' ', '_')</find>
@@ -205,7 +227,11 @@
       <find>genome_test_stats</find>
       <find>stats_all</find>
       <find>test_exit_process</find>
+      <find>ran</find>
+      <find>fit</find>
+      <find>crossover</find>
       <find>genome_test</find>
+      <find>fitne</find>
     </findStrings>
     <replaceStrings>
       <replace>postsynaptic_current</replace>
@@ -253,7 +279,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/reproduction/genome_database.json" />
         <option value="$PROJECT_DIR$/brain_death.py" />
         <option value="$PROJECT_DIR$/sleep.py" />
         <option value="$PROJECT_DIR$/algorithms.txt" />
@@ -290,7 +315,6 @@
         <option value="$PROJECT_DIR$/PUs/IPU_vision.py" />
         <option value="$PROJECT_DIR$/fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" />
         <option value="$PROJECT_DIR$/documentation/formulas.txt" />
-        <option value="$PROJECT_DIR$/documentation/test.json" />
         <option value="$PROJECT_DIR$/evolutionary/brain_gen.py" />
         <option value="$PROJECT_DIR$/evolutionary/architect.py" />
         <option value="$PROJECT_DIR$/fcl_repo/fcl.json" />
@@ -299,11 +323,13 @@
         <option value="$PROJECT_DIR$/misc/mongo_test.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/misc/neuron_functions.py" />
-        <option value="$PROJECT_DIR$/misc/universal_functions.py" />
         <option value="$PROJECT_DIR$/documentation/db_query_samples.py" />
-        <option value="$PROJECT_DIR$/configuration/parameters.json" />
         <option value="$PROJECT_DIR$/misc/db_handler.py" />
+        <option value="$PROJECT_DIR$/configuration/parameters.json" />
         <option value="$PROJECT_DIR$/evolutionary/genethesizer.py" />
+        <option value="$PROJECT_DIR$/documentation/test.json" />
+        <option value="$PROJECT_DIR$/documentation/test.py" />
+        <option value="$PROJECT_DIR$/misc/universal_functions.py" />
       </list>
     </option>
   </component>
@@ -414,7 +440,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.genethesizer">
+  <component name="RunManager" selected="Python.main">
     <configuration name="db_handler" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -473,20 +499,20 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
-    <configuration name="mnist_helper_maker" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PUs" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/documentation" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="My_Brian" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PUs/mnist_helper_maker.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/documentation/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -717,18 +743,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.main" />
-      <item index="1" class="java.lang.String" itemvalue="Python.mnist_helper_maker" />
-      <item index="2" class="java.lang.String" itemvalue="Python.visualizer" />
-      <item index="3" class="java.lang.String" itemvalue="Python.db_handler" />
-      <item index="4" class="java.lang.String" itemvalue="Python.genethesizer" />
+      <item index="1" class="java.lang.String" itemvalue="Python.visualizer" />
+      <item index="2" class="java.lang.String" itemvalue="Python.db_handler" />
+      <item index="3" class="java.lang.String" itemvalue="Python.genethesizer" />
+      <item index="4" class="java.lang.String" itemvalue="Python.test" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.genethesizer" />
-        <item index="1" class="java.lang.String" itemvalue="Python.db_handler" />
-        <item index="2" class="java.lang.String" itemvalue="Python.main" />
-        <item index="3" class="java.lang.String" itemvalue="Python.visualizer" />
-        <item index="4" class="java.lang.String" itemvalue="Python.mnist_helper_maker" />
+        <item index="0" class="java.lang.String" itemvalue="Python.main" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test" />
+        <item index="2" class="java.lang.String" itemvalue="Python.genethesizer" />
+        <item index="3" class="java.lang.String" itemvalue="Python.db_handler" />
+        <item index="4" class="java.lang.String" itemvalue="Python.visualizer" />
       </list>
     </recent_temporary>
   </component>
@@ -745,13 +771,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1463197491590</updated>
-    </task>
-    <task id="LOCAL-00077" summary="Code cleanup">
-      <created>1526775075193</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1526775075194</updated>
     </task>
     <task id="LOCAL-00078" summary="Main refactor">
       <created>1526789461955</created>
@@ -1089,7 +1108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1529987564258</updated>
     </task>
-    <option name="localTasksCounter" value="126" />
+    <task id="LOCAL-00126" summary="Gene crossover">
+      <created>1529990724477</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1529990724477</updated>
+    </task>
+    <option name="localTasksCounter" value="127" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1109,9 +1135,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30194473" sideWeight="0.4072039" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24769703" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4053224" sideWeight="0.57241744" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2395087" sideWeight="0.5927961" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36642784" sideWeight="0.5927961" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28305236" sideWeight="0.48583484" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17399268" sideWeight="0.49646643" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17399268" sideWeight="0.49646643" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5649949" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1202,7 +1228,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Data feeder class" />
     <MESSAGE value="Moved read char inside burst engine" />
     <MESSAGE value="Toggle refactor" />
     <MESSAGE value="Auto injection system" />
@@ -1227,7 +1252,8 @@
     <MESSAGE value="Test stats collection" />
     <MESSAGE value="Find latest genome" />
     <MESSAGE value="Random genome" />
-    <option name="LAST_COMMIT_MESSAGE" value="Random genome" />
+    <MESSAGE value="Gene crossover" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gene crossover" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1480,13 +1506,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/documentation/test.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7787">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/misc/stats.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="94">
@@ -1599,18 +1618,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="26" column="23" lean-forward="false" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/misc/db_handler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="274">
-          <caret line="39" column="0" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
             <element signature="e#1210#53888#0" expanded="false" />
@@ -1628,18 +1639,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="174" column="12" lean-forward="false" selection-start-line="174" selection-start-column="12" selection-end-line="174" selection-end-column="12" />
+        <state relative-caret-position="227">
+          <caret line="26" column="20" lean-forward="false" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/misc/neuron_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="327" column="66" lean-forward="false" selection-start-line="327" selection-start-column="66" selection-end-line="327" selection-end-column="66" />
+        <state relative-caret-position="116">
+          <caret line="304" column="9" lean-forward="false" selection-start-line="304" selection-start-column="9" selection-end-line="304" selection-end-column="9" />
           <folding>
             <element signature="e#10332#11376#0" expanded="false" />
             <element signature="e#15069#18324#0" expanded="false" />
@@ -1657,34 +1668,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/misc/universal_functions.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2827">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <element signature="e#1#12#0" expanded="true" />
-            <element signature="e#670#1269#0" expanded="false" />
-            <element signature="e#2320#2459#0" expanded="false" />
-            <element signature="e#2501#2657#0" expanded="false" />
-            <element signature="e#2703#2863#0" expanded="false" />
-            <element signature="e#3584#3690#0" expanded="false" />
-            <element signature="e#3945#4373#0" expanded="false" />
-            <element signature="e#5951#6170#0" expanded="false" />
-            <element signature="e#6204#6439#0" expanded="false" />
-            <element signature="e#6475#6755#0" expanded="false" />
-            <element signature="e#7086#7289#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="423">
+          <caret line="174" column="12" lean-forward="false" selection-start-line="174" selection-start-column="12" selection-end-line="174" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/documentation/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="54" column="36" lean-forward="false" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="113" column="16" lean-forward="false" selection-start-line="113" selection-start-column="16" selection-end-line="113" selection-end-column="16" />
+        <state relative-caret-position="315">
+          <caret line="198" column="32" lean-forward="false" selection-start-line="198" selection-start-column="32" selection-end-line="198" selection-end-column="32" />
           <folding>
             <element signature="e#83#119#0" expanded="true" />
-            <element signature="e#2964#3607#0" expanded="false" />
-            <element signature="e#4381#5199#0" expanded="false" />
+            <element signature="e#3708#4351#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc/universal_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="182" column="0" lean-forward="true" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+          <folding>
+            <element signature="e#1#12#0" expanded="true" />
+            <element signature="e#674#1273#0" expanded="false" />
+            <element signature="e#2324#2463#0" expanded="false" />
+            <element signature="e#2505#2661#0" expanded="false" />
+            <element signature="e#2707#2867#0" expanded="false" />
+            <element signature="e#3588#3694#0" expanded="false" />
+            <element signature="e#3949#4377#0" expanded="false" />
+            <element signature="e#6122#6341#0" expanded="false" />
+            <element signature="e#6375#6610#0" expanded="false" />
+            <element signature="e#6646#6926#0" expanded="false" />
+            <element signature="e#7257#7460#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -7,6 +7,35 @@ import string
 import db_handler
 
 
+def select_a_genome():
+    """
+    This function randomly selects a genetic operation from following options to produce a genome:
+    1. Crossover two randomly selected genomes
+    2. Random selection from available genomes
+    3. Latest genome
+    4. Best fitness ever
+    5. Mutate genome with highest fitness
+    6. TBD
+    """
+    random_selector = random.randrange(1, 4, 1)
+
+    if random_selector == 1:
+        genome = crossover()
+    elif random_selector == 2:
+        genome = random_genome()
+    elif random_selector == 3:
+        genome = latest_genome()
+    # elif random_selector == 4:
+    #     genome =
+    # elif random_selector == 5:
+    #     genome =
+    # elif random_selector == 6:
+    #     genome =
+
+    return genome
+
+
+
 class GeneModifier:
     def change_cortical_neuron_count(self, cortical_area, change_percentage):
         """ Function to increase or decrease the neuron density aka Cortical Neuron Count in a given cortical area"""
@@ -144,12 +173,68 @@ def crossover():
     return genome_2
 
 
+def random_genome():
+    db = db_handler.MongoManagement()
+    genome = db.random_genome(n=1)
+    return genome
+
+def latest_genome():
+    db = db_handler.MongoManagement()
+    genome = db.latest_genome()
+    return genome
+
+
 def translate_genotype2phenotype():
     return
 
 
-def calculate_fitness():
-    return
+def calculate_fitness(test_stats):
+    """
+    Calculate the effectiveness of a given genome:
+    1. Fitness value will be a number between 0 and 100 with 100 the highest fitness possible (how can there be limit?)
+    2. Brain activeness should be considered as a factor. Brain that only guessed one number and that one correctly
+          should not be considered better than a brain that guessed 100s of numbers 95% correct.
+    3. Number of guess attempts vs. number of correct guesses is a factor
+
+    Fitness calculation formula:
+
+    TE = Total number of times brain has been exposed to a character
+    TC = Total number of times brain has comprehended a number correctly
+    AF = Activity factor that is measured by a threshold.
+        - < 10 exposures leads to 0
+        - > 10 & < 50 exposures leads to n / 50 factor
+        - > 50 exposures leads to 1
+
+    TC / TE = Percentage of correct comprehensions
+
+    Genome fitness factor = AF * TC / TE
+
+    """
+    total_exposure, total_comprehended = genome_stats_analytics(test_stats)
+
+    if total_exposure < 10:
+        activity_factor = 0
+    elif 10 <= total_exposure <= 50:
+        activity_factor = total_exposure / 50
+    else:
+        activity_factor = 1
+
+    fitness = activity_factor * total_comprehended / total_exposure
+
+    return fitness
+
+
+def genome_stats_analytics(test_stats):
+    exposure_total = 0
+    comprehended_total = 0
+    for test in test_stats:
+        for key in test:
+            if "exposed" in key:
+                exposure_total += test[key]
+            if "comprehended" in key:
+                comprehended_total += test[key]
+
+    return exposure_total, comprehended_total
 
 
 def calculate_survival_prob():
@@ -171,14 +256,17 @@ def selection():
 def spin_new_generation():
     return
 
-# print(genethesize())
 
-#
-# genome_1 = {"a": 3, "b": {"name": "mohammad", "last": "nadji"}, "c": 5}
-# genome_2 = {"a": 1, "b": {"name": "jafar", "last": "gholi"}, "c": 6}
-#
-# print(crossover(genome_1, genome_2))
+if __name__ == "__main__":
+    # print(genethesize())
 
-a = crossover()
-for _ in a:
-    print(_)
+    print("9")
+    # genome_1 = {"a": 3, "b": {"name": "mohammad", "last": "nadji"}, "c": 5}
+    # genome_2 = {"a": 1, "b": {"name": "jafar", "last": "gholi"}, "c": 6}
+    #
+    # print(crossover(genome_1, genome_2))
+
+    # a = crossover()
+    # for _ in a:
+    #     print(_)
+    print(calculate_fitness())

@@ -25,6 +25,10 @@ class MongoManagement:
         db_output = self.collection_genome.find({}).sort("generation_date", DESCENDING).limit(1)
         return db_output[0]
 
+    def highest_fitness_genome(self):
+        db_output = self.collection_genome.find({}).sort("fitness", DESCENDING).limit(1)
+        return db_output[0]
+
     def genome_count(self):
         return self.collection_genome.count()
 
@@ -1567,15 +1571,15 @@ if __name__ == "__main__":
 
     # Mongo.insert_genome(genome_data=genome_data)
     #
-    # latest_genome = mongo.latest_genome()
+    print(mongo.highest_fitness_genome())
     #
     # print(type(latest_genome))
     # print(latest_genome["properties"])
     # for _ in latest_genome:
     #     print(_)
-
-    random_genome = mongo.random_genome(1)
-    for _ in random_genome:
-        print(_)
+    #
+    # random_genome = mongo.random_genome(1)
+    # for _ in random_genome:
+    #     print(_)
 
     # print(mongo.random_genome())

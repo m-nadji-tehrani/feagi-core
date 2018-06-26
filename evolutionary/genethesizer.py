@@ -184,6 +184,12 @@ def latest_genome():
     return genome
 
 
+def highest_fitness_genome():
+    db = db_handler.MongoManagement()
+    genome = db.highest_fitness_genome()
+    return genome
+
+
 def translate_genotype2phenotype():
     return
 

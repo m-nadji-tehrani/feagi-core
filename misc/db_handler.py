@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING, ASCENDING
 
 
 class MongoManagement:
@@ -21,13 +21,8 @@ class MongoManagement:
     #     return genome
 
     def latest_genome(self):
-        db_output = self.collection_genome.find_one()
-        return db_output
-        # db_output = self.collection_genome.find().limit(1).sort("_id", -1)
-        # for item in db_output:
-        #     for _ in item:
-        #         if _ != '_id':
-        #             return _
+        db_output = self.collection_genome.find({}).sort("generation_date", DESCENDING).limit(1)
+        return db_output[0]
 
     def genome_count(self):
         return self.collection_genome.count()
@@ -1570,6 +1565,5 @@ if __name__ == "__main__":
     # for _ in latest_genome:
     #     print(_)
 
-    test = [{'a': 9}, {'b': 5}, {'c':7}]
-    for _ in test:
-       mongo.insert_test_stats(_)
+    print(mongo.latest_genome())
+

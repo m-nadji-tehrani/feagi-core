@@ -1,5 +1,8 @@
 import random
 from PUs import IPU_vision
+import universal_functions
+from genethesizer import select_a_genome
+import brain_gen
 
 
 def training_num_gen(num):
@@ -17,4 +20,12 @@ def training_num_gen(num):
         print("mnist data label is:", mnist_data[1])
         print("\n")
     return rand_img_index, labeled_img
+
+
+
+
+
+
+
+
 

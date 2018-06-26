@@ -73,6 +73,12 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
 
         burst_count += 1
 
+        # Live mode condition
+        if uf.parameters["Switches"]["live_mode"] and uf.live_mode_status == 'idle':
+            uf.live_mode_status = 'learning'
+            print(settings.Bcolors.RED + "Starting an automated learning process...<> <> <> <>" + settings.Bcolors.ENDC)
+            injection_manager(injection_mode="l1", injection_param="")
+
         # todo: Currently feeding a single random number n times. Add the ability to train variations of the same number
         # todo: create a number feeder
 
@@ -140,10 +146,11 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 fcl_file.truncate()
             sleep(0.5)
 
-
     # Push updated brain data back to the queue
     brain_queue.put(uf.brain)
     genome_stats_queue.put(uf.genome_test_stats)
+    if uf.parameters["Switches"]["live_mode"]:
+        user_input.put('q')
 
 
 def test_manager(test_mode, test_param):
@@ -327,6 +334,12 @@ def test_exit_process():
     # logging stats into Genome
     uf.genome_test_stats.append(uf.TesterParams.test_stats.copy())
     uf.TesterParams.test_stats = {}
+    if uf.parameters["Switches"]["live_mode"] and uf.live_mode_status == 'testing':
+        uf.live_mode_status = 'idle'
+        print(settings.Bcolors.RED + "Burst exit triggered by the automated workflow >< >< >< >< >< " +
+              settings.Bcolors.ENDC)
+        burst_exit_process()
+
 
 def injection_manager(injection_mode, injection_param):
     """
@@ -474,6 +487,11 @@ def injection_exit_process():
     print("----------------------------All injection rounds has been completed-----------------------------")
     print("Total injection duration was: ", injection_duration)
     print("-----------------------------------------------------------------------------------------------")
+    if uf.parameters["Switches"]["live_mode"] and uf.live_mode_status == 'learning':
+        uf.live_mode_status = 'testing'
+        print(settings.Bcolors.RED + "Starting automated testing process XXX XXX XXX XXX XXX" +
+              settings.Bcolors.ENDC)
+        test_manager(test_mode="t1", test_param="")
 
 
 class DataFeeder:
@@ -573,6 +591,15 @@ def neuro_plasticity():
                         #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
 
+def burst_exit_process():
+    print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
+    global burst_count
+    burst_count = 0
+    uf.parameters["Switches"]["ready_to_exit_burst"] = True
+    if uf.parameters["Switches"]["capture_brain_activities"]:
+        uf.save_fcl_to_disk()
+
+
 def user_input_processing(user_input, user_input_param):
     while not user_input.empty():
         try:
@@ -583,12 +610,7 @@ def user_input_processing(user_input, user_input_param):
             print("User input param is ", user_input_value_param)
 
             if user_input_value == 'x':
-                print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-                global burst_count
-                burst_count = 0
-                uf.parameters["Switches"]["ready_to_exit_burst"] = True
-                if uf.parameters["Switches"]["capture_brain_activities"]:
-                    uf.save_fcl_to_disk()
+                burst_exit_process()
 
             elif user_input_value == 'v':
                 uf.toggle_verbose_mode()

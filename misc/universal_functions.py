@@ -16,6 +16,11 @@ if 'parameters' not in globals():
         parameters = json.load(data_file)
         # print("Parameters has been read from file")
 
+
+# live_mode_status can hvae modes of idle, learning, testing, tbd
+live_mode_status = 'idle'
+regenerate = True
+
 training_neuron_list_utf = []
 training_neuron_list_img = []
 labeled_image = []
@@ -83,6 +88,7 @@ for _ in mnist_iterator:
 
 # Reads the list of all Cortical areas defined in Genome
 def cortical_list():
+    # print("%%% Genome: ", genome)
     blueprint = genome["blueprint"]
     cortical_list = []
     for key in blueprint:
@@ -118,14 +124,12 @@ genome_metadata = load_genome_metadata_in_memory()
 
 
 def load_genome_in_memory():
-    # todo: update genethesizer to work with mongodb
-    # from genethesizer import genome_selector
-    # genome_id = genome_selector()
-    mongo = db_handler.MongoManagement()
-    genome = mongo.latest_genome()
-    global genome_id
-    genome_id = genome["genome_id"]
-    return genome["properties"]
+    from genethesizer import select_a_genome
+    genome = select_a_genome()
+    # print("NNN", type(genome), genome)
+    # global genome_id
+    # genome_id = genome["genome_id"]
+    return genome
 
 
 # Resets the in-memory brain for each cortical area

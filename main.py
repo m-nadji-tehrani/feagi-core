@@ -60,46 +60,50 @@ if __name__ == '__main__':
 
     b = brain_functions.Brain()
 
-    # Calling function to regenerate the Brain from the Genome
-    if universal_functions.parameters["InitData"]["regenerate_brain"]:
-        brain_generation_start_time = datetime.now()
-        brain_gen.main()
-        brain_generation_duration = datetime.now() - brain_generation_start_time
-        # settings.init_data()
+    def regeneration_check():
+        # Calling function to regenerate the Brain from the Genome
+        if universal_functions.parameters["InitData"]["regenerate_brain"]:
+            brain_generation_start_time = datetime.now()
+            brain_gen.main()
+            brain_generation_duration = datetime.now() - brain_generation_start_time
+            # settings.init_data()
 
-        # todo: Move the following to stats module
-        print("--------------------------------------------------------------")
-        print("Brain generation lasted %s " % brain_generation_duration)
-        print("--------------------------------------------------------------")
-        print("Total Neuron count in Connectome is: ", b.connectome_neuron_count())
-        print("--------------------------------------------------------------")
-        print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
-        print("--------------------------------------------------------------")
-    else:
-        universal_functions.genome_id = genome_id_gen()
+            # todo: Move the following to stats module
+            print("--------------------------------------------------------------")
+            print("Brain generation lasted %s " % brain_generation_duration)
+            print("--------------------------------------------------------------")
+            print("Total Neuron count in Connectome is: ", b.connectome_neuron_count())
+            print("--------------------------------------------------------------")
+            print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
+            print("--------------------------------------------------------------")
+        else:
+            universal_functions.genome_id = genome_id_gen()
 
-    # Initializing queues
-    user_input_queue = mp.Queue()
-    user_input_param_queue = mp.Queue()
-    FCL_queue = mp.Queue()
-    brain_queue = mp.Queue()
-    event_queue = mp.Queue()
-    genome_stats_queue = mp.Queue()
+    def initialize_the_brain():
+        global user_input_queue, user_input_param_queue, event_queue, \
+            genome_test_stats, brain_queue, FCL_queue, genome_stats_queue
+        # Initializing queues
+        user_input_queue = mp.Queue()
+        user_input_param_queue = mp.Queue()
+        FCL_queue = mp.Queue()
+        brain_queue = mp.Queue()
+        event_queue = mp.Queue()
+        genome_stats_queue = mp.Queue()
 
-    # Initialize Fire Candidate List (FCL)
-    FCL = []
-    FCL_queue.put(FCL)
+        # Initialize Fire Candidate List (FCL)
+        FCL = []
+        FCL_queue.put(FCL)
 
-    # Setting up Brain queue for multiprocessing
-    brain_data = universal_functions.brain
-    brain_queue.put(brain_data)
+        # Setting up Brain queue for multiprocessing
+        brain_data = universal_functions.brain
+        brain_queue.put(brain_data)
 
-    genome_stats = {}
-    genome_stats["test_stats"] = []
+        genome_stats = {}
+        genome_stats["test_stats"] = []
 
-    genome_test_stats = []
+        genome_test_stats = []
 
-    genome_stats_queue.put(genome_stats)
+        genome_stats_queue.put(genome_stats)
 
     def read_user_input():
         master.update_idletasks()
@@ -125,6 +129,8 @@ if __name__ == '__main__':
         universal_functions.parameters["Input"]["user_input"] = ''
         return
 
+    regeneration_check()
+    initialize_the_brain()
 
     # Starting the burst machine
     # pool = mp.Pool(max(1, mp.cpu_count()))
@@ -136,9 +142,6 @@ if __name__ == '__main__':
     print(" <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:", event_id)
     event_queue.put(event_id)
 
-    # process_burst = mp.Process(name='Burst process', target=neuron_functions.burst,
-    #                            args=(user_input_queue, FCL_queue, genome_stats_queue, event_queue))
-
     process_burst.deamon = False
 
     read_user_input()
@@ -148,37 +151,63 @@ if __name__ == '__main__':
         import visualizer
         visualizer.main()
 
-    try:
-        while universal_functions.parameters["Input"]["user_input"] != 'q':
-            # if universal_functions.parameters["Input"]["user_input"] != settings.Input.previous_user_input and \
-            #           universal_functions.parameters["Input"]["user_input"]_param != \
-            # settings.Input.previous_user_input_param:
-            # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<",
-            # universal_functions.parameters["Input"]["user_input"], settings.Input.previous_user_input)
-            try:
-                if universal_functions.parameters["Input"]["user_input"] == 'p':
-                    process_print_basic_info()
-                    universal_functions.parameters["Input"]["user_input"] = ''
+    while universal_functions.regenerate:
+        if not universal_functions.parameters["Switches"]["live_mode"]:
+            universal_functions.regenerate = False
+        try:
+            while universal_functions.parameters["Input"]["user_input"] != 'q':
+                # if universal_functions.parameters["Input"]["user_input"] != settings.Input.previous_user_input and \
+                #           universal_functions.parameters["Input"]["user_input"]_param != \
+                # settings.Input.previous_user_input_param:
+                # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<",
+                # universal_functions.parameters["Input"]["user_input"], settings.Input.previous_user_input)
+                try:
+                    if universal_functions.parameters["Input"]["user_input"] == 'p':
+                        process_print_basic_info()
+                        universal_functions.parameters["Input"]["user_input"] = ''
 
-                # elif universal_functions.parameters["Input"]["user_input"] == 's':
-                #     process_show_cortical_areas()
-                #     universal_functions.parameters["Input"]["user_input"] = ''
+                    # elif universal_functions.parameters["Input"]["user_input"] == 'live':
+                    #     live()
+                    #     universal_functions.parameters["Input"]["user_input"] = ''
 
-                else:
-                    read_user_input()
-                    sleep(2)
+                    else:
+                        read_user_input()
+                        if universal_functions.parameters["Switches"]["live_mode"]:
+                            universal_functions.parameters["Input"]["user_input"] = user_input_queue.get()
+                        sleep(2)
 
-            except IOError:
-                print("an error has occurred!!!")
-                pass
+                except IOError:
+                    print("an error has occurred!!!")
+                    pass
 
-    finally:
-        print("Finally!")
-        universal_functions.brain = brain_queue.get()
-        universal_functions.genome_test_stats = genome_stats_queue.get()
-        join_processes()
-        universal_functions.save_brain_to_disk()
-        universal_functions.save_genome_to_disk()
+        finally:
+            print("Finally!")
+            universal_functions.brain = brain_queue.get()
+            universal_functions.genome_test_stats = genome_stats_queue.get()
+            join_processes()
+            universal_functions.save_brain_to_disk()
+            universal_functions.save_genome_to_disk()
+            if universal_functions.parameters["Switches"]["live_mode"]:
+                universal_functions.parameters["Input"]["user_input"] = ""
+                # Regenerate the brain
+                brain_gen.main()
+                initialize_the_brain()
+
+                # Starting the burst machine
+                # pool = mp.Pool(max(1, mp.cpu_count()))
+                process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
+                                                                    FCL_queue, brain_queue, event_queue,
+                                                                    genome_stats_queue,))
+                print("The burst engine has been started...")
+
+                event_id = event_id_gen()
+                print(
+                    " <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:",
+                    event_id)
+                event_queue.put(event_id)
+
+                process_burst.deamon = False
+
 
 #
 #

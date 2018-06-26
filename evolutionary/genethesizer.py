@@ -20,11 +20,17 @@ def select_a_genome():
     random_selector = random.randrange(1, 4, 1)
 
     if random_selector == 1:
+        print("Crossover is happening...")
         genome = crossover()
+        # print("mohammad aghaye ghandi:", genome)
     elif random_selector == 2:
+        print("A random genome is being selected...")
         genome = random_genome()
+        # print("mohammad aghaye ghandi:", genome)
     elif random_selector == 3:
+        print("The latest genome is being selected...")
         genome = latest_genome()
+        # print("mohammad aghaye ghandi:", genome)
     # elif random_selector == 4:
     #     genome =
     # elif random_selector == 5:
@@ -33,7 +39,6 @@ def select_a_genome():
     #     genome =
 
     return genome
-
 
 
 class GeneModifier:
@@ -175,19 +180,23 @@ def crossover():
 
 def random_genome():
     db = db_handler.MongoManagement()
-    genome = db.random_genome(n=1)
-    return genome
+    genomes = db.random_genome(n=1)
+    for item in genomes:
+        genome = item
+    # print("this is the random genome", genome)
+    return genome['properties']
+
 
 def latest_genome():
     db = db_handler.MongoManagement()
     genome = db.latest_genome()
-    return genome
+    return genome['properties']
 
 
 def highest_fitness_genome():
     db = db_handler.MongoManagement()
     genome = db.highest_fitness_genome()
-    return genome
+    return genome['properties']
 
 
 def translate_genotype2phenotype():
@@ -225,7 +234,10 @@ def calculate_fitness(test_stats):
     else:
         activity_factor = 1
 
-    fitness = activity_factor * total_comprehended / total_exposure
+    if total_exposure == 0:
+        fitness = 0
+    else:
+        fitness = activity_factor * total_comprehended / total_exposure
 
     return fitness
 

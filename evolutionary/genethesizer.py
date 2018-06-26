@@ -4,6 +4,7 @@ from misc import universal_functions
 import datetime
 import random
 import string
+import db_handler
 
 
 class GeneModifier:
@@ -111,7 +112,36 @@ def mutate(genome):
 
 
 def crossover():
-    return
+    """
+    To corssover genome 1 and 2, first list of keys from one genome is read and the content of that key
+    is swapped with the other genome.
+    """
+    # todo: Need ability to cross over a part of blueprint
+    db = db_handler.MongoManagement()
+    genome_1, genome_2 = db.random_genome(n=2)
+
+    genome_1 = genome_1["properties"]
+    genome_2 = genome_2["properties"]
+
+    genome_1_keys = []
+    for key in genome_1.keys():
+        genome_1_keys.append(key)
+
+    # Select a random key
+    random_key = genome_1_keys[random.randrange(len(genome_1_keys))]
+
+    print("Crossing over: ", random_key)
+
+    genome_1_rnd_segment = genome_1[random_key]
+
+    genome_2_orig = genome_2
+
+    # Cross over
+    genome_2[random_key] = genome_1_rnd_segment
+
+    print("--- Gene crossover has occurred ---")
+
+    return genome_2
 
 
 def translate_genotype2phenotype():
@@ -142,3 +172,13 @@ def spin_new_generation():
     return
 
 # print(genethesize())
+
+#
+# genome_1 = {"a": 3, "b": {"name": "mohammad", "last": "nadji"}, "c": 5}
+# genome_2 = {"a": 1, "b": {"name": "jafar", "last": "gholi"}, "c": 6}
+#
+# print(crossover(genome_1, genome_2))
+
+a = crossover()
+for _ in a:
+    print(_)

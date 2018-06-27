@@ -4,12 +4,12 @@ import pymongo
 
 class MongoManagement:
     def __init__(self):
-        print("*** Conncting to database ***")
+        # print("*** Conncting to database ***")
         self.client = MongoClient('localhost', 27017)
         self.db = self.client['metis']
         self.collection_genome = self.db['genomes']
         self.collection_test_stats = self.db['test_stats']
-        print(">> Connected successfully to database.")
+        # print(">> Connected successfully to database.")
 
     def insert_test_stats(self, stats_data):
         self.collection_test_stats.insert_one(stats_data)

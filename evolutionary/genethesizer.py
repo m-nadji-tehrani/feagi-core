@@ -18,7 +18,7 @@ def select_a_genome():
     5. Mutate genome with highest fitness
     6. TBD
     """
-    random_selector = random.randrange(5, 6, 1)
+    random_selector = random.randrange(1, 6, 1)
 
     if random_selector == 1:
         print("Crossover is happening...")
@@ -33,9 +33,11 @@ def select_a_genome():
         genome = latest_genome()
 
     elif random_selector == 4:
+        print("The genome with highest fitness so far has been selected...")
         genome = highest_fitness_genome()
 
     elif random_selector == 5:
+        print("Gene mutation has occurred...")
         genome = mutate(highest_fitness_genome())
 
     # elif random_selector == 6:

@@ -10,12 +10,18 @@ __author__ = 'Mohammad Nadji-tehrani'
 if __name__ == '__main__':
     from datetime import datetime
     import tkinter
+    import sys
     from time import sleep
     import multiprocessing as mp
-    # from PUs import IPU_vision
     from evolutionary import brain_gen
     from misc import brain_functions, neuron_functions, universal_functions
     from evolutionary.architect import event_id_gen
+
+    connectome_file_path = sys.argv[1]
+    if connectome_file_path:
+        universal_functions.parameters["InitData"]["connectome_path"] = connectome_file_path
+
+    print("this is your connectome:", connectome_file_path)
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 

@@ -5,7 +5,6 @@ import os.path
 import glob
 import pickle
 from datetime import datetime
-from genethesizer import calculate_fitness
 import IPU_vision
 import db_handler
 
@@ -88,7 +87,6 @@ for _ in mnist_iterator:
 
 # Reads the list of all Cortical areas defined in Genome
 def cortical_list():
-    # print("%%% Genome: ", genome)
     blueprint = genome["blueprint"]
     cortical_list = []
     for key in blueprint:
@@ -182,6 +180,7 @@ def save_brain_to_disk(cortical_area='all'):
 
 
 def save_genome_to_disk():
+    from genethesizer import calculate_fitness
     mongo = db_handler.MongoManagement()
     global genome_test_stats, genome, genome_id
 

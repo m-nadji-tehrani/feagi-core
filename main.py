@@ -16,47 +16,47 @@ if __name__ == '__main__':
     from evolutionary import brain_gen
     from misc import brain_functions, neuron_functions, universal_functions
     from evolutionary.architect import event_id_gen
-    from genethesizer import genome_id_gen
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
     mp.set_start_method('spawn')
 
-    def submit_entry_fields():
-        print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
-        if universal_functions.parameters["Input"]["user_input"]:
-            universal_functions.parameters["Input"]["previous_user_input"] = \
-                universal_functions.parameters["Input"]["user_input"]
-        if universal_functions.parameters["Input"]["previous_user_input"]:
-            universal_functions.parameters["Input"]["previous_user_input_param"] = \
-                universal_functions.parameters["Input"]["user_input_param"]
-        universal_functions.parameters["Input"]["user_input"] = e1.get()
-        universal_functions.parameters["Input"]["user_input_param"] = e2.get()
-        user_input_queue.put(universal_functions.parameters["Input"]["user_input"])
-        user_input_param_queue.put(universal_functions.parameters["Input"]["user_input_param"])
+    if not universal_functions.parameters["Switches"]["live_mode"]:
+        def submit_entry_fields():
+            print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
+            if universal_functions.parameters["Input"]["user_input"]:
+                universal_functions.parameters["Input"]["previous_user_input"] = \
+                    universal_functions.parameters["Input"]["user_input"]
+            if universal_functions.parameters["Input"]["previous_user_input"]:
+                universal_functions.parameters["Input"]["previous_user_input_param"] = \
+                    universal_functions.parameters["Input"]["user_input_param"]
+            universal_functions.parameters["Input"]["user_input"] = e1.get()
+            universal_functions.parameters["Input"]["user_input_param"] = e2.get()
+            user_input_queue.put(universal_functions.parameters["Input"]["user_input"])
+            user_input_param_queue.put(universal_functions.parameters["Input"]["user_input_param"])
 
-        # print("Current value for user_input field under parameters is : ",
-        #       universal_functions.parameters["Input"]["user_input"])
-        # print("Previous value for user_input field under parameters was : ",
-        #       universal_functions.parameters["Input"]["previous_user_input"])
-        # print("Current value for user_input_param field under parameters is : ",
-        #       universal_functions.parameters["Input"]["user_input_param"])
-        # print("Previous value for user_input field under parameters was : ",
-        #       universal_functions.parameters["Input"]["previous_user_input_param"])
+            # print("Current value for user_input field under parameters is : ",
+            #       universal_functions.parameters["Input"]["user_input"])
+            # print("Previous value for user_input field under parameters was : ",
+            #       universal_functions.parameters["Input"]["previous_user_input"])
+            # print("Current value for user_input_param field under parameters is : ",
+            #       universal_functions.parameters["Input"]["user_input_param"])
+            # print("Previous value for user_input field under parameters was : ",
+            #       universal_functions.parameters["Input"]["previous_user_input_param"])
 
-    master = tkinter.Tk()
+        master = tkinter.Tk()
 
-    tkinter.Label(master, text="Command").grid(row=0)
-    tkinter.Label(master, text="Parameter").grid(row=1)
+        tkinter.Label(master, text="Command").grid(row=0)
+        tkinter.Label(master, text="Parameter").grid(row=1)
 
-    e1 = tkinter.Entry(master)
-    e2 = tkinter.Entry(master)
+        e1 = tkinter.Entry(master)
+        e2 = tkinter.Entry(master)
 
-    e1.grid(row=0, column=1)
-    e2.grid(row=1, column=1)
+        e1.grid(row=0, column=1)
+        e2.grid(row=1, column=1)
 
-    tkinter.Button(master, text='Quit', command=master.quit).grid(row=3, column=0, pady=4)
-    tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
+        tkinter.Button(master, text='Quit', command=master.quit).grid(row=3, column=0, pady=4)
+        tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
     b = brain_functions.Brain()
 
@@ -66,7 +66,6 @@ if __name__ == '__main__':
             brain_generation_start_time = datetime.now()
             brain_gen.main()
             brain_generation_duration = datetime.now() - brain_generation_start_time
-            # settings.init_data()
 
             # todo: Move the following to stats module
             print("--------------------------------------------------------------")
@@ -76,8 +75,6 @@ if __name__ == '__main__':
             print("--------------------------------------------------------------")
             print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
             print("--------------------------------------------------------------")
-        else:
-            universal_functions.genome_id = genome_id_gen()
 
     def initialize_the_brain():
         global user_input_queue, user_input_param_queue, event_queue, \
@@ -144,11 +141,12 @@ if __name__ == '__main__':
 
     process_burst.deamon = False
 
-    read_user_input()
+    if not universal_functions.parameters["Switches"]["live_mode"]:
+        read_user_input()
 
     # todo: implement the following using multiprocessing
     if universal_functions.parameters["Switches"]["vis_show"]:
-        import visualizer
+        from . import visualizer
         visualizer.main()
 
     while universal_functions.regenerate:
@@ -171,9 +169,10 @@ if __name__ == '__main__':
                     #     universal_functions.parameters["Input"]["user_input"] = ''
 
                     else:
-                        read_user_input()
                         if universal_functions.parameters["Switches"]["live_mode"]:
                             universal_functions.parameters["Input"]["user_input"] = user_input_queue.get()
+                        else:
+                            read_user_input()
                         sleep(2)
 
                 except IOError:
@@ -186,6 +185,7 @@ if __name__ == '__main__':
             universal_functions.genome_test_stats = genome_stats_queue.get()
             join_processes()
             universal_functions.save_brain_to_disk()
+            print("genome id called from main function: ", universal_functions.genome_id)
             universal_functions.save_genome_to_disk()
             if universal_functions.parameters["Switches"]["live_mode"]:
                 universal_functions.parameters["Input"]["user_input"] = ""
@@ -215,6 +215,10 @@ if __name__ == '__main__':
 #
 
 # Key problem on hand
+# todo: Connectome cannot be shared between multiple processes
+# todo: Genome_id is not recorded as part of test stats
+
+
 # todo: only when the right portion of cell assembly is activated the rest shold become active
 # todo: One number's visual memory is resembling all others
 # todo: Neuron finder is too inefficient

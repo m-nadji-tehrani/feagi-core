@@ -48,7 +48,7 @@
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 2,
+    "variation_default": 5,
     "exposure_default": 10,
     "utf_default": 9,
     "burst_skip": 0,
@@ -57,7 +57,7 @@
   "Logs":{
     "print_polarized_img": false,
     "print_seen_img": false,
-    "print_filtered_img": true,
+    "print_filtered_img": false,
     "print_activation_counters": false
   },
   "Verbose":{

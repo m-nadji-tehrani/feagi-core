@@ -4,7 +4,7 @@ from misc import universal_functions
 import datetime
 import random
 import string
-import db_handler
+from misc import db_handler
 from math import floor
 
 
@@ -142,11 +142,6 @@ def genethesize():
       }
    }
     return genome
-
-
-def genome_selector():
-    genome_id = universal_functions.genome_metadata["most_recent_genome_id"]
-    return genome_id
 
 
 def mutate(genome):

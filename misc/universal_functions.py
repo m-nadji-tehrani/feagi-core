@@ -5,8 +5,9 @@ import os.path
 import glob
 import pickle
 from datetime import datetime
-import IPU_vision
-import db_handler
+from PUs import IPU_vision
+from . import db_handler
+from evolutionary.genethesizer import genome_id_gen
 
 
 global parameters
@@ -122,7 +123,7 @@ genome_metadata = load_genome_metadata_in_memory()
 
 
 def load_genome_in_memory():
-    from genethesizer import select_a_genome
+    from evolutionary.genethesizer import select_a_genome
     genome = select_a_genome()
     # print("NNN", type(genome), genome)
     # global genome_id
@@ -180,9 +181,24 @@ def save_brain_to_disk(cortical_area='all'):
 
 
 def save_genome_to_disk():
-    from genethesizer import calculate_fitness
+    from evolutionary.genethesizer import calculate_fitness
     mongo = db_handler.MongoManagement()
-    global genome_test_stats, genome, genome_id
+    global genome_test_stats, genome
+
+    genome_id = ""
+
+    if parameters["InitData"]["regenerate_brain"]:
+        genome_id = genome_id_gen()
+        print("this is the new genome id:", genome_id)
+
+    print(genome_test_stats)
+
+    updated_genome_test_stats = []
+    for item in genome_test_stats:
+        item["genome_id"] = genome_id
+        updated_genome_test_stats.append(item)
+
+    print(updated_genome_test_stats)
 
     genome_db = {}
     genome_db["genome_id"] = genome_id

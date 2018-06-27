@@ -5,8 +5,9 @@ from misc import universal_functions, stats
 import sys
 from tty import setraw
 import termios
+sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/python3.6/site-packages/')
 import numpy as np
-import settings
+from configuration import settings
 from PUs import IPU_vision
 
 

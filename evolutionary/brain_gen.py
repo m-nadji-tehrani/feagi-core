@@ -10,7 +10,7 @@ import datetime
 from functools import partial
 from multiprocessing import Pool
 
-import architect
+from . import architect
 from misc import universal_functions, stats
 from configuration import settings
 

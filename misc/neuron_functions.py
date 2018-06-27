@@ -12,15 +12,14 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 import json
 import datetime
 from time import sleep
-from architect import synapse, event_id_gen
 from PUs import OPU_utf8
-import genethesizer
+from evolutionary import genethesizer
 from PUs import IPU_utf8
-import brain_functions
+from . import brain_functions
 from configuration import settings
 from misc import universal_functions as uf, stats
-from IPU_vision import mnist_img_fetcher
-from architect import test_id_gen, run_id_gen
+from PUs.IPU_vision import mnist_img_fetcher
+from evolutionary.architect import test_id_gen, run_id_gen, synapse
 
 
 global burst_count

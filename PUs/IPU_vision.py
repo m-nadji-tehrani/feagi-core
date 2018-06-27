@@ -6,18 +6,15 @@
 
 # For test purposes only and need to see how it can be eliminated from code for efficiency
 """
+import sys
+sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/python3.6/site-packages/')
 import os
 import struct
-from datetime import datetime
 import numpy as np
-import sys
 import random
-sys.path.append('/usr/local/lib/python2.7/site-packages')
-# import cv2
-
 
 from misc import universal_functions
-import architect
+from evolutionary import architect
 
 
 def read_mnist_raw(dataset="training", path="../MNIST/"):

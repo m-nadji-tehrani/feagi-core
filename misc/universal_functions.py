@@ -136,6 +136,7 @@ def load_rules_in_memory():
 
 
 def load_brain_in_memory():
+    # todo: Need error handling added so if there is a corruption in brain data it can regenerate
     cortical_areas = cortical_list()
     brain = {}
     for item in cortical_areas:

@@ -1,4 +1,5 @@
 from pymongo import MongoClient, DESCENDING, ASCENDING
+import random
 import pymongo
 
 
@@ -37,6 +38,75 @@ class MongoManagement:
             {"$sample": {"size": n}}
         ]
         genome_list = self.collection_genome.aggregate(pipeline=pipeline)
+        return genome_list
+
+    def random_fit_genome(self, fitness_level):
+        pipeline = [
+            {"$match": {"fitness": {"$gt": fitness_level}}}
+        ]
+        genomes = self.collection_genome.aggregate(pipeline=pipeline)
+
+        # Return a random genome from the list of fit genomes
+        list_count = 0
+        genome_list = []
+        for item in genomes:
+            list_count += 1
+            genome_list.append(item)
+        genome = genome_list[random.randrange(0, list_count, 1)]
+        return genome
+
+    def top_n_genome(self, n):
+        # Assumption: Fitness array function is returning the list sorted with highest fit on top
+        genome_list = self.fitness_array()
+        genome_count = len(genome_list)
+        python_list = []
+
+        for i in range(min(n, genome_count)):
+            python_list.append(genome_list[i])
+        return python_list
+
+    def random_m_from_top_n(self, selection_count, top_count):
+        top_list = self.top_n_genome(top_count)
+        python_list = []
+        for _ in range(selection_count):
+            python_list.append(top_list[random.randrange(0, len(top_list), 1)])
+        return python_list
+
+
+    def genome_id_2_properties(self, genome_id):
+        genome = self.collection_genome.find_one({"genome_id": genome_id})
+        return genome
+
+    def fitness_array(self):
+        pipeline = [
+            {"$match": {"fitness": {"$exists": True, "$ne": 0},
+                        "genome_id": {"$exists": True, "$nin": [""]}}},
+            {"$project": {"genome_id": 1, "fitness": 1}},
+            {"$sort": {"fitness": -1}}
+        ]
+        fitness_list = self.genome_aggregate_function(pipeline)
+        # results = self.collection_genome.aggregate(pipeline=pipeline)
+        # fitness_list = []
+        # for item in results:
+        #     fitness_list.append(item)
+        #     print(item)
+        return fitness_list
+
+    def genome_aggregate_function(self, pipeline):
+        results = self.collection_genome.aggregate(pipeline=pipeline)
+        python_list = self.mongo_2_list(results)
+        return python_list
+
+    def mongo_2_list(self, mongo_obj):
+        python_list = []
+        for item in mongo_obj:
+            python_list.append(item)
+        return python_list
+
+    def id_list_2_genome_list(self, id_list):
+        genome_list = []
+        for _ in id_list:
+            genome_list.append(self.genome_id_2_properties(_["genome_id"]))
         return genome_list
 
 
@@ -1571,15 +1641,21 @@ if __name__ == "__main__":
 
     # Mongo.insert_genome(genome_data=genome_data)
     #
-    print(mongo.highest_fitness_genome())
+    for _ in mongo.fitness_array():
+        print(_)
     #
+    # print(mongo.highest_fitness_genome())
     # print(type(latest_genome))
     # print(latest_genome["properties"])
     # for _ in latest_genome:
     #     print(_)
     #
     # random_genome = mongo.random_genome(1)
-    # for _ in random_genome:
-    #     print(_)
+    for _ in mongo.id_list_2_genome_list(mongo.random_m_from_top_n(2, 5)):
+        print(">> ", _)
+
+    print(">>>", mongo.highest_fitness_genome())
 
     # print(mongo.random_genome())
+
+    # print(">", mongo.top_n_genome(2))

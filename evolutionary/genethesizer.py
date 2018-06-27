@@ -1,6 +1,5 @@
 """ This module contains functions capable of modifying and shaping the Genome"""
 
-from misc import universal_functions
 import datetime
 import random
 import string
@@ -29,7 +28,7 @@ def select_a_genome():
         genome = random_genome()
 
     elif random_selector == 3:
-        print("The latest genome is being selected...")
+        print("Most recent genome is being selected...")
         genome = latest_genome()
 
     elif random_selector == 4:
@@ -166,14 +165,20 @@ def mutate(genome):
     return genome
 
 
+def get_genome_candidate():
+    """ Scans genome db for a high performing genome and returns one from top 10% by random """
+    genome = db_handler.MongoManagement.top_n_genome(1)
+    return genome
+
+
 def crossover():
     """
     To corssover genome 1 and 2, first list of keys from one genome is read and the content of that key
     is swapped with the other genome.
     """
-    # todo: Need ability to cross over a part of blueprint
     db = db_handler.MongoManagement()
-    genome_1, genome_2 = db.random_genome(n=2)
+    # todo: Need ability to cross over a part of blueprint
+    genome_1, genome_2 = db.id_list_2_genome_list(db.random_m_from_top_n(2, 5))
 
     genome_1 = genome_1["properties"]
     genome_2 = genome_2["properties"]
@@ -201,7 +206,7 @@ def crossover():
 
 def random_genome():
     db = db_handler.MongoManagement()
-    genomes = db.random_genome(n=1)
+    genomes = db.id_list_2_genome_list(db.random_m_from_top_n(1, 5))
     for item in genomes:
         genome = item
     # print("this is the random genome", genome)

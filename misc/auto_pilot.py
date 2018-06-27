@@ -1,8 +1,5 @@
 import random
 from PUs import IPU_vision
-import universal_functions
-from genethesizer import select_a_genome
-import brain_gen
 
 
 def training_num_gen(num):

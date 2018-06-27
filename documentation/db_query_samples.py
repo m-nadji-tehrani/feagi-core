@@ -22,3 +22,32 @@ db.getCollection('test_stats').aggregate([
                                 total_exposed_8: {$sum: "$8_exposed"}, total_comprehended_8: {$sum: "$8_comprehended"},
                                 total_exposed_9: {$sum: "$9_exposed"}, total_comprehended_9: {$sum: "$9_comprehended"}}}
 ])
+
+
+# fitness greater than a number listed descending
+db.genomes.find({"fitness": {$gt: 0.2}}).sort({fitness: -1})
+
+or
+
+﻿db.genomes.aggregate([
+    {$match: {"fitness": {$gt: 0.2}}},
+    {$sort: {fitness: -1}}
+])
+
+
+
+# listing all fitnesses above a threshold
+﻿db.genomes.aggregate([
+    {$match: {"fitness": {$gt: 0.2}}},
+    {$group: {_id: "$fitness"}},
+    {$sort: {_id: -1}}
+])
+
+
+# field exist
+﻿db.getCollection('genomes').aggregate([
+{$match: {fitness: {$exists: true}}},
+{$project: {"genome_id": 1, "fitness": 1}}
+])
+
+

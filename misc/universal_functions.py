@@ -111,17 +111,6 @@ def cortical_sub_group_members(group):
     return members
 
 
-def load_genome_metadata_in_memory():
-    with open(parameters["InitData"]["genome_file"], "r") as data_file:
-        genome_db = json.load(data_file)
-        genome_metadata = genome_db["genome_metadata"]
-    return genome_metadata
-
-
-global genome_metadata
-genome_metadata = load_genome_metadata_in_memory()
-
-
 def load_genome_in_memory():
     from evolutionary.genethesizer import select_a_genome
     genome = select_a_genome()

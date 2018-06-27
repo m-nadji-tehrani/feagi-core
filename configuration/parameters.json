@@ -35,7 +35,6 @@
     "regenerate_brain": true,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
-    "genome_file": "./evolutionary/genome.json",
     "fcl_to_visualize": "./fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" ,
     "training_counter_default": 10,
     "training_rounds_default": 10

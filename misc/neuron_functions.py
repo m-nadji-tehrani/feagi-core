@@ -77,7 +77,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         global fire_candidate_list
         global previous_fcl
 
-        print("+++++_____+++++++", uf.parameters["InitData"]["connectome_path"])
+        # print("+++++_____+++++++", uf.parameters["InitData"]["connectome_path"])
 
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
@@ -102,9 +102,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             auto_tester()
 
         # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
-        if burst_count % uf.genome['evolution_burst_count'] == 0:
-            print('Evolution phase reached...')
-            genethesizer.generation_assessment()
+        # if burst_count % uf.genome['evolution_burst_count'] == 0:
+        #     print('Evolution phase reached...')
+        #     genethesizer.generation_assessment()
 
         # Add a delay if fire_candidate_list is empty
         if len(fire_candidate_list) < 1:
@@ -119,17 +119,17 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             # print(settings.Bcolors.YELLOW +
             #       'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
             #       % (burst_count, len(fire_candidate_list), brain_synapse_count) + settings.Bcolors.ENDC)
-
-            for cortical_area in set([i[0] for i in fire_candidate_list]):
-                print(settings.Bcolors.YELLOW + '    %s : %i  '
-                      % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
-                      + settings.Bcolors.ENDC)
-            for entry in fire_candidate_list:
-                if uf.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
-                    print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)
-                # if uf.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
-                #         and len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
-                #     sleep(uf.parameters["Timers"]["idle_burst_timer"])
+            if uf.parameters["Logs"]["print_cortical_activity_counters"]:
+                for cortical_area in set([i[0] for i in fire_candidate_list]):
+                    print(settings.Bcolors.YELLOW + '    %s : %i  '
+                          % (cortical_area, len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])))
+                          + settings.Bcolors.ENDC)
+                for entry in fire_candidate_list:
+                    if uf.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
+                        print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)
+                    # if uf.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
+                    #         and len(set([i[1] for i in fire_candidate_list if i[0] == cortical_area])) > 0:
+                    #     sleep(uf.parameters["Timers"]["idle_burst_timer"])
 
             # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
             # Firing all neurons in the Fire Candidate List
@@ -141,7 +141,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             neuro_plasticity()
 
         burst_duration = datetime.datetime.now() - burst_start_time
-        print(">>> Burst duration: %s" % burst_duration)
+        if uf.parameters["Logs"]["print_burst_info"]:
+            print(">>> Burst duration: %s" % burst_duration)
 
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(fire_candidate_list)
@@ -159,7 +160,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 counter_list[item] = 1
         list_length = len(counter_list)
 
-        print("+++++++This is the counter list", counter_list)
+        # print("+++++++This is the counter list", counter_list)
         for item in counter_list:
             if list_length == 1 and item != '-':
                 uf.parameters["Input"]["comprehended_char"] = item[0]
@@ -203,7 +204,7 @@ def utf_detection_logic(detection_list):
     else:
         temp = []
         counter = 0
-        print(">><<>><<>><<", detection_list)
+        # print(">><<>><<>><<", detection_list)
         for key in detection_list:
             temp[counter] = (key, detection_list[key])
         if temp[0][1] > (3 * temp[1][1]):
@@ -281,10 +282,10 @@ def auto_tester():
     # Exposure counter
     uf.TesterParams.exposure_counter_actual -= 1
 
-    print("Exposure counter actual: ", uf.TesterParams.exposure_counter_actual)
-    print("Variation counter actual: ", uf.TesterParams.variation_counter_actual,
-          uf.TesterParams.variation_handler)
-    print("UTF counter actual: ", uf.TesterParams.utf_counter_actual, uf.TesterParams.utf_handler)
+    # print("Exposure counter actual: ", uf.TesterParams.exposure_counter_actual)
+    # print("Variation counter actual: ", uf.TesterParams.variation_counter_actual,
+    #       uf.TesterParams.variation_handler)
+    # print("UTF counter actual: ", uf.TesterParams.utf_counter_actual, uf.TesterParams.utf_handler)
 
     # Test stats
     update_test_stats()
@@ -316,13 +317,13 @@ def auto_tester():
                 if uf.TesterParams.utf_flag:
                     uf.TesterParams.num_to_inject -= 1
 
-    print(uf.TesterParams.utf_counter,
-          uf.TesterParams.variation_counter,
-          uf.TesterParams.exposure_counter)
-
-    print(uf.TesterParams.utf_counter_actual,
-          uf.TesterParams.variation_counter_actual,
-          uf.TesterParams.exposure_counter_actual)
+    # print(uf.TesterParams.utf_counter,
+    #       uf.TesterParams.variation_counter,
+    #       uf.TesterParams.exposure_counter)
+    #
+    # print(uf.TesterParams.utf_counter_actual,
+    #       uf.TesterParams.variation_counter_actual,
+    #       uf.TesterParams.exposure_counter_actual)
 
     if uf.TesterParams.img_flag:
         DataFeeder.img_neuron_list_feeder()
@@ -479,18 +480,18 @@ def auto_injector():
         if uf.InjectorParams.img_flag:
             DataFeeder.image_feeder(uf.InjectorParams.num_to_inject)
 
-    print("Exposure, Variation, and UTF counters actual values are: ",
-          uf.InjectorParams.exposure_counter_actual,
-          uf.InjectorParams.variation_counter_actual,
-          uf.InjectorParams.utf_counter_actual)
+    # print("Exposure, Variation, and UTF counters actual values are: ",
+    #       uf.InjectorParams.exposure_counter_actual,
+    #       uf.InjectorParams.variation_counter_actual,
+    #       uf.InjectorParams.utf_counter_actual)
 
     # Exposure counter
     uf.InjectorParams.exposure_counter_actual -= 1
 
-    print("Exposure counter actual: ", uf.InjectorParams.exposure_counter_actual)
-    print("Variation counter actual: ", uf.InjectorParams.variation_counter_actual,
-          uf.InjectorParams.variation_handler)
-    print("UTF counter actual: ", uf.InjectorParams.utf_counter_actual, uf.InjectorParams.utf_handler)
+    # print("Exposure counter actual: ", uf.InjectorParams.exposure_counter_actual)
+    # print("Variation counter actual: ", uf.InjectorParams.variation_counter_actual,
+    #       uf.InjectorParams.variation_handler)
+    # print("UTF counter actual: ", uf.InjectorParams.utf_counter_actual, uf.InjectorParams.utf_handler)
 
     # Exit condition
     if injection_exit_condition():
@@ -601,10 +602,10 @@ def neuro_plasticity():
                             in uf.brain["vision_IT"][src_neuron[1]]["neighbors"]:
                         apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
                                              dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
-
-                        print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
-                                                     "...........LTP between vision_IT and vision_memory occurred "
-                              + settings.Bcolors.ENDC)
+                        if uf.parameters["Logs"]["print_plasticity_info"]:
+                            print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
+                                                         "...........LTP between vision_IT and vision_memory occurred "
+                                  + settings.Bcolors.ENDC)
 
         # Long Term Depression (LTD) between vision_IT and vision_memory
         for src_neuron in fire_candidate_list:
@@ -615,10 +616,10 @@ def neuro_plasticity():
                         apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
                                              dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
                                              long_term_depression=True)
-
-                        print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM"
-                                                     "...........LTD between vision_IT and vision_memory occurred "
-                              + settings.Bcolors.ENDC)
+                        if uf.parameters["Logs"]["print_plasticity_info"]:
+                            print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
+                                                         "...........LTD between vision_IT and vision_memory occurred "
+                                  + settings.Bcolors.ENDC)
 
         # Building a bidirectional synapse between memory neurons who fire together within a cortical area
         # todo: The following loop is very inefficient___ fix it!!
@@ -641,11 +642,11 @@ def neuro_plasticity():
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
 
-                        print(
-                            settings.Bcolors.OKGREEN + "..............................................................."
-                                                       "..........A new memory was formed against utf8_memory location "
-                            + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
-                                                                            dst_neuron[1]) + settings.Bcolors.ENDC)
+                        # print(
+                        #     settings.Bcolors.OKGREEN + "..............................................................."
+                        #                                "..........A new memory was formed against utf8_memory location "
+                        #     + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
+                        #                                                     dst_neuron[1]) + settings.Bcolors.ENDC)
                         # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
                         # for dst_neuron_id in dst_neuron_id_list:
                         #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],

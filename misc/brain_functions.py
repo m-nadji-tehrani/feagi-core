@@ -37,7 +37,7 @@ class Brain:
         vision_group = universal_functions.cortical_sub_group_members('vision_v1')
 
         image = mnist_labled_image[0]
-        print("*** Image label from MNIST was :", mnist_labled_image[1])
+        # print("*** Image label from MNIST was :", mnist_labled_image[1])
         # print("*** Image read from MNIST was :", image_[0])
         # print('image :\n ', np.array2string(image, max_line_width=np.inf))
 

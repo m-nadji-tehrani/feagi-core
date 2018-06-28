@@ -57,11 +57,12 @@ def read_mnist_raw(dataset="training", path="../MNIST/"):
 def mnist_img_fetcher(num):
     # Returns a random image from MNIST matching the requested number
     img_lbl = ''
-    print("An image is being fetched from MNIST")
+    # print("An image is being fetched from MNIST")
     while img_lbl != int(num):
         img_index = random.randrange(10, len(universal_functions.mnist_array), 1)
         img_lbl, img_data = universal_functions.mnist_array[img_index]
-    print("The image for number %s has been fetched." %str(num))
+    if universal_functions.parameters["Logs"]["print_mnist_img_info"]:
+        print("The image for number %s has been fetched." %str(num))
     return img_data, img_lbl
 
 

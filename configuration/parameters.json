@@ -61,7 +61,8 @@
     "print_cortical_activity_counters": false,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
-    "print_burst_info": false
+    "print_burst_info": false,
+    "print_brain_gen_activities": true
   },
   "Verbose":{
     "neuron_functions-neuron_update": false,

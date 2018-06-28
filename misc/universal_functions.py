@@ -1,5 +1,7 @@
 
 import json
+import random
+import string
 import datetime
 import os.path
 import glob
@@ -114,7 +116,7 @@ def cortical_sub_group_members(group):
 def load_genome_in_memory():
     with open('./runtime_repo/genome_tmp.json', "r") as data_file:
         genome = json.load(data_file)
-        print("Genome has been loaded into memory...")
+        # print("Genome has been loaded into memory...")
     return genome
 
 
@@ -159,10 +161,10 @@ def load_brain_in_memory():
     return brain
 
 
-def save_brain_to_disk(cortical_area='all'):
+def save_brain_to_disk(cortical_area='all', connectome_path=parameters["InitData"]["connectome_path"]):
     global brain
     if cortical_area != 'all':
-        with open(parameters["InitData"]["connectome_path"]+cortical_area+'.json', "r+") as data_file:
+        with open(connectome_path+cortical_area+'.json', "r+") as data_file:
             data = brain[cortical_area]
             # print("...All data related to Cortical area %s is saved in connectome\n" % cortical_area)
             # Saving changes to the connectome
@@ -173,7 +175,8 @@ def save_brain_to_disk(cortical_area='all'):
         for cortical_area in cortical_list():
             with open(parameters["InitData"]["connectome_path"]+cortical_area+'.json', "r+") as data_file:
                 data = brain[cortical_area]
-                print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
+                if parameters["Logs"]["print_brain_gen_activities"]:
+                    print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
                 # Saving changes to the connectome
                 data_file.seek(0)  # rewind
                 data_file.write(json.dumps(data, indent=3))

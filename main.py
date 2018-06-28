@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
     def initialize_the_brain():
         global user_input_queue, user_input_param_queue, event_queue, \
-            genome_test_stats, brain_queue, FCL_queue, genome_stats_queue
+            genome_test_stats, brain_queue, FCL_queue, genome_stats_queue, parameters_queue
         # Initializing queues
         user_input_queue = mp.Queue()
         user_input_param_queue = mp.Queue()
@@ -97,6 +97,7 @@ if __name__ == '__main__':
         brain_queue = mp.Queue()
         event_queue = mp.Queue()
         genome_stats_queue = mp.Queue()
+        parameters_queue = mp.Queue()
 
         # Initialize Fire Candidate List (FCL)
         FCL = []
@@ -106,11 +107,13 @@ if __name__ == '__main__':
         brain_data = universal_functions.brain
         brain_queue.put(brain_data)
 
+        # Setting up parameters queue for multiprocessing
+        parameters_queue.put(universal_functions.parameters)
+
+        # Setting up genome data
         genome_stats = {}
         genome_stats["test_stats"] = []
-
         genome_test_stats = []
-
         genome_stats_queue.put(genome_stats)
 
     def read_user_input():
@@ -143,7 +146,8 @@ if __name__ == '__main__':
     # Starting the burst machine
     # pool = mp.Pool(max(1, mp.cpu_count()))
     process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
-                                                        FCL_queue, brain_queue, event_queue, genome_stats_queue,))
+                                                        FCL_queue, brain_queue, event_queue,
+                                                        genome_stats_queue, parameters_queue,))
     print("The burst engine has been started...")
 
     event_id = event_id_gen()
@@ -201,6 +205,8 @@ if __name__ == '__main__':
             if universal_functions.parameters["Switches"]["live_mode"]:
                 universal_functions.parameters["Input"]["user_input"] = ""
                 # Regenerate the brain
+                universal_functions.stage_genome()
+                universal_functions.init()
                 brain_gen.main()
                 initialize_the_brain()
 

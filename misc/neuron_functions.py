@@ -29,7 +29,7 @@ global burst_count
 burst_count = 0
 
 
-def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, genome_stats_queue):
+def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, genome_stats_queue, parameters_queue):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -46,6 +46,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     # Function processing:
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
+
+    uf.parameters = parameters_queue.get()
 
     # todo: Move comprehension span to genome
     comprehension_span = 4
@@ -76,8 +78,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         global fire_candidate_list
         global previous_fcl
-
-        # print("+++++_____+++++++", uf.parameters["InitData"]["connectome_path"])
 
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()

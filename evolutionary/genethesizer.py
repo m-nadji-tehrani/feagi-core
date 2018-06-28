@@ -153,7 +153,11 @@ def mutate(genome):
     blueprint = genome["blueprint"]
     cortical_list = []
     for key in blueprint:
-        cortical_list.append(key)
+        # Condition to black-list select regions from mutation such as UTF
+        if genome["blueprint"][key]["group_id"] == 'vision':
+            cortical_list.append(key)
+
+    print(">> OO >> Cortical list usef for mutation is:", cortical_list)
 
     for cortical_area in cortical_list:
         genome = GeneModifier.change_consecutive_fire_cnt_max(genome, cortical_area, factor_1)
@@ -175,16 +179,19 @@ def crossover():
     """
     To corssover genome 1 and 2, first list of keys from one genome is read and the content of that key
     is swapped with the other genome.
+
+    todo: Given genome is hierarchical, crossover need to account for different levels
+
     """
     db = db_handler.MongoManagement()
-    # todo: Need ability to cross over a part of blueprint
+
     genome_1, genome_2 = db.id_list_2_genome_list(db.random_m_from_top_n(2, 5))
 
     genome_1 = genome_1["properties"]
     genome_2 = genome_2["properties"]
 
     genome_1_keys = []
-    for key in genome_1.keys():
+    for key in genome_1["blueprint"].keys():
         genome_1_keys.append(key)
 
     # Select a random key
@@ -192,12 +199,8 @@ def crossover():
 
     print("Crossing over: ", random_key)
 
-    genome_1_rnd_segment = genome_1[random_key]
-
-    genome_2_orig = genome_2
-
     # Cross over
-    genome_2[random_key] = genome_1_rnd_segment
+    genome_2["blueprint"][random_key] = genome_1["blueprint"][random_key]
 
     print("--- Gene crossover has occurred ---")
 
@@ -249,6 +252,8 @@ def calculate_fitness(test_stats):
     TC / TE = Percentage of correct comprehensions
 
     Genome fitness factor = AF * TC / TE
+
+    todo: Investigate cases where looking at one number stimulates multiple numbers together
 
     """
     total_exposure, total_comprehended = genome_stats_analytics(test_stats)

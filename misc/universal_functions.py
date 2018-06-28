@@ -112,12 +112,23 @@ def cortical_sub_group_members(group):
 
 
 def load_genome_in_memory():
-    from evolutionary.genethesizer import select_a_genome
-    genome = select_a_genome()
-    # print("NNN", type(genome), genome)
-    # global genome_id
-    # genome_id = genome["genome_id"]
+    with open('./runtime_repo/genome_tmp.json', "r") as data_file:
+        genome = json.load(data_file)
+        print("Genome has been loaded into memory...")
     return genome
+
+
+def stage_genome():
+    from evolutionary.genethesizer import select_a_genome
+    genome_data = select_a_genome()
+
+    with open('./runtime_repo/genome_tmp.json', "w") as data_file:
+        # Saving changes to the connectome
+        data_file.seek(0)  # rewind
+        data_file.write(json.dumps(genome_data, indent=3))
+        data_file.truncate()
+
+    print("<< << Genome has been staged in runtime repo >> >>")
 
 
 # Resets the in-memory brain for each cortical area
@@ -300,27 +311,38 @@ def unpickler(data_type, id):
 global genome_id
 genome_id = ""
 
-global genome
-genome = load_genome_in_memory()
-
 global genome_stats
 genome_stats = {}
 
 global genome_test_stats
 genome_test_stats = []
 
-
-global blueprint
-blueprint = cortical_list()
-
-global brain
-brain = load_brain_in_memory()
-
 global event_id
 event_id = '_'
 
-global cortical_areas
-cortical_areas = cortical_list()
+global blueprint
+blueprint = ""
 
-global rules
-rules = load_rules_in_memory()
+global cortical_areas
+cortical_areas = ""
+
+global genome
+genome = load_genome_in_memory()
+
+# global rules
+# rules = ""
+
+
+def init():
+
+    global blueprint
+    blueprint = cortical_list()
+
+    global brain
+    brain = load_brain_in_memory()
+
+    global cortical_areas
+    cortical_areas = cortical_list()
+
+    # global rules
+    # rules = load_rules_in_memory()

@@ -11,16 +11,19 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 # import subprocess
 import json
 import datetime
+from collections import deque
 from time import sleep
 from PUs import OPU_utf8
 from evolutionary import genethesizer
 from PUs import IPU_utf8
 from . import brain_functions
 from configuration import settings
-from misc import universal_functions as uf, stats
+from misc import universal_functions as uf
 from PUs.IPU_vision import mnist_img_fetcher
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
 
+global burst_detection_list
+burst_detection_list = {}
 
 global burst_count
 burst_count = 0
@@ -44,6 +47,14 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
 
+    # todo: Move comprehension span to genome
+    comprehension_span = 4
+
+    global burst_detection_list
+    
+    # Initializing the comprehension queue
+    comprehension_queue = deque(['-'] * comprehension_span)
+
     if not uf.brain_is_running:
         uf.toggle_brain_status()
         uf.brain_run_id = run_id_gen()
@@ -65,6 +76,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         global fire_candidate_list
         global previous_fcl
+
+        print("+++++_____+++++++", uf.parameters["InitData"]["connectome_path"])
 
         # Read FCL from the Multiprocessing Queue
         fire_candidate_list = fire_list.get()
@@ -133,6 +146,34 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(fire_candidate_list)
 
+        detected_UTF = utf_detection_logic(burst_detection_list)
+        comprehension_queue.append(detected_UTF)
+        comprehension_queue.popleft()
+
+        # Comprehension check
+        counter_list = {}
+        for item in comprehension_queue:
+            if item in counter_list:
+                counter_list[item] += 1
+            else:
+                counter_list[item] = 1
+        list_length = len(counter_list)
+
+        print("+++++++This is the counter list", counter_list)
+        for item in counter_list:
+            if list_length == 1 and item != '-':
+                uf.parameters["Input"]["comprehended_char"] = item[0]
+                print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
+                                                "                            <<<     %s      >>>                 #*#*#*#*#*#*#"
+                      % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
+            elif list_length > 2:
+                uf.parameters["Input"]["comprehended_char"] = ''
+            else:
+                pass
+
+        # Resetting burst detection list
+        burst_detection_list = {}
+
         # todo: *** Danger *** The following section could cause considerable memory expansion. Need to add limitations.
         # Condition to save FCL data to disk
         user_input_processing(user_input, user_input_param)
@@ -150,6 +191,27 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     genome_stats_queue.put(uf.genome_test_stats)
     if uf.parameters["Switches"]["live_mode"]:
         user_input.put('q')
+
+
+def utf_detection_logic(detection_list):
+    list_length = len(detection_list)
+    if list_length == 1:
+        for key in detection_list:
+            return key
+    elif list_length >= 2 or list_length == 0:
+        return '-'
+    else:
+        temp = []
+        counter = 0
+        print(">><<>><<>><<", detection_list)
+        for key in detection_list:
+            temp[counter] = (key, detection_list[key])
+        if temp[0][1] > (3 * temp[1][1]):
+            return temp[0][0]
+        elif temp[1][1] > (3 * temp[0][1]):
+            return temp[1][0]
+        else:
+            return '-'
 
 
 def test_manager(test_mode, test_param):
@@ -703,11 +765,12 @@ def neuron_fire(cortical_area, neuron_id):
 
     # Condition to translate activity in utf8_out region as a character comprehension
     if cortical_area == 'utf8_out':
-        uf.parameters["Input"]["comprehended_char"] = \
-            OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
-        print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
-              "                            <<<     %s      >>>                 #*#*#*#*#*#*#"
-              % uf.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
+        global burst_detection_list
+        detected_item = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
+        if detected_item not in burst_detection_list:
+            burst_detection_list[detected_item] = 1
+        else:
+            burst_detection_list[detected_item] +=1
 
     #     neuron_update_list.append([uf.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
         # uf.brain[cortical_area][id]["neighbors"][x]["postsynaptic_current"], x])

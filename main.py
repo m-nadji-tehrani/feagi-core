@@ -13,15 +13,20 @@ if __name__ == '__main__':
     import sys
     from time import sleep
     import multiprocessing as mp
-    from evolutionary import brain_gen
     from misc import brain_functions, neuron_functions, universal_functions
+    from evolutionary import brain_gen
     from evolutionary.architect import event_id_gen
 
-    connectome_file_path = sys.argv[1]
-    if connectome_file_path:
-        universal_functions.parameters["InitData"]["connectome_path"] = connectome_file_path
+    universal_functions.stage_genome()
+    universal_functions.init()
 
-    print("this is your connectome:", connectome_file_path)
+    try:
+        connectome_file_path = sys.argv[1]
+        if connectome_file_path:
+            universal_functions.parameters["InitData"]["connectome_path"] = connectome_file_path
+            print("Connectome path is:", connectome_file_path)
+    except IndexError or NameError:
+        print("Default connectome path has been selected")
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
@@ -222,7 +227,7 @@ if __name__ == '__main__':
 
 # Key problem on hand
 # todo: Connectome cannot be shared between multiple processes
-# todo: Genome_id is not recorded as part of test stats
+# todo: Fittness calculation goes beyond one when more than one number is detected
 
 
 # todo: only when the right portion of cell assembly is activated the rest shold become active

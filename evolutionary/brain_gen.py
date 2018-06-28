@@ -17,7 +17,7 @@ from configuration import settings
 
 def build_synapse(brain, key):
     # Read Genome data
-    genome = universal_functions.genome
+    genome = universal_functions.load_genome_in_memory()
 
     timer = datetime.datetime.now()
     synapse_count, universal_functions.brain = \
@@ -36,7 +36,7 @@ def build_synapse(brain, key):
 
 def build_synapse_ext(brain, key):
     # Read Genome data
-    genome = universal_functions.genome
+    genome = universal_functions.load_genome_in_memory()
     for mapped_cortical_area in genome["blueprint"][key]["cortical_mapping_dst"]:
         timer = datetime.datetime.now()
         synapse_count, universal_functions.brain = \
@@ -60,6 +60,7 @@ def build_synapse_ext(brain, key):
 
 
 def main():
+    genome = universal_functions.load_genome_in_memory()
 
     # Backup the old brain
     def folder_backup(src, dst):
@@ -79,7 +80,6 @@ def main():
     universal_functions.reset_brain()
 
     # Read Genome data, reset connectome and build it up
-    genome_data = universal_functions.genome
     blueprint = universal_functions.cortical_list()
 
     print("Here is the list of all defined cortical areas: %s " % blueprint)
@@ -105,7 +105,7 @@ def main():
     pool1 = Pool(processes=8)
     synapse_creation_candidates = []
     for key in blueprint:
-        if genome_data["blueprint"][key]["init_synapse_needed"]:
+        if genome["blueprint"][key]["init_synapse_needed"]:
             synapse_creation_candidates.append(key)
         else:
             print("Synapse creation for Cortical area %s has been skipped." % key)

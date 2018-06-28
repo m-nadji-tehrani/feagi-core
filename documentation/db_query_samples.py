@@ -29,15 +29,14 @@ db.genomes.find({"fitness": {$gt: 0.2}}).sort({fitness: -1})
 
 or
 
-﻿db.genomes.aggregate([
+db.genomes.aggregate([
     {$match: {"fitness": {$gt: 0.2}}},
     {$sort: {fitness: -1}}
 ])
 
 
-
 # listing all fitnesses above a threshold
-﻿db.genomes.aggregate([
+db.genomes.aggregate([
     {$match: {"fitness": {$gt: 0.2}}},
     {$group: {_id: "$fitness"}},
     {$sort: {_id: -1}}
@@ -45,9 +44,14 @@ or
 
 
 # field exist
-﻿db.getCollection('genomes').aggregate([
+db.getCollection('genomes').aggregate([
 {$match: {fitness: {$exists: true}}},
 {$project: {"genome_id": 1, "fitness": 1}}
 ])
 
 
+﻿db.genomes.aggregate([
+    {$match: {"fitness": {$gt: 0.2}}},
+    {$project: {_id: "$fitness", genome_id: "$genome_id", properties: "$properties"}},
+    {$sort: {_id: -1}}
+])

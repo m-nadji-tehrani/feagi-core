@@ -14,8 +14,7 @@ import numpy as np
 import random
 
 from evolutionary import architect
-from configuration.runtime_data import genome as runtime_genome
-from configuration.runtime_data import parameters as runtime_parameters
+from configuration import runtime_data
 
 
 def read_mnist_raw(dataset="training", path="../MNIST/"):
@@ -70,7 +69,7 @@ def mnist_img_fetcher(num):
     while img_lbl != int(num):
         img_index = random.randrange(10, len(mnist_array), 1)
         img_lbl, img_data = mnist_array[img_index]
-    if runtime_parameters["Logs"]["print_mnist_img_info"]:
+    if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
         print("The image for number %s has been fetched." %str(num))
     return img_data, img_lbl
 
@@ -94,7 +93,7 @@ class Filter:
         new_image = np.zeros(image.shape)
         for x in range(image.shape[0]):
             for y in range(image.shape[1]):
-                if image[x, y] >= runtime_genome["image_color_intensity_tolerance"]:
+                if image[x, y] >= runtime_data.genome["image_color_intensity_tolerance"]:
                     new_image[x, y] = image[x, y]
                 else:
                     new_image[x, y] = 1
@@ -116,7 +115,7 @@ def convert_image_to_coordinates(image):   # Image is currently assumed to be a 
     Function responsible for reading an image and converting the pixel values to coordinates
     """
     # Note: currently set to function based on Gray scale image
-    genome = runtime_genome
+    genome = runtime_data.genome
 
     image_locations = []
     for x in range(image.shape[0]):
@@ -149,7 +148,7 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
     :param image_locations:
     :return:
     """
-    genome = runtime_genome
+    genome = runtime_data.genome
 
     neuron_id_list = []
     for x in range(len(image_locations)):
@@ -194,7 +193,7 @@ def kernel_direction(kernel_values):
 
     end_result = {}
     kernel_size = kernel_sizer(kernel_values)
-    for filter_entry in runtime_genome["IPU_vision_filters"][str(kernel_size)]:
+    for filter_entry in runtime_data.genome["IPU_vision_filters"][str(kernel_size)]:
         end_result[filter_entry] = apply_direction_filter(kernel_values, kernel_size, filter_entry)
 
     tmpArray = []
@@ -221,7 +220,7 @@ def apply_direction_filter(kernel_values, kernel_size, direction_key):
     """Function to apply a particular filter to a kernel region of any size"""
     # end_result = {}
     result = np.zeros((kernel_size, kernel_size))
-    filter_value = runtime_genome["IPU_vision_filters"][str(kernel_size)][direction_key]
+    filter_value = runtime_data.genome["IPU_vision_filters"][str(kernel_size)][direction_key]
     for i in range(0, kernel_size):
         for ii in range(0, kernel_size):
             result[i][ii] = kernel_values[i][ii] * filter_value[i][ii]

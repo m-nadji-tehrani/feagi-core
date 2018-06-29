@@ -9,10 +9,7 @@ sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/pyth
 import numpy as np
 from configuration import settings
 from PUs import IPU_vision
-from configuration.runtime_data import parameters as runtime_parameters
-from configuration.runtime_data import genome as runtime_genome
-from configuration.runtime_data import brain as runtime_brain
-from configuration.runtime_data import cortical_list as runtime_cortical_list
+from configuration import runtime_data
 
 
 class Brain:
@@ -21,9 +18,9 @@ class Brain:
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
         print("\rConnectome database =                  %s" %
-              runtime_parameters["InitData"]["connectome_path"])
+              runtime_data.parameters["InitData"]["connectome_path"])
         print("\rTotal neuron count in the connectome  %s  is: %i" %
-              (runtime_parameters["InitData"]["connectome_path"] + 'vision_v1.json',
+              (runtime_data.parameters["InitData"]["connectome_path"] + 'vision_v1.json',
                stats.connectome_neuron_count(cortical_area='vision_v1')))
         print(' \rexiting', cp.name, cp.pid)
         return
@@ -48,25 +45,25 @@ class Brain:
 
         np.set_printoptions(linewidth=200)
 
-        if runtime_parameters['Logs']['print_seen_img']:
+        if runtime_data.parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
 
         # image = filter.brightness(image)
 
-        if runtime_parameters['Logs']['print_filtered_img']:
+        if runtime_data.parameters['Logs']['print_filtered_img']:
             print("Filtered image:\n", image)
 
         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
         for cortical_area in vision_group:
 
-            cortical_direction_sensitivity = runtime_genome['blueprint'][cortical_area][
+            cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
             kernel_size = 3
 
             # retina_start_time = datetime.now()
             polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
 
-            if runtime_parameters['Logs']['print_polarized_img']:
+            if runtime_data.parameters['Logs']['print_polarized_img']:
                 print("\nPrinting polarized image for ", cortical_area)
                 for row in polarized_image:
                     print(" ***")
@@ -81,12 +78,12 @@ class Brain:
 
             ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
 
-            if runtime_parameters['Logs']['print_activation_counters']:
+            if runtime_data.parameters['Logs']['print_activation_counters']:
                 print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
-            if runtime_parameters['Logs']['print_activation_counters']:
+            if runtime_data.parameters['Logs']['print_activation_counters']:
                 print("Neuron id count activated in layer %s is %i\n\n" %(cortical_area, len(neuron_id_list)))
 
             for item in neuron_id_list:
@@ -120,7 +117,7 @@ class Brain:
         old_settings = termios.tcgetattr(fd)
         try:
             setraw(sys.stdin.fileno())
-            runtime_parameters["Input"]["user_input"] = sys.stdin.read(1)
+            runtime_data.parameters["Input"]["user_input"] = sys.stdin.read(1)
             # sys.stdout.write("\r%s" % user_input_queue)
             print("hahaha______hehehe")
         finally:
@@ -156,7 +153,7 @@ class Brain:
         """
         Returns number of Neurons in the connectome
         """
-        data = runtime_brain[cortical_area]
+        data = runtime_data.brain[cortical_area]
         neuron_count = 0
         for key in data:
             neuron_count += 1
@@ -167,7 +164,7 @@ class Brain:
         """
         Returns number of Neurons in the connectome
         """
-        data = runtime_brain[cortical_area]
+        data = runtime_data.brain[cortical_area]
         synapse_count = 0
         for neuron in data:
             for _ in data[neuron]['neighbors']:
@@ -176,20 +173,20 @@ class Brain:
 
     def cortical_sub_group_members(group):
         members = []
-        for item in runtime_cortical_list:
-            if runtime_genome['blueprint'][item]['sub_group_id'] == group:
+        for item in runtime_data.cortical_list:
+            if runtime_data.genome['blueprint'][item]['sub_group_id'] == group:
                 members.append(item)
         return members
 
     def connectome_neuron_count(self):
         total_neuron_count = 0
-        for cortical_area in runtime_cortical_list:
+        for cortical_area in runtime_data.cortical_list:
             total_neuron_count += self.cortical_area_neuron_count(cortical_area)
         return total_neuron_count
 
     def connectome_synapse_count(self):
         total_synapse_count = 0
-        for cortical_area in runtime_cortical_list:
+        for cortical_area in runtime_data.cortical_list:
             total_synapse_count += self.cortical_area_synapse_count(cortical_area)
 
         return total_synapse_count

@@ -7,10 +7,6 @@ import json
 from misc import db_handler
 from evolutionary.genethesizer import genome_id_gen
 from configuration import runtime_data
-from configuration.runtime_data import brain as runtime_brain
-from configuration.runtime_data import parameters as runtime_parameters
-from configuration.runtime_data import genome as runtime_genome
-from configuration.runtime_data import cortical_list as runtime_cortical_list
 
 
 # Reads the list of all Cortical areas defined in Genome
@@ -90,9 +86,9 @@ def stage_genome(connectome_path):
 
 def load_brain_in_memory():
     # todo: Need error handling added so if there is a corruption in brain data it can regenerate
-    connectome_path = runtime_parameters["InitData"]["connectome_path"]
+    connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
     brain = {}
-    for item in runtime_cortical_list:
+    for item in runtime_data.cortical_list:
         if os.path.isfile(connectome_path + item + '.json'):
             with open(connectome_path + item + '.json', "r") as data_file:
                 data = json.load(data_file)
@@ -101,9 +97,11 @@ def load_brain_in_memory():
     return brain
 
 
-def save_brain_to_disk(cortical_area='all'):
-    brain = runtime_data.brain
-    connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
+def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters=runtime_data.parameters):
+    connectome_path = parameters["InitData"]["connectome_path"]
+    if brain == {}:
+        print(">> >> Error: Could not save the brain contents to disk as brain was empty!")
+        return
     if cortical_area != 'all':
         with open(connectome_path+cortical_area+'.json', "r+") as data_file:
             data = brain[cortical_area]
@@ -113,10 +111,10 @@ def save_brain_to_disk(cortical_area='all'):
             data_file.write(json.dumps(data, indent=3))
             data_file.truncate()
     else:
-        for cortical_area in cortical_list():
+        for cortical_area in runtime_data.cortical_list:
             with open(connectome_path+cortical_area+'.json', "r+") as data_file:
                 data = brain[cortical_area]
-                if runtime_parameters["Logs"]["print_brain_gen_activities"]:
+                if runtime_data.parameters["Logs"]["print_brain_gen_activities"]:
                     print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
                 # Saving changes to the connectome
                 data_file.seek(0)  # rewind
@@ -126,7 +124,7 @@ def save_brain_to_disk(cortical_area='all'):
 
 
 def load_rules_in_memory():
-    with open(runtime_parameters["InitData"]["rules_path"], "r") as data_file:
+    with open(runtime_data.parameters["InitData"]["rules_path"], "r") as data_file:
         rules = json.load(data_file)
     # print("Rules has been successfully loaded into memory...")
     return rules

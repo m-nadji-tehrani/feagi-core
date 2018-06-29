@@ -29,7 +29,7 @@ def brain_gen():
     # Reset in-memory brain data
     reset_brain()
 
-    # print("Current brain: >>> >>> >> >>\n", universal_functions.brain)
+    # print("Current brain: >>> >>> >> >>\n", runtime_data.brain)
 
     # Read Genome data, reset connectome and build it up
     blueprint = runtime_data.genome['blueprint']

@@ -23,7 +23,7 @@ from matplotlib import style
 
 from architect import connectome_location_data
 from misc.neuron_functions import fire_candidate_locations
-from misc.universal_functions import brain, genome, parameters, cortical_areas, latest_fcl_file, load_fcl_in_memory
+from configuration import runtime_data
 
 
 def vis_init():

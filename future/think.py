@@ -1,5 +1,4 @@
 # Provides functions to support physiology of thinking
-from misc import universal_functions
 
 
 class Me:
@@ -7,5 +6,5 @@ class Me:
     age = 38
 
 
-print(universal_functions.Info.name)
-print(universal_functions.Info.goal)
+print(Info.name)
+print(Info.goal)

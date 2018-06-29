@@ -11,7 +11,6 @@ import os
 import struct
 import numpy as np
 import random
-from universal_functions import mnist_data as mnist_data
 
 # import sys
 # sys.path.append('/usr/local/opt/opencv3/lib/python3.6/site-packages/')
@@ -54,11 +53,6 @@ def read_mnist_raw(dataset="training", path="../MNIST/"):
         yield get_img(i)
 
 
-
-
-
-
-
 # def cv_code(img):
 #     laplacian = cv2.Laplacian(img, cv2.CV_64F)
 #
@@ -80,7 +74,7 @@ def read_mnist_raw(dataset="training", path="../MNIST/"):
 # cv_process.start()
 # cv_process.join()
 #
-# if universal_functions.parameters["Switches"]["vis_show"]:
+# if runtime_data.parameters["Switches"]["vis_show"]:
 #     plt.subplot(3, 3, 1), plt.imshow(img, cmap='gray')
 #     plt.title('Original'), plt.xticks([]), plt.yticks([])
 #     plt.subplot(3, 3, 2), plt.imshow(laplacian, cmap='gray')

@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     print("runtime_cortical_list:", runtime_data.cortical_list)
 
-    from misc import brain_functions, neuron_functions, universal_functions
+    from misc import brain_functions, neuron_functions
     from evolutionary.brain_gen import brain_gen
     from evolutionary.architect import event_id_gen
 
@@ -208,12 +208,12 @@ if __name__ == '__main__':
 
         finally:
             print("Finally!")
-            universal_functions.brain = brain_queue.get()
-            universal_functions.genome_test_stats = genome_stats_queue.get()
+            runtime_data.brain = brain_queue.get()
+            runtime_data.genome_test_stats = genome_stats_queue.get()
             join_processes()
-            universal_functions.save_brain_to_disk()
-            print("genome id called from main function: ", universal_functions.genome_id)
-            universal_functions.save_genome_to_disk()
+            disk_ops.save_brain_to_disk()
+            print("genome id called from main function: ", runtime_data.genome_id)
+            disk_ops.save_genome_to_disk()
             if runtime_data.parameters["Switches"]["live_mode"]:
                 runtime_data.parameters["Input"]["user_input"] = ""
                 # Regenerate the brain

@@ -13,47 +13,57 @@ if __name__ == '__main__':
     import sys
     from time import sleep
     import multiprocessing as mp
-    from misc import brain_functions, neuron_functions, universal_functions
-    from evolutionary import brain_gen
-    from evolutionary.architect import event_id_gen
+    from misc import disk_ops
+    disk_ops.load_parameters_in_memory()
+    from misc import disk_ops
+    from configuration.runtime_data import parameters as runtime_parameters
 
-    universal_functions.stage_genome()
-    universal_functions.init()
+    from configuration.runtime_data import cortical_list as runtime_cortical_list
 
     try:
         connectome_file_path = sys.argv[1]
         if connectome_file_path:
-            universal_functions.parameters["InitData"]["connectome_path"] = connectome_file_path
+            runtime_parameters["InitData"]["connectome_path"] = connectome_file_path
             print("Connectome path is:", connectome_file_path)
     except IndexError or NameError:
         print("Default connectome path has been selected")
+
+    global connectome_path
+    connectome_path = runtime_parameters["InitData"]["connectome_path"]
+
+    disk_ops.stage_genome(connectome_path)
+    disk_ops.load_genome_in_memory(connectome_path)
+
+    from configuration.runtime_data import genome as runtime_genome
+
+    # Initialize runtime cortical list
+    blueprint = runtime_genome["blueprint"]
+    cortical_list = []
+    for key in blueprint:
+        cortical_list.append(key)
+    runtime_cortical_list = cortical_list
+
+    from misc import brain_functions, neuron_functions, universal_functions
+    from evolutionary.brain_gen import brain_gen
+    from evolutionary.architect import event_id_gen
 
     print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
     mp.set_start_method('spawn')
 
-    if not universal_functions.parameters["Switches"]["live_mode"]:
+    if not runtime_parameters["Switches"]["live_mode"]:
         def submit_entry_fields():
             print("Command entered is: %s\nParameter is: %s" % (e1.get(), e2.get()))
-            if universal_functions.parameters["Input"]["user_input"]:
-                universal_functions.parameters["Input"]["previous_user_input"] = \
-                    universal_functions.parameters["Input"]["user_input"]
-            if universal_functions.parameters["Input"]["previous_user_input"]:
-                universal_functions.parameters["Input"]["previous_user_input_param"] = \
-                    universal_functions.parameters["Input"]["user_input_param"]
-            universal_functions.parameters["Input"]["user_input"] = e1.get()
-            universal_functions.parameters["Input"]["user_input_param"] = e2.get()
-            user_input_queue.put(universal_functions.parameters["Input"]["user_input"])
-            user_input_param_queue.put(universal_functions.parameters["Input"]["user_input_param"])
-
-            # print("Current value for user_input field under parameters is : ",
-            #       universal_functions.parameters["Input"]["user_input"])
-            # print("Previous value for user_input field under parameters was : ",
-            #       universal_functions.parameters["Input"]["previous_user_input"])
-            # print("Current value for user_input_param field under parameters is : ",
-            #       universal_functions.parameters["Input"]["user_input_param"])
-            # print("Previous value for user_input field under parameters was : ",
-            #       universal_functions.parameters["Input"]["previous_user_input_param"])
+            if runtime_parameters["Input"]["user_input"]:
+                runtime_parameters["Input"]["previous_user_input"] = \
+                    runtime_parameters["Input"]["user_input"]
+            if runtime_parameters["Input"]["previous_user_input"]:
+                runtime_parameters["Input"]["previous_user_input_param"] = \
+                    runtime_parameters["Input"]["user_input_param"]
+            runtime_parameters["Input"]["user_input"] = e1.get()
+            runtime_parameters["Input"]["user_input_param"] = e2.get()
+            user_input_queue.put(runtime_parameters["Input"]["user_input"])
+            user_input_param_queue.put(runtime_parameters["Input"]["user_input_param"])
 
         master = tkinter.Tk()
 
@@ -73,9 +83,11 @@ if __name__ == '__main__':
 
     def regeneration_check():
         # Calling function to regenerate the Brain from the Genome
-        if universal_functions.parameters["InitData"]["regenerate_brain"]:
+        if runtime_parameters["InitData"]["regenerate_brain"]:
+            disk_ops.stage_genome(connectome_path)
+            disk_ops.load_genome_in_memory(connectome_path)
             brain_generation_start_time = datetime.now()
-            brain_gen.main()
+            brain_gen()
             brain_generation_duration = datetime.now() - brain_generation_start_time
 
             # todo: Move the following to stats module
@@ -104,11 +116,11 @@ if __name__ == '__main__':
         FCL_queue.put(FCL)
 
         # Setting up Brain queue for multiprocessing
-        brain_data = universal_functions.brain
+        brain_data = disk_ops.load_brain_in_memory()
         brain_queue.put(brain_data)
 
-        # Setting up parameters queue for multiprocessing
-        parameters_queue.put(universal_functions.parameters)
+        # Setting up runtime_parameters queue for multiprocessing
+        parameters_queue.put(runtime_parameters)
 
         # Setting up genome data
         genome_stats = {}
@@ -130,14 +142,14 @@ if __name__ == '__main__':
         process_1 = mp.Process(name='print_basic_info', target=b.print_basic_info)
         process_1.start()
         process_1.join()
-        universal_functions.parameters["Input"]["user_input"] = ''
+        runtime_parameters["Input"]["user_input"] = ''
         return
 
     def process_show_cortical_areas():
         process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
         process_2.start()
         process_2.join()
-        universal_functions.parameters["Input"]["user_input"] = ''
+        runtime_parameters["Input"]["user_input"] = ''
         return
 
     regeneration_check()
@@ -156,36 +168,38 @@ if __name__ == '__main__':
 
     process_burst.deamon = False
 
-    if not universal_functions.parameters["Switches"]["live_mode"]:
+    if not runtime_parameters["Switches"]["live_mode"]:
         read_user_input()
 
     # todo: implement the following using multiprocessing
-    if universal_functions.parameters["Switches"]["vis_show"]:
+    if runtime_parameters["Switches"]["vis_show"]:
         from . import visualizer
         visualizer.main()
 
-    while universal_functions.regenerate:
-        if not universal_functions.parameters["Switches"]["live_mode"]:
-            universal_functions.regenerate = False
+    regenerate = True
+
+    while regenerate:
+        if not runtime_parameters["Switches"]["live_mode"]:
+            regenerate = False
         try:
-            while universal_functions.parameters["Input"]["user_input"] != 'q':
-                # if universal_functions.parameters["Input"]["user_input"] != settings.Input.previous_user_input and \
-                #           universal_functions.parameters["Input"]["user_input"]_param != \
+            while runtime_parameters["Input"]["user_input"] != 'q':
+                # if runtime_parameters["Input"]["user_input"] != settings.Input.previous_user_input and \
+                #           runtime_parameters["Input"]["user_input"]_param != \
                 # settings.Input.previous_user_input_param:
                 # print(">>>>>>   >>>>>>>   >>>>>   >>>>>  >>  >>  --\__/--  <<  <<    <<<<<<",
-                # universal_functions.parameters["Input"]["user_input"], settings.Input.previous_user_input)
+                # runtime_parameters["Input"]["user_input"], settings.Input.previous_user_input)
                 try:
-                    if universal_functions.parameters["Input"]["user_input"] == 'p':
+                    if runtime_parameters["Input"]["user_input"] == 'p':
                         process_print_basic_info()
-                        universal_functions.parameters["Input"]["user_input"] = ''
+                        runtime_parameters["Input"]["user_input"] = ''
 
-                    # elif universal_functions.parameters["Input"]["user_input"] == 'live':
+                    # elif runtime_parameters["Input"]["user_input"] == 'live':
                     #     live()
-                    #     universal_functions.parameters["Input"]["user_input"] = ''
+                    #     runtime_parameters["Input"]["user_input"] = ''
 
                     else:
-                        if universal_functions.parameters["Switches"]["live_mode"]:
-                            universal_functions.parameters["Input"]["user_input"] = user_input_queue.get()
+                        if runtime_parameters["Switches"]["live_mode"]:
+                            runtime_parameters["Input"]["user_input"] = user_input_queue.get()
                         else:
                             read_user_input()
                         sleep(2)
@@ -202,11 +216,11 @@ if __name__ == '__main__':
             universal_functions.save_brain_to_disk()
             print("genome id called from main function: ", universal_functions.genome_id)
             universal_functions.save_genome_to_disk()
-            if universal_functions.parameters["Switches"]["live_mode"]:
-                universal_functions.parameters["Input"]["user_input"] = ""
+            if runtime_parameters["Switches"]["live_mode"]:
+                runtime_parameters["Input"]["user_input"] = ""
                 # Regenerate the brain
-                universal_functions.stage_genome()
-                universal_functions.init()
+                disk_ops.stage_genome(connectome_path)
+                disk_ops.load_genome_in_memory(connectome_path)
                 brain_gen.main()
                 initialize_the_brain()
 
@@ -214,7 +228,7 @@ if __name__ == '__main__':
                 # pool = mp.Pool(max(1, mp.cpu_count()))
                 process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
                                                                     FCL_queue, brain_queue, event_queue,
-                                                                    genome_stats_queue,))
+                                                                    genome_stats_queue, parameters_queue,))
                 print("The burst engine has been started...")
 
                 event_id = event_id_gen()

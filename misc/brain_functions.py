@@ -1,7 +1,7 @@
 
 
 import multiprocessing as mp
-from misc import universal_functions, stats
+from misc import stats
 import sys
 from tty import setraw
 import termios
@@ -9,6 +9,10 @@ sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/pyth
 import numpy as np
 from configuration import settings
 from PUs import IPU_vision
+from configuration.runtime_data import parameters as runtime_parameters
+from configuration.runtime_data import genome as runtime_genome
+from configuration.runtime_data import brain as runtime_brain
+from configuration.runtime_data import cortical_list as runtime_cortical_list
 
 
 class Brain:
@@ -17,15 +21,14 @@ class Brain:
         cp = mp.current_process()
         print("\rstarting", cp.name, cp.pid)
         print("\rConnectome database =                  %s" %
-              universal_functions.parameters["InitData"]["connectome_path"])
+              runtime_parameters["InitData"]["connectome_path"])
         print("\rTotal neuron count in the connectome  %s  is: %i" %
-              (universal_functions.parameters["InitData"]["connectome_path"] + 'vision_v1.json',
+              (runtime_parameters["InitData"]["connectome_path"] + 'vision_v1.json',
                stats.connectome_neuron_count(cortical_area='vision_v1')))
         print(' \rexiting', cp.name, cp.pid)
         return
 
-    @staticmethod
-    def retina(mnist_labled_image):
+    def retina(self, mnist_labled_image):
         # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
         # from datetime import datetime
         # from architect import event_id_gen
@@ -34,7 +37,7 @@ class Brain:
         neuron_list = []
 
         # IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])   # todo  ?????
-        vision_group = universal_functions.cortical_sub_group_members('vision_v1')
+        vision_group = self.cortical_sub_group_members('vision_v1')
 
         image = mnist_labled_image[0]
         # print("*** Image label from MNIST was :", mnist_labled_image[1])
@@ -45,25 +48,25 @@ class Brain:
 
         np.set_printoptions(linewidth=200)
 
-        if universal_functions.parameters['Logs']['print_seen_img']:
+        if runtime_parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
 
         # image = filter.brightness(image)
 
-        if universal_functions.parameters['Logs']['print_filtered_img']:
+        if runtime_parameters['Logs']['print_filtered_img']:
             print("Filtered image:\n", image)
 
         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
         for cortical_area in vision_group:
 
-            cortical_direction_sensitivity = universal_functions.genome['blueprint'][cortical_area][
+            cortical_direction_sensitivity = runtime_genome['blueprint'][cortical_area][
                 'direction_sensitivity']
             kernel_size = 3
 
             # retina_start_time = datetime.now()
             polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
 
-            if universal_functions.parameters['Logs']['print_polarized_img']:
+            if runtime_parameters['Logs']['print_polarized_img']:
                 print("\nPrinting polarized image for ", cortical_area)
                 for row in polarized_image:
                     print(" ***")
@@ -78,12 +81,12 @@ class Brain:
 
             ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
 
-            if universal_functions.parameters['Logs']['print_activation_counters']:
+            if runtime_parameters['Logs']['print_activation_counters']:
                 print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
-            if universal_functions.parameters['Logs']['print_activation_counters']:
+            if runtime_parameters['Logs']['print_activation_counters']:
                 print("Neuron id count activated in layer %s is %i\n\n" %(cortical_area, len(neuron_id_list)))
 
             for item in neuron_id_list:
@@ -117,7 +120,7 @@ class Brain:
         old_settings = termios.tcgetattr(fd)
         try:
             setraw(sys.stdin.fileno())
-            universal_functions.parameters["Input"]["user_input"] = sys.stdin.read(1)
+            runtime_parameters["Input"]["user_input"] = sys.stdin.read(1)
             # sys.stdout.write("\r%s" % user_input_queue)
             print("hahaha______hehehe")
         finally:
@@ -153,7 +156,7 @@ class Brain:
         """
         Returns number of Neurons in the connectome
         """
-        data = universal_functions.brain[cortical_area]
+        data = runtime_brain[cortical_area]
         neuron_count = 0
         for key in data:
             neuron_count += 1
@@ -164,22 +167,29 @@ class Brain:
         """
         Returns number of Neurons in the connectome
         """
-        data = universal_functions.brain[cortical_area]
+        data = runtime_brain[cortical_area]
         synapse_count = 0
         for neuron in data:
             for _ in data[neuron]['neighbors']:
                 synapse_count += 1
         return synapse_count
 
+    def cortical_sub_group_members(group):
+        members = []
+        for item in runtime_cortical_list:
+            if runtime_genome['blueprint'][item]['sub_group_id'] == group:
+                members.append(item)
+        return members
+
     def connectome_neuron_count(self):
         total_neuron_count = 0
-        for cortical_area in universal_functions.cortical_areas:
+        for cortical_area in runtime_cortical_list:
             total_neuron_count += self.cortical_area_neuron_count(cortical_area)
         return total_neuron_count
 
     def connectome_synapse_count(self):
         total_synapse_count = 0
-        for cortical_area in universal_functions.cortical_areas:
+        for cortical_area in runtime_cortical_list:
             total_synapse_count += self.cortical_area_synapse_count(cortical_area)
 
         return total_synapse_count

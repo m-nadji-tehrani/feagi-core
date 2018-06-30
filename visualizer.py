@@ -55,7 +55,7 @@ def vis_init():
         ax.set_zlabel('Z Label')
         fig.suptitle("Main plot")
 
-    parameters["Switches"]["vis_init_status"] = True
+    runtime_data.parameters["Switches"]["vis_init_status"] = True
 
 
 def init_figures():
@@ -93,106 +93,106 @@ def setup_canvas(entry):
 
     global d_vision, d_ipu, d_memory, d_opu
 
-    if genome['blueprint'][entry[1]]['group_id'] == 'vision':
-        if genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
+    if runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'vision':
+        if runtime_data.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v1':
             d_vision = vision_figure.add_subplot(7,
                                                  3,
-                                                 genome['blueprint'][entry[1]]['plot_index'],
+                                                 runtime_data.genome['blueprint'][entry[1]]['plot_index'],
                                                  projection='3d', aspect='equal')
             d_vision.set_title(entry[1])
             d_vision.set_xlim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
             d_vision.set_ylim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
             d_vision.set_zlim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
             d_vision.set_xlabel('X Label')
             d_vision.set_ylabel('Y Label')
             d_vision.set_zlabel('Z Label')
 
-        elif genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v2':
-            d_vision = vision_figure.add_subplot(7, 3, genome['blueprint']
+        elif runtime_data.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_v2':
+            d_vision = vision_figure.add_subplot(7, 3, runtime_data.genome['blueprint']
             [entry[1]]['plot_index'], projection='3d', aspect='equal')
             d_vision.set_title(entry[1])
             d_vision.set_xlim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
             d_vision.set_ylim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
             d_vision.set_zlim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
             d_vision.set_xlabel('X Label')
             d_vision.set_ylabel('Y Label')
             d_vision.set_zlabel('Z Label')
-        elif genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_IT':
-            d_vision = vision_figure.add_subplot(7, 3, genome['blueprint']
+        elif runtime_data.genome['blueprint'][entry[1]]['sub_group_id'] == 'vision_IT':
+            d_vision = vision_figure.add_subplot(7, 3, runtime_data.genome['blueprint']
             [entry[1]]['plot_index'], projection='3d', aspect='equal')
             d_vision.set_title(entry[1])
             d_vision.set_xlim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
             d_vision.set_ylim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
             d_vision.set_zlim(
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-                genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+                runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
             d_vision.set_xlabel('X Label')
             d_vision.set_ylabel('Y Label')
             d_vision.set_zlabel('Z Label')
 
-    elif genome['blueprint'][entry[1]]['group_id'] == 'Memory':
-        d_memory = memory_figure.add_subplot(2, 1, genome['blueprint']
+    elif runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
+        d_memory = memory_figure.add_subplot(2, 1, runtime_data.genome['blueprint']
         [entry[1]]['plot_index'], projection='3d')
         d_memory.set_title(entry[1])
         d_memory.set_xlim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
         d_memory.set_ylim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
         d_memory.set_zlim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
         d_memory.set_xlabel('X Label')
         d_memory.set_ylabel('Y Label')
         d_memory.set_zlabel('Z Label')
 
-    elif genome['blueprint'][entry[1]]['group_id'] == 'IPU':
-        d_ipu = input_figure.add_subplot(1, 1, genome['blueprint']
+    elif runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+        d_ipu = input_figure.add_subplot(1, 1, runtime_data.genome['blueprint']
         [entry[1]]['plot_index'], projection='3d')
         d_ipu.set_title(entry[1])
         d_ipu.set_xlim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
         d_ipu.set_ylim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
         d_ipu.set_zlim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
         d_ipu.set_xlabel('X Label')
         d_ipu.set_ylabel('Y Label')
         d_ipu.set_zlabel('Z Label')
 
-    elif genome['blueprint'][entry[1]]['group_id'] == 'OPU':
-        d_opu = output_figure.add_subplot(1, 1, genome['blueprint']
+    elif runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+        d_opu = output_figure.add_subplot(1, 1, runtime_data.genome['blueprint']
         [entry[1]]['plot_index'], projection='3d')
         d_opu.set_title(entry[1])
         d_opu.set_xlim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["x"][1])
         d_opu.set_ylim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["y"][1])
         d_opu.set_zlim(
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
-            genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][0],
+            runtime_data.genome['blueprint'][entry[1]]["neuron_params"]["geometric_boundaries"]["z"][1])
         d_opu.set_xlabel('X Label')
         d_opu.set_ylabel('Y Label')
         d_opu.set_zlabel('Z Label')
@@ -203,7 +203,7 @@ def burst_visualization_manager():
     index = 0
     global indexed_cortical_list
     indexed_cortical_list = []
-    for key in cortical_areas:
+    for key in runtime_data.cortical_areas:
         indexed_cortical_list.append([index, key])
         index += 1
 
@@ -233,13 +233,13 @@ def animate():
                 setup_canvas(entry)
 
                 for location in neuron_locations[entry[1]]:
-                    if genome['blueprint'][entry[1]]['group_id'] == 'vision':
+                    if runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'vision':
                         d_vision.scatter3D(location[0], location[1], location[2], c='r', marker='^')
-                    if genome['blueprint'][entry[1]]['group_id'] == 'Memory':
+                    if runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'Memory':
                         d_memory.scatter3D(location[0], location[1], location[2], c='r', marker='^')
-                    if genome['blueprint'][entry[1]]['group_id'] == 'IPU':
+                    if runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'IPU':
                         d_ipu.scatter3D(location[0], location[1], location[2], c='r', marker='^')
-                    if genome['blueprint'][entry[1]]['group_id'] == 'OPU':
+                    if runtime_data.genome['blueprint'][entry[1]]['group_id'] == 'OPU':
                         d_opu.scatter3D(location[0], location[1], location[2], c='r', marker='^')
             finally:
                 pass
@@ -258,26 +258,26 @@ def animate():
 
 def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
     """Visualizes the Neurons in the connectome"""
-    if not parameters["Switches"]["vis_init_status"]:
+    if not runtime_data.parameters["Switches"]["vis_init_status"]:
         vis_init()
     neuron_locations = connectome_location_data(cortical_area)
 
     ax.set_xlim(
-        genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
-        genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1])
+        runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
+        runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1])
     ax.set_ylim(
-        genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
-        genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1])
+        runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0],
+        runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1])
     ax.set_zlim(
-        genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
-        genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
+        runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
+        runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
 
     for location in neuron_locations:
         ax.scatter(location[0], location[1], location[2], c='b', marker='.')
 
     # Displays the Axon-Dendrite connections when True is set
     if neighbor_show == 'true':
-        data = brain[cortical_area]
+        data = runtime_data.brain[cortical_area]
 
         # The following code scans thru connectome and extract locations for source and destination neurons
         for key in data:
@@ -293,48 +293,47 @@ def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
                                     mutation_scale=10, lw=1, arrowstyle="->", color="r")
                         ax.add_artist(a)
     pylab.plt.show()
-    pylab.plt.pause(parameters["Timers"]["burst_timer"])
+    pylab.plt.pause(runtime_data.parameters["Timers"]["burst_timer"])
     return
 
 
-def cortical_activity_visualizer(cortical_areas, x=30, y=30, z=30):
-    """Visualizes the extent of Neuron activities"""
-    if not parameters["Switches"]["vis_init_status"]:
-        vis_init()
+# def cortical_activity_visualizer(cortical_list, x=30, y=30, z=30):
+#     """Visualizes the extent of Neuron activities"""
+#     if not runtime_data.parameters["Switches"]["vis_init_status"]:
+#         vis_init()
+#
+#     # fig = pylab.plt.figure()
+#     fig = pylab.plt.figure(figsize=pylab.plt.figaspect(.2))
+#     fig.suptitle('Cortical Activities\n')
+#
+#     for cortical_area in runtime_data.cortical_list:
+#         neuron_locations = connectome_location_data(cortical_area)
+#         aa = fig.add_subplot(1, len(runtime_data.cortical_areas)+1, runtime_data.cortical_areas.index(cortical_area)+1)
+#         aa.set_title(cortical_area)
+#         aa.set_xlim(0, x)
+#         aa.set_ylim(0, y)
+#         # aa.set_zlim(0, z)
+#         for location in neuron_locations:
+#             # aa.scatter(location[0], location[1], location[2], s=location[3])
+#             aa.scatter(location[0], location[1], s=location[3])
+#     pylab.plt.show()
+#     pylab.plt.pause(1)
 
-    # fig = pylab.plt.figure()
-    fig = pylab.plt.figure(figsize=pylab.plt.figaspect(.2))
-    fig.suptitle('Cortical Activities\n')
 
-    for cortical_area in cortical_areas:
-        neuron_locations = connectome_location_data(cortical_area)
-        aa = fig.add_subplot(1, len(cortical_areas)+1, cortical_areas.index(cortical_area)+1)
-        aa.set_title(cortical_area)
-        aa.set_xlim(0, x)
-        aa.set_ylim(0, y)
-        # aa.set_zlim(0, z)
-        for location in neuron_locations:
-            # aa.scatter(location[0], location[1], location[2], s=location[3])
-            aa.scatter(location[0], location[1], s=location[3])
-    pylab.plt.show()
-    pylab.plt.pause(1)
-    return
-
-
-def mnist_img_show(IPU_input):
-    """ Displays the image from MNIST database"""
-
-    aa = input_figure.add_subplot(2, 1, 2)
-    aa.set_title("User selection from MNIST")
-    aa.imshow(IPU_input)
-
-    # plt.suptitle('Heatmap of Cortical area Neuronal Fire count', fontsize=12)
-
-    # plt.pause(10)
-    # plt.show()
-    pylab.plt.draw()
-    pylab.plt.pause(parameters["Timers"]["burst_timer"])
-    return
+# def mnist_img_show(IPU_input):
+#     """ Displays the image from MNIST database"""
+#
+#     aa = input_figure.add_subplot(2, 1, 2)
+#     aa.set_title("User selection from MNIST")
+#     aa.imshow(IPU_input)
+#
+#     # plt.suptitle('Heatmap of Cortical area Neuronal Fire count', fontsize=12)
+#
+#     # plt.pause(10)
+#     # plt.show()
+#     pylab.plt.draw()
+#     pylab.plt.pause(runtime_data.parameters["Timers"]["burst_timer"])
+#     return
 
 
 def cortical_heatmap(IPU_input, cortical_areas):
@@ -349,15 +348,15 @@ def cortical_heatmap(IPU_input, cortical_areas):
 
     cortical_arrays = []
     cortical_arrays.append(["IPU_Vision", IPU_input])
-    # for cortical_area in cortical_areas:
-    #     genome = genome
-    #     x1 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0]
-    #     x2 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1]
-    #     y1 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0]
-    #     y2 = genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1]
+    # for cortical_area in runtime_data.cortical_areas:
+    #     runtime_data.genome = runtime_data.genome
+    #     x1 = runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0]
+    #     x2 = runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1]
+    #     y1 = runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0]
+    #     y2 = runtime_data.genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][1]
     #
     #     # Convert Cortical data to a numpy array
-    #     data = brain[cortical_area]
+    #     data = runtime_data.brain[cortical_area]
     #     cortical_array = np.zeros((x2-x1, y2-y1))
     #     for key in data:
     #         xx = data[key]['location'][0]
@@ -373,8 +372,8 @@ def cortical_heatmap(IPU_input, cortical_areas):
     mpl.pylab.thismanager = mpl.pylab.get_current_fig_manager()
     mpl.pylab.thismanager.window.wm_geometry("+20+300")
 
-    for i in range(1, len(cortical_areas)+2):
-        aa = fig2.add_subplot(1, len(cortical_areas)+1, i)
+    for i in range(1, len(runtime_data.cortical_areas)+2):
+        aa = fig2.add_subplot(1, len(runtime_data.cortical_areas)+1, i)
         aa.set_title(cortical_arrays[i-1][0])
         aa.imshow(cortical_arrays[i-1][1])
 

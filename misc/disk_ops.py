@@ -1,7 +1,7 @@
 
 # import random
 # import string
-import datetime
+from datetime import datetime
 import os.path
 import json
 from misc import db_handler
@@ -34,7 +34,7 @@ def load_genome_in_memory(connectome_path):
 def save_genome_to_disk():
     from evolutionary.genethesizer import calculate_fitness
     mongo = db_handler.MongoManagement()
-    global genome_test_stats, genome
+    genome = runtime_data.genome
 
     genome_id = ""
 
@@ -42,28 +42,31 @@ def save_genome_to_disk():
         genome_id = genome_id_gen()
         print("this is the new genome id:", genome_id)
 
-    print(genome_test_stats)
+    print(runtime_data.genome_test_stats)
 
     updated_genome_test_stats = []
-    for item in genome_test_stats:
+    for item in runtime_data.genome_test_stats:
         item["genome_id"] = genome_id
         updated_genome_test_stats.append(item)
 
     print(updated_genome_test_stats)
+    print("*** @@@ *** @@@ *** \n ", genome_id)
 
     genome_db = {}
     genome_db["genome_id"] = genome_id
     genome_db["generation_date"] = str(datetime.now())
     genome_db["properties"] = genome
 
-    brain_fitness = calculate_fitness(genome_test_stats)
+    brain_fitness = calculate_fitness(runtime_data.genome_test_stats)
     genome_db["fitness"] = brain_fitness
 
     print("Brain fitness factor was evaluated as: ", brain_fitness)
 
+    # print("*** @@@ *** @@@ *** \n ", genome_db)
+
     mongo.insert_genome(genome_db)
 
-    for stat in genome_test_stats:
+    for stat in runtime_data.genome_test_stats:
         stat_to_save = stat
         mongo.insert_test_stats(stat_to_save)
 

@@ -681,7 +681,6 @@ class DataFeeder:
         init_data.labeled_image = mnist_img_fetcher(num)
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
-        print("neuron list is: \n", init_data.training_neuron_list_img)
         # print("image has been converted to neuronal activities...")
 
 

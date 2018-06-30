@@ -39,7 +39,7 @@ if __name__ == '__main__':
         cortical_list.append(key)
     runtime_data.cortical_list = cortical_list
 
-    print("runtime_cortical_list:", runtime_data.cortical_list)
+    # print("runtime_cortical_list:", runtime_data.cortical_list)
 
     from misc import brain_functions, neuron_functions
     from evolutionary.brain_gen import brain_gen
@@ -143,13 +143,6 @@ if __name__ == '__main__':
         runtime_data.parameters["Input"]["user_input"] = ''
         return
 
-    def process_show_cortical_areas():
-        process_2 = mp.Process(name='show_cortical_areas', target=b.show_cortical_areas())
-        process_2.start()
-        process_2.join()
-        runtime_data.parameters["Input"]["user_input"] = ''
-        return
-
     regeneration_check()
     initialize_the_brain()
 
@@ -211,7 +204,7 @@ if __name__ == '__main__':
             runtime_data.brain = brain_queue.get()
             runtime_data.genome_test_stats = genome_stats_queue.get()
             join_processes()
-            disk_ops.save_brain_to_disk()
+            disk_ops.save_brain_to_disk(brain=runtime_data.brain, parameters=runtime_data.parameters)
             print("genome id called from main function: ", runtime_data.genome_id)
             disk_ops.save_genome_to_disk()
             if runtime_data.parameters["Switches"]["live_mode"]:
@@ -219,7 +212,7 @@ if __name__ == '__main__':
                 # Regenerate the brain
                 disk_ops.stage_genome(connectome_path)
                 disk_ops.load_genome_in_memory(connectome_path)
-                brain_gen.main()
+                brain_gen()
                 initialize_the_brain()
 
                 # Starting the burst machine

@@ -54,12 +54,12 @@
     "tester_status": false
   },
   "Logs":{
-    "print_polarized_img": true,
-    "print_seen_img": true,
-    "print_filtered_img": true,
-    "print_activation_counters": true,
+    "print_polarized_img": false,
+    "print_seen_img": false,
+    "print_filtered_img": false,
+    "print_activation_counters": false,
     "print_cortical_activity_counters": true,
-    "print_mnist_img_info": true,
+    "print_mnist_img_info": false,
     "print_plasticity_info": true,
     "print_burst_info": true,
     "print_brain_gen_activities": true

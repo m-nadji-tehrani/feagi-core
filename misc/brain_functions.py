@@ -171,6 +171,7 @@ class Brain:
                 synapse_count += 1
         return synapse_count
 
+    @staticmethod
     def cortical_sub_group_members(group):
         members = []
         for item in runtime_data.cortical_list:

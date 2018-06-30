@@ -18,6 +18,7 @@ from collections import deque
 from time import sleep
 from PUs import OPU_utf8, IPU_utf8
 from . import brain_functions
+from misc import disk_ops
 from configuration import settings, runtime_data
 from PUs.IPU_vision import mnist_img_fetcher
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
@@ -40,7 +41,51 @@ class InitData:
         self.previous_fcl = []
 
 
-InitData()
+class InjectorParams:
+    def __init__(self):
+        self.img_flag = False
+        self.utf_flag = False
+        self.injection_has_begun = False
+        self.variation_handler = True
+        self.exposure_handler = True
+        self.utf_handler = True
+        self.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
+        self.exposure_counter = runtime_data.parameters["Auto_injector"]["exposure_default"]
+        self.utf_counter = runtime_data.parameters["Auto_injector"]["utf_default"]
+        self.variation_counter_actual = self.variation_counter
+        self.exposure_counter_actual = self.exposure_counter
+        self.utf_counter_actual = self.utf_counter
+        self.injection_start_time = datetime.now()
+        self.num_to_inject = ''
+        self.utf_to_inject = ''
+        self.injection_mode = ''
+
+
+class TesterParams:
+    def __init__(self):
+        self.img_flag = False
+        self.utf_flag = False
+        self.testing_has_begun = False
+        self.variation_handler = True
+        self.exposure_handler = True
+        self.utf_handler = True
+        self.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
+        self.exposure_counter = runtime_data.parameters["Auto_tester"]["exposure_default"]
+        self.utf_counter = runtime_data.parameters["Auto_tester"]["utf_default"]
+        self.variation_counter_actual = self.variation_counter
+        self.exposure_counter_actual = self.exposure_counter
+        self.utf_counter_actual = self.utf_counter
+        self.test_start_time = datetime.now()
+        self.num_to_inject = ''
+        self.test_mode = ''
+        self.comprehension_counter = 0
+        self.test_attempt_counter = 0
+        # self.temp_stats = []
+        self.test_stats = {}
+        self.test_id = ""
+
+
+global init_data, injector_params, test_params
 
 
 def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, genome_stats_queue, parameters_queue):
@@ -62,6 +107,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
 
     runtime_data.parameters = parameters_queue.get()
+    disk_ops.load_genome_in_memory(runtime_data.parameters['InitData']['connectome_path'])
 
     # todo: Move comprehension span to genome
     comprehension_span = 4
@@ -69,7 +115,12 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     # Initializing the comprehension queue
     comprehension_queue = deque(['-'] * comprehension_span)
 
+    global init_data, test_params, injector_params
+
     init_data = InitData()
+    injector_params = InjectorParams()
+    test_params = TesterParams()
+
     if not init_data.brain_is_running:
         toggle_brain_status()
         init_data.brain_run_id = run_id_gen()
@@ -81,14 +132,17 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     runtime_data.brain = brain_queue.get()
     runtime_data.genome_stats = genome_stats_queue.get()
 
+    cortical_list = []
+    for cortical_area in runtime_data.genome['blueprint']:
+        cortical_list.append(cortical_area)
+    runtime_data.cortical_list = cortical_list
+
     verbose = runtime_data.parameters["Switches"]["verbose"]
 
     if runtime_data.parameters["Switches"]["capture_brain_activities"]:
         init_data.fcl_history = {}
 
     DataFeeder()
-    InjectorParams()
-    TesterParams()
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
         burst_start_time = datetime.now()
@@ -233,50 +287,6 @@ def utf_detection_logic(detection_list):
         else:
             return '-'
 
-
-class InjectorParams:
-    def __init__(self):
-        self.img_flag = False
-        self.utf_flag = False
-        self.injection_has_begun = False
-        self.variation_handler = True
-        self.exposure_handler = True
-        self.utf_handler = True
-        self.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
-        self.exposure_counter = runtime_data.parameters["Auto_injector"]["exposure_default"]
-        self.utf_counter = runtime_data.parameters["Auto_injector"]["utf_default"]
-        self.variation_counter_actual = self.variation_counter
-        self.exposure_counter_actual = self.exposure_counter
-        self.utf_counter_actual = self.utf_counter
-        self.injection_start_time = datetime.now()
-        self.num_to_inject = ''
-        self.utf_to_inject = ''
-        self.injection_mode = ''
-
-
-class TesterParams:
-    def __init__(self):
-        self.img_flag = False
-        self.utf_flag = False
-        self.testing_has_begun = False
-        self.variation_handler = True
-        self.exposure_handler = True
-        self.utf_handler = True
-        self.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
-        self.exposure_counter = runtime_data.parameters["Auto_tester"]["exposure_default"]
-        self.utf_counter = runtime_data.parameters["Auto_tester"]["utf_default"]
-        self.variation_counter_actual = self.variation_counter
-        self.exposure_counter_actual = self.exposure_counter
-        self.utf_counter_actual = self.utf_counter
-        self.test_start_time = datetime.now()
-        self.num_to_inject = ''
-        self.test_mode = ''
-        self.comprehension_counter = 0
-        self.test_attempt_counter = 0
-        # self.temp_stats = []
-        self.test_stats = {}
-        self.test_id = ""
-
     # Load copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
 
 
@@ -286,8 +296,8 @@ def test_manager(test_mode, test_param):
     Mode t1: Assist in learning numbers from 0 to 9
     Mode t2: Assist in learning variations of the same number
     """
-    test_params = TesterParams()
-    init_data = InitData()
+    global test_params
+    global init_data
     try:
         if test_mode == 't1':
             test_params.test_mode = "t1"
@@ -339,7 +349,7 @@ def auto_tester():
 
     """
     data_feeder = DataFeeder()
-    test_params = TesterParams()
+    global test_params
     if test_params.testing_has_begun:
         # Beginning of a injection process
         print("----------------------------------------Testing has begun------------------------------------")
@@ -399,7 +409,7 @@ def auto_tester():
 
 
 def update_test_stats():
-    test_params = TesterParams()
+    global test_params
     utf_exposed = str(test_params.num_to_inject) + '_exposed'
     utf_comprehended = str(test_params.num_to_inject) + '_comprehended'
 
@@ -414,7 +424,7 @@ def update_test_stats():
 
 
 def test_comprehension_logic():
-    test_params = TesterParams()
+    global test_params
     # Comprehension logic
     print("> ", runtime_data.parameters["Input"]["comprehended_char"], "> ", test_params.num_to_inject)
     if runtime_data.parameters["Input"]["comprehended_char"] == str(test_params.num_to_inject):
@@ -437,7 +447,7 @@ def test_comprehension_logic():
 
 
 def test_exit_condition():
-    test_params = TesterParams()
+    global test_params
     if test_params.utf_counter_actual < 1 and \
             test_params.variation_counter_actual < 1 and \
             test_params.exposure_counter_actual < 1:
@@ -450,8 +460,8 @@ def test_exit_condition():
 
 
 def test_exit_process():
-    test_params = TesterParams()
-    init_data = InitData()
+    global test_params
+    global init_data
     
     runtime_data.parameters["Auto_tester"]["tester_status"] = False
     test_params.exposure_counter_actual = runtime_data.parameters["Auto_tester"]["exposure_default"]
@@ -486,7 +496,7 @@ def injection_manager(injection_mode, injection_param):
     Mode r: Assist in exposing a single image to the brain for a number of bursts
     Mode c: Assist in exposing a single utf8 char to the brain for a number of bursts
     """
-    injector_params = InjectorParams()
+    global injector_params
     try:
         if injection_mode == 'l1':
             injector_params.injection_mode = "l1"
@@ -548,7 +558,7 @@ def injection_manager(injection_mode, injection_param):
 
 
 def auto_injector():
-    injector_params = InjectorParams()
+    global injector_params
     data_feeder = DataFeeder()
     if injector_params.injection_has_begun:
         # Beginning of a injection process
@@ -600,7 +610,7 @@ def auto_injector():
 
 
 def injection_exit_condition():
-    injector_params = InjectorParams()
+    global injector_params
     if (injector_params.utf_handler and
         injector_params.utf_counter_actual < 1 and
         injector_params.variation_counter_actual < 1 and
@@ -620,8 +630,8 @@ def injection_exit_condition():
 
 
 def injection_exit_process():
-    init_data = InitData()
-    injector_params = InjectorParams()
+    global init_data
+    global injector_params
     runtime_data.parameters["Auto_injector"]["injector_status"] = False
     injector_params.exposure_counter_actual = runtime_data.parameters["Auto_injector"]["exposure_default"]
     injector_params.variation_counter_actual = runtime_data.parameters["Auto_injector"]["variation_default"]
@@ -644,8 +654,8 @@ class DataFeeder:
         self.training_neuron_list_img = []
 
     def utf8_feeder(self):
-        init_data = InitData()
-        injector_params = InjectorParams()
+        global init_data
+        global injector_params
         # inject label to FCL
 
         if injector_params.injection_mode == 'c':
@@ -656,7 +666,7 @@ class DataFeeder:
         # print("Activities caused by image label are now part of the FCL")
 
     def img_neuron_list_feeder(self):
-        init_data = InitData()
+        global init_data
         # inject neuron activity to FCL
         init_data.fire_candidate_list = inject_to_fcl(self.training_neuron_list_img, init_data.fire_candidate_list)
         # print("Activities caused by image are now part of the FCL")
@@ -670,12 +680,13 @@ class DataFeeder:
         self.labeled_image = mnist_img_fetcher(num)
         # Convert image to neuron activity
         self.training_neuron_list_img = brain.retina(self.labeled_image)
+        print("neuron list is: \n", self.training_neuron_list_img)
         # print("image has been converted to neuronal activities...")
 
 
 def neuro_plasticity():
     # The following handles neuro-plasticity
-    init_data = InitData()
+    global init_data
     if runtime_data.parameters["Switches"]["plasticity"]:
         # Plasticity between T1 and Vision memory
         # todo: generalize this function
@@ -740,7 +751,7 @@ def neuro_plasticity():
 
 def burst_exit_process():
     print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-    init_data = InitData()
+    global init_data
     init_data.burst_count = 0
     runtime_data.parameters["Switches"]["ready_to_exit_burst"] = True
     if runtime_data.parameters["Switches"]["capture_brain_activities"]:
@@ -800,7 +811,7 @@ def fire_candidate_locations(fire_cnd_list):
 
 def neuron_fire(cortical_area, neuron_id):
     """This function initiate the firing of Neuron in a given cortical area"""
-    init_data = InitData()
+    global init_data
     if runtime_data.parameters["Switches"]["logging_fire"]:
         print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
 
@@ -885,7 +896,7 @@ def neuron_fire(cortical_area, neuron_id):
 
 def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
     """This function updates the destination parameters upon upstream Neuron firing"""
-    init_data = InitData()
+    global init_data
     dst_neuron_obj = runtime_data.brain[cortical_area][dst_neuron_id]
 
     # update the cumulative_intake_total, cumulative_intake_count and postsynaptic_current between source and
@@ -982,7 +993,7 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
      same burst they wire together. This is done by increasing the postsynaptic_current associated with a link between
      two neuron. Additionally an event id is associated to the neurons who have fired together.
     """
-    init_data = InitData()
+    global init_data
     genome = runtime_data.genome
 
     # Since this function only targets Memory regions and neurons in memory regions do not have neighbor relationship
@@ -1058,7 +1069,7 @@ def inject_to_fcl(neuron_list, fcl):
 
 
 def save_fcl_to_disk():
-    init_data = InitData()
+    global init_data
     with open("./fcl_repo/fcl-" + init_data.brain_run_id + ".json", 'w') as fcl_file:
         # Saving changes to the connectome
         fcl_file.seek(0)  # rewind
@@ -1081,7 +1092,7 @@ def latest_fcl_file():
 
 
 def pickler(data):
-    init_data = InitData()
+    global init_data
     id_ = init_data.brain_run_id
     with open("./pickle_jar/fcl-" + id_ + ".pkl", 'wb') as output:
         pickle.dump(data, output)
@@ -1124,7 +1135,7 @@ def toggle_test_mode():
 
 
 def toggle_brain_status():
-    init_data = InitData()
+    global init_data
     if init_data.brain_is_running:
         init_data.brain_is_running = False
         print("Brain is not running!")

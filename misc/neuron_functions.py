@@ -39,7 +39,9 @@ class InitData:
         self.burst_count = 0
         self.fire_candidate_list = []
         self.previous_fcl = []
-
+        self.labeled_image = []
+        self.training_neuron_list_utf = []
+        self.training_neuron_list_img = []
 
 class InjectorParams:
     def __init__(self):
@@ -648,39 +650,38 @@ def injection_exit_process():
 
 
 class DataFeeder:
-    def __init__(self):
-        self.labeled_image = []
-        self.training_neuron_list_utf = []
-        self.training_neuron_list_img = []
-
-    def utf8_feeder(self):
+    @staticmethod
+    def utf8_feeder():
         global init_data
         global injector_params
         # inject label to FCL
 
         if injector_params.injection_mode == 'c':
-            self.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(injector_params.utf_to_inject)
+            init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(injector_params.utf_to_inject)
         else:
-            self.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(self.labeled_image[1]))
-        init_data.fire_candidate_list = inject_to_fcl(self.training_neuron_list_utf, init_data.fire_candidate_list)
+            init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(init_data.labeled_image[1]))
+        init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_utf, init_data.fire_candidate_list)
         # print("Activities caused by image label are now part of the FCL")
 
-    def img_neuron_list_feeder(self):
+    @staticmethod
+    def img_neuron_list_feeder():
         global init_data
         # inject neuron activity to FCL
-        init_data.fire_candidate_list = inject_to_fcl(self.training_neuron_list_img, init_data.fire_candidate_list)
+        init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_img, init_data.fire_candidate_list)
         # print("Activities caused by image are now part of the FCL")
 
-    def image_feeder(self, num):
+    @staticmethod
+    def image_feeder(num):
+        global init_data
         brain = brain_functions.Brain()
         if int(num) < 0:
             num = 0
             print(settings.Bcolors.RED + "Error: image feeder has been fed a less than 0 number" +
                   settings.Bcolors.ENDC)
-        self.labeled_image = mnist_img_fetcher(num)
+        init_data.labeled_image = mnist_img_fetcher(num)
         # Convert image to neuron activity
-        self.training_neuron_list_img = brain.retina(self.labeled_image)
-        print("neuron list is: \n", self.training_neuron_list_img)
+        init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
+        print("neuron list is: \n", init_data.training_neuron_list_img)
         # print("image has been converted to neuronal activities...")
 
 

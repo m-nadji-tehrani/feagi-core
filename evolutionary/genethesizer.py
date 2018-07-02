@@ -167,8 +167,6 @@ def mutate(genome):
         if genome["blueprint"][key]["group_id"] == 'vision':
             cortical_list.append(key)
 
-    print(">> OO >> Cortical list usef for mutation is:", cortical_list)
-
     for cortical_area in cortical_list:
         genome = GeneModifier.change_consecutive_fire_cnt_max(genome, cortical_area, factor_1)
         genome = GeneModifier.change_cortical_neuron_count(genome, cortical_area, factor_2)

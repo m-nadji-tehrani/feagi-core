@@ -81,6 +81,7 @@ class Brain:
             if runtime_data.parameters['Logs']['print_activation_counters']:
                 print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
+            # todo: improve performance on the following function
             neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
             if runtime_data.parameters['Logs']['print_activation_counters']:

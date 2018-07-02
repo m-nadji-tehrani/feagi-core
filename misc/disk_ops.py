@@ -4,7 +4,7 @@
 from datetime import datetime
 import os.path
 import json
-from misc import db_handler
+from misc import db_handler, alerts
 from evolutionary.genethesizer import genome_id_gen
 from configuration import runtime_data
 
@@ -24,11 +24,15 @@ def load_parameters_in_memory():
         # print("Parameters has been read from file")
 
 
-def load_genome_in_memory(connectome_path):
-    with open(connectome_path+'genome_tmp.json', "r") as genome_tmp_file:
-        genome_data = json.load(genome_tmp_file)
-        runtime_data.genome = genome_data
-        # print("Genome has been loaded into memory...")
+def load_genome_in_memory(connectome_path, static=False):
+    if not static:
+        with open(connectome_path+'genome_tmp.json', "r") as genome_file:
+            genome_data = json.load(genome_file)
+            runtime_data.genome = genome_data
+    else:
+        with open(runtime_data.parameters["InitData"]["static_genome_path"], "r") as genome_file:
+            genome_data = json.load(genome_file)
+            runtime_data.genome = genome_data
 
 
 def save_genome_to_disk():
@@ -42,15 +46,15 @@ def save_genome_to_disk():
         genome_id = genome_id_gen()
         print("this is the new genome id:", genome_id)
 
-    print(runtime_data.genome_test_stats)
+    # print(runtime_data.genome_test_stats)
 
     updated_genome_test_stats = []
     for item in runtime_data.genome_test_stats:
         item["genome_id"] = genome_id
         updated_genome_test_stats.append(item)
 
-    print(updated_genome_test_stats)
-    print("*** @@@ *** @@@ *** \n ", genome_id)
+    # print(updated_genome_test_stats)
+    # print("*** @@@ *** @@@ *** \n ", genome_id)
 
     genome_db = {}
     genome_db["genome_id"] = genome_id
@@ -65,6 +69,12 @@ def save_genome_to_disk():
     # print("*** @@@ *** @@@ *** \n ", genome_db)
 
     mongo.insert_genome(genome_db)
+
+    mail_body = "Genome "+genome_id+" has been evaluated to have a fitness of "+brain_fitness
+
+    # Sending out email
+    if brain_fitness >= 0.1:
+        alerts.send_email(mail_body)
 
     for stat in runtime_data.genome_test_stats:
         stat_to_save = stat

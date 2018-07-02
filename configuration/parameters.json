@@ -28,27 +28,29 @@
     "capture_brain_activities": false,
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
-    "live_mode": true
+    "live_mode": true,
+    "use_static_genome": true
   },
   "InitData": {
     "read_data_from_memory": true,
     "regenerate_brain": true,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
+    "static_genome_path": "./evolutionary/static_genome.json",
     "fcl_to_visualize": "./fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" ,
     "training_counter_default": 10,
     "training_rounds_default": 10
   },
   "Auto_injector":{
-    "variation_default": 10,
-    "exposure_default": 10,
+    "variation_default": 70,
+    "exposure_default": 20,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 10,
-    "exposure_default": 10,
+    "variation_default": 30,
+    "exposure_default": 20,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false
@@ -58,10 +60,10 @@
     "print_seen_img": false,
     "print_filtered_img": false,
     "print_activation_counters": false,
-    "print_cortical_activity_counters": false,
+    "print_cortical_activity_counters": true,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
-    "print_burst_info": false,
+    "print_burst_info": true,
     "print_brain_gen_activities": false
   },
   "Verbose":{

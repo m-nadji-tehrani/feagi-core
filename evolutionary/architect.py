@@ -10,6 +10,7 @@ Architect will accept the following information as input:
 import datetime
 import string
 import random
+# from numba import jit
 
 from math import sqrt, ceil, floor
 from configuration import runtime_data
@@ -422,17 +423,20 @@ def neighbor_reset(cortical_area):
     return
 
 
+# todo: Cythonize this
+# @jit
 def neuron_finder(cortical_area, location, radius):
     """
     Queries a given cortical area and returns a listed of Neuron IDs matching search criteria
     """
+    brain = runtime_data.brain
 
     neuron_list = []
 
     for key in runtime_data.brain[cortical_area]:
-        x = runtime_data.brain[cortical_area][key]['location'][0]
-        y = runtime_data.brain[cortical_area][key]['location'][1]
-        z = runtime_data.brain[cortical_area][key]['location'][2]
+        x = brain[cortical_area][key]['location'][0]
+        y = brain[cortical_area][key]['location'][1]
+        # z = brain[cortical_area][key]['location'][2]
 
         # Searching only the XY plane for candidate neurons         ????
         if sqrt((x-location[0]) ** 2 + (y-location[1]) ** 2) <= (radius ** 2):

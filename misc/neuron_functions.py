@@ -94,9 +94,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
-    # either the timeout is expired or the Firing threshold is met and neuron Fires
-
-    # todo: Consider to have burst instances so multiple burst can happen simultaneously: No need just update FLC!!!
+    # either the timeout is expired or the Firing threshold is met and neuron fires
     # Function Overview:
     #     This function receives a collection of inputs from multiple neurons, performs processing and generate a new
     #     output targeting other neurons which will be fed back to the same function for similar processing.
@@ -570,18 +568,18 @@ def auto_injector():
         if injector_params.img_flag:
             data_feeder.image_feeder(injector_params.num_to_inject)
 
-    print("Exposure, Variation, and UTF counters actual values are: ",
-          injector_params.exposure_counter_actual,
-          injector_params.variation_counter_actual,
-          injector_params.utf_counter_actual)
+    # print("Exposure, Variation, and UTF counters actual values are: ",
+    #       injector_params.exposure_counter_actual,
+    #       injector_params.variation_counter_actual,
+    #       injector_params.utf_counter_actual)
 
     # Exposure counter
     injector_params.exposure_counter_actual -= 1
 
-    print("Exposure counter actual: ", injector_params.exposure_counter_actual)
-    print("Variation counter actual: ", injector_params.variation_counter_actual,
-          injector_params.variation_handler)
-    print("UTF counter actual: ", injector_params.utf_counter_actual, injector_params.utf_handler)
+    # print("Exposure counter actual: ", injector_params.exposure_counter_actual)
+    # print("Variation counter actual: ", injector_params.variation_counter_actual,
+    #       injector_params.variation_handler)
+    # print("UTF counter actual: ", injector_params.utf_counter_actual, injector_params.utf_handler)
 
     # Exit condition
     if injection_exit_condition():
@@ -674,9 +672,9 @@ class DataFeeder:
     def image_feeder(num):
         global init_data
         brain = brain_functions.Brain()
-        if int(num) < 0:
+        if int(num) < 0 or num == '':
             num = 0
-            print(settings.Bcolors.RED + "Error: image feeder has been fed a less than 0 number" +
+            print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
                   settings.Bcolors.ENDC)
         init_data.labeled_image = mnist_img_fetcher(num)
         # Convert image to neuron activity

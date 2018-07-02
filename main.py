@@ -16,7 +16,7 @@ if __name__ == '__main__':
     from misc import disk_ops
     disk_ops.load_parameters_in_memory()
     from misc import disk_ops
-    from configuration import runtime_data
+    from configuration import runtime_data, settings
 
     try:
         connectome_file_path = sys.argv[1]
@@ -39,13 +39,9 @@ if __name__ == '__main__':
         cortical_list.append(key)
     runtime_data.cortical_list = cortical_list
 
-    # print("runtime_cortical_list:", runtime_data.cortical_list)
-
     from misc import brain_functions, neuron_functions
     from evolutionary.brain_gen import brain_gen
     from evolutionary.architect import event_id_gen
-
-    print("The main function is running... ... ... ... ... ... ... ... ... ... |||||   ||||   ||||")
 
     mp.set_start_method('spawn')
 
@@ -82,8 +78,14 @@ if __name__ == '__main__':
     def regeneration_check():
         # Calling function to regenerate the Brain from the Genome
         if runtime_data.parameters["InitData"]["regenerate_brain"]:
-            disk_ops.stage_genome(connectome_path)
-            disk_ops.load_genome_in_memory(connectome_path)
+            if runtime_data.parameters["Switches"]["use_static_genome"]:
+                disk_ops.load_genome_in_memory(connectome_path, static=True)
+                print(settings.Bcolors.RED + ">> >> >> A static genome was used to generate the brain."
+                      + settings.Bcolors.ENDC)
+                runtime_data.parameters["Switches"]["use_static_genome"] = False
+            else:
+                disk_ops.stage_genome(connectome_path)
+                disk_ops.load_genome_in_memory(connectome_path)
             brain_generation_start_time = datetime.now()
             brain_gen()
             brain_generation_duration = datetime.now() - brain_generation_start_time

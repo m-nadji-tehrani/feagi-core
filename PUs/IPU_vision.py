@@ -12,7 +12,8 @@ import os
 import struct
 import numpy as np
 import random
-
+# import pyximport
+# pyximport.install()
 from evolutionary import architect
 from configuration import runtime_data
 
@@ -141,7 +142,7 @@ def convert_direction_matrix_to_coordinates(image):
         x += 1
     return image_locations
 
-
+# todo: cythonize this
 def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
     """
     Queries the connectome for each location and provides the list of Neuron Ids matching the location

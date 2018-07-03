@@ -26,10 +26,13 @@ def load_parameters_in_memory():
 
 def load_genome_in_memory(connectome_path, static=False):
     if not static:
+        print("Genome from local connectome folder was chosen: ", connectome_path)
         with open(connectome_path+'genome_tmp.json', "r") as genome_file:
             genome_data = json.load(genome_file)
             runtime_data.genome = genome_data
     else:
+        print("Static genome from the following file was loaded in memory: ",
+              runtime_data.parameters["InitData"]["static_genome_path"])
         with open(runtime_data.parameters["InitData"]["static_genome_path"], "r") as genome_file:
             genome_data = json.load(genome_file)
             runtime_data.genome = genome_data
@@ -70,10 +73,10 @@ def save_genome_to_disk():
 
     mongo.insert_genome(genome_db)
 
-    mail_body = "Genome "+genome_id+" has been evaluated to have a fitness of "+brain_fitness
+    mail_body = "Genome " + str(genome_id) + " has been evaluated to have a fitness of " + str(brain_fitness)
 
     # Sending out email
-    if brain_fitness >= 0.1:
+    if brain_fitness > 0.1:
         alerts.send_email(mail_body)
 
     for stat in runtime_data.genome_test_stats:

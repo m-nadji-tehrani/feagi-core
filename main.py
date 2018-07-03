@@ -29,8 +29,24 @@ if __name__ == '__main__':
     global connectome_path
     connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
 
-    disk_ops.stage_genome(connectome_path)
-    disk_ops.load_genome_in_memory(connectome_path)
+    def regeneration_check():
+        # Calling function to regenerate the Brain from the Genome
+        if runtime_data.parameters["InitData"]["regenerate_brain"]:
+            print("use_static_genome:", runtime_data.parameters["Switches"]["use_static_genome"])
+            if runtime_data.parameters["Switches"]["use_static_genome"]:
+                print("** ** ** ** ** ** ** ** **")
+                disk_ops.load_genome_in_memory(connectome_path, static=True)
+                print(settings.Bcolors.RED + ">> >> >> A static genome was used to generate the brain."
+                      + settings.Bcolors.ENDC)
+                runtime_data.parameters["Switches"]["use_static_genome"] = False
+            else:
+                disk_ops.stage_genome(connectome_path)
+                disk_ops.load_genome_in_memory(connectome_path)
+
+
+    regeneration_check()
+    # disk_ops.stage_genome(connectome_path)
+    # disk_ops.load_genome_in_memory(connectome_path)
 
     # Initialize runtime cortical list
     blueprint = runtime_data.genome["blueprint"]
@@ -74,30 +90,6 @@ if __name__ == '__main__':
         tkinter.Button(master, text='Submit', command=submit_entry_fields).grid(row=3, column=1, pady=4)
 
     b = brain_functions.Brain()
-
-    def regeneration_check():
-        # Calling function to regenerate the Brain from the Genome
-        if runtime_data.parameters["InitData"]["regenerate_brain"]:
-            if runtime_data.parameters["Switches"]["use_static_genome"]:
-                disk_ops.load_genome_in_memory(connectome_path, static=True)
-                print(settings.Bcolors.RED + ">> >> >> A static genome was used to generate the brain."
-                      + settings.Bcolors.ENDC)
-                runtime_data.parameters["Switches"]["use_static_genome"] = False
-            else:
-                disk_ops.stage_genome(connectome_path)
-                disk_ops.load_genome_in_memory(connectome_path)
-            brain_generation_start_time = datetime.now()
-            brain_gen()
-            brain_generation_duration = datetime.now() - brain_generation_start_time
-
-            # todo: Move the following to stats module
-            print("--------------------------------------------------------------")
-            print("Brain generation lasted %s " % brain_generation_duration)
-            print("--------------------------------------------------------------")
-            print("Total Neuron count in Connectome is: ", b.connectome_neuron_count())
-            print("--------------------------------------------------------------")
-            print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
-            print("--------------------------------------------------------------")
 
     def initialize_the_brain():
         global user_input_queue, user_input_param_queue, event_queue, \
@@ -145,7 +137,21 @@ if __name__ == '__main__':
         runtime_data.parameters["Input"]["user_input"] = ''
         return
 
-    regeneration_check()
+
+    if runtime_data.parameters["InitData"]["regenerate_brain"]:
+        brain_generation_start_time = datetime.now()
+        brain_gen()
+        brain_generation_duration = datetime.now() - brain_generation_start_time
+
+        # todo: Move the following to stats module
+        print("--------------------------------------------------------------")
+        print("Brain generation lasted %s " % brain_generation_duration)
+        print("--------------------------------------------------------------")
+        print("Total Neuron count in Connectome is: ", b.connectome_neuron_count())
+        print("--------------------------------------------------------------")
+        print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
+        print("--------------------------------------------------------------")
+
     initialize_the_brain()
 
     # Starting the burst machine
@@ -290,6 +296,7 @@ if __name__ == '__main__':
 
 
 # Genetic Evolution
+# todo: capture phenotype(connectome) highlights in database
 # todo: regenerative model.
 # todo: Consideration for how to evolve the network over generations. Update Genome based on some constraints
 # todo: What could trigger evolution of a cortical area?

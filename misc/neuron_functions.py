@@ -107,7 +107,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
 
     runtime_data.parameters = parameters_queue.get()
-    disk_ops.load_genome_in_memory(runtime_data.parameters['InitData']['connectome_path'])
+    disk_ops.load_genome_in_memory(runtime_data.parameters['InitData']['connectome_path'],
+                                   static=runtime_data.parameters["Switches"]["use_static_genome"])
 
     # todo: Move comprehension span to genome
     comprehension_span = 4
@@ -810,21 +811,21 @@ def fire_candidate_locations(fire_cnd_list):
 def neuron_fire(cortical_area, neuron_id):
     """This function initiate the firing of Neuron in a given cortical area"""
     global init_data
-    if runtime_data.parameters["Switches"]["logging_fire"]:
-        print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
+    # if runtime_data.parameters["Switches"]["logging_fire"]:
+    #     print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     neighbor_list = runtime_data.brain[cortical_area][neuron_id]["neighbors"]
     # print("Neighbor list:", neighbor_list)
-    if runtime_data.parameters["Switches"]["logging_fire"]:
-        print(datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
-    if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
-        print(settings.Bcolors.RED +
-              "Firing neuron %s using firing pattern %s" %
-              (neuron_id, json.dumps(runtime_data.brain[cortical_area][neuron_id]["firing_pattern_id"], indent=3)) +
-              settings.Bcolors.ENDC)
-        print(settings.Bcolors.RED + "Neuron %s neighbors are %s" % (neuron_id, json.dumps(neighbor_list, indent=3)) +
-              settings.Bcolors.ENDC)
+    # if runtime_data.parameters["Switches"]["logging_fire"]:
+    #     print(datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
+    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
+    #     print(settings.Bcolors.RED +
+    #           "Firing neuron %s using firing pattern %s" %
+    #           (neuron_id, json.dumps(runtime_data.brain[cortical_area][neuron_id]["firing_pattern_id"], indent=3)) +
+    #           settings.Bcolors.ENDC)
+    #     print(settings.Bcolors.RED + "Neuron %s neighbors are %s" % (neuron_id, json.dumps(neighbor_list, indent=3)) +
+    #           settings.Bcolors.ENDC)
 
     # After neuron fires all cumulative counters on Source gets reset
     runtime_data.brain[cortical_area][neuron_id]["membrane_potential"] = 0
@@ -841,9 +842,6 @@ def neuron_fire(cortical_area, neuron_id):
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         neuron_update(dst_cortical_area, dst_neuron_id,
                       runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
-
-    # Placeholder for refractory period
-    # todo: Implement refractory period logic
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -865,27 +863,12 @@ def neuron_fire(cortical_area, neuron_id):
         else:
             init_data.burst_detection_list[detected_item] += 1
 
-    #     neuron_update_list.append([runtime_data.brain[cortical_area][id]["neighbors"][x]["cortical_area"],
-        # runtime_data.brain[cortical_area][id]["neighbors"][x]["postsynaptic_current"], x])
-    #
-    # pool = ThreadPool(4)
-    # pool.starmap(neuron_update, neuron_update_list)
-    # pool.close()
-    # pool.join()
-
-        # Important: Currently calling the update function from Fire function has the potential of running into
-        #  recursive error. Need to address this. One solution is to count the number of recursive operations and
-        #  exit function when number of steps are beyond a specific point.
-        # Its worth noting that this situation is related to how system is architected as if 2 neuron are feeding
-        #  to each other there is a bigger chance of this happening.
-
-    # print("FCL before fire pop: ", len(init_data.fire_candidate_list))
     init_data.fire_candidate_list.pop(init_data.fire_candidate_list.index([cortical_area, neuron_id]))
     # print("FCL after fire pop: ", len(init_data.fire_candidate_list))
     # np.delete(init_data.fire_candidate_list, init_data.fire_candidate_list.index([cortical_area, neuron_id]))
-    if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
-        print(settings.Bcolors.RED + "Fire Function triggered FCL: %s "
-              % init_data.fire_candidate_list + settings.Bcolors.ENDC)
+    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
+    #     print(settings.Bcolors.RED + "Fire Function triggered FCL: %s "
+    #           % init_data.fire_candidate_list + settings.Bcolors.ENDC)
 
     # todo: add a check that if the firing neuron is part of OPU to perform an action
 
@@ -901,32 +884,34 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
-    if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-        print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
-        print(settings.Bcolors.UPDATE +
-              "%s's Cumulative_intake_count value before update: %s" %
-              (dst_neuron_id, dst_neuron_obj["membrane_potential"])
-              + settings.Bcolors.ENDC)
+    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
+    #     print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
+    #     print(settings.Bcolors.UPDATE +
+    #           "%s's Cumulative_intake_count value before update: %s" %
+    #           (dst_neuron_id, dst_neuron_obj["membrane_potential"])
+    #           + settings.Bcolors.ENDC)
 
-    # todo: Need to tune up the timer as depending on the application performance the timer could be always expired
-    # Check if timer is expired on the destination Neuron and if so reset the counter - Leaky behavior
-    # todo: Given time is quantized in this implementation, instead of absolute time need to consider using burst cnt.
-    # todo: in rare cases the date conversion format is running into exception
-    # if (datetime.strptime(runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_time"]
-    # , "%Y-%m-%d %H:%M:%S.%f")
-    #     + datetime.timedelta(0, dst_neuron_obj["depolarization_timer_threshold"])) < \
-    #         datetime.now():
+    last_membrane_potential_update = \
+        runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"]
 
-    # To simulate a leaky neuron membrane, after x number of burst passing the membrane potential resets to zero
-    if init_data.burst_count - runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"] > \
-            runtime_data.brain[cortical_area][dst_neuron_id]["depolarization_threshold"]:
-        dst_neuron_obj["last_membrane_potential_reset_time"] = str(datetime.now())
-        dst_neuron_obj["last_membrane_potential_reset_burst"] = init_data.burst_count
-        # todo: Might be better to have a reset func.
-        dst_neuron_obj["membrane_potential"] = 0
-        if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-            print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + dst_neuron_id +
-                  ' got rest' + settings.Bcolors.ENDC)
+    # Leaky behavior
+    # todo: rename last_membrane_potential_reset_burst to last_membrane_potential_update
+    if last_membrane_potential_update < init_data.burst_count:
+        leak_coefficient = runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["leak_coefficient"]
+        leak_value = (init_data.burst_count - last_membrane_potential_update) / leak_coefficient
+        runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] -= leak_value
+        if runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] < 0:
+            runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] = 0
+
+    # # To simulate a leaky neuron membrane, after x number of burst passing the membrane potential resets to zero
+    # if init_data.burst_count - last_membrane_potential_update > \
+    #         runtime_data.brain[cortical_area][dst_neuron_id]["depolarization_threshold"]:
+    #     dst_neuron_obj["last_membrane_potential_reset_burst"] = init_data.burst_count
+    #     # todo: Might be better to have a reset func.
+    #     dst_neuron_obj["membrane_potential"] = 0
+    #     if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
+    #         print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + dst_neuron_id +
+    #               ' got rest' + settings.Bcolors.ENDC)
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
@@ -935,30 +920,29 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
     # print("membrane_potential:", destination,
     #       ":", runtime_data.brain[cortical_area][destination]["membrane_potential"])
 
-    if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-        print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s" %
-              (dst_neuron_id, dst_neuron_obj["membrane_potential"])
-              + settings.Bcolors.ENDC)
+    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
+    #     print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s" %
+    #           (dst_neuron_id, dst_neuron_obj["membrane_potential"])
+    #           + settings.Bcolors.ENDC)
 
-    # Add code to start a timer when neuron first receives a signal and reset counters when its expired
+    # todo: Need to figure how to deal with Activation function and firing threshold
 
-    # Need to call the Fire function if the threshold on the destination Neuron is met  <<<<<<<<<<<  ********
-    # Need to figure how to deal with Activation function and firing threshold
-    # Pass the cumulative_intake_total through the activation function and if pass the condition
-    # fire destination neuron
-
-    # The following will evaluate if the destination neuron is ready to fire and if so adds it to
-    # fire_candidate_list
-
+    # The following will evaluate if the destination neuron is ready to fire and if so adds it to fire_candidate_list
     if dst_neuron_obj["membrane_potential"] > \
             dst_neuron_obj["firing_threshold"]:
-        if dst_neuron_obj["snooze_till_burst_num"] <= init_data.burst_count:
-            if init_data.fire_candidate_list.count([cortical_area, dst_neuron_id]) == 0:  # To prevent duplicate entries
-                init_data.fire_candidate_list.append([cortical_area, dst_neuron_id])
-                if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-                    print(settings.Bcolors.UPDATE +
-                          "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
-                          + settings.Bcolors.ENDC)
+        # Refractory period check
+        if dst_neuron_obj["last_burst_num"] + \
+                runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["refractory_period"] <= \
+                init_data.burst_count:
+            # Inhibitory effect check
+            if dst_neuron_obj["snooze_till_burst_num"] <= init_data.burst_count:
+                # To prevent duplicate entries
+                if init_data.fire_candidate_list.count([cortical_area, dst_neuron_id]) == 0:
+                    init_data.fire_candidate_list.append([cortical_area, dst_neuron_id])
+                    if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
+                        print(settings.Bcolors.UPDATE +
+                              "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
+                              + settings.Bcolors.ENDC)
 
     return init_data.fire_candidate_list
 

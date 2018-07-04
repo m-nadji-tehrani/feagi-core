@@ -91,7 +91,13 @@ def brain_gen():
     if parameters["Logs"]["print_brain_gen_activities"]:
         print("Neuronal mapping across all Cortical areas has been completed!!")
 
-    print("Total brain synapse count is: ", stats.brain_total_synapse_cnt())
+    statistics = stats.brain_total_synapse_cnt()
+    print("Total brain synapse count is: ", statistics)
+
+    from evolutionary.genethesizer import calculate_brain_structural_fitness
+    brain_structural_fitness = calculate_brain_structural_fitness()
+    print("Brain structural fitness was evaluated as: ", brain_structural_fitness)
+    return calculate_brain_structural_fitness()
 
 
 def build_synapse(genome, brain, parameters, key):

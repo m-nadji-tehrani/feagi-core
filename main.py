@@ -139,9 +139,11 @@ if __name__ == '__main__':
 
 
     if runtime_data.parameters["InitData"]["regenerate_brain"]:
-        brain_generation_start_time = datetime.now()
-        brain_gen()
-        brain_generation_duration = datetime.now() - brain_generation_start_time
+        structural_fitness = 0
+        while structural_fitness < 1:
+            brain_generation_start_time = datetime.now()
+            structural_fitness = brain_gen()
+            brain_generation_duration = datetime.now() - brain_generation_start_time
 
         # todo: Move the following to stats module
         print("--------------------------------------------------------------")
@@ -220,7 +222,11 @@ if __name__ == '__main__':
                 # Regenerate the brain
                 disk_ops.stage_genome(connectome_path)
                 disk_ops.load_genome_in_memory(connectome_path)
-                brain_gen()
+                structural_fitness = 0
+                while structural_fitness < 1:
+                    brain_generation_start_time = datetime.now()
+                    structural_fitness = brain_gen()
+                    brain_generation_duration = datetime.now() - brain_generation_start_time
                 initialize_the_brain()
 
                 # Starting the burst machine
@@ -245,8 +251,8 @@ if __name__ == '__main__':
 #
 
 # Key problem on hand
-# todo: Connectome cannot be shared between multiple processes
-# todo: Fittness calculation goes beyond one when more than one number is detected
+# todo: Need to reject bad genomes as soon as brain is generated and rebuild
+
 
 
 # todo: only when the right portion of cell assembly is activated the rest shold become active

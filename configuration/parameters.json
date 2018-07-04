@@ -28,7 +28,7 @@
     "capture_brain_activities": false,
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
-    "live_mode": true,
+    "live_mode": false,
     "use_static_genome": true
   },
   "InitData": {
@@ -42,14 +42,14 @@
     "training_rounds_default": 10
   },
   "Auto_injector":{
-    "variation_default": 70,
+    "variation_default": 20,
     "exposure_default": 20,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 30,
+    "variation_default": 10,
     "exposure_default": 20,
     "utf_default": 9,
     "burst_skip": 0,
@@ -64,7 +64,8 @@
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
     "print_burst_info": true,
-    "print_brain_gen_activities": false
+    "print_brain_gen_activities": true,
+    "print_comprehension_queue": true
   },
   "Verbose":{
     "neuron_functions-neuron_update": false,

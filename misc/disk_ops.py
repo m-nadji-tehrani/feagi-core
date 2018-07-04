@@ -39,7 +39,7 @@ def load_genome_in_memory(connectome_path, static=False):
 
 
 def save_genome_to_disk():
-    from evolutionary.genethesizer import calculate_fitness
+    from evolutionary.genethesizer import calculate_brain_cognitive_fitness
     mongo = db_handler.MongoManagement()
     genome = runtime_data.genome
 
@@ -64,7 +64,7 @@ def save_genome_to_disk():
     genome_db["generation_date"] = str(datetime.now())
     genome_db["properties"] = genome
 
-    brain_fitness = calculate_fitness(runtime_data.genome_test_stats)
+    brain_fitness = calculate_brain_cognitive_fitness(runtime_data.genome_test_stats)
     genome_db["fitness"] = brain_fitness
 
     print("Brain fitness factor was evaluated as: ", brain_fitness)

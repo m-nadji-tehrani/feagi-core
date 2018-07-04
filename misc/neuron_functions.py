@@ -43,6 +43,7 @@ class InitData:
         self.training_neuron_list_utf = []
         self.training_neuron_list_img = []
 
+
 class InjectorParams:
     def __init__(self):
         self.img_flag = False
@@ -227,6 +228,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
 
         # Comprehension check
         counter_list = {}
+        print("**init_data.burst_detection_list  ", init_data.burst_detection_list, "  **")
+        print(">>comprehension_queue  ", comprehension_queue, "  <<")
+
         for item in comprehension_queue:
             if item in counter_list:
                 counter_list[item] += 1
@@ -234,17 +238,17 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 counter_list[item] = 1
         list_length = len(counter_list)
 
-        # print("+++++++This is the counter list", counter_list)
+        print("+++++++This is the counter list", counter_list)
         for item in counter_list:
             if list_length == 1 and item != '-':
                 runtime_data.parameters["Input"]["comprehended_char"] = item[0]
                 print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
                                                 "                     <<<     %s      >>>                 #*#*#*#*#*#*#"
                       % runtime_data.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
-            elif list_length > 2:
+            elif list_length >= 2:
                 runtime_data.parameters["Input"]["comprehended_char"] = ''
             else:
-                pass
+                runtime_data.parameters["Input"]["comprehended_char"] = ''
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}

@@ -25,7 +25,8 @@ def neuron_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     """
     # Rand gen source partially from:
     # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_N'
+    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars)
+                                                                                           for _ in range(size)))+'_N'
 
 
 def event_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -37,7 +38,8 @@ def event_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     """
     # Rand gen source partially from:
     # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_E'
+    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars)
+                                                                                           for _ in range(size)))+'_E'
 
 
 def test_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -49,7 +51,8 @@ def test_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     """
     # Rand gen source partially from:
     # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_T'
+    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars)
+                                                                                           for _ in range(size)))+'_T'
 
 
 def run_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -61,7 +64,8 @@ def run_id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     """
     # Rand gen source partially from:
     # http://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits-in-python
-    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars) for _ in range(size)))+'_R'
+    return (str(datetime.datetime.now()).replace(' ', '_')).replace('.', '_')+'_'+(''.join(random.choice(chars)
+                                                                                           for _ in range(size)))+'_R'
 
 
 def neuro_genesis(cortical_area, loc_blk):
@@ -72,35 +76,35 @@ def neuro_genesis(cortical_area, loc_blk):
 
     genome = runtime_data.genome
 
-    id = neuron_id_gen()
+    neuron_id = neuron_id_gen()
 
-    runtime_data.brain[cortical_area][id] = {}
-    runtime_data.brain[cortical_area][id]["neighbors"] = {}
-    runtime_data.brain[cortical_area][id]["event_id"] = {}
-    runtime_data.brain[cortical_area][id]["membrane_potential"] = 0
-    runtime_data.brain[cortical_area][id]["cumulative_fire_count"] = 0
-    runtime_data.brain[cortical_area][id]["cumulative_fire_count_inst"] = 0
-    runtime_data.brain[cortical_area][id]["cumulative_intake_total"] = 0
-    runtime_data.brain[cortical_area][id]["cumulative_intake_count"] = 0
-    runtime_data.brain[cortical_area][id]["consecutive_fire_cnt"] = 0
-    runtime_data.brain[cortical_area][id]["snooze_till_burst_num"] = 0
-    runtime_data.brain[cortical_area][id]["last_burst_num"] = 0
+    runtime_data.brain[cortical_area][neuron_id] = {}
+    runtime_data.brain[cortical_area][neuron_id]["neighbors"] = {}
+    runtime_data.brain[cortical_area][neuron_id]["event_id"] = {}
+    runtime_data.brain[cortical_area][neuron_id]["membrane_potential"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count_inst"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["cumulative_intake_total"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["cumulative_intake_count"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["snooze_till_burst_num"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] = 0
 
-    runtime_data.brain[cortical_area][id]["location"] = loc_blk[0]
-    runtime_data.brain[cortical_area][id]["block"] = loc_blk[1]
-    runtime_data.brain[cortical_area][id]["status"] = "Passive"
-    runtime_data.brain[cortical_area][id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
-    runtime_data.brain[cortical_area][id]["last_membrane_potential_reset_burst"] = 0
+    runtime_data.brain[cortical_area][neuron_id]["location"] = loc_blk[0]
+    runtime_data.brain[cortical_area][neuron_id]["block"] = loc_blk[1]
+    runtime_data.brain[cortical_area][neuron_id]["status"] = "Passive"
+    runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
+    runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_burst"] = 0
 
-
-    #   runtime_data.brain[cortical_area][id]["group_id"] = ""           # consider using the group name part of Genome instead
-    runtime_data.brain[cortical_area][id]["firing_pattern_id"] = \
+    #   runtime_data.brain[cortical_area][neuron_id]["group_id"] = ""
+    #  consider using the group name part of Genome instead
+    runtime_data.brain[cortical_area][neuron_id]["firing_pattern_id"] = \
         genome['blueprint'][cortical_area]['neuron_params']['firing_pattern_id']
-    runtime_data.brain[cortical_area][id]["activation_function_id"] = \
+    runtime_data.brain[cortical_area][neuron_id]["activation_function_id"] = \
         genome['blueprint'][cortical_area]['neuron_params']['activation_function_id']
-    runtime_data.brain[cortical_area][id]["depolarization_threshold"] = \
+    runtime_data.brain[cortical_area][neuron_id]["depolarization_threshold"] = \
         genome['blueprint'][cortical_area]['neuron_params']['depolarization_threshold']
-    runtime_data.brain[cortical_area][id]["firing_threshold"] = \
+    runtime_data.brain[cortical_area][neuron_id]["firing_threshold"] = \
         genome['blueprint'][cortical_area]['neuron_params']['firing_threshold']
 
     return
@@ -145,15 +149,15 @@ def location_collector(cortical_area):
     :return:
     """
 
-#   neighbor_count = 9999
-#   global max_density      # TBD: This value needs to be defied in a config file of some sort
-#   while neighbor_count < max_density:
-        # Above condition will be met when enough neighbors has been created with following criteria
-        #     1. Density requirements has been met
-        #     2. TBD
-        # TBD:  Need to figure a way to pass in a 3d object formula and use that to contain neuronal growth
-        # Need to come up with an algorithm to populate the space within the object with random neurons given density
-        # Output is expected to be a N x 3 matrix containing dimensions for N neurons to be created
+    #   neighbor_count = 9999
+    #   global max_density      # TBD: This value needs to be defied in a config file of some sort
+    #   while neighbor_count < max_density:
+    # Above condition will be met when enough neighbors has been created with following criteria
+    #     1. Density requirements has been met
+    #     2. TBD
+    # TBD:  Need to figure a way to pass in a 3d object formula and use that to contain neuronal growth
+    # Need to come up with an algorithm to populate the space within the object with random neurons given density
+    # Output is expected to be a N x 3 matrix containing dimensions for N neurons to be created
 
     genome = runtime_data.genome
 
@@ -200,9 +204,12 @@ def location_collector(cortical_area):
         yn = int(y_lenght / neuron_gap)
         zn = int(z_lenght / neuron_gap)
 
-        if xn == 0: xn = 1
-        if yn == 0: yn = 1
-        if zn == 0: zn = 1
+        if xn == 0:
+            xn = 1
+        if yn == 0:
+            yn = 1
+        if zn == 0:
+            zn = 1
 
         x_coordinate = genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0]
         y_coordinate = genome["blueprint"][cortical_area]["neuron_params"]["geometric_boundaries"]["y"][0]
@@ -485,84 +492,71 @@ def neuron_eliminator():
 
 
 def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_neuron_id, src_neuron_id):
-
-    src_data = runtime_data.brain[cortical_area_src]
-    dst_data = runtime_data.brain[cortical_area_dst]
-
-    if cortical_area_dst == 'vision_v2' and cortical_area_src == 'vision_v1-1':
-        1 == 1
+    
+    src_coord = runtime_data.brain[cortical_area_src][src_neuron_id]["location"]
+    dst_coord = runtime_data.brain[cortical_area_dst][dst_neuron_id]["location"]
 
     # Find relative coordinates on the source and destination side
-    src_lenghts = cortical_area_lengths(cortical_area_src)
-    dest_lenghts = cortical_area_lengths(cortical_area_dst)
-    coordinate_scales = [a/b for a, b in zip(dest_lenghts, src_lenghts)]
+    src_lengths = cortical_area_lengths(cortical_area_src)
+    dest_lengths = cortical_area_lengths(cortical_area_dst)
+    coordinate_scales = [a/b for a, b in zip(dest_lengths, src_lengths)]
 
-    if cortical_area_src == cortical_area_dst:
-        x_coordinate_key = src_data[dst_neuron_id]["location"][0]
-        x_coordinate_target = src_data[src_neuron_id]["location"][0]
-        y_coordinate_key = src_data[dst_neuron_id]["location"][1]
-        y_coordinate_target = src_data[src_neuron_id]["location"][1]
-        z_coordinate_key = src_data[dst_neuron_id]["location"][2]
-        z_coordinate_target = src_data[src_neuron_id]["location"][2]
-    else:
-        x_coordinate_key = src_data[src_neuron_id]["location"][0]
-        y_coordinate_key = src_data[src_neuron_id]["location"][1]
-        z_coordinate_key = src_data[src_neuron_id]["location"][2]
-        x_coordinate_target_dst = dst_data[dst_neuron_id]["location"][0]
-        y_coordinate_target_dst = dst_data[dst_neuron_id]["location"][1]
-        z_coordinate_target_dst = dst_data[dst_neuron_id]["location"][2]
+    x_coordinate_src = src_coord[0]
+    y_coordinate_src = src_coord[1]
+    z_coordinate_src = src_coord[2]
+    x_coordinate_dst = dst_coord[0]
+    y_coordinate_dst = dst_coord[1]
+    z_coordinate_dst = dst_coord[2]
 
-    dest_projection_center = list()
-    dest_projection_center.append(x_coordinate_key * coordinate_scales[0])
-    dest_projection_center.append(y_coordinate_key * coordinate_scales[1])
-    dest_projection_center.append(z_coordinate_key * coordinate_scales[2])
+    projection_center = list()
+    projection_center.append(x_coordinate_src * coordinate_scales[0])
+    projection_center.append(y_coordinate_src * coordinate_scales[1])
+    projection_center.append(z_coordinate_src * coordinate_scales[2])
 
     is_candidate = False
 
     # Rule 0: Selects all neurons within rule_param radius
     if rule_id == 'rule_0':
-        radius = sqrt(((x_coordinate_key - x_coordinate_target) ** 2) +
-                      ((y_coordinate_key - y_coordinate_target) ** 2) +
-                      ((z_coordinate_key - z_coordinate_target) ** 2))
+        radius = sqrt(((x_coordinate_src - x_coordinate_dst) ** 2) +
+                      ((y_coordinate_src - y_coordinate_dst) ** 2) +
+                      ((z_coordinate_src - z_coordinate_dst) ** 2))
         if radius < rule_param:
             print("This is the neuron id you were looking for:", src_neuron_id)
             is_candidate = True
 
     # Rule 1: Selects only neurons within rule_param unit limits forward of source Neuron in z direction
     if rule_id == 'rule_1':
-        if (z_coordinate_key > z_coordinate_target) and \
-                sqrt(((x_coordinate_key - x_coordinate_target) ** 2)
-                             + ((y_coordinate_key - y_coordinate_target) ** 2)) < rule_param:
+        if (z_coordinate_src > z_coordinate_dst) and \
+                sqrt(((x_coordinate_src - x_coordinate_dst) ** 2) +
+                     ((y_coordinate_src - y_coordinate_dst) ** 2)) < rule_param:
             is_candidate = True
 
     # Rule 2: Selects neurons from the destination cortical region
     if rule_id == 'rule_2':
-        if sqrt(((x_coordinate_key - x_coordinate_target_dst) ** 2) +
-                ((y_coordinate_key - y_coordinate_target_dst) ** 2)) < rule_param:
+        if sqrt(((x_coordinate_src - x_coordinate_dst) ** 2) +
+                ((y_coordinate_src - y_coordinate_dst) ** 2)) < rule_param:
             is_candidate = True
 
     # Rule 3: Specific for narrow cortical regions specially built for computer interface
     if rule_id == 'rule_3':
-        if abs(z_coordinate_key - z_coordinate_target_dst) == rule_param:
+        if abs(z_coordinate_src - z_coordinate_dst) == rule_param:
             is_candidate = True
 
     # Rule 4: Maps entire layer to another. Expands the xy plane and ignores the z location
     if rule_id == 'rule_4':
-        if sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
-                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param:
+        if sqrt(((projection_center[0] - x_coordinate_dst) ** 2) +
+                ((projection_center[1] - y_coordinate_dst) ** 2)) < rule_param:
             is_candidate = True
 
     # Rule 5: Helps mapping multiple layers to a single layer
     if rule_id == 'rule_5':
         src_layer_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index']
         src_total_layer_count = runtime_data.genome['blueprint'][cortical_area_src]['total_layer_count']
-        dest_layer_height = dest_lenghts[2] / src_total_layer_count
-        if (sqrt(((dest_projection_center[0] - x_coordinate_target_dst) ** 2) +
-                ((dest_projection_center[1] - y_coordinate_target_dst) ** 2)) < rule_param):
-
-                # and \
-                # (z_coordinate_target_dst > src_layer_index * dest_layer_height) and \
-                # (z_coordinate_target_dst < ((src_layer_index + 1) * dest_layer_height)):
+        dest_layer_height = dest_lengths[2] / src_total_layer_count
+        if (sqrt(((projection_center[0] - x_coordinate_dst) ** 2) +
+                 ((projection_center[1] - y_coordinate_dst) ** 2)) < rule_param) and \
+                (z_coordinate_dst > src_layer_index * dest_layer_height) and \
+                (z_coordinate_dst < ((src_layer_index + 1) * dest_layer_height)):
             is_candidate = True
 
     # Rule 6: Maps XY blocks from one layer to another
@@ -579,14 +573,14 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_
 
 
 def cortical_area_lengths(cortical_area):
-    lenght = []
+    length = []
     coordinates = ['x', 'y', 'z']
     for _ in coordinates:
-        lenght.append(
+        length.append(
             runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][1] -
             runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'][_][0])
 
-    return lenght
+    return length
 
 
 def block_id_gen(x, y, z, block_size=28):

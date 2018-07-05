@@ -98,14 +98,7 @@ def cortical_xyz_range():
     return xyz_range
 
 
-def synapse_count(cortical_area_src, cortical_area_dst):
-    brain = runtime_data.brain
-    synapse__count = 0
-    for neuron in brain[cortical_area_src]:
-        for synapse in brain[cortical_area_src][neuron]['neighbors']:
-            if brain[cortical_area_src][neuron]['neighbors'][synapse]['cortical_area'] == cortical_area_dst:
-                synapse__count += 1
-    return synapse__count
+
 
 
 # def tbd():

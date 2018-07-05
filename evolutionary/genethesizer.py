@@ -293,18 +293,6 @@ def translate_genotype2phenotype():
     return
 
 
-def calculate_brain_structural_fitness():
-    from misc.stats import synapse_count
-    vision_v2_it_synapse_cnt = synapse_count('vision_v2', 'vision_IT')
-    vision_it_mem_synapse_cnt = synapse_count('vision_IT', 'vision_memory')
-
-    if vision_v2_it_synapse_cnt or vision_it_mem_synapse_cnt < 50:
-        fitness = 0
-    else:
-        fitness = 1
-    return fitness
-
-
 def calculate_brain_cognitive_fitness(test_stats):
     """
     Calculate the effectiveness of a given genome:

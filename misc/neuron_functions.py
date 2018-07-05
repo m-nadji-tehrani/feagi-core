@@ -857,6 +857,7 @@ def neuron_fire(cortical_area, neuron_id):
     if init_data.burst_count == runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] + 1:
         runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] += 1
 
+    # todo: rename last_burst_num to last_firing_burst
     runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] = init_data.burst_count
 
     # Condition to translate activity in utf8_out region as a character comprehension
@@ -889,20 +890,22 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
     # destination is the dendrite of the neighbor.
 
     # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-    #     print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>>> >>>>>>> >>>>>>>>>>")
+    #     print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>> >>>>>>> >>>>>>>>>>")
     #     print(settings.Bcolors.UPDATE +
     #           "%s's Cumulative_intake_count value before update: %s" %
     #           (dst_neuron_id, dst_neuron_obj["membrane_potential"])
     #           + settings.Bcolors.ENDC)
 
     last_membrane_potential_update = \
-        runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"]
+        max(runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"],
+            runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"])
 
     # Leaky behavior
     # todo: rename last_membrane_potential_reset_burst to last_membrane_potential_update
     if last_membrane_potential_update < init_data.burst_count:
         leak_coefficient = runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["leak_coefficient"]
         leak_value = (init_data.burst_count - last_membrane_potential_update) / leak_coefficient
+        # print("::", cortical_area, "***", dst_neuron_id, "***", leak_value, "::")
         runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] -= leak_value
         if runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] < 0:
             runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] = 0
@@ -947,6 +950,9 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
                         print(settings.Bcolors.UPDATE +
                               "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
                               + settings.Bcolors.ENDC)
+
+    # Resetting last time neuron was updated to the current burst id
+    runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"] = init_data.burst_count
 
     return init_data.fire_candidate_list
 

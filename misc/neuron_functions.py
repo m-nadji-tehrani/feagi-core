@@ -720,11 +720,12 @@ def neuro_plasticity():
                                                          "...........LTD between vision_IT and vision_memory occurred "
                                   + settings.Bcolors.ENDC)
 
-        # Building a bidirectional synapse between memory neurons who fire together within a cortical area
         # todo: The following loop is very inefficient___ fix it!!
         # todo: Read the following memory list from Genome
         memory_list = cortical_group_members('Memory')
         # memory_list = ['utf8_memory', 'vision_memory']
+
+        # Building a bidirectional synapse between memory neurons who fire together within a cortical area
         for cortical_area in memory_list:
             if runtime_data.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
                 for src_neuron in set([i[1] for i in init_data.fire_candidate_list if i[0] == cortical_area]):
@@ -740,7 +741,6 @@ def neuro_plasticity():
                     if src_neuron[0] == "vision_memory":
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
-
                         # print(
                         #     settings.Bcolors.OKGREEN + "............................................................."
                         #                                "........A new memory was formed against utf8_memory location "
@@ -750,6 +750,28 @@ def neuro_plasticity():
                         # for dst_neuron_id in dst_neuron_id_list:
                         #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
                         #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+
+        # Counting number of active UTF8_memory cells in the fire_candidate_list
+        utf_mem_in_fcl = 0
+        for neuron in init_data.fire_candidate_list:
+            if neuron[0] == 'utf8_memory':
+                utf_mem_in_fcl += 1
+
+        # Reducing synaptic strength when one vision memory cell activates more than one UTF cell
+        if utf_mem_in_fcl >= 2:
+            for src_neuron in set([i[1] for i in init_data.previous_fcl if i[0] == 'vision_memory']):
+                synapse_to_utf = 0
+                dst_neuron_list = []
+                for synapse in runtime_data.brain['vision_memory'][src_neuron]['neighbors']:
+                    if runtime_data.brain['vision_memory'][src_neuron]['neighbors'][synapse]['cortical_area'] \
+                            == 'utf8_memory':
+                        synapse_to_utf += 1
+                        dst_neuron_list.append(synapse)
+                    if synapse_to_utf >= 2:
+                        for dst_neuron in dst_neuron_list:
+                            apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
+                                                 dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
+                                                 long_term_depression=True)
 
 
 def burst_exit_process():
@@ -840,12 +862,14 @@ def neuron_fire(cortical_area, neuron_id):
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
     # Firing pattern to be accommodated here     <<<<<<<<<<  *****
     # neuron_update_list = []
+    neighbor_count = len(neighbor_list)
     for dst_neuron_id in neighbor_list:
         if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
             print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         neuron_update(dst_cortical_area, dst_neuron_id,
-                      runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
+                      runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+                      neighbor_count)
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -880,7 +904,7 @@ def neuron_fire(cortical_area, neuron_id):
     return
 
 
-def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
+def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_count):
     """This function updates the destination parameters upon upstream Neuron firing"""
     global init_data
     dst_neuron_obj = runtime_data.brain[cortical_area][dst_neuron_id]
@@ -922,7 +946,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current):
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
-    runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += postsynaptic_current
+    runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
 
     # print("membrane_potential:", destination,
     #       ":", runtime_data.brain[cortical_area][destination]["membrane_potential"])
@@ -1033,7 +1057,8 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
 
     else:
-        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant)
+        neighbor_count = len(runtime_data.brain[src_cortical_area][src_neuron_id]['neighbors'])
+        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant, neighbor_count)
 
     return
 

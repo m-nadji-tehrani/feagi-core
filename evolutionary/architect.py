@@ -552,11 +552,11 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_
     if rule_id == 'rule_5':
         src_layer_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index']
         src_total_layer_count = runtime_data.genome['blueprint'][cortical_area_src]['total_layer_count']
-        dest_layer_height = dest_lengths[2] / src_total_layer_count
-        if (sqrt(((projection_center[0] - x_coordinate_dst) ** 2) +
-                 ((projection_center[1] - y_coordinate_dst) ** 2)) < rule_param) and \
-                (z_coordinate_dst > src_layer_index * dest_layer_height) and \
-                (z_coordinate_dst < ((src_layer_index + 1) * dest_layer_height)):
+        dst_layer_height = dest_lengths[2] / src_total_layer_count
+        if (sqrt(((projection_center[0] - x_coordinate_src) ** 2) +
+                 ((projection_center[1] - y_coordinate_src) ** 2)) < rule_param) and \
+                (projection_center[2] > (src_layer_index * dst_layer_height)) and \
+                (projection_center[2] < ((src_layer_index + 1) * dst_layer_height)):
             is_candidate = True
 
     # Rule 6: Maps XY blocks from one layer to another

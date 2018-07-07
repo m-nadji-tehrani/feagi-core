@@ -43,15 +43,15 @@
   },
   "Auto_injector":{
     "variation_default": 20,
-    "exposure_default": 20,
-    "utf_default": 9,
+    "exposure_default": 40,
+    "utf_default": 3,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 10,
-    "exposure_default": 20,
-    "utf_default": 9,
+    "variation_default": 6,
+    "exposure_default": 40,
+    "utf_default": 3,
     "burst_skip": 0,
     "tester_status": false
   },
@@ -62,7 +62,7 @@
     "print_activation_counters": false,
     "print_cortical_activity_counters": true,
     "print_mnist_img_info": false,
-    "print_plasticity_info": false,
+    "print_plasticity_info": true,
     "print_burst_info": true,
     "print_brain_gen_activities": true,
     "print_comprehension_queue": true

@@ -214,7 +214,7 @@ if __name__ == '__main__':
             runtime_data.brain = brain_queue.get()
             runtime_data.genome_test_stats = genome_stats_queue.get()
             join_processes()
-            disk_ops.save_brain_to_disk(brain=runtime_data.brain, parameters=runtime_data.parameters)
+            disk_ops.save_brain_to_disk(brain=runtime_data.brain, parameters=runtime_data.parameters, backup=True)
             print("genome id called from main function: ", runtime_data.genome_id)
             disk_ops.save_genome_to_disk()
             if runtime_data.parameters["Switches"]["live_mode"]:

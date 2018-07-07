@@ -113,7 +113,7 @@ def load_brain_in_memory():
     return brain
 
 
-def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters=runtime_data.parameters):
+def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters=runtime_data.parameters, backup=False):
     connectome_path = parameters["InitData"]["connectome_path"]
     if brain == {}:
         print(">> >> Error: Could not save the brain contents to disk as brain was empty!")
@@ -126,12 +126,22 @@ def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
             data_file.truncate()
+    elif backup:
+        for cortical_area in runtime_data.cortical_list:
+            with open(connectome_path+cortical_area+'_backup.json', "w") as data_file:
+                data = brain[cortical_area]
+                # if runtime_data.parameters["Logs"]["print_brain_gen_activities"]:
+                    # print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
+                # Saving changes to the connectome
+                data_file.seek(0)  # rewind
+                data_file.write(json.dumps(data, indent=3))
+                data_file.truncate()
     else:
         for cortical_area in runtime_data.cortical_list:
             with open(connectome_path+cortical_area+'.json', "r+") as data_file:
                 data = brain[cortical_area]
-                if runtime_data.parameters["Logs"]["print_brain_gen_activities"]:
-                    print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
+                # if runtime_data.parameters["Logs"]["print_brain_gen_activities"]:
+                    # print(">>> >>> All data related to Cortical area %s is saved in connectome" % cortical_area)
                 # Saving changes to the connectome
                 data_file.seek(0)  # rewind
                 data_file.write(json.dumps(data, indent=3))

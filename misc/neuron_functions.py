@@ -112,7 +112,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                                    static=runtime_data.parameters["Switches"]["use_static_genome"])
 
     # todo: Move comprehension span to genome
-    comprehension_span = 4
+    comprehension_span = 1
     
     # Initializing the comprehension queue
     comprehension_queue = deque(['-'] * comprehension_span)
@@ -155,7 +155,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # Read FCL from the Multiprocessing Queue
         init_data.fire_candidate_list = fire_list.get()
         init_data.previous_fcl = list(init_data.fire_candidate_list)
-
         init_data.burst_count += 1
 
         # Live mode condition
@@ -184,10 +183,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
             sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
             print("FCL is empty!")
         else:
-            if verbose:
-                print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
-                      % init_data.fire_candidate_list + settings.Bcolors.ENDC)
-
             # brain_neuron_count, brain_synapse_count = stats.brain_total_synapse_cnt(verbose=False)
             # print(settings.Bcolors.YELLOW +
             #       'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
@@ -214,6 +209,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 neuron_fire(x[0], x[1])
 
             neuro_plasticity()
+            if verbose:
+                print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
+                      % init_data.fire_candidate_list + settings.Bcolors.ENDC)
 
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
@@ -229,6 +227,10 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # Comprehension check
         counter_list = {}
         print("**init_data.burst_detection_list  ", init_data.burst_detection_list, "  **")
+        if init_data.burst_detection_list != {}:
+            print(settings.Bcolors.RED + "<><><><><><><><><><><><><><>"
+                                         "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+                  + settings.Bcolors.ENDC)
         print(">>comprehension_queue  ", comprehension_queue, "  <<")
 
         for item in comprehension_queue:
@@ -245,10 +247,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
                                                 "                     <<<     %s      >>>                 #*#*#*#*#*#*#"
                       % runtime_data.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
-            elif list_length >= 2:
-                runtime_data.parameters["Input"]["comprehended_char"] = ''
             else:
-                runtime_data.parameters["Input"]["comprehended_char"] = ''
+                if list_length >= 2:
+                    runtime_data.parameters["Input"]["comprehended_char"] = ''
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}
@@ -737,10 +738,18 @@ def neuro_plasticity():
         # Wiring Vision memory to UIF-8 memory
         for dst_neuron in init_data.fire_candidate_list:
             if dst_neuron[0] == "utf8_memory":
-                for src_neuron in init_data.fire_candidate_list:
+                for src_neuron in init_data.previous_fcl:
                     if src_neuron[0] == "vision_memory":
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+
+                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                            print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
+                                                         "..........LTP between vision_memory and UTF8_memory occurred "
+                                  + settings.Bcolors.ENDC)
+                            print(init_data.fire_candidate_list)
+                            print("*************________**************")
+
                         # print(
                         #     settings.Bcolors.OKGREEN + "............................................................."
                         #                                "........A new memory was formed against utf8_memory location "
@@ -772,6 +781,11 @@ def neuro_plasticity():
                             apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
                                                  dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
                                                  long_term_depression=True)
+                            if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                                print(
+                                    settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
+                                                           "........LTD between vision_memory and UTF8_memory occurred "
+                                    + settings.Bcolors.ENDC)
 
 
 def burst_exit_process():
@@ -946,6 +960,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
+
     runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
 
     # print("membrane_potential:", destination,
@@ -1056,9 +1071,13 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
 
-    else:
-        neighbor_count = len(runtime_data.brain[src_cortical_area][src_neuron_id]['neighbors'])
-        neuron_update(src_cortical_area, src_neuron_id, plasticity_constant, neighbor_count)
+    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
+        genome["blueprint"][src_cortical_area]["plasticity_constant"]
+
+    # Condition to cap the postsynaptic_current and provide prohibitory reaction
+    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+        min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+            genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
 
     return
 

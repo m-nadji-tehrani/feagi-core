@@ -76,7 +76,7 @@ def brain_gen():
     pool1.close()
     pool1.join()
 
-    stats.brain_total_synapse_cnt()
+    # stats.brain_total_synapse_cnt()
 
     # Build Synapses across various Cortical areas
     func2 = partial(build_synapse_ext, runtime_data.genome, runtime_data.brain, runtime_data.parameters)
@@ -137,7 +137,7 @@ def build_synapse_ext(genome, brain, parameters, key):
                                            postsynaptic_current=genome["blueprint"]
                                            [key]["postsynaptic_current"])
         if parameters["Logs"]["print_brain_gen_activities"]:
-            print("Completed Synapse Creation between Cortical area %s and %s. Count: %i  Duration: %s"
+            print("Synapse creation between Cortical area %s and %s is not complete. Count: %i  Duration: %s"
                   % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     disk_ops.save_brain_to_disk(cortical_area=key, brain=runtime_data.brain, parameters=parameters)
     return

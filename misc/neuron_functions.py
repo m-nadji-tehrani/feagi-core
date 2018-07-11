@@ -194,9 +194,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                           % (cortical_area, len(set([i[1]
                                                      for i in init_data.fire_candidate_list if i[0] == cortical_area])))
                           + settings.Bcolors.ENDC)
-                for entry in init_data.fire_candidate_list:
-                    if runtime_data.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
-                        print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)
+                # for entry in init_data.fire_candidate_list:
+                #     if runtime_data.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
+                #         print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)
                     # if runtime_data.genome['blueprint'][cortical_area]['group_id'] == 'Memory' \
                     #         and len(set([i[1] for i in init_data.fire_candidate_list if i[0] == cortical_area])) > 0:
                     #     sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
@@ -226,12 +226,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
 
         # Comprehension check
         counter_list = {}
-        print("**init_data.burst_detection_list  ", init_data.burst_detection_list, "  **")
-        if init_data.burst_detection_list != {}:
-            print(settings.Bcolors.RED + "<><><><><><><><><><><><><><>"
-                                         "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-                  + settings.Bcolors.ENDC)
-        print(">>comprehension_queue  ", comprehension_queue, "  <<")
+        if runtime_data.parameters["Logs"]["print_comprehension_queue"]:
+            print("**init_data.burst_detection_list  ", init_data.burst_detection_list, "  **")
+            if init_data.burst_detection_list != {}:
+                print(settings.Bcolors.RED + "<><><><><><><><><><><><><><>"
+                                             "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+                      + settings.Bcolors.ENDC)
+            print(">>comprehension_queue  ", comprehension_queue, "  <<")
 
         for item in comprehension_queue:
             if item in counter_list:
@@ -240,7 +241,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
                 counter_list[item] = 1
         list_length = len(counter_list)
 
-        print("+++++++This is the counter list", counter_list)
+        if runtime_data.parameters["Logs"]["print_comprehension_queue"]:
+            print("+++++++This is the counter list", counter_list)
         for item in counter_list:
             if list_length == 1 and item != '-':
                 runtime_data.parameters["Input"]["comprehended_char"] = item[0]
@@ -274,24 +276,34 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
 
 
 def utf_detection_logic(detection_list):
-    list_length = len(detection_list)
-    if list_length == 1:
-        for key in detection_list:
-            return key
-    elif list_length >= 2 or list_length == 0:
-        return '-'
-    else:
-        temp = []
-        counter = 0
-        # print(">><<>><<>><<", detection_list)
-        for key in detection_list:
-            temp[counter] = (key, detection_list[key])
-        if temp[0][1] > (3 * temp[1][1]):
-            return temp[0][0]
-        elif temp[1][1] > (3 * temp[0][1]):
-            return temp[1][0]
+    highest_ranked_item = '-'
+    for item in detection_list:
+        if highest_ranked_item == '-':
+            highest_ranked_item = item
         else:
-            return '-'
+            if detection_list[item]['rank'] > detection_list[highest_ranked_item]['rank']:
+                highest_ranked_item = item
+    return highest_ranked_item
+
+
+    # list_length = len(detection_list)
+    # if list_length == 1:
+    #     for key in detection_list:
+    #         return key
+    # elif list_length >= 2 or list_length == 0:
+    #     return '-'
+    # else:
+    #     temp = []
+    #     counter = 0
+    #     # print(">><<>><<>><<", detection_list)
+    #     for key in detection_list:
+    #         temp[counter] = (key, detection_list[key])
+    #     if temp[0][1] > (3 * temp[1][1]):
+    #         return temp[0][0]
+    #     elif temp[1][1] > (3 * temp[0][1]):
+    #         return temp[1][0]
+    #     else:
+    #         return '-'
 
     # Load copy of all MNIST training images into mnist_data in form of an iterator. Each object has image label + image
 
@@ -397,6 +409,7 @@ def auto_tester():
                 test_params.exposure_counter_actual = test_params.exposure_counter
                 test_params.variation_counter_actual = test_params.variation_counter
                 test_params.test_attempt_counter = 0
+                test_params.comprehension_counter = 0
                 # UTF counter
                 test_params.utf_counter_actual -= 1
                 if test_params.utf_flag:
@@ -450,6 +463,7 @@ def test_comprehension_logic():
               "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
               + settings.Bcolors.ENDC)
         test_params.comprehension_counter += 1
+        runtime_data.parameters["Input"]["comprehended_char"] = ''
 
 
 def test_exit_condition():
@@ -867,6 +881,17 @@ def neuron_fire(cortical_area, neuron_id):
     #     print(settings.Bcolors.RED + "Neuron %s neighbors are %s" % (neuron_id, json.dumps(neighbor_list, indent=3)) +
     #           settings.Bcolors.ENDC)
 
+    # Condition to update neuron activity history currently only targeted for UTF-OPU
+    # todo: move activity_history_span to genome
+    activity_history_span = 4
+    if cortical_area == 'utf8_out':
+        if not runtime_data.brain[cortical_area][neuron_id]["activity_history"]:
+            runtime_data.brain[cortical_area][neuron_id]["activity_history"] = deque([0] * activity_history_span)
+        else:
+            runtime_data.brain[cortical_area][neuron_id]["activity_history"].append(runtime_data.brain[cortical_area]
+                                                                                    [neuron_id]["membrane_potential"])
+            runtime_data.brain[cortical_area][neuron_id]["activity_history"].popleft()
+
     # After neuron fires all cumulative counters on Source gets reset
     runtime_data.brain[cortical_area][neuron_id]["membrane_potential"] = 0
     runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.now())
@@ -900,11 +925,13 @@ def neuron_fire(cortical_area, neuron_id):
 
     # Condition to translate activity in utf8_out region as a character comprehension
     if cortical_area == 'utf8_out':
-        detected_item = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
+        detected_item, activity_rank = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
         if detected_item not in init_data.burst_detection_list:
-            init_data.burst_detection_list[detected_item] = 1
+            init_data.burst_detection_list[detected_item] = {}
+            init_data.burst_detection_list[detected_item]['count'] = 1
         else:
-            init_data.burst_detection_list[detected_item] += 1
+            init_data.burst_detection_list[detected_item]['count'] += 1
+        init_data.burst_detection_list[detected_item]['rank'] = activity_rank
 
     init_data.fire_candidate_list.pop(init_data.fire_candidate_list.index([cortical_area, neuron_id]))
     # print("FCL after fire pop: ", len(init_data.fire_candidate_list))

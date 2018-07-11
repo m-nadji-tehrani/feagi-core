@@ -253,8 +253,6 @@ if __name__ == '__main__':
 # Key problem on hand
 # todo: Need to reject bad genomes as soon as brain is generated and rebuild
 
-
-
 # todo: only when the right portion of cell assembly is activated the rest shold become active
 # todo: One number's visual memory is resembling all others
 # todo: Neuron finder is too inefficient
@@ -332,7 +330,7 @@ if __name__ == '__main__':
 
 # Visualization
 # todo: Fix issue where some cortical activities are not showing up    <<<  NEXT !!!!!
-
+# todo: Histogram of memory region activities when a single alphabet is trained
 
 # Vision
 # todo: Print visual memory to output in the form of pixels

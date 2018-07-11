@@ -10,8 +10,9 @@ event.
 def convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id):
 
     char = int(runtime_data.brain[cortical_area][neuron_id]["location"][2])
-
-    return chr(char)
+    activity_history = runtime_data.brain[cortical_area][neuron_id]['activity_history']
+    activity_rank = sum(activity_history) / len(activity_history)
+    return chr(char), activity_rank
 
 
 if __name__ == '__main__':

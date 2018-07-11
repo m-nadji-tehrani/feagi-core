@@ -89,7 +89,7 @@ def neuro_genesis(cortical_area, loc_blk):
     runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] = 0
     runtime_data.brain[cortical_area][neuron_id]["snooze_till_burst_num"] = 0
     runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] = 0
-
+    runtime_data.brain[cortical_area][neuron_id]["activity_history"] = []
     runtime_data.brain[cortical_area][neuron_id]["location"] = loc_blk[0]
     runtime_data.brain[cortical_area][neuron_id]["block"] = loc_blk[1]
     runtime_data.brain[cortical_area][neuron_id]["status"] = "Passive"

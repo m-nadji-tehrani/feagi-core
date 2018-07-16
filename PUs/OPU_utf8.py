@@ -10,8 +10,15 @@ event.
 def convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id):
 
     char = int(runtime_data.brain[cortical_area][neuron_id]["location"][2])
-    activity_history = runtime_data.brain[cortical_area][neuron_id]['activity_history']
-    activity_rank = sum(activity_history) / len(activity_history)
+    activity_history = list(runtime_data.brain[cortical_area][neuron_id]['activity_history'])
+    # todo: move collection span to parameters
+    collection_span_counter = len(activity_history) - 1
+    membrane_potential_total = 0
+    while collection_span_counter > 0:
+        membrane_potential_total += activity_history[collection_span_counter][1]
+        collection_span_counter -= 1
+
+    activity_rank = membrane_potential_total / len(activity_history)
     return chr(char), activity_rank
 
 

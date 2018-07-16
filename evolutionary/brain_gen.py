@@ -59,6 +59,7 @@ def brain_gen():
                   % (cortical_area, neuron_count, datetime.datetime.now() - timer))
 
     disk_ops.save_brain_to_disk(brain=runtime_data.brain, parameters=runtime_data.parameters)
+    disk_ops.save_block_dic_to_disk(block_dic=runtime_data.block_dic, parameters=runtime_data.parameters)
 
     # Build Synapses within all Cortical areas
     func1 = partial(build_synapse, runtime_data.genome, runtime_data.brain, runtime_data.parameters)
@@ -76,10 +77,12 @@ def brain_gen():
     pool1.close()
     pool1.join()
 
+    print('All internal synapse creation has been completed.')
     # stats.brain_total_synapse_cnt()
 
     # Build Synapses across various Cortical areas
-    func2 = partial(build_synapse_ext, runtime_data.genome, runtime_data.brain, runtime_data.parameters)
+    func2 = partial(build_synapse_ext, runtime_data.genome, runtime_data.brain,
+                    runtime_data.parameters, runtime_data.block_dic)
     pool2 = Pool(processes=7)
 
     pool2.map(func2, blueprint)
@@ -116,7 +119,9 @@ def build_synapse(genome, brain, parameters, key):
     return
 
 
-def build_synapse_ext(genome, brain, parameters, key):
+def build_synapse_ext(genome, brain, parameters, block_dic, key):
+    runtime_data.block_dic = block_dic
+    print('building external synapses for ', key)
     # Read Genome data
     for mapped_cortical_area in genome["blueprint"][key]["cortical_mapping_dst"]:
         timer = datetime.datetime.now()
@@ -137,7 +142,7 @@ def build_synapse_ext(genome, brain, parameters, key):
                                            postsynaptic_current=genome["blueprint"]
                                            [key]["postsynaptic_current"])
         if parameters["Logs"]["print_brain_gen_activities"]:
-            print("Synapse creation between Cortical area %s and %s is not complete. Count: %i  Duration: %s"
+            print("Synapse creation between Cortical area %s and %s is now complete. Count: %i  Duration: %s"
                   % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))
     disk_ops.save_brain_to_disk(cortical_area=key, brain=runtime_data.brain, parameters=parameters)
     return

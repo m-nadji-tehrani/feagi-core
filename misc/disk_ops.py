@@ -113,11 +113,62 @@ def load_brain_in_memory():
     return brain
 
 
+def serialize_brain_data(brain):
+    for cortical_area in brain:
+        for neuron_id in brain[cortical_area]:
+            runtime_data.brain[cortical_area][neuron_id]["activity_history"] = \
+                list(runtime_data.brain[cortical_area][neuron_id]["activity_history"])
+    return brain
+
+
+def load_block_dic_in_memory():
+    # todo: Need error handling added so if there is a corruption in block_dic data it can regenerate
+    connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
+    block_dic = {}
+    for item in runtime_data.cortical_list:
+        if os.path.isfile(connectome_path + item + '.json'):
+            with open(connectome_path + item + '_blk_dic.json', "r") as data_file:
+                data = json.load(data_file)
+                block_dic[item] = data
+    return block_dic
+
+
+def save_block_dic_to_disk(cortical_area='all', block_dic=runtime_data.block_dic,
+                           parameters=runtime_data.parameters, backup=False):
+    connectome_path = parameters["InitData"]["connectome_path"]
+    if block_dic == {}:
+        print(">> >> Error: Could not save the brain contents to disk as >> block_dic << was empty!")
+        return
+
+    if cortical_area != 'all':
+        with open(connectome_path+cortical_area+'_blk_dic.json', "r+") as data_file:
+            data = block_dic[cortical_area]
+            data_file.seek(0)  # rewind
+            data_file.write(json.dumps(data, indent=3))
+            data_file.truncate()
+    elif backup:
+        for cortical_area in runtime_data.cortical_list:
+            with open(connectome_path+cortical_area+'_backup_blk_dic.json', "w") as data_file:
+                data = block_dic[cortical_area]
+                data_file.seek(0)  # rewind
+                data_file.write(json.dumps(data, indent=3))
+                data_file.truncate()
+    else:
+        for cortical_area in runtime_data.cortical_list:
+            with open(connectome_path+cortical_area+'_blk_dic.json', "r+") as data_file:
+                data = block_dic[cortical_area]
+                data_file.seek(0)  # rewind
+                data_file.write(json.dumps(data, indent=3))
+                data_file.truncate()
+    return
+
+
 def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters=runtime_data.parameters, backup=False):
     connectome_path = parameters["InitData"]["connectome_path"]
     if brain == {}:
         print(">> >> Error: Could not save the brain contents to disk as brain was empty!")
         return
+    brain = serialize_brain_data(brain)
     if cortical_area != 'all':
         with open(connectome_path+cortical_area+'.json', "r+") as data_file:
             data = brain[cortical_area]

@@ -91,7 +91,8 @@ class TesterParams:
 global init_data, injector_params, test_params
 
 
-def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, genome_stats_queue, parameters_queue):
+def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
+          genome_stats_queue, parameters_queue, block_dic_queue):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -133,6 +134,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
     init_data.event_id = event_queue.get()
     runtime_data.brain = brain_queue.get()
     runtime_data.genome_stats = genome_stats_queue.get()
+    runtime_data.block_dic = block_dic_queue.get()
 
     cortical_list = []
     for cortical_area in runtime_data.genome['blueprint']:
@@ -227,7 +229,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
         # Comprehension check
         counter_list = {}
         if runtime_data.parameters["Logs"]["print_comprehension_queue"]:
-            print("**init_data.burst_detection_list  ", init_data.burst_detection_list, "  **")
             if init_data.burst_detection_list != {}:
                 print(settings.Bcolors.RED + "<><><><><><><><><><><><><><>"
                                              "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
@@ -276,6 +277,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue, gen
 
 
 def utf_detection_logic(detection_list):
+    # Identifies the detected UTF character with highest activity
     highest_ranked_item = '-'
     for item in detection_list:
         if highest_ranked_item == '-':
@@ -284,7 +286,6 @@ def utf_detection_logic(detection_list):
             if detection_list[item]['rank'] > detection_list[highest_ranked_item]['rank']:
                 highest_ranked_item = item
     return highest_ranked_item
-
 
     # list_length = len(detection_list)
     # if list_length == 1:
@@ -884,17 +885,25 @@ def neuron_fire(cortical_area, neuron_id):
     # Condition to update neuron activity history currently only targeted for UTF-OPU
     # todo: move activity_history_span to genome
     activity_history_span = 4
-    if cortical_area == 'utf8_out':
+    if cortical_area == 'utf8_memory':
         if not runtime_data.brain[cortical_area][neuron_id]["activity_history"]:
-            runtime_data.brain[cortical_area][neuron_id]["activity_history"] = deque([0] * activity_history_span)
+            zeros = deque([0] * activity_history_span)
+            tmp_burst_list = []
+            tmp_burst_count = init_data.burst_count
+            for _ in range(activity_history_span):
+                tmp_burst_list.append(tmp_burst_count)
+                tmp_burst_count -= 1
+            runtime_data.brain[cortical_area][neuron_id]["activity_history"] = deque(list(zip(tmp_burst_list, zeros)))
         else:
-            runtime_data.brain[cortical_area][neuron_id]["activity_history"].append(runtime_data.brain[cortical_area]
-                                                                                    [neuron_id]["membrane_potential"])
+            runtime_data.brain[cortical_area][neuron_id]["activity_history"].append([init_data.burst_count,
+                                                                                     runtime_data.brain[cortical_area]
+                                                                                    [neuron_id]["membrane_potential"]])
             runtime_data.brain[cortical_area][neuron_id]["activity_history"].popleft()
 
     # After neuron fires all cumulative counters on Source gets reset
     runtime_data.brain[cortical_area][neuron_id]["membrane_potential"] = 0
-    runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.now())
+    runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_burst"] = init_data.burst_count
+    # runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.now())
     runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count"] += 1
     runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count_inst"] += 1
 
@@ -924,7 +933,7 @@ def neuron_fire(cortical_area, neuron_id):
     runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] = init_data.burst_count
 
     # Condition to translate activity in utf8_out region as a character comprehension
-    if cortical_area == 'utf8_out':
+    if cortical_area == 'utf8_memory':
         detected_item, activity_rank = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
         if detected_item not in init_data.burst_detection_list:
             init_data.burst_detection_list[detected_item] = {}
@@ -1018,7 +1027,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
                               + settings.Bcolors.ENDC)
 
     # Resetting last time neuron was updated to the current burst id
-    runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"] = init_data.burst_count
+    runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"] = init_data.burst_count
 
     return init_data.fire_candidate_list
 

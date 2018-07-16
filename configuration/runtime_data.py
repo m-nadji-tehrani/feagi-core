@@ -5,3 +5,4 @@ genome_test_stats = []
 brain = {}
 cortical_list = []
 genome_id = ""
+block_dic = {}

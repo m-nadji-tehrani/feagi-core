@@ -143,7 +143,7 @@ def convert_direction_matrix_to_coordinates(image):
     return image_locations
 
 # todo: cythonize this
-def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
+def convert_image_locations_to_neuron_ids_old(image_locations, cortical_area):
     """
     Queries the connectome for each location and provides the list of Neuron Ids matching the location
     :param image_locations:
@@ -158,6 +158,26 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
             for item in tmp:
                 if (item is not None) and (neuron_id_list.count(item) == 0):
                     neuron_id_list.append(item)
+
+    return neuron_id_list
+
+
+def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
+    """
+    Queries the connectome for each location and provides the list of Neuron Ids matching the location
+    :param image_locations:
+    :return:
+    """
+    neuron_id_list = []
+    for x in range(len(image_locations)):
+            block_reference = str(image_locations[x][0]) + '-' + \
+                              str(image_locations[x][1]) + '-' + \
+                              str(image_locations[x][2])
+            if block_reference in runtime_data.block_dic[cortical_area]:
+                neuron_list = runtime_data.block_dic[cortical_area][block_reference]
+                for item in neuron_list:
+                    if (item is not None) and (neuron_id_list.count(item) == 0):
+                        neuron_id_list.append(item)
 
     return neuron_id_list
 

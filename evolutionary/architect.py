@@ -575,13 +575,13 @@ def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_
 
     # Rule 5: Helps mapping multiple layers to a single layer
     if rule_id == 'rule_5':
-        # src_layer_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index']
-        # src_total_layer_count = runtime_data.genome['blueprint'][cortical_area_src]['total_layer_count']
-        # dst_layer_height = dest_lengths[2] / src_total_layer_count
-        # if src_blk[0] == dst_blk[0] and src_blk[1] == dst_blk[1] and \
-        #         ((dst_layer_height * (src_layer_index - 1)) < z_coordinate_dst < (dst_layer_height * src_layer_index)):
-        #     is_candidate = True
-        is_candidate = True
+        src_layer_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index']
+        src_total_layer_count = runtime_data.genome['blueprint'][cortical_area_src]['total_layer_count']
+        dst_layer_height = dest_lengths[2] / src_total_layer_count
+        if src_blk[0] == dst_blk[0] and src_blk[1] == dst_blk[1] and \
+                ((dst_layer_height * (src_layer_index - 1)) < z_coordinate_dst < (dst_layer_height * src_layer_index)):
+            is_candidate = True
+        # is_candidate = True
 
     # Rule 6: Maps XY blocks from one layer to another
     if rule_id == 'rule_6':

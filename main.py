@@ -114,6 +114,8 @@ if __name__ == '__main__':
 
         # Setting up Brain queue for multiprocessing
         brain_data = disk_ops.load_brain_in_memory()
+        runtime_data.brain = brain_data
+
         block_dic_data = disk_ops.load_block_dic_in_memory()
         brain_queue.put(brain_data)
         block_dic_queue.put(block_dic_data)
@@ -219,25 +221,37 @@ if __name__ == '__main__':
         finally:
             print("Finally!")
             runtime_data.brain = brain_queue.get()
+            print("*")
             runtime_data.block_dic = block_dic_queue.get()
+            print("**")
             runtime_data.genome_test_stats = genome_stats_queue.get()
+            print("***")
             join_processes()
             disk_ops.save_block_dic_to_disk(block_dic=runtime_data.block_dic,
                                             parameters=runtime_data.parameters, backup=True)
+            print("****")
             disk_ops.save_brain_to_disk(brain=runtime_data.brain, parameters=runtime_data.parameters, backup=True)
+            print("*****")
             print("genome id called from main function: ", runtime_data.genome_id)
             disk_ops.save_genome_to_disk()
             if runtime_data.parameters["Switches"]["live_mode"]:
                 runtime_data.parameters["Input"]["user_input"] = ""
+                print("Starting a new generation...")
                 # Regenerate the brain
                 disk_ops.stage_genome(connectome_path)
+                print("$")
                 disk_ops.load_genome_in_memory(connectome_path)
+                print("$$")
                 structural_fitness = 0
                 while structural_fitness < 1:
                     brain_generation_start_time = datetime.now()
+                    print("$$$")
+                    runtime_data.block_dic = {}
                     structural_fitness = brain_gen()
+                    print("$$$$")
                     brain_generation_duration = datetime.now() - brain_generation_start_time
                 initialize_the_brain()
+                print("$$$$$")
 
                 # Starting the burst machine
                 # pool = mp.Pool(max(1, mp.cpu_count()))

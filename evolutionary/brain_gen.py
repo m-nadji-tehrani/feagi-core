@@ -94,8 +94,8 @@ def brain_gen():
     if parameters["Logs"]["print_brain_gen_activities"]:
         print("Neuronal mapping across all Cortical areas has been completed!!")
 
-    statistics = stats.brain_total_synapse_cnt()
-    print("Total brain synapse count is: ", statistics)
+    # statistics = stats.brain_total_synapse_cnt()
+    # print("Total brain synapse count is: ", statistics)
 
     brain_structural_fitness = calculate_brain_structural_fitness()
     print("Brain structural fitness was evaluated as: ", brain_structural_fitness)

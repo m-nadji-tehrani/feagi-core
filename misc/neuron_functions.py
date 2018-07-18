@@ -205,6 +205,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
             # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
             # Firing all neurons in the Fire Candidate List
+
             for x in list(init_data.fire_candidate_list):
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
@@ -271,6 +272,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
     # Push updated brain data back to the queue
     brain_queue.put(runtime_data.brain)
+    block_dic_queue.put(runtime_data.block_dic)
     genome_stats_queue.put(runtime_data.genome_test_stats)
     if runtime_data.parameters["Switches"]["live_mode"]:
         user_input.put('q')
@@ -871,6 +873,8 @@ def neuron_fire(cortical_area, neuron_id):
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     neighbor_list = runtime_data.brain[cortical_area][neuron_id]["neighbors"]
+
+    # print("<><><>________<><><><>_______<><><><><>", cortical_area, neuron_id, neighbor_list)
     # print("Neighbor list:", neighbor_list)
     # if runtime_data.parameters["Switches"]["logging_fire"]:
     #     print(datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
@@ -915,6 +919,7 @@ def neuron_fire(cortical_area, neuron_id):
         if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
             print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
+        # print(".......................", dst_cortical_area, dst_neuron_id)
         neuron_update(dst_cortical_area, dst_neuron_id,
                       runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
                       neighbor_count)
@@ -996,6 +1001,8 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
+    # todo: remove next line as this is for testing only
+    neighbor_count = 1
 
     runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
 
@@ -1007,11 +1014,10 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     #           (dst_neuron_id, dst_neuron_obj["membrane_potential"])
     #           + settings.Bcolors.ENDC)
 
+    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # todo: Need to figure how to deal with Activation function and firing threshold
-
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to fire_candidate_list
-    if dst_neuron_obj["membrane_potential"] > \
-            dst_neuron_obj["firing_threshold"]:
+    if dst_neuron_obj["membrane_potential"] > dst_neuron_obj["firing_threshold"]:
         # Refractory period check
         if dst_neuron_obj["last_burst_num"] + \
                 runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["refractory_period"] <= \

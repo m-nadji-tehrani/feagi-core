@@ -175,10 +175,11 @@ def convert_image_locations_to_neuron_ids(image_locations, cortical_area):
                               str(image_locations[x][2])
             if block_reference in runtime_data.block_dic[cortical_area]:
                 neuron_list = runtime_data.block_dic[cortical_area][block_reference]
+                # print("XXXXXXXXXX    XXXXXXXXX     XXXXXXXX", cortical_area, block_reference, len(neuron_list))
                 for item in neuron_list:
                     if (item is not None) and (neuron_id_list.count(item) == 0):
                         neuron_id_list.append(item)
-
+    # print("YYYYYYYY    YYYYYYYY     YYYYYYY", cortical_area, neuron_id_list)
     return neuron_id_list
 
 

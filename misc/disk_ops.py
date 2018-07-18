@@ -109,7 +109,7 @@ def load_brain_in_memory():
             with open(connectome_path + item + '.json', "r") as data_file:
                 data = json.load(data_file)
                 brain[item] = data
-    # print("Brain has been successfully loaded into memory...")
+    print("Brain has been successfully loaded into memory...")
     return brain
 
 
@@ -126,7 +126,7 @@ def load_block_dic_in_memory():
     connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
     block_dic = {}
     for item in runtime_data.cortical_list:
-        if os.path.isfile(connectome_path + item + '.json'):
+        if os.path.isfile(connectome_path + item + '_blk_dic.json'):
             with open(connectome_path + item + '_blk_dic.json', "r") as data_file:
                 data = json.load(data_file)
                 block_dic[item] = data
@@ -141,7 +141,7 @@ def save_block_dic_to_disk(cortical_area='all', block_dic=runtime_data.block_dic
         return
 
     if cortical_area != 'all':
-        with open(connectome_path+cortical_area+'_blk_dic.json', "r+") as data_file:
+        with open(connectome_path+cortical_area+'_blk_dic.json', "w") as data_file:
             data = block_dic[cortical_area]
             data_file.seek(0)  # rewind
             data_file.write(json.dumps(data, indent=3))
@@ -155,7 +155,7 @@ def save_block_dic_to_disk(cortical_area='all', block_dic=runtime_data.block_dic
                 data_file.truncate()
     else:
         for cortical_area in runtime_data.cortical_list:
-            with open(connectome_path+cortical_area+'_blk_dic.json', "r+") as data_file:
+            with open(connectome_path+cortical_area+'_blk_dic.json', "w") as data_file:
                 data = block_dic[cortical_area]
                 data_file.seek(0)  # rewind
                 data_file.write(json.dumps(data, indent=3))

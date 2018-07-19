@@ -1001,8 +1001,6 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
 
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
-    # todo: remove next line as this is for testing only
-    neighbor_count = 1
 
     runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
 

@@ -291,6 +291,7 @@ if __name__ == '__main__':
 # todo: Brain is being loaded in memory too regularly
 
 # General Architecture - Anatomy
+# todo: Add a generation age calculation to the main function
 # todo: Consider Headache and Sleep needs
 # todo: Move Rules to Genome
 # todo: Consider Synaptic capacity as a property of each neuron

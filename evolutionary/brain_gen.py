@@ -121,7 +121,6 @@ def build_synapse(genome, brain, parameters, key):
 
 def build_synapse_ext(genome, brain, parameters, block_dic, key):
     runtime_data.block_dic = block_dic
-    print('building external synapses for ', key)
     # Read Genome data
     for mapped_cortical_area in genome["blueprint"][key]["cortical_mapping_dst"]:
         timer = datetime.datetime.now()

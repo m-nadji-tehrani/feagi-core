@@ -619,14 +619,14 @@ def cortical_area_lengths(cortical_area):
     return length
 
 
-def block_id_gen(x, y, z, block_size=28):
-    """
-    Generating a block id so it can be used for faster neighbor detection
-    """
-    bx = ceil(x / block_size)
-    by = ceil(y / block_size)
-    bz = ceil(z / block_size)
-    return [bx, by, bz]
+# def block_id_gen(x, y, z, block_size=28):
+#     """
+#     Generating a block id so it can be used for faster neighbor detection
+#     """
+#     bx = ceil(x / block_size)
+#     by = ceil(y / block_size)
+#     bz = ceil(z / block_size)
+#     return [bx, by, bz]
 
 
 def block_id_gen2(coordinate, space_dimensions, total_block_count):
@@ -636,7 +636,8 @@ def block_id_gen2(coordinate, space_dimensions, total_block_count):
     block_id = []
     index = 0
     for location in coordinate:
-        block_id.append(ceil(location / ceil(space_dimensions[index] / total_block_count[index])))
+        block_number = floor(location / floor(space_dimensions[index] / total_block_count[index]))
+        block_id.append(block_number)
         index += 1
     return block_id
 

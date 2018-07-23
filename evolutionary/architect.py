@@ -651,7 +651,7 @@ def block_id_gen2(coordinate, space_dimensions, total_block_count):
     block_id = []
     index = 0
     for location in coordinate:
-        block_number = floor(location / floor(space_dimensions[index] / total_block_count[index]))
+        block_number = floor(location / (floor(space_dimensions[index] / total_block_count[index] + 0.00001) + 0.00001))
         block_id.append(block_number)
         index += 1
     return block_id

@@ -248,8 +248,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         for item in counter_list:
             if list_length == 1 and item != '-':
                 runtime_data.parameters["Input"]["comprehended_char"] = item[0]
-                print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character:    "
-                                                "                     <<<     %s      >>>                 #*#*#*#*#*#*#"
+                print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character: <<< %s  >>>"
                       % runtime_data.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
             else:
                 if list_length >= 2:

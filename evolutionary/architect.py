@@ -242,11 +242,9 @@ def three_dim_growth(cortical_area):
     block_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['block_boundaries']
     for _ in neuron_loc_list:
         # neuron_blk_list.append(block_id_gen(_[0], _[1], _[2]))
-
-        neuron_blk_list.append(block_id_gen2(_, space_dimensions=cortical_area_dim, total_block_count=block_boundaries))
-
+        neuron_block = block_id_gen2(_, space_dimensions=cortical_area_dim, total_block_count=block_boundaries)
+        neuron_blk_list.append(neuron_block)
     neuron_loc_blk = zip(neuron_loc_list, neuron_blk_list)
-
     neuron_count = 0
     for __ in neuron_loc_blk:
         neuron_id = neuro_genesis(cortical_area, __)        # Create a new Neuron in target destination
@@ -375,12 +373,29 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
                             src_neuron_id=src_neuron_id):
                 neighbor_candidates.append(dst_neuron_id)
     else:
-        neuron_block = runtime_data.brain[cortical_area_src][src_neuron_id]['block']
-        block_reference = str(neuron_block[0]) + '-' + str(neuron_block[1]) + '-' + str(neuron_block[2])
-        if block_reference in runtime_data.block_dic[cortical_area_dst]:
+        neuron_block_src = runtime_data.brain[cortical_area_src][src_neuron_id]['block']
+        if 'layer_index' in runtime_data.genome['blueprint'][cortical_area_src]:
+            block_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index'] - 1
+        else:
+            block_index = 0
+        # todo: make the next line generic
+        if cortical_area_dst == 'vision_v2':
+            block_reference = str(neuron_block_src[0]) + '-' + str(neuron_block_src[1]) + '-' + str(block_index)
+        else:
+            block_reference = str(neuron_block_src[0]) + '-' + str(neuron_block_src[1]) + '-' + str(neuron_block_src[2])
+
+        z_block_boundary = runtime_data.genome['blueprint'][cortical_area_dst]['neuron_params']['block_boundaries'][2]
+
+        if z_block_boundary > 1:
+            if block_reference in runtime_data.block_dic[cortical_area_dst]:
+                for neighbor in runtime_data.block_dic[cortical_area_dst][block_reference]:
+                    if runtime_data.brain[cortical_area_dst][neighbor]['block'][2] == block_index:
+                        neighbor_candidates.append(neighbor)
+
+
+        elif block_reference in runtime_data.block_dic[cortical_area_dst]:
             for neighbor in runtime_data.block_dic[cortical_area_dst][block_reference]:
                 neighbor_candidates.append(neighbor)
-
 
         # # todo: Need to bring here concept of the projection center and find neurons around the block there
         # projection_coord = dst_projection_center(cortical_area_src, src_neuron_id, cortical_area_dst)

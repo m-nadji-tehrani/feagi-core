@@ -240,7 +240,8 @@ if __name__ == '__main__':
             print("*****")
             print("genome id called from main function: ", runtime_data.genome_id)
             disk_ops.save_genome_to_disk()
-            if runtime_data.parameters["Switches"]["live_mode"]:
+            if runtime_data.parameters["Switches"]["live_mode"] and not \
+                    runtime_data.parameters["Switches"]["one_round"]:
                 runtime_data.parameters["Input"]["user_input"] = ""
                 print("Starting a new generation...")
                 # Regenerate the brain

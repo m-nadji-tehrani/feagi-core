@@ -83,6 +83,7 @@ class TesterParams:
         self.test_mode = ''
         self.comprehension_counter = 0
         self.test_attempt_counter = 0
+        self.no_response_counter = 0
         # self.temp_stats = []
         self.test_stats = {}
         self.test_id = ""
@@ -113,7 +114,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                                    static=runtime_data.parameters["Switches"]["use_static_genome"])
 
     # todo: Move comprehension span to genome
-    comprehension_span = 1
+    comprehension_span = 3
     
     # Initializing the comprehension queue
     comprehension_queue = deque(['-'] * comprehension_span)
@@ -182,6 +183,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         #     print('Evolution phase reached...')
         #     genethesizer.generation_assessment()
 
+        if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
+            disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
+
         # Add a delay if fire_candidate_list is empty
         if len(init_data.fire_candidate_list) < 1:
             sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
@@ -212,6 +216,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1])
+                if (x[0] == 'utf8_out') or (x[0] == 'utf8_memory') or (x[0] == 'utf8'):
+                    print(x[0], x[1])
 
             neuro_plasticity()
             print('>>>   >>>   >>>   Number under training: ', injector_params.num_to_inject)
@@ -271,8 +277,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 fcl_file.write(json.dumps(init_data.fire_candidate_list))
                 fcl_file.truncate()
             sleep(0.5)
-        if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
-            disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
 
     # Push updated brain data back to the queue
     brain_queue.put(runtime_data.brain)
@@ -419,6 +423,7 @@ def auto_tester():
                 test_params.variation_counter_actual = test_params.variation_counter
                 test_params.test_attempt_counter = 0
                 test_params.comprehension_counter = 0
+                test_params.no_response_counter = 0
                 # UTF counter
                 test_params.utf_counter_actual -= 1
                 if test_params.utf_flag:
@@ -440,6 +445,7 @@ def update_test_stats():
     global test_params
     utf_exposed = str(test_params.num_to_inject) + '_exposed'
     utf_comprehended = str(test_params.num_to_inject) + '_comprehended'
+    utf_no_response = str(test_params.num_to_inject) + '_no_response'
 
     if utf_exposed not in test_params.test_stats:
         test_params.test_stats[utf_exposed] = 1
@@ -447,15 +453,21 @@ def update_test_stats():
     if utf_comprehended not in test_params.test_stats:
         test_params.test_stats[utf_exposed] = 0
 
+    if utf_no_response not in test_params.test_stats:
+        test_params.test_stats[utf_no_response] = 0
+
     test_params.test_stats[utf_exposed] = test_params.test_attempt_counter
     test_params.test_stats[utf_comprehended] = test_params.comprehension_counter
+    test_params.test_stats[utf_no_response] = test_params.no_response_counter
 
 
 def test_comprehension_logic():
     global test_params
     # Comprehension logic
     print("> ", runtime_data.parameters["Input"]["comprehended_char"], "> ", test_params.num_to_inject)
-    if runtime_data.parameters["Input"]["comprehended_char"] == str(test_params.num_to_inject):
+    if runtime_data.parameters["Input"]["comprehended_char"] == '':
+        test_params.no_response_counter += 1
+    elif runtime_data.parameters["Input"]["comprehended_char"] == str(test_params.num_to_inject):
         print(settings.Bcolors.HEADER +
               "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
               + settings.Bcolors.ENDC)
@@ -615,22 +627,21 @@ def auto_injector():
         injection_exit_process()
 
     # Counter logic
-    if injector_params.variation_handler:
-        if injector_params.exposure_counter_actual < 1 and not injection_exit_condition():
+    if injector_params.variation_handler and not injection_exit_condition():
+        if injector_params.exposure_counter_actual < 1:
             injector_params.exposure_counter_actual = injector_params.exposure_counter
             # Variation counter
             injector_params.variation_counter_actual -= 1
             if injector_params.img_flag:
                 data_feeder.image_feeder(injector_params.num_to_inject)
-        if injector_params.utf_handler \
-                and injector_params.variation_counter_actual < 0  \
-                and not injection_exit_condition():
+        if injector_params.utf_handler and injector_params.variation_counter_actual < 0:
                 injector_params.exposure_counter_actual = injector_params.exposure_counter
                 injector_params.variation_counter_actual = injector_params.variation_counter
                 # UTF counter
                 injector_params.utf_counter_actual -= 1
                 if injector_params.utf_flag:
                     injector_params.num_to_inject -= 1
+                    data_feeder.image_feeder(injector_params.num_to_inject)
 
     if injector_params.img_flag:
         data_feeder.img_neuron_list_feeder()
@@ -688,6 +699,7 @@ class DataFeeder:
             init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(injector_params.utf_to_inject)
         else:
             init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(init_data.labeled_image[1]))
+            print("!!! Image label: ", init_data.labeled_image[1])
         init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_utf, init_data.fire_candidate_list)
         # print("Activities caused by image label are now part of the FCL")
 
@@ -707,6 +719,7 @@ class DataFeeder:
             print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
                   settings.Bcolors.ENDC)
         init_data.labeled_image = mnist_img_fetcher(num)
+        print('+++++ ', num, init_data.labeled_image[1])
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
         # print("image has been converted to neuronal activities...")

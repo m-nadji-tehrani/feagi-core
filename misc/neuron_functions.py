@@ -92,7 +92,7 @@ global init_data, injector_params, test_params
 
 
 def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
-          genome_stats_queue, parameters_queue, block_dic_queue):
+          genome_stats_queue, parameters_queue, block_dic_queue, genome_id_queue):
     """This function behaves as instance of Neuronal activities"""
     # This function is triggered when another Neuron output targets the Neuron ID of another Neuron
     # which would start a timer since the first input is received and keep collecting inputs till
@@ -135,6 +135,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     runtime_data.brain = brain_queue.get()
     runtime_data.genome_stats = genome_stats_queue.get()
     runtime_data.block_dic = block_dic_queue.get()
+    runtime_data.genome_id = genome_id_queue.get()
+    print('runtime_data.genome_id = ', runtime_data.genome_id)
 
     cortical_list = []
     for cortical_area in runtime_data.genome['blueprint']:
@@ -212,6 +214,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 neuron_fire(x[0], x[1])
 
             neuro_plasticity()
+            print('>>>   >>>   >>>   Number under training: ', injector_params.num_to_inject)
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % init_data.fire_candidate_list + settings.Bcolors.ENDC)
@@ -268,10 +271,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 fcl_file.write(json.dumps(init_data.fire_candidate_list))
                 fcl_file.truncate()
             sleep(0.5)
+        if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
+            disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
 
     # Push updated brain data back to the queue
     brain_queue.put(runtime_data.brain)
     block_dic_queue.put(runtime_data.block_dic)
+    genome_id_queue.put(runtime_data.genome_id)
     genome_stats_queue.put(runtime_data.genome_test_stats)
     if runtime_data.parameters["Switches"]["live_mode"]:
         user_input.put('q')
@@ -354,6 +360,7 @@ def test_manager(test_mode, test_param):
         toggle_test_mode()
         test_params.test_id = test_id_gen()
         test_params.test_stats["genome_id"] = init_data.genome_id
+        print('Genome_id = ', init_data.genome_id)
         test_params.test_stats["test_id"] = test_params.test_id
         test_params.testing_has_begun = True
 
@@ -655,6 +662,7 @@ def injection_exit_process():
     global init_data
     global injector_params
     runtime_data.parameters["Auto_injector"]["injector_status"] = False
+    injector_params.num_to_inject = ''
     injector_params.exposure_counter_actual = runtime_data.parameters["Auto_injector"]["exposure_default"]
     injector_params.variation_counter_actual = runtime_data.parameters["Auto_injector"]["variation_default"]
     injector_params.utf_counter_actual = runtime_data.parameters["Auto_injector"]["utf_default"]

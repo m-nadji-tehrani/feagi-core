@@ -62,17 +62,32 @@ for _ in mnist_iterator:
 #     return training_image
 
 
-def mnist_img_fetcher(num):
-    # Returns a random image from MNIST matching the requested number
+def mnist_img_fetcher_old(num):
+    # Returns a random image from the entire MNIST matching the requested number
     global mnist_array
     img_lbl = ''
     # print("An image is being fetched from MNIST")
     while img_lbl != int(num):
         img_index = random.randrange(10, len(mnist_array), 1)
         img_lbl, img_data = mnist_array[img_index]
+    print('>>>>>>', img_index)
     if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
         print("The image for number %s has been fetched." %str(num))
     return img_data, img_lbl
+
+
+def mnist_img_fetcher(num):
+    # Returns a random image from MNIST matching the requested number
+    global mnist_array
+    img_lbl = ''
+    # print("An image is being fetched from MNIST")
+    hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
+    for img_index in hand_picked_list:
+        img_lbl, img_data = mnist_array[img_index]
+        if img_lbl == int(num):
+            if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
+                print("The image for number %s has been fetched." % str(num))
+            return img_data, img_lbl
 
 
 def read_image(index):

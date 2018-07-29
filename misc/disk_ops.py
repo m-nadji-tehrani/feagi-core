@@ -4,8 +4,7 @@
 from datetime import datetime
 import os.path
 import json
-from misc import db_handler, alerts
-from evolutionary.genethesizer import genome_id_gen
+from misc import db_handler, alerts, stats
 from configuration import runtime_data
 
 
@@ -42,14 +41,7 @@ def save_genome_to_disk():
     from evolutionary.genethesizer import calculate_brain_cognitive_fitness
     mongo = db_handler.MongoManagement()
     genome = runtime_data.genome
-
-    genome_id = ""
-
-    if runtime_data.parameters["InitData"]["regenerate_brain"]:
-        genome_id = genome_id_gen()
-        print("this is the new genome id:", genome_id)
-
-    # print(runtime_data.genome_test_stats)
+    genome_id = runtime_data.genome_id
 
     updated_genome_test_stats = []
     for item in runtime_data.genome_test_stats:
@@ -83,7 +75,8 @@ def save_genome_to_disk():
         stat_to_save = stat
         mongo.insert_test_stats(stat_to_save)
 
-    print("Genome has been preserved for future generations!")
+    print("Genome %s has been preserved for future generations!" % genome_id)
+    stats.print_fcl_stats(genome_id)
 
     return
 
@@ -207,3 +200,11 @@ def load_rules_in_memory():
     return rules
 
 
+def save_fcl_in_db(burst_number, fire_candidate_list, number_under_training):
+    mongo = db_handler.MongoManagement()
+    fcl_data = {}
+    fcl_data['genome_id'] = runtime_data.genome_id
+    fcl_data['burst_id'] = burst_number
+    fcl_data['number_under_training'] = number_under_training
+    fcl_data['fcl_data'] = fire_candidate_list
+    mongo.insert_neuron_activity(fcl_data=fcl_data)

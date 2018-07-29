@@ -7,7 +7,7 @@ Provides functions performing statistical analysis on the Connectome and Cortica
 # import pandas as pd
 
 from configuration import runtime_data
-from misc import disk_ops
+from misc import disk_ops, db_handler
 
 
 def cortical_area_neuron_count(cortical_area):
@@ -98,6 +98,36 @@ def cortical_xyz_range():
     return xyz_range
 
 
+def fcl_stats(genome_id):
+    mongo = db_handler.MongoManagement()
+    fcl_data_from_db = mongo.fcl_data(genome_id)
+    fcl_stats_data = {}
+    for burst in fcl_data_from_db:
+        neuron_activities = burst['fcl_data']
+        number_under_training = burst['number_under_training']
+        if number_under_training != '':
+            for activity in neuron_activities:
+                cortical_area = activity[0]
+                neuron_id = activity[1]
+                if cortical_area not in fcl_stats_data:
+                    fcl_stats_data[cortical_area] = {}
+                if neuron_id not in fcl_stats_data[cortical_area]:
+                    fcl_stats_data[cortical_area][neuron_id] = [0] * 10
+                fcl_stats_data[cortical_area][neuron_id][number_under_training] += 1
+    return fcl_stats_data
+
+
+def print_fcl_stats(genome_id):
+    print('*******************************************************************************************')
+    print('*************************************************  ', genome_id)
+    print('*******************************************************************************************')
+    a = fcl_stats(genome_id)
+    for _ in a:
+        for __ in a[_]:
+            print(_, __, a[_][__])
+    print('*******************************************************************************************')
+    print('*******************************************************************************************')
+    print('*******************************************************************************************')
 
 
 

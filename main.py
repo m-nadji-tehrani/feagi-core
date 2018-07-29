@@ -17,6 +17,7 @@ if __name__ == '__main__':
     disk_ops.load_parameters_in_memory()
     from misc import disk_ops
     from configuration import runtime_data, settings
+    from evolutionary.genethesizer import genome_id_gen
 
     try:
         connectome_file_path = sys.argv[1]
@@ -97,7 +98,8 @@ if __name__ == '__main__':
 
     def initialize_the_brain():
         global user_input_queue, user_input_param_queue, event_queue, \
-            genome_test_stats, brain_queue, FCL_queue, genome_stats_queue, parameters_queue, block_dic_queue
+            genome_test_stats, brain_queue, FCL_queue, genome_stats_queue, \
+            parameters_queue, block_dic_queue, genome_id_queue
         # Initializing queues
         user_input_queue = mp.Queue()
         user_input_param_queue = mp.Queue()
@@ -105,6 +107,7 @@ if __name__ == '__main__':
         brain_queue = mp.Queue()
         event_queue = mp.Queue()
         genome_stats_queue = mp.Queue()
+        genome_id_queue = mp.Queue()
         parameters_queue = mp.Queue()
         block_dic_queue = mp.Queue()
 
@@ -128,6 +131,7 @@ if __name__ == '__main__':
         genome_stats["test_stats"] = []
         genome_test_stats = []
         genome_stats_queue.put(genome_stats)
+        genome_id_queue.put(genome_id_gen())
 
     def read_user_input():
         master.update_idletasks()
@@ -169,7 +173,8 @@ if __name__ == '__main__':
     # pool = mp.Pool(max(1, mp.cpu_count()))
     process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
                                                         FCL_queue, brain_queue, event_queue,
-                                                        genome_stats_queue, parameters_queue, block_dic_queue,))
+                                                        genome_stats_queue, parameters_queue,
+                                                        block_dic_queue, genome_id_queue,))
     print("The burst engine has been started...")
 
     event_id = event_id_gen()
@@ -221,6 +226,7 @@ if __name__ == '__main__':
         finally:
             print("Finally!")
             runtime_data.brain = brain_queue.get()
+            runtime_data.genome_id = genome_id_queue.get()
             print("*")
             runtime_data.block_dic = block_dic_queue.get()
             print("**")
@@ -258,7 +264,7 @@ if __name__ == '__main__':
                 process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
                                                                     FCL_queue, brain_queue, event_queue,
                                                                     genome_stats_queue, parameters_queue,
-                                                                    block_dic_queue,))
+                                                                    block_dic_queue, genome_id_queue,))
                 print("The burst engine has been started...")
 
                 event_id = event_id_gen()

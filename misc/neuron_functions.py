@@ -113,8 +113,8 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     disk_ops.load_genome_in_memory(runtime_data.parameters['InitData']['connectome_path'],
                                    static=runtime_data.parameters["Switches"]["use_static_genome"])
 
-    # todo: Move comprehension span to genome
-    comprehension_span = 3
+    # todo: Move comprehension span to genome that is currently in parameters
+    comprehension_span = runtime_data.parameters["InitData"]["comprehension_span"]
     
     # Initializing the comprehension queue
     comprehension_queue = deque(['-'] * comprehension_span)
@@ -459,7 +459,7 @@ def update_test_stats():
     test_params.test_stats[utf_exposed] = test_params.test_attempt_counter
     test_params.test_stats[utf_comprehended] = test_params.comprehension_counter
     test_params.test_stats[utf_no_response] = test_params.no_response_counter
-
+    print('no_response_counter: ', test_params.no_response_counter)
 
 def test_comprehension_logic():
     global test_params
@@ -519,6 +519,7 @@ def test_exit_process():
 
     test_params.test_attempt_counter = 0
     test_params.comprehension_counter = 0
+    test_params.no_response_counter = 0
     # logging stats into Genome
     runtime_data.genome_test_stats.append(test_params.test_stats.copy())
     test_params.test_stats = {}
@@ -908,7 +909,7 @@ def neuron_fire(cortical_area, neuron_id):
 
     # Condition to update neuron activity history currently only targeted for UTF-OPU
     # todo: move activity_history_span to genome
-    activity_history_span = 4
+    activity_history_span = runtime_data.parameters["InitData"]["activity_history_span"]
     if cortical_area == 'utf8_memory':
         if not runtime_data.brain[cortical_area][neuron_id]["activity_history"]:
             zeros = deque([0] * activity_history_span)

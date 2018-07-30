@@ -31,7 +31,7 @@
     "save_fcl_to_db": true,
     "live_mode": true,
     "use_static_genome": true,
-    "one_round": true
+    "one_round": false
   },
   "InitData": {
     "read_data_from_memory": true,
@@ -41,18 +41,20 @@
     "static_genome_path": "./evolutionary/static_genome3.json",
     "fcl_to_visualize": "./fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" ,
     "training_counter_default": 10,
-    "training_rounds_default": 40
+    "training_rounds_default": 40,
+    "activity_history_span": 4,
+    "comprehension_span": 1
   },
   "Auto_injector":{
-    "variation_default": 1,
-    "exposure_default": 40,
+    "variation_default": 20,
+    "exposure_default": 10,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 1,
-    "exposure_default": 40,
+    "variation_default": 20,
+    "exposure_default": 10,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false

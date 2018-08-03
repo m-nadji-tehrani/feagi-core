@@ -329,7 +329,8 @@ def calculate_brain_cognitive_fitness(test_stats):
     if total_exposure == 0:
         fitness = 0
     else:
-        fitness = activity_factor * total_comprehended / total_exposure
+        fitness = total_comprehended / total_exposure
+        # fitness = activity_factor * total_comprehended / total_exposure
 
     return fitness
 

@@ -461,6 +461,7 @@ def update_test_stats():
     test_params.test_stats[utf_no_response] = test_params.no_response_counter
     print('no_response_counter: ', test_params.no_response_counter)
 
+
 def test_comprehension_logic():
     global test_params
     # Comprehension logic
@@ -799,13 +800,13 @@ def neuro_plasticity():
                         #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
 
         # Counting number of active UTF8_memory cells in the fire_candidate_list
-        utf_mem_in_fcl = 0
+        utf_mem_in_fcl = []
         for neuron in init_data.fire_candidate_list:
             if neuron[0] == 'utf8_memory':
-                utf_mem_in_fcl += 1
+                utf_mem_in_fcl.append(neuron[1])
 
         # Reducing synaptic strength when one vision memory cell activates more than one UTF cell
-        if utf_mem_in_fcl >= 2:
+        if len(utf_mem_in_fcl) >= 2:
             for src_neuron in set([i[1] for i in init_data.previous_fcl if i[0] == 'vision_memory']):
                 synapse_to_utf = 0
                 dst_neuron_list = []
@@ -819,6 +820,7 @@ def neuro_plasticity():
                             apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
                                                  dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
                                                  long_term_depression=True)
+                            # print("$$$$ : LTD occurred between vision_memory and utf8_memory :", src_neuron, dst_neuron)
                             if runtime_data.parameters["Logs"]["print_plasticity_info"]:
                                 print(
                                     settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
@@ -1133,12 +1135,17 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
 
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
-        genome["blueprint"][src_cortical_area]["plasticity_constant"]
+        plasticity_constant
 
     # Condition to cap the postsynaptic_current and provide prohibitory reaction
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
         min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
             genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
+
+    # Condition to prevent postsynaptic current to become negative
+    # todo: consider setting a postsynaptic_min in genome to be used instead of 0
+    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+        max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"], 0)
 
     return
 

@@ -109,9 +109,10 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     #     -To Fire all the Neurons listed in the fire_candidate_list and update connectome accordingly
     #     -To do a check on all the recipients of the Fire and identify which is ready to fire and list them as output
 
+    print('Starting the burst engine...')
     runtime_data.parameters = parameters_queue.get()
-    disk_ops.load_genome_in_memory(runtime_data.parameters['InitData']['connectome_path'],
-                                   static=runtime_data.parameters["Switches"]["use_static_genome"])
+    print(runtime_data.parameters['Switches']['use_static_genome'])
+    disk_ops.genome_handler(runtime_data.parameters['InitData']['connectome_path'])
 
     # todo: Move comprehension span to genome that is currently in parameters
     comprehension_span = runtime_data.parameters["InitData"]["comprehension_span"]
@@ -149,6 +150,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     if runtime_data.parameters["Switches"]["capture_brain_activities"]:
         init_data.fcl_history = {}
 
+    # todo: add a logic to exit bust engine if during the training mulriple consequtive burst are empty
     DataFeeder()
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
@@ -211,19 +213,22 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
             # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
             # Firing all neurons in the Fire Candidate List
-
             for x in list(init_data.fire_candidate_list):
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
+                if x[0] in ['utf8_out', 'utf8_memory', 'utf8', 'vision_memory']:
+                    print(settings.Bcolors.RED + '<***>', x[0], x[1][27:], 'MP=',
+                          str(runtime_data.brain[x[0]][x[1]]['membrane_potential']) + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1])
-                if (x[0] == 'utf8_out') or (x[0] == 'utf8_memory') or (x[0] == 'utf8'):
-                    print(x[0], x[1])
 
-            neuro_plasticity()
-            print('>>>   >>>   >>>   Number under training: ', injector_params.num_to_inject)
+            if runtime_data.parameters["Switches"]["plasticity"]:
+                neuro_plasticity()
+            print('>>++++>>>>>>>   Number under training: ', injector_params.num_to_inject)
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % init_data.fire_candidate_list + settings.Bcolors.ENDC)
+
+            # print_cortical_neuron_mappings('vision_memory', 'utf8_memory')
 
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
@@ -730,102 +735,139 @@ class DataFeeder:
 def neuro_plasticity():
     # The following handles neuro-plasticity
     global init_data
-    if runtime_data.parameters["Switches"]["plasticity"]:
-        # Plasticity between T1 and Vision memory
-        # todo: generalize this function
-        # Long Term Potentiation (LTP) between vision_IT and vision_memory
-        for src_neuron in init_data.previous_fcl:
-            if src_neuron[0] == "vision_IT":
-                for dst_neuron in init_data.fire_candidate_list:
-                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-                            in runtime_data.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
+
+    pfcl = init_data.previous_fcl
+    cfcl = init_data.fire_candidate_list
+
+    # Long Term Potentiation (LTP)
+    for entry in pfcl:
+        cortical_area = entry[0]
+        neuron_id = entry[1]
+        for neighbor_id in runtime_data.brain[cortical_area][neuron_id]["neighbors"]:
+            neighbor_cortical_area = \
+                runtime_data.brain[cortical_area][neuron_id]["neighbors"][neighbor_id]['cortical_area']
+            if [neighbor_cortical_area, neighbor_id] in cfcl and cortical_area != neighbor_cortical_area:
+                apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
+                                     dst_cortical_area=neighbor_cortical_area, dst_neuron_id=neighbor_id,
+                                     long_term_depression=False)
+                if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                    print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
+                                                 "...........LTP between %s and %s occurred"
+                          % (cortical_area, neighbor_cortical_area)
+                          + settings.Bcolors.ENDC)
+
+    # Long Term Depression
+    for entry in cfcl:
+        cortical_area = entry[0]
+        neuron_id = entry[1]
+        for neighbor_id in runtime_data.brain[cortical_area][neuron_id]["neighbors"]:
+            neighbor_cortical_area = \
+                runtime_data.brain[cortical_area][neuron_id]["neighbors"][neighbor_id]['cortical_area']
+            if [neighbor_cortical_area, neighbor_id] in pfcl and cortical_area != neighbor_cortical_area:
+                apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
+                                     dst_cortical_area=neighbor_cortical_area, dst_neuron_id=neighbor_id,
+                                     long_term_depression=True)
+
+                if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                    print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
+                                                 "...........LTD between %s and %s occurred"
+                          % (cortical_area, neighbor_cortical_area)
+                          + settings.Bcolors.ENDC)
+
+    # # Plasticity between T1 and Vision memory
+    # # todo: generalize this function
+    # # Long Term Potentiation (LTP) between vision_IT and vision_memory
+    # for src_neuron in init_data.previous_fcl:
+    #     if src_neuron[0] == "vision_IT":
+    #         for dst_neuron in init_data.fire_candidate_list:
+    #             if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+    #                     in runtime_data.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+    #                 apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+    #                                      dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
+    #                 if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+    #                     print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
+    #                                                  "...........LTP between vision_IT and vision_memory occurred "
+    #                           + settings.Bcolors.ENDC)
+    #
+    # # Long Term Depression (LTD) between vision_IT and vision_memory
+    # for src_neuron in init_data.fire_candidate_list:
+    #     if src_neuron[0] == "vision_IT":
+    #         for dst_neuron in init_data.previous_fcl:
+    #             if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
+    #                     in runtime_data.brain["vision_IT"][src_neuron[1]]["neighbors"]:
+    #                 apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
+    #                                      dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
+    #                                      long_term_depression=True)
+    #                 if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+    #                     print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
+    #                                                  "...........LTD between vision_IT and vision_memory occurred "
+    #                           + settings.Bcolors.ENDC)
+
+    # todo: The following loop is very inefficient___ fix it!!
+    memory_list = cortical_group_members('Memory')
+
+    # Building the cell assemblies
+    for cortical_area in memory_list:
+        if runtime_data.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
+            for src_neuron in set([i[1] for i in init_data.fire_candidate_list if i[0] == cortical_area]):
+                for dst_neuron in set([j[1] for j in init_data.fire_candidate_list if j[0] == cortical_area]):
+                    if src_neuron != dst_neuron:
+                        apply_plasticity(cortical_area=cortical_area,
+                                         src_neuron=src_neuron, dst_neuron=dst_neuron)
+
+    # Wiring Vision memory to UIF-8 memory
+    for dst_neuron in init_data.fire_candidate_list:
+        if dst_neuron[0] == "utf8_memory":
+            for src_neuron in init_data.previous_fcl:
+                if src_neuron[0] == "vision_memory":
+                    apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
+                                         dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+
+                    if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                        print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
+                                                     "..........LTP between vision_memory and UTF8_memory occurred "
+                              + settings.Bcolors.ENDC)
+                        print(init_data.fire_candidate_list)
+                        print("*************________**************")
+
+                    # print(
+                    #     settings.Bcolors.OKGREEN + "............................................................."
+                    #                                "........A new memory was formed against utf8_memory location "
+                    #     + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
+                    #                                                     dst_neuron[1]) + settings.Bcolors.ENDC)
+                    # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
+                    # for dst_neuron_id in dst_neuron_id_list:
+                    #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
+                    #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+
+    # Counting number of active UTF8_memory cells in the fire_candidate_list
+    utf_mem_in_fcl = []
+    for neuron in init_data.fire_candidate_list:
+        if neuron[0] == 'utf8_memory':
+            utf_mem_in_fcl.append(neuron[1])
+
+    # Reducing synaptic strength when one vision memory cell activates more than one UTF cell
+    if len(utf_mem_in_fcl) >= 2:
+        for src_neuron in set([i[1] for i in init_data.previous_fcl if i[0] == 'vision_memory']):
+            synapse_to_utf = 0
+            dst_neuron_list = []
+            neighbor_list = dict(runtime_data.brain['vision_memory'][src_neuron]['neighbors'])
+            for synapse_ in neighbor_list:
+                if runtime_data.brain['vision_memory'][src_neuron]['neighbors'][synapse_]['cortical_area'] \
+                        == 'utf8_memory':
+                    synapse_to_utf += 1
+                    dst_neuron_list.append(synapse_)
+                if synapse_to_utf >= 2:
+                    for dst_neuron in dst_neuron_list:
+                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
+                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
+                                             long_term_depression=True, impact_multiplier=4)
+                        print("$$$$ : LTD occurred between vision_memory and utf8_memory :", src_neuron, dst_neuron)
                         if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                            print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-                                                         "...........LTP between vision_IT and vision_memory occurred "
-                                  + settings.Bcolors.ENDC)
-
-        # Long Term Depression (LTD) between vision_IT and vision_memory
-        for src_neuron in init_data.fire_candidate_list:
-            if src_neuron[0] == "vision_IT":
-                for dst_neuron in init_data.previous_fcl:
-                    if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-                            in runtime_data.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-                        apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
-                                             long_term_depression=True)
-                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                            print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
-                                                         "...........LTD between vision_IT and vision_memory occurred "
-                                  + settings.Bcolors.ENDC)
-
-        # todo: The following loop is very inefficient___ fix it!!
-        # todo: Read the following memory list from Genome
-        memory_list = cortical_group_members('Memory')
-        # memory_list = ['utf8_memory', 'vision_memory']
-
-        # Building a bidirectional synapse between memory neurons who fire together within a cortical area
-        for cortical_area in memory_list:
-            if runtime_data.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
-                for src_neuron in set([i[1] for i in init_data.fire_candidate_list if i[0] == cortical_area]):
-                    for dst_neuron in set([j[1] for j in init_data.fire_candidate_list if j[0] == cortical_area]):
-                        if src_neuron != dst_neuron:
-                            apply_plasticity(cortical_area=cortical_area,
-                                             src_neuron=src_neuron, dst_neuron=dst_neuron)
-
-        # Wiring Vision memory to UIF-8 memory
-        for dst_neuron in init_data.fire_candidate_list:
-            if dst_neuron[0] == "utf8_memory":
-                for src_neuron in init_data.previous_fcl:
-                    if src_neuron[0] == "vision_memory":
-                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
-
-                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                            print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
-                                                         "..........LTP between vision_memory and UTF8_memory occurred "
-                                  + settings.Bcolors.ENDC)
-                            print(init_data.fire_candidate_list)
-                            print("*************________**************")
-
-                        # print(
-                        #     settings.Bcolors.OKGREEN + "............................................................."
-                        #                                "........A new memory was formed against utf8_memory location "
-                        #     + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
-                        #                                                     dst_neuron[1]) + settings.Bcolors.ENDC)
-                        # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
-                        # for dst_neuron_id in dst_neuron_id_list:
-                        #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                        #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
-
-        # Counting number of active UTF8_memory cells in the fire_candidate_list
-        utf_mem_in_fcl = []
-        for neuron in init_data.fire_candidate_list:
-            if neuron[0] == 'utf8_memory':
-                utf_mem_in_fcl.append(neuron[1])
-
-        # Reducing synaptic strength when one vision memory cell activates more than one UTF cell
-        if len(utf_mem_in_fcl) >= 2:
-            for src_neuron in set([i[1] for i in init_data.previous_fcl if i[0] == 'vision_memory']):
-                synapse_to_utf = 0
-                dst_neuron_list = []
-                for synapse in runtime_data.brain['vision_memory'][src_neuron]['neighbors']:
-                    if runtime_data.brain['vision_memory'][src_neuron]['neighbors'][synapse]['cortical_area'] \
-                            == 'utf8_memory':
-                        synapse_to_utf += 1
-                        dst_neuron_list.append(synapse)
-                    if synapse_to_utf >= 2:
-                        for dst_neuron in dst_neuron_list:
-                            apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
-                                                 dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
-                                                 long_term_depression=True)
-                            # print("$$$$ : LTD occurred between vision_memory and utf8_memory :", src_neuron, dst_neuron)
-                            if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                                print(
-                                    settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
-                                                           "........LTD between vision_memory and UTF8_memory occurred "
-                                    + settings.Bcolors.ENDC)
+                            print(
+                                settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
+                                                       "........LTD between vision_memory and UTF8_memory occurred "
+                                + settings.Bcolors.ENDC)
 
 
 def burst_exit_process():
@@ -861,10 +903,25 @@ def user_input_processing(user_input, user_input_param):
             elif user_input_value in ['t1', 't2']:
                 test_manager(test_mode=user_input_value, test_param=user_input_value_param)
 
+            elif user_input_value == 'd':
+                print('Dumping debug info...')
+                print_cortical_neuron_mappings('vision_memory', 'utf8_memory')
+
         finally:
             runtime_data.parameters["Input"]["user_input"] = ''
             runtime_data.parameters["Input"]["user_input_param"] = ''
             break
+
+
+def print_cortical_neuron_mappings(src_cortical_area, dst_cortical_area):
+    print('Listing neuron mappings between %s and %s' % (src_cortical_area, dst_cortical_area))
+    for neuron in runtime_data.brain[src_cortical_area]:
+        for neighbor in runtime_data.brain[src_cortical_area][neuron]['neighbors']:
+            if runtime_data.brain[src_cortical_area][neuron]['neighbors'][neighbor]['cortical_area'] == \
+                    dst_cortical_area:
+                print(settings.Bcolors.OKGREEN + '# ', neuron[27:], neighbor[27:],
+                      str(runtime_data.brain[src_cortical_area][neuron]
+                      ['neighbors'][neighbor]['postsynaptic_current']) + settings.Bcolors.ENDC)
 
 
 #  >>>>>> Review this function against what we had in past
@@ -943,9 +1000,15 @@ def neuron_fire(cortical_area, neuron_id):
             print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         # print(".......................", dst_cortical_area, dst_neuron_id)
+        if dst_cortical_area == 'utf8_memory':
+                print('--==--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
+                      runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
         neuron_update(dst_cortical_area, dst_neuron_id,
                       runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
                       neighbor_count)
+        if dst_cortical_area == 'utf8_memory':
+            print('--=+=--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
+                  runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -1003,10 +1066,10 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
             runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"])
 
     # Leaky behavior
-    # todo: rename last_membrane_potential_reset_burst to last_membrane_potential_update
     if last_membrane_potential_update < init_data.burst_count:
         leak_coefficient = runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["leak_coefficient"]
-        leak_value = (init_data.burst_count - last_membrane_potential_update) / leak_coefficient
+        leak_window = init_data.burst_count - last_membrane_potential_update
+        leak_value = leak_window * leak_coefficient
         # print("::", cortical_area, "***", dst_neuron_id, "***", leak_value, "::")
         runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] -= leak_value
         if runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] < 0:
@@ -1038,7 +1101,13 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # todo: Need to figure how to deal with Activation function and firing threshold
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to fire_candidate_list
+    if cortical_area == 'utf8_memory':
+        print('&@@@: Testing fire eligibility', dst_neuron_id[27:], 'mp=',
+              dst_neuron_obj["membrane_potential"], 'fire threshold=', dst_neuron_obj["firing_threshold"])
     if dst_neuron_obj["membrane_potential"] > dst_neuron_obj["firing_threshold"]:
+        if cortical_area == 'utf8_memory':
+                print('&^%: Fire condition has been met for', dst_neuron_id[27:])
+
         # Refractory period check
         if dst_neuron_obj["last_burst_num"] + \
                 runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["refractory_period"] <= \
@@ -1048,15 +1117,17 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
                 # To prevent duplicate entries
                 if init_data.fire_candidate_list.count([cortical_area, dst_neuron_id]) == 0:
                     init_data.fire_candidate_list.append([cortical_area, dst_neuron_id])
+                    if cortical_area == 'utf8_memory':
+                        print('Following neuron being added to FCL:', dst_neuron_id[27:])
                     if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
                         print(settings.Bcolors.UPDATE +
                               "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
                               + settings.Bcolors.ENDC)
+            elif cortical_area == 'utf8_memory':
+                print('SSSS SSS SS S ...  Neuron was prevented from being added to FCL due to Snooze condition')
 
     # Resetting last time neuron was updated to the current burst id
     runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"] = init_data.burst_count
-
-    return init_data.fire_candidate_list
 
 
 def neuron_prop(cortical_area, neuron_id):
@@ -1110,6 +1181,9 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
         min(runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
             genome["blueprint"][cortical_area]["postsynaptic_current_max"])
 
+    # print('<*> ', cortical_area, src_neuron[27:], dst_neuron[27:], 'PSC=',
+    #       runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
+
     # Append a Group ID so Memory clusters can be uniquely identified
     if init_data.event_id:
         if init_data.event_id in runtime_data.brain[cortical_area][src_neuron]["event_id"]:
@@ -1121,14 +1195,14 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
 
 
 def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
-                         dst_neuron_id, long_term_depression=False):
+                         dst_neuron_id, long_term_depression=False, impact_multiplier=1):
 
     genome = runtime_data.genome
     plasticity_constant = genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
     if long_term_depression:
         # When long term depression flag is set, there will be negative synaptic influence caused
-        plasticity_constant = plasticity_constant * (-1)
+        plasticity_constant = plasticity_constant * (-1) * impact_multiplier
 
     # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
@@ -1146,6 +1220,9 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     # todo: consider setting a postsynaptic_min in genome to be used instead of 0
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
         max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"], 0)
+
+    # print('<**> ', src_cortical_area, src_neuron_id[27:], dst_cortical_area, dst_neuron_id[27:], 'PSC=',
+    #       runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
 
     return
 

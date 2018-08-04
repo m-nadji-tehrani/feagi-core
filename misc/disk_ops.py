@@ -5,7 +5,7 @@ from datetime import datetime
 import os.path
 import json
 from misc import db_handler, alerts, stats
-from configuration import runtime_data
+from configuration import runtime_data, settings
 
 
 # Reads the list of all Cortical areas defined in Genome
@@ -104,6 +104,23 @@ def load_brain_in_memory():
                 brain[item] = data
     print("Brain has been successfully loaded into memory...")
     return brain
+
+
+def genome_handler(connectome_path):
+    # Calling function to regenerate the Brain from the Genome
+    if runtime_data.parameters["InitData"]["regenerate_brain"]:
+        print("use_static_genome:", runtime_data.parameters["Switches"]["use_static_genome"])
+        if runtime_data.parameters["Switches"]["use_static_genome"]:
+            print("** ** ** ** ** ** ** ** **")
+            load_genome_in_memory(connectome_path, static=True)
+            print(settings.Bcolors.RED + ">> >> >> A static genome was used to generate the brain."
+                  + settings.Bcolors.ENDC)
+        else:
+            stage_genome(connectome_path)
+            load_genome_in_memory(connectome_path)
+    else:
+        # Using the existing genome previously staged in the connectome_path
+        load_genome_in_memory(connectome_path)
 
 
 def serialize_brain_data(brain):

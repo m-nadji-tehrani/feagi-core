@@ -29,7 +29,7 @@
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
     "save_fcl_to_db": false,
-    "live_mode": true,
+    "live_mode": false,
     "use_static_genome": true,
     "one_round": false
   },
@@ -47,14 +47,14 @@
   },
   "Auto_injector":{
     "variation_default": 5,
-    "exposure_default": 20,
+    "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
     "variation_default": 20,
-    "exposure_default": 20,
+    "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false

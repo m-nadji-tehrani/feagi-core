@@ -29,37 +29,13 @@ if __name__ == '__main__':
 
     global connectome_path
     connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
-
-    def regeneration_check():
-        # Calling function to regenerate the Brain from the Genome
-        if runtime_data.parameters["InitData"]["regenerate_brain"]:
-            print("use_static_genome:", runtime_data.parameters["Switches"]["use_static_genome"])
-            if runtime_data.parameters["Switches"]["use_static_genome"]:
-                print("** ** ** ** ** ** ** ** **")
-                disk_ops.load_genome_in_memory(connectome_path, static=True)
-                print(settings.Bcolors.RED + ">> >> >> A static genome was used to generate the brain."
-                      + settings.Bcolors.ENDC)
-                runtime_data.parameters["Switches"]["use_static_genome"] = False
-            else:
-                disk_ops.stage_genome(connectome_path)
-                disk_ops.load_genome_in_memory(connectome_path)
-
-        else:
-            disk_ops.stage_genome(connectome_path)
-            disk_ops.load_genome_in_memory(connectome_path)
-
-
-    regeneration_check()
-    # disk_ops.stage_genome(connectome_path)
-    # disk_ops.load_genome_in_memory(connectome_path)
-
+    disk_ops.genome_handler(connectome_path)
     # Initialize runtime cortical list
     blueprint = runtime_data.genome["blueprint"]
     cortical_list = []
     for key in blueprint:
         cortical_list.append(key)
     runtime_data.cortical_list = cortical_list
-
     from misc import brain_functions, neuron_functions
     from evolutionary.brain_gen import brain_gen
     from evolutionary.architect import event_id_gen
@@ -124,6 +100,7 @@ if __name__ == '__main__':
         block_dic_queue.put(block_dic_data)
 
         # Setting up runtime_data.parameters queue for multiprocessing
+        print(">>", runtime_data.parameters['Switches']['use_static_genome'])
         parameters_queue.put(runtime_data.parameters)
 
         # Setting up genome data
@@ -155,7 +132,10 @@ if __name__ == '__main__':
         structural_fitness = 0
         while structural_fitness < 1:
             brain_generation_start_time = datetime.now()
+
+
             structural_fitness = brain_gen()
+            print(">>****2", runtime_data.parameters['Switches']['use_static_genome'])
             brain_generation_duration = datetime.now() - brain_generation_start_time
 
         # todo: Move the following to stats module
@@ -166,7 +146,6 @@ if __name__ == '__main__':
         print("--------------------------------------------------------------")
         print("Total Synapse count in Connectome is: ", b.connectome_synapse_count())
         print("--------------------------------------------------------------")
-
     initialize_the_brain()
 
     # Starting the burst machine

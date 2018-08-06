@@ -216,14 +216,14 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             for x in list(init_data.fire_candidate_list):
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
-                if x[0] in ['utf8_out', 'utf8_memory', 'utf8', 'vision_memory']:
-                    print(settings.Bcolors.RED + '<***>', x[0], x[1][27:], 'MP=',
-                          str(runtime_data.brain[x[0]][x[1]]['membrane_potential']) + settings.Bcolors.ENDC)
+                # if x[0] in ['utf8_out', 'utf8_memory', 'utf8', 'vision_memory']:
+                #     print(settings.Bcolors.RED + '<***>', x[0], x[1][27:], 'MP=',
+                #           str(runtime_data.brain[x[0]][x[1]]['membrane_potential']) + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1])
 
             if runtime_data.parameters["Switches"]["plasticity"]:
                 neuro_plasticity()
-            print('>>++++>>>>>>>   Number under training: ', injector_params.num_to_inject)
+            # print('>>++++>>>>>>>   Number under training: ', injector_params.num_to_inject)
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % init_data.fire_candidate_list + settings.Bcolors.ENDC)
@@ -862,7 +862,7 @@ def neuro_plasticity():
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
                                              long_term_depression=True, impact_multiplier=4)
-                        print("$$$$ : LTD occurred between vision_memory and utf8_memory :", src_neuron, dst_neuron)
+                        # print("$$$$ : LTD occurred between vision_memory and utf8_memory :", src_neuron, dst_neuron)
                         if runtime_data.parameters["Logs"]["print_plasticity_info"]:
                             print(
                                 settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
@@ -1000,15 +1000,15 @@ def neuron_fire(cortical_area, neuron_id):
             print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         # print(".......................", dst_cortical_area, dst_neuron_id)
-        if dst_cortical_area == 'utf8_memory':
-                print('--==--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
-                      runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
+        # if dst_cortical_area == 'utf8_memory':
+        #         print('--==--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
+        #               runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
         neuron_update(dst_cortical_area, dst_neuron_id,
                       runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
                       neighbor_count)
-        if dst_cortical_area == 'utf8_memory':
-            print('--=+=--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
-                  runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
+        # if dst_cortical_area == 'utf8_memory':
+        #     print('--=+=--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
+        #           runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -1101,12 +1101,12 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # todo: Need to figure how to deal with Activation function and firing threshold
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to fire_candidate_list
-    if cortical_area == 'utf8_memory':
-        print('&@@@: Testing fire eligibility', dst_neuron_id[27:], 'mp=',
-              dst_neuron_obj["membrane_potential"], 'fire threshold=', dst_neuron_obj["firing_threshold"])
+    # if cortical_area == 'utf8_memory':
+    #     print('&@@@: Testing fire eligibility', dst_neuron_id[27:], 'mp=',
+    #           dst_neuron_obj["membrane_potential"], 'fire threshold=', dst_neuron_obj["firing_threshold"])
     if dst_neuron_obj["membrane_potential"] > dst_neuron_obj["firing_threshold"]:
-        if cortical_area == 'utf8_memory':
-                print('&^%: Fire condition has been met for', dst_neuron_id[27:])
+        # if cortical_area == 'utf8_memory':
+        #         print('&^%: Fire condition has been met for', dst_neuron_id[27:])
 
         # Refractory period check
         if dst_neuron_obj["last_burst_num"] + \
@@ -1123,8 +1123,8 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
                         print(settings.Bcolors.UPDATE +
                               "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
                               + settings.Bcolors.ENDC)
-            elif cortical_area == 'utf8_memory':
-                print('SSSS SSS SS S ...  Neuron was prevented from being added to FCL due to Snooze condition')
+            # elif cortical_area == 'utf8_memory':
+            #     print('SSSS SSS SS S ...  Neuron was prevented from being added to FCL due to Snooze condition')
 
     # Resetting last time neuron was updated to the current burst id
     runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"] = init_data.burst_count

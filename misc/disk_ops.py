@@ -68,8 +68,8 @@ def save_genome_to_disk():
     mail_body = "Genome " + str(genome_id) + " has been evaluated to have a fitness of " + str(brain_fitness)
 
     # Sending out email
-    if brain_fitness > runtime_data.parameters["Alerts"]["email_fitness_threshold"]:
-        alerts.send_email(mail_body)
+    # if brain_fitness > runtime_data.parameters["Alerts"]["email_fitness_threshold"]:
+    #     alerts.send_email(mail_body)
 
     for stat in runtime_data.genome_test_stats:
         stat_to_save = stat

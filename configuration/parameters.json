@@ -29,8 +29,8 @@
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
     "save_fcl_to_db": false,
-    "live_mode": false,
-    "use_static_genome": true,
+    "live_mode": true,
+    "use_static_genome": false,
     "one_round": false
   },
   "InitData": {
@@ -46,14 +46,14 @@
     "comprehension_span": 1
   },
   "Auto_injector":{
-    "variation_default": 5,
+    "variation_default": 15,
     "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 20,
+    "variation_default": 5,
     "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
@@ -76,7 +76,7 @@
     "neuron_functions-neuron_fire": false
   },
   "Alerts":{
-    "email_fitness_threshold": 0.2
+    "email_fitness_threshold": 1.0
   }
 }
 

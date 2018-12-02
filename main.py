@@ -4,7 +4,7 @@
 This file contains the main Brain control code
 """
 
-__author__ = 'Mohammad Nadji-tehrani'
+__author__ = 'Mohammad Nadji-Tehrani'
 
 
 if __name__ == '__main__':
@@ -133,7 +133,6 @@ if __name__ == '__main__':
         while structural_fitness < 1:
             brain_generation_start_time = datetime.now()
 
-
             structural_fitness = brain_gen()
             print(">>****2", runtime_data.parameters['Switches']['use_static_genome'])
             brain_generation_duration = datetime.now() - brain_generation_start_time
@@ -167,7 +166,7 @@ if __name__ == '__main__':
 
     # todo: implement the following using multiprocessing
     if runtime_data.parameters["Switches"]["vis_show"]:
-        from . import visualizer
+        import visualizer
         visualizer.main()
 
     regenerate = True
@@ -264,14 +263,14 @@ if __name__ == '__main__':
 # Key problem on hand
 # todo: Need to reject bad genomes as soon as brain is generated and rebuild
 
-# todo: only when the right portion of cell assembly is activated the rest shold become active
+# todo: only when the right portion of cell assembly is activated the rest should become active
 # todo: One number's visual memory is resembling all others
 # todo: Neuron finder is too inefficient
 # todo: Need a self tuning mechanism
 # todo: find a way to measure layer level effectiveness metrics so it can be used for evolution
 
 # Problems to fix
-# todo: Synaptic activities in Memory everntually get to a point that does not ramp down
+# todo: Synaptic activities in Memory eventually get to a point that does not ramp down
 # todo: Event queue and events in general are not being used for any application or stored anywhere
 
 # todo: Brain is being loaded in memory too regularly

@@ -25,6 +25,7 @@ from architect import connectome_location_data
 from misc.neuron_functions import fire_candidate_locations
 from configuration import runtime_data
 
+print("777", runtime_data.cortical_list)
 
 def vis_init():
     # plt.ion()
@@ -203,7 +204,7 @@ def burst_visualization_manager():
     index = 0
     global indexed_cortical_list
     indexed_cortical_list = []
-    for key in runtime_data.cortical_areas:
+    for key in runtime_data.cortical_list:
         indexed_cortical_list.append([index, key])
         index += 1
 

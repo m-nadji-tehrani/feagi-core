@@ -42,6 +42,7 @@ class InitData:
         self.labeled_image = []
         self.training_neuron_list_utf = []
         self.training_neuron_list_img = []
+        self.empty_fcl_counter = 0
 
 
 class InjectorParams:
@@ -191,6 +192,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         # Add a delay if fire_candidate_list is empty
         if len(init_data.fire_candidate_list) < 1:
             sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
+            init_data.empty_fcl_counter += 1
             print("FCL is empty!")
         else:
             # brain_neuron_count, brain_synapse_count = stats.brain_total_synapse_cnt(verbose=False)

@@ -48,7 +48,8 @@ class Brain:
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
 
-        # image = filter.brightness(image)
+        # Apply the brightness filter to get rid of noise in the image
+        image = filter.brightness(image)
 
         if runtime_data.parameters['Logs']['print_filtered_img']:
             print("Filtered image:\n", image)
@@ -58,7 +59,7 @@ class Brain:
 
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
-            kernel_size = 3
+            kernel_size = runtime_data.genome['blueprint'][cortical_area]['kernel_size']
 
             # retina_start_time = datetime.now()
             polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)

@@ -29,9 +29,10 @@
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
     "save_fcl_to_db": false,
-    "live_mode": true,
-    "use_static_genome": false,
-    "one_round": false
+    "live_mode": false,
+    "use_static_genome": true,
+    "one_round": true,
+    "ipu_vision_dynamic_img_fetch": false
   },
   "InitData": {
     "read_data_from_memory": true,
@@ -60,8 +61,8 @@
     "tester_status": false
   },
   "Logs":{
-    "print_polarized_img": false,
-    "print_seen_img": false,
+    "print_polarized_img": true,
+    "print_seen_img": true,
     "print_filtered_img": false,
     "print_activation_counters": false,
     "print_cortical_activity_counters": true,

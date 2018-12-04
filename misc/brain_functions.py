@@ -33,7 +33,7 @@ class Brain:
         print("Retina has been exposed to a version of :", mnist_labled_image[1])
         neuron_list = []
 
-        # IPU_vision_array = IPU_vision.convert_image_to_coordinates(mnist.read_image(image_number)[0])   # todo  ?????
+        # IPU_vision_array = IPU_vision.Image.convert_image_to_coordinates(mnist.read_image(image_number)[0])   # todo  ?????
         vision_group = self.cortical_sub_group_members('vision_v1')
 
         image = mnist_labled_image[0]
@@ -47,6 +47,7 @@ class Brain:
 
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
+            # print("Re-sized image:\n", IPU_vision.resize_image(image))
 
         # Apply the brightness filter to get rid of noise in the image
         image = filter.brightness(image)
@@ -60,9 +61,13 @@ class Brain:
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
             kernel_size = runtime_data.genome['blueprint'][cortical_area]['kernel_size']
-
+            print("Kernel size = ", kernel_size)
             # retina_start_time = datetime.now()
-            polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
+            # polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
+            kernel = IPU_vision.Kernel()
+            polarized_image = kernel.create_direction_matrix(image=IPU_vision.Image.resize_image(image),
+                                                             kernel_size=kernel_size,
+                                                             direction_sensitivity=cortical_direction_sensitivity)
 
             if runtime_data.parameters['Logs']['print_polarized_img']:
                 print("\nPrinting polarized image for ", cortical_area)
@@ -77,12 +82,12 @@ class Brain:
             # print("Polarized image for :", cortical_area)
             # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
 
-            ipu_vision_array = IPU_vision.convert_direction_matrix_to_coordinates(polarized_image)
+            ipu_vision_array = IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image)
 
             if runtime_data.parameters['Logs']['print_activation_counters']:
                 print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
-            neuron_id_list = IPU_vision.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
+            neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
             if runtime_data.parameters['Logs']['print_activation_counters']:
                 print("Neuron id count activated in layer %s is %i\n\n" %(cortical_area, len(neuron_id_list)))

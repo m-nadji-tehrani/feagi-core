@@ -20,7 +20,7 @@ from PUs import OPU_utf8, IPU_utf8
 from . import brain_functions
 from misc import disk_ops
 from configuration import settings, runtime_data
-from PUs.IPU_vision import mnist_img_fetcher
+from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
 
 
@@ -727,7 +727,8 @@ class DataFeeder:
             num = 0
             print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
                   settings.Bcolors.ENDC)
-        init_data.labeled_image = mnist_img_fetcher(num)
+        mnist = MNIST()
+        init_data.labeled_image = mnist.mnist_img_fetcher(num)
         print('+++++ ', num, init_data.labeled_image[1])
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)

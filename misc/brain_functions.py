@@ -47,6 +47,17 @@ class Brain:
 
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
+            # Converting image to monochrome
+            image = IPU_vision.Filter.monochrome(image)
+
+            # Resizing image
+            image = IPU_vision.Image.resize_image(image)
+
+            # Contrast adjustment
+            image = IPU_vision.Filter.contrast(image,3)
+
+            print("Image seen by retina:\n", image)
+
             # print("Re-sized image:\n", IPU_vision.resize_image(image))
 
         # Apply the brightness filter to get rid of noise in the image

@@ -112,10 +112,24 @@ class Filter:
         return new_image
 
     @staticmethod
-    def contrast(image):
+    def contrast(image, kernel_size):
         """This function simulates the effect of Amacrine and Horizontal cells within human Retina"""
-
-        return image
+        if divmod(kernel_size, 2)[1] == 0:
+            print("Error: Kernel size should only be Odd number!")
+            return
+        row_index = 0
+        col_index = 0
+        new_image = [[] for x in range(np.shape(image)[1])]
+        for row in image:
+            for row_item in row:
+                kernel_values = Image.image_read_by_block(image, kernel_size, [row_index, col_index])
+                cell_value = Kernel.kernel_contrast(kernel_values=kernel_values, kernel_size=kernel_size)
+                new_image[row_index].append(cell_value)
+                col_index += 1
+            col_index = 0
+            row_index += 1
+        new_image = np.asarray(new_image, dtype=np.int)
+        return new_image
 
     @staticmethod
     def direction(kernel_values, kernel_size, direction_key):
@@ -131,9 +145,15 @@ class Filter:
         # end_result[direction_key] = result
         return result
 
+    @staticmethod
+    def monochrome(image):
+
+        return image
+
 
 class Kernel:
-    def kernel_sizer(self, kernel_values):
+    @staticmethod
+    def kernel_sizer(kernel_values):
         np.tmp = kernel_values
         kernel_size = np.shape(np.tmp)
         kernel_size = kernel_size[0]
@@ -180,6 +200,15 @@ class Kernel:
         # print('direction is %s' % direction)
         return direction
 
+    @staticmethod
+    def kernel_contrast(kernel_values, kernel_size):
+        filtered_kernel = Filter.direction(kernel_values, kernel_size, 'o')
+        # contrast_value = np.sum(kernel_values * filtered_kernel)
+        contrast_value = np.sum(filtered_kernel)
+        if contrast_value < 0:
+            contrast_value = 0
+        return contrast_value
+
     def create_direction_matrix(self, image, kernel_size, direction_sensitivity=''):
         """
         Generates a Matrix where each element outlines the direction detected by the Kernel filters against each
@@ -206,9 +235,6 @@ class Kernel:
             col_index = 0
             row_index += 1
         return direction_matrix
-
-    def kernel_edge_detector(self, kernel_values):
-        return
 
     @staticmethod
     def orientation_matrix(raw_image, orientation_key, kernel_size):

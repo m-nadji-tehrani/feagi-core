@@ -129,7 +129,25 @@ class Filter:
             col_index = 0
             row_index += 1
         new_image = np.asarray(new_image, dtype=np.int)
-        return new_image
+
+        print("Pre-normalized image:\n", new_image)
+
+        # Normalize pixel values
+        image_max_value = np.amax(new_image)
+        print("Max value:", image_max_value)
+        row_index = 0
+        col_index = 0
+        normalized_image = [[] for x in range(np.shape(new_image)[1])]
+        for row in new_image:
+            for row_item in row:
+                # 255 is the max intensity value that each image cell can be
+                normalized_value = row_item * 255 / image_max_value
+                normalized_image[row_index].append(normalized_value)
+                col_index += 1
+            col_index = 0
+            row_index += 1
+        normalized_image = np.asarray(normalized_image, dtype=np.int)
+        return normalized_image
 
     @staticmethod
     def direction(kernel_values, kernel_size, direction_key):
@@ -147,8 +165,22 @@ class Filter:
 
     @staticmethod
     def monochrome(image):
-
-        return image
+        """This function converts a gray-scale image to monochrome by setting all the pixels below a threshold to
+        zero and above that threshold to 255."""
+        row_index = 0
+        col_index = 0
+        new_image = [[] for x in range(np.shape(image)[1])]
+        for row in image:
+            for row_item in row:
+                if row_item < runtime_data.parameters["InitData"]["image_monochromization_threshold"]:
+                    new_image[row_index].append(0)
+                else:
+                    new_image[row_index].append(255)
+                col_index += 1
+            col_index = 0
+            row_index += 1
+        new_image = np.asarray(new_image, dtype=np.int)
+        return new_image
 
 
 class Kernel:

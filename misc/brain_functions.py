@@ -47,18 +47,24 @@ class Brain:
 
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
-            # Converting image to monochrome
-            image = IPU_vision.Filter.monochrome(image)
+        # Converting image to monochrome
+        image = IPU_vision.Filter.monochrome(image)
+        if runtime_data.parameters['Logs']['print_seen_img']:
+            print("Monochrome version of image:\n", image)
 
-            # Resizing image
-            image = IPU_vision.Image.resize_image(image)
+        # Resizing image
+        image = IPU_vision.Image.resize_image(image)
 
-            # Contrast adjustment
-            image = IPU_vision.Filter.contrast(image,3)
-
+        # Contrast adjustment
+        image = IPU_vision.Filter.contrast(image,3)
+        if runtime_data.parameters['Logs']['print_seen_img']:
             print("Image seen by retina:\n", image)
 
-            # print("Re-sized image:\n", IPU_vision.resize_image(image))
+        image = IPU_vision.Filter.monochrome(image)
+        if runtime_data.parameters['Logs']['print_seen_img']:
+            print("Monochrome version of what is seen by retina:\n", image)
+
+        # print("Re-sized image:\n", IPU_vision.resize_image(image))
 
         # Apply the brightness filter to get rid of noise in the image
         image = filter.brightness(image)
@@ -67,6 +73,8 @@ class Brain:
             print("Filtered image:\n", image)
 
         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
+
+        # todo: Investigate the following section of code VVVVVVVVVVVVVVVVVVVVVVVVVVV
         for cortical_area in vision_group:
 
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][

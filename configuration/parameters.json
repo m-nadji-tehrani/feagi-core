@@ -45,7 +45,8 @@
     "training_rounds_default": 40,
     "activity_history_span": 4,
     "comprehension_span": 1,
-    "image_magnification_factor": 200
+    "image_magnification_factor": 200,
+    "image_monochromization_threshold": 100
   },
   "Auto_injector":{
     "variation_default": 15,

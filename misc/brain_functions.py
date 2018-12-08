@@ -67,7 +67,7 @@ class Brain:
         # print("Re-sized image:\n", IPU_vision.resize_image(image))
 
         # Apply the brightness filter to get rid of noise in the image
-        image = filter.brightness(image)
+        # image = filter.brightness(image)
 
         if runtime_data.parameters['Logs']['print_filtered_img']:
             print("Filtered image:\n", image)
@@ -84,7 +84,8 @@ class Brain:
             # retina_start_time = datetime.now()
             # polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
             kernel = IPU_vision.Kernel()
-            polarized_image = kernel.create_direction_matrix(image=IPU_vision.Image.resize_image(image),
+            # image = IPU_vision.Image.resize_image(image)
+            polarized_image = kernel.create_direction_matrix(image=image,
                                                              kernel_size=kernel_size,
                                                              direction_sensitivity=cortical_direction_sensitivity)
 

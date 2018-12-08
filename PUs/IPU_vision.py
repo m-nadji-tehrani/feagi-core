@@ -12,6 +12,7 @@ import os
 import struct
 import numpy as np
 import random
+from math import floor
 from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
@@ -130,23 +131,24 @@ class Filter:
             row_index += 1
         new_image = np.asarray(new_image, dtype=np.int)
 
-        print("Pre-normalized image:\n", new_image)
+        # print("Pre-normalized image:\n", new_image)
 
         # Normalize pixel values
         image_max_value = np.amax(new_image)
-        print("Max value:", image_max_value)
+        # print("Max value:", image_max_value)
         row_index = 0
         col_index = 0
         normalized_image = [[] for x in range(np.shape(new_image)[1])]
         for row in new_image:
             for row_item in row:
                 # 255 is the max intensity value that each image cell can be
-                normalized_value = row_item * 255 / image_max_value
+                normalized_value = floor(row_item * 255 / image_max_value)
                 normalized_image[row_index].append(normalized_value)
                 col_index += 1
             col_index = 0
             row_index += 1
-        normalized_image = np.asarray(normalized_image, dtype=np.int)
+        # print("NNN\n", normalized_image)
+        # normalized_image = np.asarray(normalized_image, dtype=np.int)
         return normalized_image
 
     @staticmethod
@@ -249,7 +251,7 @@ class Kernel:
         :param kernel_size:
         :return:
         """
-        print(">>> >>>", kernel_size, type(kernel_size))
+        # print(">>> >>>", kernel_size, type(kernel_size))
         if divmod(kernel_size, 2)[1] == 0:
             print("Error: Kernel size should only be Odd number!")
             return

@@ -80,7 +80,7 @@ class Brain:
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
             kernel_size = runtime_data.genome['blueprint'][cortical_area]['kernel_size']
-            print("Kernel size = ", kernel_size)
+            # print("Kernel size = ", kernel_size)
             # retina_start_time = datetime.now()
             # polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
             kernel = IPU_vision.Kernel()

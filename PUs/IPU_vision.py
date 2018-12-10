@@ -7,7 +7,7 @@
 # For test purposes only and need to see how it can be eliminated from code for efficiency
 """
 import sys
-sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/python3.6/site-packages/')
+sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 import os
 import struct
 import numpy as np

@@ -27,6 +27,7 @@ from configuration import runtime_data
 
 print("777", runtime_data.cortical_list)
 
+
 def vis_init():
     # plt.ion()
     print("Initializing plot...")

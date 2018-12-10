@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/python3.6/site-packages/')
+sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 from pymongo import MongoClient, DESCENDING, ASCENDING
 import random
 

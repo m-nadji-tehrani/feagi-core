@@ -521,8 +521,29 @@ def test_exit_process():
     print("Total test duration was: ", test_duration)
     print("-----------------------------------------------------------------------------------------------")
     print("Test statistics are as follows:\n")
+    # for test in test_params.test_stats:
+    #     print(test, "\n", test_params.test_stats[test])
+    print("-----------------------------------------------------------------------------------------------")
+    print("-----------------------------------------------------------------------------------------------")
+
+    print('               ', end='')
+    for _ in range(10):
+        print(_,'    ', end='')
+
+    print('\nExposed:       ', end='')
     for test in test_params.test_stats:
-        print(test, "\n", test_params.test_stats[test])
+        if 'exposed' in test:
+            print(test_params.test_stats[test], '    ', end='')
+    print('\nno_response :  ', end='')
+    for test in test_params.test_stats:
+        if 'no_response' in test:
+            print(test_params.test_stats[test], '    ', end='')
+    print('\ncomprehended : ', end='')
+    for test in test_params.test_stats:
+        if 'comprehended' in test:
+            print(test_params.test_stats[test], '    ', end='')
+
+    print("\n-----------------------------------------------------------------------------------------------")
     print("-----------------------------------------------------------------------------------------------")
 
     test_params.test_attempt_counter = 0

@@ -5,7 +5,7 @@ from misc import stats
 import sys
 from tty import setraw
 import termios
-sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv1/lib/python3.6/site-packages/')
+sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 import numpy as np
 from configuration import settings
 from PUs import IPU_vision
@@ -105,7 +105,7 @@ class Brain:
             ipu_vision_array = IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image)
 
             if runtime_data.parameters['Logs']['print_activation_counters']:
-                print("\n Photoreceptor activation  count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
+                print("\n Bipolar cell activation count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
             neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
@@ -225,3 +225,11 @@ class Brain:
             total_synapse_count += self.cortical_area_synapse_count(cortical_area)
 
         return total_synapse_count
+
+    @staticmethod
+    def terminate():
+        """To terminate the brain activities without recording the genome in database or recording any stat.
+        This function to be used when a brain instance is detected to be dysfunctional."""
+
+
+        return

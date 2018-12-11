@@ -9,6 +9,10 @@ sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/pytho
 
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
+from matplotlib import style
+from matplotlib import pyplot as plt
+
+style.use('dark_background')
 
 def vis_init():
     # plt.ion()
@@ -72,7 +76,7 @@ if __name__ == '__main__':
 
     vis_init()
 
-    def connectome_visualizer(cortical_area, neighbor_show='false', threshold=0):
+    def connectome_visualizer(cortical_area, neuron_show=False, neighbor_show=False, threshold=0):
         """Visualizes the Neurons in the connectome"""
 
         neuron_locations = []
@@ -91,11 +95,12 @@ if __name__ == '__main__':
             genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
             genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
 
-        for location in neuron_locations:
-            ax.scatter(location[0], location[1], location[2], c='b', marker='.')
+        if neuron_show:
+            for location in neuron_locations:
+                ax.scatter(location[0], location[1], location[2], c='b', marker='.')
 
         # Displays the Axon-Dendrite connections when True is set
-        if neighbor_show == 'true':
+        if neighbor_show:
             data = brain[cortical_area]
 
             # The following code scans thru connectome and extract locations for source and destination neurons
@@ -104,8 +109,7 @@ if __name__ == '__main__':
                     source_location = data[key]["location"]
                     for subkey in data[key]["neighbors"]:
                         if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
-                                data[key]['neighbors']
-                                [subkey]['postsynaptic_current'] > threshold):
+                                data[key]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
                             destination_location = data[subkey]["location"]
                             a = Arrow3D([source_location[0], destination_location[0]],
                                         [source_location[1], destination_location[1]],
@@ -113,14 +117,16 @@ if __name__ == '__main__':
                                         mutation_scale=10, lw=1, arrowstyle="->", color="r")
                             ax.add_artist(a)
         pylab.plt.show()
-        # pylab.plt.pause(0.01)
+        # pylab.plt.draw()
+        pylab.plt.pause(1)
         return
 
-    def connectome_visualizer_xxx(cortical_area_list, neighbor_show='false', threshold=0):
+    def connectome_visualizer_xxx(cortical_area_src, cortical_area_dst, neuron_show=False, neighbor_show=False, threshold=0):
         """Visualizes the Neurons in the connectome"""
 
         graph_constant = 200
         cortical_index = 0
+        cortical_area_list = [cortical_area_src, cortical_area_dst]
 
 
         x_max = max(genome['blueprint'][cortical_area_list[0]]["neuron_params"]["geometric_boundaries"]["x"][1]-
@@ -147,29 +153,30 @@ if __name__ == '__main__':
             ax.set_xlim(0, x_max)
             ax.set_ylim(0, y_max)
             ax.set_zlim(0, z_max)
-
-            for location in neuron_locations:
-                ax.scatter(location[0], location[1], location[2]+delta, c='b', marker='.')
-
-            # Displays the Axon-Dendrite connections when True is set
-            if neighbor_show == 'true':
-                data = brain[cortical_area]
-
-                # The following code scans thru connectome and extract locations for source and destination neurons
-                for key in data:
-                    if data[key]["neighbors"].keys():
-                        source_location = data[key]["location"]
-                        for subkey in data[key]["neighbors"]:
-                            if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
-                                    data[key]['neighbors']
-                                    [subkey]['postsynaptic_current'] > threshold):
-                                destination_location = data[subkey]["location"]
-                                a = Arrow3D([source_location[0], destination_location[0]],
-                                            [source_location[1], destination_location[1]],
-                                            [source_location[2], destination_location[2]],
-                                            mutation_scale=10, lw=1, arrowstyle="->", color="r")
-                                ax.add_artist(a)
+            if neuron_show:
+                for location in neuron_locations:
+                    ax.scatter(location[0], location[1], location[2]+delta, c='b', marker='.')
             cortical_index += 1
+
+        # Displays the Axon-Dendrite connections when True is set
+        if neighbor_show:
+            data = brain[cortical_area_src]
+
+            # The following code scans thru connectome and extract locations for source and destination neurons
+            for key in data:
+                if data[key]["neighbors"].keys():
+                    source_location = data[key]["location"]
+                    for subkey in data[key]["neighbors"]:
+                        if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area_dst) and (
+                                data[key]['neighbors']
+                                [subkey]['postsynaptic_current'] > threshold):
+                            destination_location = brain[cortical_area_dst][subkey]["location"]
+                            a = Arrow3D([source_location[0], destination_location[0]],
+                                        [source_location[1], destination_location[1]],
+                                        [source_location[2], destination_location[2]+graph_constant],
+                                        mutation_scale=10, lw=1, arrowstyle="->", color="r")
+                            ax.add_artist(a)
+
         pylab.plt.show()
         # pylab.plt.pause(0.01)
         return
@@ -179,5 +186,5 @@ if __name__ == '__main__':
         """Visualizes the connection between two cortical areas"""
 
 
-    # connectome_visualizer(sys.argv[2])
-    connectome_visualizer_xxx([sys.argv[2], sys.argv[3]])
+    connectome_visualizer(sys.argv[2], neuron_show=False, neighbor_show=True)
+    # connectome_visualizer_xxx(sys.argv[2], sys.argv[3], neuron_show=False, neighbor_show=True)

@@ -672,6 +672,16 @@ def auto_injector():
                 if injector_params.utf_flag:
                     injector_params.num_to_inject -= 1
                     data_feeder.image_feeder(injector_params.num_to_inject)
+                    #Saving brain to disk
+                    for cortical_area in runtime_data.cortical_list:
+                        with open(runtime_data.parameters['InitData']['connectome_path'] +
+                                  cortical_area + '.json', "r+") as data_file:
+                            data = runtime_data.brain[cortical_area]
+                            for _ in data:
+                                data[_]['activity_history'] = ""
+                            data_file.seek(0)  # rewind
+                            data_file.write(json.dumps(data, indent=3))
+                            data_file.truncate()
 
     if injector_params.img_flag:
         data_feeder.img_neuron_list_feeder()

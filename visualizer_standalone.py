@@ -3,7 +3,6 @@ This standalone module is intended to launch independent of the main brain appli
 contents of connectome and visualizing various aspects.
 """
 
-
 import sys
 sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
@@ -47,7 +46,12 @@ def vis_init():
 if __name__ == '__main__':
     import os
     import json
+    import time
     import matplotlib.pylab as pylab
+    import random
+
+
+    global connectome_file_path
 
     try:
         connectome_file_path = sys.argv[1]
@@ -66,25 +70,33 @@ if __name__ == '__main__':
     for key in blueprint:
         cortical_list.append(key)
 
-    brain = {}
-    for item in cortical_list:
-        if os.path.isfile(connectome_file_path + item + '.json'):
-            with open(connectome_file_path + item + '.json', "r") as data_file:
-                data = json.load(data_file)
-                brain[item] = data
-    print("Brain has been successfully loaded into memory...")
+    def load_brain():
+        global connectome_file_path
+        brain = {}
+        for item in cortical_list:
+            if os.path.isfile(connectome_file_path + item + '.json'):
+                with open(connectome_file_path + item + '.json', "r") as data_file:
+                    data = json.load(data_file)
+                    brain[item] = data
+        return brain
 
     vis_init()
+
 
     def connectome_visualizer(cortical_area, neuron_show=False, neighbor_show=False, threshold=0):
         """Visualizes the Neurons in the connectome"""
 
+        print('1')
+        cortical_file_path = connectome_file_path+cortical_area+'.json'
+        latest_modification_date = os.path.getmtime(cortical_file_path)
+        print('2')
+        brain = load_brain()
         neuron_locations = []
         for key in brain[cortical_area]:
             location_data = brain[cortical_area][key]["location"]
             location_data.append(brain[cortical_area][key]["cumulative_fire_count"])
             neuron_locations.append(location_data)
-
+        print('3')
         ax.set_xlim(
             genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][0],
             genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["x"][1])
@@ -94,32 +106,48 @@ if __name__ == '__main__':
         ax.set_zlim(
             genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][0],
             genome['blueprint'][cortical_area]["neuron_params"]["geometric_boundaries"]["z"][1])
+        print('4')
+        color = ["r", "b", "g", "c", "m", "y", "k", "w"]
 
-        if neuron_show:
-            for location in neuron_locations:
-                ax.scatter(location[0], location[1], location[2], c='b', marker='.')
+        # todo: Figure how to determine the delta between previous data-set and new one to solve cumulative plot issue
 
-        # Displays the Axon-Dendrite connections when True is set
-        if neighbor_show:
-            data = brain[cortical_area]
 
-            # The following code scans thru connectome and extract locations for source and destination neurons
-            for key in data:
-                if data[key]["neighbors"].keys():
-                    source_location = data[key]["location"]
-                    for subkey in data[key]["neighbors"]:
-                        if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
-                                data[key]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
-                            destination_location = data[subkey]["location"]
-                            a = Arrow3D([source_location[0], destination_location[0]],
-                                        [source_location[1], destination_location[1]],
-                                        [source_location[2], destination_location[2]],
-                                        mutation_scale=10, lw=1, arrowstyle="->", color="r")
-                            ax.add_artist(a)
-        pylab.plt.show()
-        # pylab.plt.draw()
-        pylab.plt.pause(1)
-        return
+        while 1==1:
+            new_modification_date = os.path.getmtime(cortical_file_path)
+            print('5')
+            if latest_modification_date != new_modification_date:
+                print('6')
+                print(new_modification_date)
+                random_color = color[random.randrange(0, len(color))]
+                latest_modification_date = new_modification_date
+                brain = load_brain()
+                if neuron_show:
+                    for location in neuron_locations:
+                        ax.scatter(location[0], location[1], location[2], c='b', marker='.')
+
+                # Displays the Axon-Dendrite connections when True is set
+                if neighbor_show:
+                    data = brain[cortical_area]
+
+                    # The following code scans thru connectome and extract locations for source and destination neurons
+                    for key in data:
+                        if data[key]["neighbors"].keys():
+                            source_location = data[key]["location"]
+                            for subkey in data[key]["neighbors"]:
+                                if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
+                                        data[key]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
+                                    destination_location = data[subkey]["location"]
+                                    a = Arrow3D([source_location[0], destination_location[0]],
+                                                [source_location[1], destination_location[1]],
+                                                [source_location[2], destination_location[2]],
+                                                mutation_scale=10, lw=1, arrowstyle="->", color=random_color)
+                                    ax.add_artist(a)
+                # pylab.plt.show()
+                pylab.plt.draw()
+                pylab.plt.pause(1)
+
+            time.sleep(5)
+
 
     def connectome_visualizer_xxx(cortical_area_src, cortical_area_dst, neuron_show=False, neighbor_show=False, threshold=0):
         """Visualizes the Neurons in the connectome"""
@@ -127,7 +155,7 @@ if __name__ == '__main__':
         graph_constant = 200
         cortical_index = 0
         cortical_area_list = [cortical_area_src, cortical_area_dst]
-
+        brain = load_brain()
 
         x_max = max(genome['blueprint'][cortical_area_list[0]]["neuron_params"]["geometric_boundaries"]["x"][1]-
                     genome['blueprint'][cortical_area_list[0]]["neuron_params"]["geometric_boundaries"]["x"][0],

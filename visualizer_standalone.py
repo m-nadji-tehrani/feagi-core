@@ -110,7 +110,7 @@ if __name__ == '__main__':
         color = ["r", "b", "g", "c", "m", "y", "k", "w"]
 
         # todo: Figure how to determine the delta between previous data-set and new one to solve cumulative plot issue
-
+        plot_data = []
 
         while 1==1:
             new_modification_date = os.path.getmtime(cortical_file_path)
@@ -120,6 +120,10 @@ if __name__ == '__main__':
                 print(new_modification_date)
                 random_color = color[random.randrange(0, len(color))]
                 latest_modification_date = new_modification_date
+                old_brain = brain
+
+                previous_plot_data = plot_data
+
                 brain = load_brain()
                 if neuron_show:
                     for location in neuron_locations:
@@ -129,19 +133,53 @@ if __name__ == '__main__':
                 if neighbor_show:
                     data = brain[cortical_area]
 
-                    # The following code scans thru connectome and extract locations for source and destination neurons
-                    for key in data:
-                        if data[key]["neighbors"].keys():
-                            source_location = data[key]["location"]
-                            for subkey in data[key]["neighbors"]:
-                                if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
-                                        data[key]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
+                    # todo: need to compile a matrix with all source and destinations first before plotting them all
+                    plot_data = []
+
+                    for neuron_id in data:
+                        if data[neuron_id]["neighbors"].keys():
+                            source_location = data[neuron_id]["location"]
+                            for subkey in data[neuron_id]["neighbors"]:
+                                if (data[neuron_id]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
+                                        data[neuron_id]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
                                     destination_location = data[subkey]["location"]
-                                    a = Arrow3D([source_location[0], destination_location[0]],
-                                                [source_location[1], destination_location[1]],
-                                                [source_location[2], destination_location[2]],
-                                                mutation_scale=10, lw=1, arrowstyle="->", color=random_color)
-                                    ax.add_artist(a)
+                                    plot_data.append([source_location, destination_location])
+
+                    # print(plot_data)
+
+                    # todo: build the delta between previous plot data and new plot data
+                    plot_delta = []
+                    for item in plot_data:
+                        if item not in previous_plot_data:
+                            plot_delta.append(item)
+
+
+                    # print("@@@@@@")
+                    # print(plot_delta)
+
+                    # The following code scans thru connectome and extract locations for source and destination neurons
+                    for item in plot_delta:
+                        source_location = item[0]
+                        destination_location = item[1]
+                        a = Arrow3D([source_location[0], destination_location[0]],
+                                    [source_location[1], destination_location[1]],
+                                    [source_location[2], destination_location[2]],
+                                    mutation_scale=10, lw=1, arrowstyle="->", color=random_color)
+                        ax.add_artist(a)
+
+
+                    # for key in data:
+                    #     if data[key]["neighbors"].keys():
+                    #         source_location = data[key]["location"]
+                    #         for subkey in data[key]["neighbors"]:
+                    #             if (data[key]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
+                    #                     data[key]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
+                    #                 destination_location = data[subkey]["location"]
+                    #                 a = Arrow3D([source_location[0], destination_location[0]],
+                    #                             [source_location[1], destination_location[1]],
+                    #                             [source_location[2], destination_location[2]],
+                    #                             mutation_scale=10, lw=1, arrowstyle="->", color=random_color)
+                    #                 ax.add_artist(a)
                 # pylab.plt.show()
                 pylab.plt.draw()
                 pylab.plt.pause(1)

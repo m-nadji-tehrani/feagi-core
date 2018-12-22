@@ -37,6 +37,9 @@ class Brain:
         vision_group = self.cortical_sub_group_members('vision_v1')
 
         image = mnist_labled_image[0]
+        if runtime_data.parameters['Logs']['print_mnist_img']:
+            print("Original MNIST image:\n", image)
+
         # print("*** Image label from MNIST was :", mnist_labled_image[1])
         # print("*** Image read from MNIST was :", image_[0])
         # print('image :\n ', np.array2string(image, max_line_width=np.inf))

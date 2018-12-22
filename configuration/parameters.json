@@ -24,15 +24,15 @@
     "ready_to_exit_burst": false,
     "logging_fire": false,
     "folder_backup": false,
-    "plasticity": true,
+    "plasticity": false,
     "capture_brain_activities": false,
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
     "save_fcl_to_db": false,
     "live_mode": true,
-    "use_static_genome": false,
+    "use_static_genome": true,
     "one_round": false,
-    "ipu_vision_dynamic_img_fetch": false
+    "ipu_vision_dynamic_img_fetch": true
   },
   "InitData": {
     "read_data_from_memory": true,
@@ -49,8 +49,8 @@
     "image_monochromization_threshold": 100
   },
   "Auto_injector":{
-    "variation_default": 2,
-    "exposure_default": 10,
+    "variation_default": 30,
+    "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
@@ -63,6 +63,7 @@
     "tester_status": false
   },
   "Logs":{
+    "print_mnist_img": true,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
@@ -70,7 +71,7 @@
     "print_cortical_activity_counters": true,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
-    "print_burst_info": false,
+    "print_burst_info": true,
     "print_brain_gen_activities": true,
     "print_comprehension_queue": true
   },

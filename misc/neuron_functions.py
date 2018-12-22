@@ -224,7 +224,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 neuron_fire(x[0], x[1])
 
             if runtime_data.parameters["Switches"]["plasticity"]:
+                plasticity_start_time = datetime.now()
                 neuro_plasticity()
+                print("    Plasticity took--",datetime.now()-plasticity_start_time)
             # print('>>++++>>>>>>>   Number under training: ', injector_params.num_to_inject)
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
@@ -861,7 +863,7 @@ def neuro_plasticity():
                         print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
                                                      "..........LTP between vision_memory and UTF8_memory occurred "
                               + settings.Bcolors.ENDC)
-                        print(init_data.fire_candidate_list)
+                        # print(init_data.fire_candidate_list)
                         print("*************________**************")
 
                     # print(

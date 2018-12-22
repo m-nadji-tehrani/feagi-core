@@ -6,3 +6,5 @@ grep "neighbor" vision_memory.json | grep -v "{}"
 
 # filter for memory formations contineously
 tail -f vision_memory.json | grep "neighbor" | grep -v "{}"
+
+

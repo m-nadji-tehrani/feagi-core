@@ -259,6 +259,11 @@ if __name__ == '__main__':
 #
 #          <<<<<<<   T O   D O   L I S T   >>>>>>>>
 #
+# todo: Find a way to cap different processes to not go out of hand
+# todo: 0. Run with multiple variation of each number
+# todo: 1. Run the system with a single genome and assess the deviation between fitness results
+# todo: 2. Run the same genome with different exposure variables
+# todo: Move more items to genome
 
 # Key problem on hand
 # todo: Need to reject bad genomes as soon as brain is generated and rebuild

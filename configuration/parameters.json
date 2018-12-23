@@ -24,15 +24,16 @@
     "ready_to_exit_burst": false,
     "logging_fire": false,
     "folder_backup": false,
-    "plasticity": false,
+    "memory_formation": true,
+    "plasticity": true,
     "capture_brain_activities": false,
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
     "save_fcl_to_db": false,
     "live_mode": true,
-    "use_static_genome": true,
+    "use_static_genome": false,
     "one_round": false,
-    "ipu_vision_dynamic_img_fetch": true
+    "ipu_vision_dynamic_img_fetch": false
   },
   "InitData": {
     "read_data_from_memory": true,

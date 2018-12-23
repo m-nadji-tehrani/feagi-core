@@ -6,3 +6,5 @@ brain = {}
 cortical_list = []
 genome_id = ""
 block_dic = {}
+upstream_neurons = {}
+memory_list = {}

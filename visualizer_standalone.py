@@ -154,8 +154,8 @@ if __name__ == '__main__':
                             plot_delta.append(item)
 
 
-                    # print("@@@@@@")
-                    # print(plot_delta)
+                    print("@@@@@@")
+                    print(plot_delta)
 
                     # The following code scans thru connectome and extract locations for source and destination neurons
                     for item in plot_delta:
@@ -164,7 +164,7 @@ if __name__ == '__main__':
                         a = Arrow3D([source_location[0], destination_location[0]],
                                     [source_location[1], destination_location[1]],
                                     [source_location[2], destination_location[2]],
-                                    mutation_scale=10, lw=1, arrowstyle="-", color=random_color)
+                                    mutation_scale=10, lw=1, arrowstyle="->", color=random_color)
                         ax.add_artist(a)
 
 

@@ -139,13 +139,14 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     runtime_data.genome_stats = genome_stats_queue.get()
     runtime_data.block_dic = block_dic_queue.get()
     runtime_data.genome_id = genome_id_queue.get()
-    runtime_data.memory_list = cortical_group_members('Memory')
+
     print('runtime_data.genome_id = ', runtime_data.genome_id)
 
     cortical_list = []
     for cortical_area in runtime_data.genome['blueprint']:
         cortical_list.append(cortical_area)
     runtime_data.cortical_list = cortical_list
+    runtime_data.memory_list = cortical_group_members('Memory')
 
     verbose = runtime_data.parameters["Switches"]["verbose"]
 
@@ -855,6 +856,7 @@ def form_memories():
                     if src_neuron != dst_neuron:
                         apply_plasticity(cortical_area=cortical_area,
                                          src_neuron=src_neuron, dst_neuron=dst_neuron)
+                        print("...")
 
     # Wiring Vision memory to UIF-8 memory
     for dst_neuron in init_data.fire_candidate_list:
@@ -863,6 +865,8 @@ def form_memories():
                 if src_neuron[0] == "vision_memory":
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                          dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+
+                    print("-.-.-")
 
                     if runtime_data.parameters["Logs"]["print_plasticity_info"]:
                         print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
@@ -893,6 +897,7 @@ def form_memories():
             synapse_to_utf = 0
             dst_neuron_list = []
             neighbor_list = dict(runtime_data.brain['vision_memory'][src_neuron]['neighbors'])
+            print("<><><>")
             for synapse_ in neighbor_list:
                 if runtime_data.brain['vision_memory'][src_neuron]['neighbors'][synapse_]['cortical_area'] \
                         == 'utf8_memory':

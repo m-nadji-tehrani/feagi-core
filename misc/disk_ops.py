@@ -81,14 +81,19 @@ def save_genome_to_disk():
     return
 
 
-def stage_genome(connectome_path):
+def stage_genome(connectome_path, dynamic_selection_mode=True):
     from evolutionary.genethesizer import select_a_genome
-    genome_data = select_a_genome()
+    if dynamic_selection_mode:
+        genome_data = select_a_genome()
+    else:
+        load_genome_in_memory(connectome_path, static=True)
+        genome_data = runtime_data.genome
     with open(connectome_path+'genome_tmp.json', "w") as staged_genome:
         # Saving changes to the connectome
         staged_genome.seek(0)  # rewind
         staged_genome.write(json.dumps(genome_data, indent=3))
         staged_genome.truncate()
+        print("\n*\n**\n***\ngenome_tmp.json was just staged...vvv ^^^ vvv\n***\n**\n*")
 
     print("<< << Genome has been staged in runtime repo >> >>")
 
@@ -112,6 +117,7 @@ def genome_handler(connectome_path):
         print("use_static_genome:", runtime_data.parameters["Switches"]["use_static_genome"])
         if runtime_data.parameters["Switches"]["use_static_genome"]:
             print("** ** ** ** ** ** ** ** **")
+            stage_genome(connectome_path, dynamic_selection_mode=False)
             load_genome_in_memory(connectome_path, static=True)
             print(settings.Bcolors.RED + ">> >> >> A static genome was used to generate the brain."
                   + settings.Bcolors.ENDC)

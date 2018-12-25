@@ -857,7 +857,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1000,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -917,7 +917,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1000,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -977,7 +977,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1000,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -1037,7 +1037,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1100,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -1097,7 +1097,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1000,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -1152,12 +1152,12 @@
           "orientation_selectivity_pattern" : "",
           "location" : "",
           "kernel_size" : 3,
-          "cortical_neuron_count" : 1403,
+          "cortical_neuron_count" : 1404,
           "location_generation_type" : "random",
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1000,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -1217,7 +1217,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 20,
-          "plasticity_constant" : 1,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 1000,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_1",
@@ -1274,7 +1274,7 @@
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
           "postsynaptic_current" : 150,
-          "plasticity_constant" : 0.5,
+          "plasticity_constant" : 0,
           "postsynaptic_current_max" : 200,
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_2",
@@ -1302,7 +1302,7 @@
                   28,
                   7
               ],
-              "geometric_boundaries" : {
+              "geometric_boundaries"  : {
                   "x" : [
                       0,
                       74
@@ -1383,7 +1383,7 @@
           "orientation_selectivity_pattern" : "",
           "location" : "",
           "kernel_size" : 7,
-          "cortical_neuron_count" : 50000,
+          "cortical_neuron_count" : 50001,
           "location_generation_type" : "random",
           "synapse_attractivity" : 10,
           "init_synapse_needed" : false,
@@ -1414,15 +1414,15 @@
               "geometric_boundaries" : {
                   "x" : [
                       0,
-                      200
+                      201
                   ],
                   "y" : [
                       0,
-                      200
+                      201
                   ],
                   "z" : [
                       0,
-                      200
+                      201
                   ]
               }
           }

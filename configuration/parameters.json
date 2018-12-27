@@ -50,14 +50,14 @@
     "image_monochromization_threshold": 100
   },
   "Auto_injector":{
-    "variation_default": 20,
+    "variation_default": 1,
     "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false
   },
   "Auto_tester":{
-    "variation_default": 1,
+    "variation_default": 10,
     "exposure_default": 50,
     "utf_default": 9,
     "burst_skip": 0,

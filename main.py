@@ -266,6 +266,9 @@ if __name__ == '__main__':
 # todo: Move more items to genome
 
 # Key problem on hand
+
+# todo: memory formation is not spread across the whole memory space
+
 # todo: Need to reject bad genomes as soon as brain is generated and rebuild
 
 # todo: only when the right portion of cell assembly is activated the rest should become active

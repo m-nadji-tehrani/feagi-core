@@ -236,7 +236,14 @@ def three_dim_growth(cortical_area):
     neuron_loc_list = location_collector(cortical_area)
     neuron_blk_list = []
     cortical_area_dim = []
+
+    # # todo: Come up with a permament solution for the following line
+    # if cortical_area == 'vision_memory':
+    #     runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'] = \
+    #         {'x': [0, 200], 'y': [0, 200], 'z': [0, 200]}
+
     geometric_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
+    print(cortical_area, geometric_boundaries)
     for coordinate in geometric_boundaries:
         cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
     block_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['block_boundaries']

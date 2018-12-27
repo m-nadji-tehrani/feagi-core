@@ -426,6 +426,7 @@ def auto_tester():
 
             # Variation counter
             test_params.variation_counter_actual -= 1
+            print('#-#-# Current test counter is ', test_params.variation_counter_actual)
             if test_params.img_flag:
                 data_feeder.image_feeder(test_params.num_to_inject)
 
@@ -668,6 +669,7 @@ def auto_injector():
             injector_params.exposure_counter_actual = injector_params.exposure_counter
             # Variation counter
             injector_params.variation_counter_actual -= 1
+            print('#.#.# Actual training counter value is ', injector_params.variation_counter_actual)
             if injector_params.img_flag:
                 data_feeder.image_feeder(injector_params.num_to_inject)
         if injector_params.utf_handler and injector_params.variation_counter_actual < 0:
@@ -856,7 +858,7 @@ def form_memories():
                     if src_neuron != dst_neuron:
                         apply_plasticity(cortical_area=cortical_area,
                                          src_neuron=src_neuron, dst_neuron=dst_neuron)
-                        print("...")
+                        # print("...")
 
     # Wiring Vision memory to UIF-8 memory
     for dst_neuron in init_data.fire_candidate_list:
@@ -866,7 +868,7 @@ def form_memories():
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                          dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
 
-                    print("-.-.-")
+                    # print("-.-.-")
 
                     if runtime_data.parameters["Logs"]["print_plasticity_info"]:
                         print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
@@ -1069,10 +1071,10 @@ def neuron_fire(cortical_area, neuron_id):
         #     print('--=+=--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
         #           runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
 
-        ### Partial implementation of neuro-plasticity associated with LTD or Long Term Depression
 
+        ### Partial implementation of neuro-plasticity associated with LTD or Long Term Depression
         pfcl = init_data.previous_fcl
-        if [dst_cortical_area, dst_neuron_id] in pfcl:
+        if [dst_cortical_area, dst_neuron_id] in pfcl and dst_cortical_area in ['vision_memory']:
             apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
                                  dst_cortical_area=dst_cortical_area, dst_neuron_id=dst_neuron_id,
                                  long_term_depression=True)

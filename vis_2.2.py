@@ -116,27 +116,25 @@ def build_plot_data(cortical_area, threshold):
                 if (data[neuron_id]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
                         data[neuron_id]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
                     destination_location = data[subkey]["location"]
-                    plot_data.append(source_location)
-                    plot_data.append(destination_location)
+                    if source_location not in plot_data:
+                        plot_data.append(source_location)
+                    if destination_location not in plot_data:
+                        plot_data.append(destination_location)
+    print(">>>-->>>")
+    i = 0
+    for _ in plot_data:
+        print(i,'', _)
+        i += 1
+    print("<<<--<<<")
     return plot_data
 
 
 
-def connectome_visualizer(cortical_area, threshold=0):
+def connectome_visualizer(cortical_area, threshold=0.1):
     """Visualizes the Neurons in the connectome"""
 
-    print('1')
     cortical_file_path = connectome_file_path + cortical_area + '.json'
     latest_modification_date = os.path.getmtime(cortical_file_path)
-    print('2')
-    # brain = load_brain()
-    # neuron_locations = []
-    # for key in brain[cortical_area]:
-    #     location_data = brain[cortical_area][key]["location"]
-    #     location_data.append(brain[cortical_area][key]["cumulative_fire_count"])
-    #     neuron_locations.append(location_data)
-    print('3')
-    print('4')
 
     # todo: Figure how to determine the delta between previous data-set and new one to solve cumulative plot issue
     plot_data = build_plot_data(cortical_area, threshold)
@@ -144,9 +142,9 @@ def connectome_visualizer(cortical_area, threshold=0):
 
     while 1 == 1:
         new_modification_date = os.path.getmtime(cortical_file_path)
-        print('5')
+        print('---')
         if latest_modification_date != new_modification_date:
-            print('6')
+            print('+++')
             print(new_modification_date)
 
             latest_modification_date = new_modification_date
@@ -159,21 +157,24 @@ def connectome_visualizer(cortical_area, threshold=0):
             plot_delta = []
             print("*************************************")
 
-            for item in plot_data:
-                if item not in previous_plot_data:
-                    plot_delta.append(item)
-                    print("The following were added:", item)
-                else:
-                    print("Item not found.")
+            if plot_data != previous_plot_data:
+                for item in plot_data:
+                    if item not in previous_plot_data:
+                        plot_delta.append(item)
+                        print("The following were added:", item)
+                    else:
+                        print("Item not found.")
 
-            print("plot_delta", plot_delta)
-            pos = np.array(plot_delta)
-            total_points = np.array(plot_data)
-            print(">>>>", pos.shape, total_points.shape)
-            if pos != []:
-                # print("POS:\n", pos)
-                v.pts = pos
-                v.animation()
+                print("plot_delta", plot_delta)
+                pos = np.array(plot_delta)
+                total_points = np.array(plot_data)
+                print(">>>>", pos.shape, total_points.shape)
+                if pos != []:
+                    # print("POS:\n", pos)
+                    v.pts = pos
+                    v.animation()
+            else:
+                print("Plot data has remained unchanged...")
 
         time.sleep(5)
 

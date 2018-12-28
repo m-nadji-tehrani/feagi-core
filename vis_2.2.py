@@ -72,80 +72,75 @@ class Visualizer(object):
         gz.translate(0, 0, -10)
         self.w.addItem(gz)
 
-        # self.n = 2
-        # self.m = 3
-        # self.y = np.linspace(0, 10, self.n)
-        # self.x = np.linspace(0, 10, self.m)
-        # self.phase = 0
+        self.pts = np.array([[-1, -1, -1], [5, 5, 5]])
 
-        pts = np.array([[-1, -1, -1], [5, 5, 5]])
-
-        for i in range(pts.shape[0]):
-            # yi = np.array([self.y[i]] * self.m)
-            # d = np.sqrt(self.x ** 2 + yi ** 2)
-            # z = 10 * np.cos(d + self.phase) / (d + 1)
-            # pts = np.vstack([self.x, yi, z]).transpose()
-
-            print('***', pts.shape)
-            self.traces[i] = gl.GLScatterPlotItem(pos=pts,
+        for i in range(50):
+            self.traces[i] = gl.GLScatterPlotItem(pos=self.pts,
                                                   size=np.array([10,30]),
                                                   color=np.array([[0.11,0.7, 1, 1],
                                                                   [0.5, 0.5, 0.5, 0.5]]),
                                                   pxMode=True)
             self.w.addItem(self.traces[i])
-            print('\n', self.traces[i])
-
-
 
 
     def start(self):
         if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
             QtGui.QApplication.instance().exec_()
 
-    # def set_plotdata(self, name, points, color, width):
-    #     self.traces[name].setData(pos=points, color=color, width=width)
-    #
-    # def update(self):
-    #     for i in range(self.n):
-    #         yi = np.array([self.y[i]] * self.m)
-    #         d = np.sqrt(self.x ** 2 + yi ** 2)
-    #         z = 10 * np.cos(d + self.phase) / (d + 1)
-    #         pts = np.vstack([self.x, yi, z]).transpose()
-    #         self.set_plotdata(
-    #             name=i, points=pts,
-    #             color=pg.glColor((i, self.n * 1.3)),
-    #             width=(i + 1) / 10
-    #         )
-    #         self.phase -= .003
+    def set_plotdata(self, name, points, color, size):
+        self.traces[name].setData(pos=points, color=color, size=size)
+
+    def update(self):
+        data_points = self.pts.shape[0]
+        for i in range(50):
+            self.set_plotdata(
+                name=i, points=self.pts,
+                color=pg.glColor((i, 100)),
+                size=3
+            )
 
     def animation(self):
         timer = QtCore.QTimer()
-        # timer.timeout.connect(self.update)
+        timer.timeout.connect(self.update)
         timer.start(100)
         self.start()
 
-def connectome_visualizer(cortical_area, neuron_show=False, neighbor_show=False, threshold=0):
+def build_plot_data(cortical_area, threshold):
+    plot_data = []
+    brain = load_brain()
+    data = brain[cortical_area]
+    for neuron_id in data:
+        if data[neuron_id]["neighbors"].keys():
+            source_location = data[neuron_id]["location"]
+            for subkey in data[neuron_id]["neighbors"]:
+                if (data[neuron_id]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
+                        data[neuron_id]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
+                    destination_location = data[subkey]["location"]
+                    plot_data.append(source_location)
+                    plot_data.append(destination_location)
+    return plot_data
+
+
+
+def connectome_visualizer(cortical_area, threshold=0):
     """Visualizes the Neurons in the connectome"""
 
     print('1')
     cortical_file_path = connectome_file_path + cortical_area + '.json'
     latest_modification_date = os.path.getmtime(cortical_file_path)
     print('2')
-    brain = load_brain()
-    neuron_locations = []
-    for key in brain[cortical_area]:
-        location_data = brain[cortical_area][key]["location"]
-        location_data.append(brain[cortical_area][key]["cumulative_fire_count"])
-        neuron_locations.append(location_data)
+    # brain = load_brain()
+    # neuron_locations = []
+    # for key in brain[cortical_area]:
+    #     location_data = brain[cortical_area][key]["location"]
+    #     location_data.append(brain[cortical_area][key]["cumulative_fire_count"])
+    #     neuron_locations.append(location_data)
     print('3')
     print('4')
-    color = ["r", "b", "g", "c", "m", "y", "k", "w"]
 
     # todo: Figure how to determine the delta between previous data-set and new one to solve cumulative plot issue
-    plot_data = []
-
-
-
+    plot_data = build_plot_data(cortical_area, threshold)
+    print("plot data size=", np.array(plot_data).shape)
 
     while 1 == 1:
         new_modification_date = os.path.getmtime(cortical_file_path)
@@ -153,43 +148,32 @@ def connectome_visualizer(cortical_area, neuron_show=False, neighbor_show=False,
         if latest_modification_date != new_modification_date:
             print('6')
             print(new_modification_date)
-            random_color = color[random.randrange(0, len(color))]
+
             latest_modification_date = new_modification_date
-            old_brain = brain
-
             previous_plot_data = plot_data
+            print("previous plot data size=", np.array(previous_plot_data).shape)
 
-            brain = load_brain()
+            plot_data = build_plot_data(cortical_area, threshold)
+            print("plot data size=", np.array(plot_data).shape)
 
-            # Displays the Axon-Dendrite connections when True is set
-            if neighbor_show:
-                data = brain[cortical_area]
+            plot_delta = []
+            print("*************************************")
 
-                # todo: need to compile a matrix with all source and destinations first before plotting them all
-                plot_data = []
+            for item in plot_data:
+                if item not in previous_plot_data:
+                    plot_delta.append(item)
+                    print("The following were added:", item)
+                else:
+                    print("Item not found.")
 
-                for neuron_id in data:
-                    if data[neuron_id]["neighbors"].keys():
-                        source_location = data[neuron_id]["location"]
-                        for subkey in data[neuron_id]["neighbors"]:
-                            if (data[neuron_id]['neighbors'][subkey]['cortical_area'] == cortical_area) and (
-                                    data[neuron_id]['neighbors'][subkey]['postsynaptic_current'] >= threshold):
-                                destination_location = data[subkey]["location"]
-                                plot_data.append(source_location)
-                                plot_data.append(destination_location)
-
-                # print(plot_data)
-
-                # todo: build the delta between previous plot data and new plot data
-                plot_delta = []
-                for item in plot_data:
-                    if item not in previous_plot_data:
-                        plot_delta.append(item)
-
+            print("plot_delta", plot_delta)
             pos = np.array(plot_delta)
+            total_points = np.array(plot_data)
+            print(">>>>", pos.shape, total_points.shape)
             if pos != []:
-                print("POS:\n", pos)
-                v.animation(pos)
+                # print("POS:\n", pos)
+                v.pts = pos
+                v.animation()
 
         time.sleep(5)
 
@@ -197,6 +181,6 @@ def connectome_visualizer(cortical_area, neuron_show=False, neighbor_show=False,
 # Start Qt event loop unless running in interactive mode.
 if __name__ == '__main__':
     v = Visualizer()
-    v.animation()
+    # v.animation()
 
-    # connectome_visualizer('vision_memory', neighbor_show=True, neuron_show=False)
+    connectome_visualizer('vision_memory')

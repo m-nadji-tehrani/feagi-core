@@ -54,8 +54,8 @@ class Visualizer(object):
         self.traces = dict()
         self.app = QtGui.QApplication(sys.argv)
         self.w = gl.GLViewWidget()
-        self.w.opts['distance'] = 40
-        self.w.setWindowTitle('pyqtgraph example: GLLinePlotItem')
+        self.w.opts['distance'] = 300
+        self.w.setWindowTitle('FEAGI')
         self.w.setGeometry(0, 110, 1920, 1080)
         self.w.show()
 
@@ -74,7 +74,7 @@ class Visualizer(object):
 
         self.pts = np.array([[-1, -1, -1], [5, 5, 5]])
 
-        for i in range(50):
+        for i in range(200):
             self.traces[i] = gl.GLScatterPlotItem(pos=self.pts,
                                                   size=np.array([10,30]),
                                                   color=np.array([[0.11,0.7, 1, 1],
@@ -92,7 +92,7 @@ class Visualizer(object):
 
     def update(self):
         data_points = self.pts.shape[0]
-        for i in range(50):
+        for i in range(data_points):
             self.set_plotdata(
                 name=i, points=self.pts,
                 color=pg.glColor((i, 100)),
@@ -159,13 +159,13 @@ def connectome_visualizer(cortical_area, threshold=0.1):
 
             if plot_data != previous_plot_data:
                 for item in plot_data:
-                    if item not in previous_plot_data:
+                    if item not in previous_plot_data and item not in plot_delta:
                         plot_delta.append(item)
-                        print("The following were added:", item)
-                    else:
-                        print("Item not found.")
 
-                print("plot_delta", plot_delta)
+                print("plot_delta:")
+                for _ in plot_delta:
+                        print(_)
+                print("^^^^^^^^^^")
                 pos = np.array(plot_delta)
                 total_points = np.array(plot_data)
                 print(">>>>", pos.shape, total_points.shape)
@@ -173,6 +173,7 @@ def connectome_visualizer(cortical_area, threshold=0.1):
                     # print("POS:\n", pos)
                     v.pts = pos
                     v.animation()
+                    print("Animation completed successfully")
             else:
                 print("Plot data has remained unchanged...")
 

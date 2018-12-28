@@ -38,7 +38,7 @@
     <SUITE FILE_PATH="coverage/My_Brian$auto_train.coverage" NAME="auto_train Coverage Results" MODIFIED="1503343535417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$graph_test.coverage" NAME="graph_test Coverage Results" MODIFIED="1503678167477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$IPU_vision.coverage" NAME="IPU_vision Coverage Results" MODIFIED="1503069559849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Brian$vis_2_2.coverage" NAME="vis_2.2 Coverage Results" MODIFIED="1545979282781" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$vis_2_2.coverage" NAME="vis_2.2 Coverage Results" MODIFIED="1545983153753" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$textinput.coverage" NAME="textinput Coverage Results" MODIFIED="1501515628948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$db_handler.coverage" NAME="db_handler Coverage Results" MODIFIED="1532806399722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/misc" />
     <SUITE FILE_PATH="coverage/My_Brian$OPU_utf8.coverage" NAME="OPU_utf8 Coverage Results" MODIFIED="1502472243019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -105,8 +105,8 @@
           <file leaf-file-name="vis_2.2.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/vis_2.2.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="739">
-                  <caret line="158" column="27" lean-forward="false" selection-start-line="158" selection-start-column="27" selection-end-line="158" selection-end-column="27" />
+                <state relative-caret-position="114">
+                  <caret line="76" column="26" lean-forward="false" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
                   <folding>
                     <element signature="e#63#101#0" expanded="true" />
                     <element signature="e#407#576#0" expanded="false" />
@@ -166,7 +166,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>print_seen_img</find>
       <find>print_polarized_img</find>
       <find>vision_mem</find>
       <find>print_plasticity_info</find>
@@ -196,6 +195,7 @@
       <find>disk_ops</find>
       <find>GLScatterPlotItem</find>
       <find>neuron_locations</find>
+      <find>[127, 107, 59]</find>
     </findStrings>
     <replaceStrings>
       <replace>toggle_verbose_mode</replace>
@@ -746,20 +746,6 @@
       <option name="presentableId" value="Default" />
       <updated>1463197491590</updated>
     </task>
-    <task id="LOCAL-00127" summary="Fitness calculation, genome selection">
-      <created>1530035259065</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1530035259065</updated>
-    </task>
-    <task id="LOCAL-00128" summary="Find fittest genome">
-      <created>1530038762915</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1530038762915</updated>
-    </task>
     <task id="LOCAL-00129" summary="The living brain!!">
       <created>1530052864164</created>
       <option name="number" value="00129" />
@@ -1089,7 +1075,21 @@
       <option name="project" value="LOCAL" />
       <updated>1545949566764</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <task id="LOCAL-00176" summary="Visualizer">
+      <created>1545979430233</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1545979430233</updated>
+    </task>
+    <task id="LOCAL-00177" summary="Visualizer">
+      <created>1545980851637</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1545980851637</updated>
+    </task>
+    <option name="localTasksCounter" value="178" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1107,7 +1107,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2479883" sideWeight="0.4978903" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30194473" sideWeight="0.4072039" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.057675242" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18962322" sideWeight="0.57241744" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18962322" sideWeight="0.57241744" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24915712" sideWeight="0.5927961" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28165534" sideWeight="0.48583484" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16824006" sideWeight="0.49235475" order="0" side_tool="false" content_ui="combo" />
@@ -1934,8 +1934,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vis_2.2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="739">
-          <caret line="158" column="27" lean-forward="false" selection-start-line="158" selection-start-column="27" selection-end-line="158" selection-end-column="27" />
+        <state relative-caret-position="114">
+          <caret line="76" column="26" lean-forward="false" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
           <folding>
             <element signature="e#63#101#0" expanded="true" />
             <element signature="e#407#576#0" expanded="false" />

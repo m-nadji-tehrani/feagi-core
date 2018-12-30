@@ -6,15 +6,9 @@
 from pyqtgraph.Qt import QtCore, QtGui
 import pyqtgraph.opengl as gl
 import pyqtgraph as pg
-import numpy as np
-import sys
-
 import os
 import json
-import time
-import random
 import numpy as np
-
 import sys
 sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
@@ -54,23 +48,28 @@ class Visualizer(object):
         self.traces = dict()
         self.app = QtGui.QApplication(sys.argv)
         self.w = gl.GLViewWidget()
-        self.w.opts['distance'] = 300
+        self.w.opts['distance'] = 200
+        self.w.orbit(-120,0)
         self.w.setWindowTitle('FEAGI')
-        self.w.setGeometry(0, 110, 1920, 1080)
+        # self.w.setGeometry(0, 110, 1920, 1080)
         self.w.show()
 
+        g = gl.GLGridItem()
+        g.scale(20, 20, 20)
+        self.w.addItem(g)
+
         # create the background grids
-        gx = gl.GLGridItem()
-        gx.rotate(90, 0, 1, 0)
-        gx.translate(-10, 0, 0)
-        self.w.addItem(gx)
-        gy = gl.GLGridItem()
-        gy.rotate(90, 1, 0, 0)
-        gy.translate(0, -10, 0)
-        self.w.addItem(gy)
-        gz = gl.GLGridItem()
-        gz.translate(0, 0, -10)
-        self.w.addItem(gz)
+        # gx = gl.GLGridItem()
+        # gx.rotate(90, 0, 1, 0)
+        # gx.translate(-10, 0, 0)
+        # self.w.addItem(gx)
+        # gy = gl.GLGridItem()
+        # gy.rotate(90, 1, 0, 0)
+        # gy.translate(0, -10, 0)
+        # self.w.addItem(gy)
+        # gz = gl.GLGridItem()
+        # gz.translate(0, 0, -10)
+        # self.w.addItem(gz)
 
         self.pts = np.array([[-1, -1, -1], [5, 5, 5]])
 
@@ -91,6 +90,7 @@ class Visualizer(object):
         self.traces[name].setData(pos=points, color=color, size=size)
 
     def update(self):
+        connectome_visualizer('vision_memory')
         data_points = self.pts.shape[0]
         for i in range(data_points):
             self.set_plotdata(
@@ -99,11 +99,6 @@ class Visualizer(object):
                 size=3
             )
 
-    def animation(self):
-        timer = QtCore.QTimer()
-        timer.timeout.connect(self.update)
-        timer.start(100)
-        self.start()
 
 def build_plot_data(cortical_area, threshold):
     plot_data = []
@@ -135,49 +130,43 @@ def connectome_visualizer(cortical_area, threshold=0.1):
 
     cortical_file_path = connectome_file_path + cortical_area + '.json'
     latest_modification_date = os.path.getmtime(cortical_file_path)
-
-    # todo: Figure how to determine the delta between previous data-set and new one to solve cumulative plot issue
     plot_data = build_plot_data(cortical_area, threshold)
-    print("plot data size=", np.array(plot_data).shape)
 
-    while 1 == 1:
-        new_modification_date = os.path.getmtime(cortical_file_path)
-        print('---')
-        if latest_modification_date != new_modification_date:
-            print('+++')
-            print(new_modification_date)
+    new_modification_date = os.path.getmtime(cortical_file_path)
+    print('---')
+    if latest_modification_date != new_modification_date:
+        print('+++')
+        print(new_modification_date)
 
-            latest_modification_date = new_modification_date
-            previous_plot_data = plot_data
-            print("previous plot data size=", np.array(previous_plot_data).shape)
+        latest_modification_date = new_modification_date
+        previous_plot_data = plot_data
+        print("previous plot data size=", np.array(previous_plot_data).shape)
 
-            plot_data = build_plot_data(cortical_area, threshold)
-            print("plot data size=", np.array(plot_data).shape)
+        plot_data = build_plot_data(cortical_area, threshold)
+        print("plot data size=", np.array(plot_data).shape)
 
-            plot_delta = []
-            print("*************************************")
+        plot_delta = []
+        print("*************************************")
 
-            if plot_data != previous_plot_data:
-                for item in plot_data:
-                    if item not in previous_plot_data and item not in plot_delta:
-                        plot_delta.append(item)
+        if plot_data != previous_plot_data:
+            for item in plot_data:
+                if item not in previous_plot_data and item not in plot_delta:
+                    plot_delta.append(item)
 
-                print("plot_delta:")
-                for _ in plot_delta:
-                        print(_)
-                print("^^^^^^^^^^")
-                pos = np.array(plot_delta)
-                total_points = np.array(plot_data)
-                print(">>>>", pos.shape, total_points.shape)
-                if pos != []:
-                    # print("POS:\n", pos)
-                    v.pts = pos
-                    v.animation()
-                    print("Animation completed successfully")
-            else:
-                print("Plot data has remained unchanged...")
+            print("plot_delta:")
+            for _ in plot_delta:
+                    print(_)
+            print("^^^^^^^^^^")
+            pos = np.array(plot_delta)
+            total_points = np.array(plot_data)
+            print(">>>>", pos.shape, total_points.shape)
+            if pos != []:
+                # print("POS:\n", pos)
+                v.pts = pos
+                print("Animation completed successfully")
+        else:
+            print("Plot data has remained unchanged...")
 
-        time.sleep(5)
 
 
 # Start Qt event loop unless running in interactive mode.
@@ -185,4 +174,8 @@ if __name__ == '__main__':
     v = Visualizer()
     # v.animation()
 
-    connectome_visualizer('vision_memory')
+    timer = QtCore.QTimer()
+    timer.timeout.connect(v.update)
+    timer.start(1000)
+    v.start()
+

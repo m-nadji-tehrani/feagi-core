@@ -279,17 +279,17 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         # Resetting burst detection list
         init_data.burst_detection_list = {}
 
-        # todo: *** Danger *** The following section could cause considerable memory expansion. Need to add limitations.
-        # Condition to save FCL data to disk
-        user_input_processing(user_input, user_input_param)
-        if runtime_data.parameters["Switches"]["capture_brain_activities"]:
-            init_data.fcl_history[init_data.burst_count] = init_data.fire_candidate_list
-
-        if runtime_data.parameters["Switches"]["save_fcl_to_disk"]:
-            with open('./fcl_repo/fcl.json', 'w') as fcl_file:
-                fcl_file.write(json.dumps(init_data.fire_candidate_list))
-                fcl_file.truncate()
-            sleep(0.5)
+        # # todo: *** Danger *** The following section could cause considerable memory expansion. Need to add limitations.
+        # # Condition to save FCL data to disk
+        # user_input_processing(user_input, user_input_param)
+        # if runtime_data.parameters["Switches"]["capture_brain_activities"]:
+        #     init_data.fcl_history[init_data.burst_count] = init_data.fire_candidate_list
+        #
+        # if runtime_data.parameters["Switches"]["save_fcl_to_disk"]:
+        #     with open('./fcl_repo/fcl.json', 'w') as fcl_file:
+        #         fcl_file.write(json.dumps(init_data.fire_candidate_list))
+        #         fcl_file.truncate()
+        #     sleep(0.5)
 
     # Push updated brain data back to the queue
     brain_queue.put(runtime_data.brain)
@@ -479,7 +479,7 @@ def update_test_stats():
 def test_comprehension_logic():
     global test_params
     # Comprehension logic
-    print("> ", runtime_data.parameters["Input"]["comprehended_char"], "> ", test_params.num_to_inject)
+    print("Comprehended char> ", runtime_data.parameters["Input"]["comprehended_char"], "  Injected char> ", test_params.num_to_inject)
     if runtime_data.parameters["Input"]["comprehended_char"] == '':
         test_params.no_response_counter += 1
     elif runtime_data.parameters["Input"]["comprehended_char"] == str(test_params.num_to_inject):
@@ -1226,12 +1226,12 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
                                                   + settings.Bcolors.ENDC)
                     ### End of plasticity implementation
 
-                    if cortical_area == 'utf8_memory':
-                        print('Following neuron being added to FCL:', dst_neuron_id[27:])
-                    if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-                        print(settings.Bcolors.UPDATE +
-                              "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
-                              + settings.Bcolors.ENDC)
+                    # if cortical_area == 'utf8_memory':
+                    #     print('Following neuron being added to FCL:', dst_neuron_id[27:])
+                    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
+                    #     print(settings.Bcolors.UPDATE +
+                    #           "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
+                    #           + settings.Bcolors.ENDC)
             # elif cortical_area == 'utf8_memory':
             #     print('SSSS SSS SS S ...  Neuron was prevented from being added to FCL due to Snooze condition')
 

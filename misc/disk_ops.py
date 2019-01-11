@@ -55,6 +55,7 @@ def save_genome_to_disk():
     genome_db["genome_id"] = genome_id
     genome_db["generation_date"] = str(datetime.now())
     genome_db["properties"] = genome
+    genome_db["parameters"] = runtime_data.parameters
 
     brain_fitness = calculate_brain_cognitive_fitness(runtime_data.genome_test_stats)
     genome_db["fitness"] = brain_fitness

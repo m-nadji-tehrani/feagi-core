@@ -8,7 +8,7 @@ import time
 import random
 import numpy as np
 import sys
-sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
+sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
 from vispy import app, visuals, scene
 

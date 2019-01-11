@@ -11,6 +11,8 @@ if __name__ == '__main__':
     from datetime import datetime
     import tkinter
     import sys
+    # sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
+
     from time import sleep
     import multiprocessing as mp
     from misc import disk_ops

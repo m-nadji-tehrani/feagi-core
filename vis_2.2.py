@@ -2,22 +2,29 @@
 """
     Animated 3D sinc function
 """
+import sys
+sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
 from pyqtgraph.Qt import QtCore, QtGui
+# from PyQt5 import QtCore, QtGui, QtWidgets
 import pyqtgraph.opengl as gl
 import pyqtgraph as pg
+import time
 import os
 import json
 import numpy as np
-import sys
-sys.path.append('/Users/mntehrani/Documents/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
 
-global connectome_file_path
+global connectome_file_path, cortical_area, latest_modification_date, plot_data, threshold, neuron_locations
+
+cortical_area = 'vision_memory'
+threshold = 0.1
+neuron_locations = []
+connectome_file_path = './connectome_4/'
+
 
 try:
     # connectome_file_path = sys.argv[1]
-    connectome_file_path = './connectome_4/'
     if connectome_file_path:
         print("Connectome path is:", connectome_file_path)
 except IndexError or NameError:
@@ -26,6 +33,11 @@ except IndexError or NameError:
 with open(connectome_file_path + 'genome_tmp.json', "r") as genome_file:
     genome_data = json.load(genome_file)
     genome = genome_data
+
+
+cortical_file_path = connectome_file_path + cortical_area + '.json'
+latest_modification_date = os.path.getmtime(cortical_file_path)
+
 
 blueprint = genome["blueprint"]
 cortical_list = []
@@ -42,42 +54,37 @@ def load_brain():
                 brain[item] = data
     return brain
 
+def load_cortical_data(cortical_area_name):
+    if os.path.isfile(connectome_file_path + cortical_area_name + '.json'):
+        with open(connectome_file_path + cortical_area_name + '.json', "r") as data_file:
+            return json.load(data_file)
+    else:
+        print("Error: (", cortical_area_name, ") is not a valid cortical area")
 
 class Visualizer(object):
     def __init__(self):
         self.traces = dict()
         self.app = QtGui.QApplication(sys.argv)
         self.w = gl.GLViewWidget()
-        self.w.opts['distance'] = 200
-        self.w.orbit(-120,0)
+        self.w.opts['distance'] = 450
+        self.w.orbit(-180, -15)
+        self.w.pan(100, 75, 50)
         self.w.setWindowTitle('FEAGI')
         # self.w.setGeometry(0, 110, 1920, 1080)
         self.w.show()
+        print("Camera position is:", self.w.cameraPosition())
 
         g = gl.GLGridItem()
         g.scale(20, 20, 20)
+        g.translate(200, 200, 0)
         self.w.addItem(g)
 
-        # create the background grids
-        # gx = gl.GLGridItem()
-        # gx.rotate(90, 0, 1, 0)
-        # gx.translate(-10, 0, 0)
-        # self.w.addItem(gx)
-        # gy = gl.GLGridItem()
-        # gy.rotate(90, 1, 0, 0)
-        # gy.translate(0, -10, 0)
-        # self.w.addItem(gy)
-        # gz = gl.GLGridItem()
-        # gz.translate(0, 0, -10)
-        # self.w.addItem(gz)
-
-        self.pts = np.array([[-1, -1, -1], [5, 5, 5]])
-
-        for i in range(200):
+        # self.pts = np.array(neuron_positions('vision_memory'))
+        self.pts = neuron_positions('vision_memory')
+        for i in range(self.pts.shape[0]):
             self.traces[i] = gl.GLScatterPlotItem(pos=self.pts,
-                                                  size=np.array([10,30]),
-                                                  color=np.array([[0.11,0.7, 1, 1],
-                                                                  [0.5, 0.5, 0.5, 0.5]]),
+                                                  color=(1, 1, 1, .3),
+                                                  size=0.1,
                                                   pxMode=True)
             self.w.addItem(self.traces[i])
 
@@ -90,7 +97,7 @@ class Visualizer(object):
         self.traces[name].setData(pos=points, color=color, size=size)
 
     def update(self):
-        connectome_visualizer('vision_memory')
+        connectome_data_fetcher(cortical_area)
         data_points = self.pts.shape[0]
         for i in range(data_points):
             self.set_plotdata(
@@ -98,6 +105,15 @@ class Visualizer(object):
                 color=pg.glColor((i, 100)),
                 size=3
             )
+
+
+def neuron_positions(cortical_area):
+    cortical_data = load_cortical_data(cortical_area)
+    positions = []
+    for neuron_id in cortical_data:
+        neuron_position = [cortical_data[neuron_id]['location']]
+        positions.append(neuron_position)
+    return np.array(positions)
 
 
 def build_plot_data(cortical_area, threshold):
@@ -123,14 +139,12 @@ def build_plot_data(cortical_area, threshold):
     print("<<<--<<<")
     return plot_data
 
+plot_data = build_plot_data(cortical_area, threshold)
 
-
-def connectome_visualizer(cortical_area, threshold=0.1):
+def connectome_data_fetcher(cortical_area, threshold=0.1):
     """Visualizes the Neurons in the connectome"""
 
-    cortical_file_path = connectome_file_path + cortical_area + '.json'
-    latest_modification_date = os.path.getmtime(cortical_file_path)
-    plot_data = build_plot_data(cortical_area, threshold)
+    global latest_modification_date, plot_data
 
     new_modification_date = os.path.getmtime(cortical_file_path)
     print('---')
@@ -167,15 +181,17 @@ def connectome_visualizer(cortical_area, threshold=0.1):
         else:
             print("Plot data has remained unchanged...")
 
+    time.sleep(5)
 
 
 # Start Qt event loop unless running in interactive mode.
 if __name__ == '__main__':
     v = Visualizer()
-    # v.animation()
+
+    # neuron_locations = neuron_positions('vision_memory')
 
     timer = QtCore.QTimer()
     timer.timeout.connect(v.update)
-    timer.start(1000)
+    timer.start()
     v.start()
 

@@ -50,7 +50,7 @@
     "image_monochromization_threshold": 100
   },
   "Auto_injector":{
-    "variation_default": 1,
+    "variation_default": 50,
     "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
@@ -58,23 +58,23 @@
   },
   "Auto_tester":{
     "variation_default": 10,
-    "exposure_default": 50,
+    "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false
   },
   "Logs":{
-    "print_mnist_img": true,
+    "print_mnist_img": false,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
-    "print_activation_counters": true,
-    "print_cortical_activity_counters": true,
+    "print_activation_counters": false,
+    "print_cortical_activity_counters": false,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
-    "print_burst_info": true,
-    "print_brain_gen_activities": true,
-    "print_comprehension_queue": true
+    "print_burst_info": false,
+    "print_brain_gen_activities": false,
+    "print_comprehension_queue": false
   },
   "Verbose":{
     "neuron_functions-neuron_update": false,

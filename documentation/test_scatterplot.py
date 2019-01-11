@@ -8,6 +8,7 @@ Demonstrates use of GLScatterPlotItem with rapidly-updating plots.
 # import initExample
 
 from pyqtgraph.Qt import QtCore, QtGui
+# from PyQt5 import QtCore, QtGui, QtWidgets
 import pyqtgraph.opengl as gl
 import numpy as np
 

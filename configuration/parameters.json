@@ -33,7 +33,10 @@
     "live_mode": true,
     "use_static_genome": false,
     "one_round": false,
-    "ipu_vision_dynamic_img_fetch": true
+    "ipu_vision_dynamic_img_fetch": false,
+    "capture_neuron_mp": false,
+    "capture_neuron_mp_db": false
+
   },
   "InitData": {
     "read_data_from_memory": true,
@@ -50,7 +53,7 @@
     "image_monochromization_threshold": 100
   },
   "Auto_injector":{
-    "variation_default": 50,
+    "variation_default": 10,
     "exposure_default": 40,
     "utf_default": 9,
     "burst_skip": 0,
@@ -64,7 +67,7 @@
     "tester_status": false
   },
   "Logs":{
-    "print_mnist_img": false,
+    "print_mnist_img": true,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,

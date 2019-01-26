@@ -18,7 +18,7 @@ from evolutionary import architect
 from configuration import runtime_data
 np.set_printoptions(threshold=np.nan)
 
-
+# todo: change MNIST class to have a switch for returning image from TEST vs. Training Db.
 class MNIST:
     def __init__(self):
         # global mnist_array, mnist_iterator
@@ -76,18 +76,20 @@ class MNIST:
             while img_lbl != int(num):
                 img_index = random.randrange(10, len(self.mnist_array), 1)
                 img_lbl, img_data = self.mnist_array[img_index]
-            print('>>>>>>', img_index)
+            print('>>> MNIST img id >>>', img_index)
             if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
                 print("The image for number %s has been fetched." %str(num))
             return img_data, img_lbl
         else:
-            hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
-            for img_index in hand_picked_list:
-                img_lbl, img_data = self.mnist_array[img_index]
-                if img_lbl == int(num):
-                    if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
-                        print("The image for number %s has been fetched." % str(num))
-                    return img_data, img_lbl
+            hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
+                                18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+            while img_lbl != int(num):
+                selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]
+                img_lbl, img_data = self.mnist_array[selected_img]
+            if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
+                print("The image for number %s has been fetched." % str(num))
+            return img_data, img_lbl
+
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function

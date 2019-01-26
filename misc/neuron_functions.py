@@ -12,13 +12,14 @@ neuron_neighbors: Reruns the list of neighbors for a given neuron
 import os
 import glob
 import pickle
-import json
+import json, csv
 from datetime import datetime
 from collections import deque
 from time import sleep
 from PUs import OPU_utf8, IPU_utf8
 from . import brain_functions
 from misc import disk_ops
+from misc import db_handler
 from configuration import settings, runtime_data
 from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
@@ -43,6 +44,7 @@ class InitData:
         self.training_neuron_list_utf = []
         self.training_neuron_list_img = []
         self.empty_fcl_counter = 0
+        self.neuron_mp_list = []
 
 
 class InjectorParams:
@@ -126,6 +128,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     init_data = InitData()
     injector_params = InjectorParams()
     test_params = TesterParams()
+    mongo = db_handler.MongoManagement()
 
     if not init_data.brain_is_running:
         toggle_brain_status()
@@ -153,8 +156,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
     if runtime_data.parameters["Switches"]["capture_brain_activities"]:
         init_data.fcl_history = {}
 
-    # todo: add a logic to exit bust engine if during the training mulriple consequtive burst are empty
+    # todo: add a logic to exit bust engine if during the training multiple consecutive burst are empty
     DataFeeder()
+
+    if runtime_data.parameters["Switches"]["capture_neuron_mp"]:
+        with open(runtime_data.parameters['InitData']['connectome_path'] + '/neuron_mp.csv', 'w') as neuron_mp_file:
+            neuron_mp_writer = csv.writer(neuron_mp_file, delimiter=',')
+            neuron_mp_writer.writerow(('burst_number', 'cortical_layer', 'neuron_id', 'membrane_potential'))
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
         burst_start_time = datetime.now()
@@ -227,9 +235,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
             # Forming memories through creation of cell assemblies
             if runtime_data.parameters["Switches"]["memory_formation"]:
-                memory_formation_start_time = datetime.now()
+                # memory_formation_start_time = datetime.now()
                 form_memories()
-                print("    Memory formation took--",datetime.now()-memory_formation_start_time)
+                # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
             # print('>>++++>>>>>>>   Number under training: ', injector_params.num_to_inject)
 
             if verbose:
@@ -290,6 +298,29 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         #         fcl_file.write(json.dumps(init_data.fire_candidate_list))
         #         fcl_file.truncate()
         #     sleep(0.5)
+
+        # todo: This is the part to capture the neuron membrane potential values in a file, still need to figure how
+        if runtime_data.parameters["Switches"]["capture_neuron_mp"]:
+            with open(runtime_data.parameters['InitData']['connectome_path'] + '/neuron_mp.csv', 'a') as neuron_mp_file:
+                neuron_mp_writer = csv.writer(neuron_mp_file,  delimiter=',')
+                new_data = []
+                for fcl_item in init_data.fire_candidate_list:
+                    new_content = (init_data.burst_count, fcl_item[0], fcl_item[1], runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"])
+                    new_data.append(new_content)
+                neuron_mp_writer.writerows(new_data)
+
+
+        if runtime_data.parameters["Switches"]["capture_neuron_mp_db"]:
+            new_data = []
+            for fcl_item in init_data.fire_candidate_list:
+                new_content = (init_data.burst_count, fcl_item[0], fcl_item[1],
+                               runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"])
+                new_data.append(new_content)
+                mongo.inset_membrane_potentials(new_content)
+
+
+
+
 
     # Push updated brain data back to the queue
     brain_queue.put(runtime_data.brain)
@@ -1003,6 +1034,9 @@ def update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_
     if src_neuron_id not in runtime_data.upstream_neurons[dst_cortical_area][dst_neuron_id][src_cortical_area]:
         runtime_data.upstream_neurons[dst_cortical_area][dst_neuron_id][src_cortical_area].add(src_neuron_id)
 
+def activation_function(postsynaptic_current):
+    # print("PSC: ", postsynaptic_current)
+    return postsynaptic_current
 
 def neuron_fire(cortical_area, neuron_id):
     """This function initiate the firing of Neuron in a given cortical area"""
@@ -1062,8 +1096,11 @@ def neuron_fire(cortical_area, neuron_id):
         # if dst_cortical_area == 'utf8_memory':
         #         print('--==--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
         #               runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
+
+        postsynaptic_current = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
+        neuron_output = activation_function(postsynaptic_current)
         neuron_update(dst_cortical_area, dst_neuron_id,
-                      runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+                      neuron_output,
                       neighbor_count)
         # Time overhead for the following function is about 2ms per each burst cycle
         update_upstream_db(cortical_area, neuron_id, dst_cortical_area, dst_neuron_id)
@@ -1169,6 +1206,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
 
+
     runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
 
     # print("membrane_potential:", destination,
@@ -1180,7 +1218,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     #           + settings.Bcolors.ENDC)
 
     # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # todo: Need to figure how to deal with Activation function and firing threshold
+    # todo: Need to figure how to deal with Activation function and firing threshold (belongs to fire func)
     # The following will evaluate if the destination neuron is ready to fire and if so adds it to fire_candidate_list
     # if cortical_area == 'utf8_memory':
     #     print('&@@@: Testing fire eligibility', dst_neuron_id[27:], 'mp=',

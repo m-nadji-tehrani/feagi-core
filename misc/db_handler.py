@@ -11,11 +11,15 @@ class MongoManagement:
         self.db = self.client['metis']
         self.collection_genome = self.db['genomes']
         self.collection_test_stats = self.db['test_stats']
+        self.collection_membrane_potentials = self.db['membrane_potentials']
         self.collection_neuron_activities = self.db['neuron_activities']
         # print(">> Connected successfully to database.")
 
     def insert_test_stats(self, stats_data):
         self.collection_test_stats.insert_one(stats_data)
+
+    def inset_membrane_potentials(self, membrane_potential_data):
+        self.collection_membrane_potentials.insert_one(membrane_potential_data)
 
     def insert_neuron_activity(self, fcl_data):
         self.collection_neuron_activities.insert_one(fcl_data)

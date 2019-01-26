@@ -215,7 +215,9 @@ def mutate(genome):
     cortical_list = []
     for key in blueprint:
         # Condition to black-list select regions from mutation such as UTF
-        if genome["blueprint"][key]["group_id"] == 'vision':
+        if genome["blueprint"][key]["group_id"] == 'vision' or \
+                (genome["blueprint"][key]["group_id"] == 'Memory' and
+                 genome["blueprint"][key]["sub_group_id"] == 'vision'):
             cortical_list.append(key)
 
     for cortical_area in cortical_list:

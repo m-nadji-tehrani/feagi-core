@@ -17,7 +17,7 @@ def select_a_genome():
     5. Mutate genome with highest fitness
     6. TBD
     """
-    random_selector = random.randrange(1, 6, 1)
+    random_selector = random.randrange(1, 10, 1)
 
     if random_selector == 1:
         print("Crossover is happening...")
@@ -35,7 +35,7 @@ def select_a_genome():
         print("The genome with highest fitness so far has been selected...")
         genome = highest_fitness_genome()
 
-    elif random_selector == 5:
+    elif random_selector >= 5:
         print("Gene mutation has occurred...")
         genome = mutate(highest_fitness_genome())
 
@@ -219,6 +219,8 @@ def mutate(genome):
                 (genome["blueprint"][key]["group_id"] == 'Memory' and
                  genome["blueprint"][key]["sub_group_id"] == 'vision'):
             cortical_list.append(key)
+
+    print("#@#@#@# $$$ Mutation is about to take place on the following cortical regions:\n", cortical_list)
 
     for cortical_area in cortical_list:
         genome = GeneModifier.change_consecutive_fire_cnt_max(genome, cortical_area, factor_1)

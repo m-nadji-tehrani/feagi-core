@@ -31,7 +31,7 @@
     "save_fcl_to_disk": false,
     "save_fcl_to_db": false,
     "live_mode": true,
-    "use_static_genome": true,
+    "use_static_genome": false,
     "one_round": false,
     "ipu_vision_dynamic_img_fetch": false,
     "capture_neuron_mp": false,
@@ -54,7 +54,7 @@
   },
   "Auto_injector":{
     "variation_default": 10,
-    "exposure_default": 40,
+    "exposure_default": 4,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false

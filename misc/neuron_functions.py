@@ -200,11 +200,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
 
 
-
-
-
-
-
         # Add a delay if fire_candidate_list is empty
         if len(init_data.fire_candidate_list) < 1:
             sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
@@ -704,32 +699,34 @@ def auto_injector():
         injection_exit_process()
 
     # Counter logic
-    if injector_params.variation_handler and not injection_exit_condition():
+    if injector_params.utf_handler and not injection_exit_condition():
         if injector_params.exposure_counter_actual < 1:
             injector_params.exposure_counter_actual = injector_params.exposure_counter
-            # Variation counter
-            injector_params.variation_counter_actual -= 1
-            print('#.#.# Actual training counter value is ', injector_params.variation_counter_actual)
+            # UTF counter
+            injector_params.utf_counter_actual -= 1
+            injector_params.num_to_inject -= 1
+            data_feeder.image_feeder(injector_params.num_to_inject)
+            # Saving brain to disk
+            for cortical_area in runtime_data.cortical_list:
+                with open(runtime_data.parameters['InitData']['connectome_path'] +
+                          cortical_area + '.json', "r+") as data_file:
+                    data = runtime_data.brain[cortical_area]
+                    for _ in data:
+                        data[_]['activity_history'] = ""
+                    data_file.seek(0)  # rewind
+                    data_file.write(json.dumps(data, indent=3))
+                    data_file.truncate()
             if injector_params.img_flag:
                 data_feeder.image_feeder(injector_params.num_to_inject)
-        if injector_params.utf_handler and injector_params.variation_counter_actual < 0:
+        if injector_params.utf_counter_actual < 1:
                 injector_params.exposure_counter_actual = injector_params.exposure_counter
-                injector_params.variation_counter_actual = injector_params.variation_counter
-                # UTF counter
-                injector_params.utf_counter_actual -= 1
-                if injector_params.utf_flag:
-                    injector_params.num_to_inject -= 1
-                    data_feeder.image_feeder(injector_params.num_to_inject)
-                    #Saving brain to disk
-                    for cortical_area in runtime_data.cortical_list:
-                        with open(runtime_data.parameters['InitData']['connectome_path'] +
-                                  cortical_area + '.json', "r+") as data_file:
-                            data = runtime_data.brain[cortical_area]
-                            for _ in data:
-                                data[_]['activity_history'] = ""
-                            data_file.seek(0)  # rewind
-                            data_file.write(json.dumps(data, indent=3))
-                            data_file.truncate()
+                injector_params.utf_counter_actual = injector_params.utf_counter
+                # Variation counter
+                injector_params.variation_counter_actual -= 1
+                injector_params.utf_counter_actual = runtime_data.parameters["Auto_injector"]["utf_default"]
+                injector_params.num_to_inject = injector_params.utf_counter_actual + 1
+                print('#.#.# Actual training variation counter value is ', injector_params.variation_counter_actual)
+
 
     if injector_params.img_flag:
         data_feeder.img_neuron_list_feeder()

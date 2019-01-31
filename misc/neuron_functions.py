@@ -199,6 +199,12 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
             disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
 
+
+
+
+
+
+
         # Add a delay if fire_candidate_list is empty
         if len(init_data.fire_candidate_list) < 1:
             sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
@@ -280,6 +286,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 runtime_data.parameters["Input"]["comprehended_char"] = item[0]
                 print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character: <<< %s  >>>"
                       % runtime_data.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
+                # In the event that the comprehended UTF character is not matching the injected one pain is triggered
+                if runtime_data.parameters["Input"]["comprehended_char"] != str(init_data.labeled_image[1]):
+                    trigger_pain()
             else:
                 if list_length >= 2:
                     runtime_data.parameters["Input"]["comprehended_char"] = ''
@@ -891,11 +900,17 @@ def form_memories():
                                          src_neuron=src_neuron, dst_neuron=dst_neuron)
                         # print("...")
 
+    # Detecting pain
+    pain_flag = False
+    for src_neuron in set([i[1] for i in init_data.fire_candidate_list if i[0] == 'pain']):
+        pain_flag = True
+        print('^%@! Pain flag is set!')
+
     # Wiring Vision memory to UIF-8 memory
     for dst_neuron in init_data.fire_candidate_list:
         if dst_neuron[0] == "utf8_memory":
             for src_neuron in init_data.previous_fcl:
-                if src_neuron[0] == "vision_memory":
+                if src_neuron[0] == "vision_memory" and not pain_flag:
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                          dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
 
@@ -917,6 +932,20 @@ def form_memories():
                     # for dst_neuron_id in dst_neuron_id_list:
                     #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
                     #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+
+                if src_neuron[0] == "vision_memory" and pain_flag:
+                    apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
+                                         dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1],
+                                         long_term_depression=True)
+
+                    # print("-.-.-")
+
+                    if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                        print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
+                                                     "..........LTD between vision_memory and UTF8_memory occurred "
+                              + settings.Bcolors.ENDC)
+                        # print(init_data.fire_candidate_list)
+                        print("*************________**************")
 
     # Counting number of active UTF8_memory cells in the fire_candidate_list
     utf_mem_in_fcl = []
@@ -1488,3 +1517,16 @@ def reset_cumulative_counter_instances():
         for neuron in runtime_data.brain[cortical_area]:
             runtime_data.brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
     return
+
+def trigger_pain():
+
+    print("*******************************************************************")
+    print("*******************************************************************")
+    print("*********************                                 *************")
+    print("*******************    Pain -- Pain -- Pain -- Pain     ***********")
+    print("*********************                                 *************")
+    print("*******************************************************************")
+    print("*******************************************************************")
+
+    for neuron in runtime_data.brain['pain']:
+        init_data.fire_candidate_list.append(['pain', neuron])

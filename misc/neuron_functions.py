@@ -56,11 +56,11 @@ class InjectorParams:
         self.exposure_handler = True
         self.utf_handler = True
         self.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
-        self.exposure_counter = runtime_data.parameters["Auto_injector"]["exposure_default"]
-        self.utf_counter = runtime_data.parameters["Auto_injector"]["utf_default"]
+        self.exposure_default = runtime_data.parameters["Auto_injector"]["exposure_default"]
+        self.utf_default = runtime_data.parameters["Auto_injector"]["utf_default"]
         self.variation_counter_actual = self.variation_counter
-        self.exposure_counter_actual = self.exposure_counter
-        self.utf_counter_actual = self.utf_counter
+        self.exposure_counter_actual = self.exposure_default
+        self.utf_counter_actual = self.utf_default
         self.injection_start_time = datetime.now()
         self.num_to_inject = ''
         self.utf_to_inject = ''
@@ -76,11 +76,11 @@ class TesterParams:
         self.exposure_handler = True
         self.utf_handler = True
         self.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
-        self.exposure_counter = runtime_data.parameters["Auto_tester"]["exposure_default"]
-        self.utf_counter = runtime_data.parameters["Auto_tester"]["utf_default"]
+        self.exposure_default = runtime_data.parameters["Auto_tester"]["exposure_default"]
+        self.utf_default = runtime_data.parameters["Auto_tester"]["utf_default"]
         self.variation_counter_actual = self.variation_counter
-        self.exposure_counter_actual = self.exposure_counter
-        self.utf_counter_actual = self.utf_counter
+        self.exposure_counter_actual = self.exposure_default
+        self.utf_counter_actual = self.utf_default
         self.test_start_time = datetime.now()
         self.num_to_inject = ''
         self.test_mode = ''
@@ -386,9 +386,9 @@ def test_manager(test_mode, test_param):
             test_params.variation_handler = True
             test_params.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
             test_params.variation_counter_actual = runtime_data.parameters["Auto_tester"]["variation_default"]
-            test_params.utf_counter = runtime_data.parameters["Auto_tester"]["utf_default"]
+            test_params.utf_default = runtime_data.parameters["Auto_tester"]["utf_default"]
             test_params.utf_counter_actual = runtime_data.parameters["Auto_tester"]["utf_default"]
-            test_params.num_to_inject = test_params.utf_counter
+            test_params.num_to_inject = test_params.utf_default
 
         elif test_mode == 't2':
             test_params.test_mode = "t2"
@@ -398,7 +398,7 @@ def test_manager(test_mode, test_param):
             test_params.variation_handler = True
             test_params.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
             test_params.variation_counter_actual = runtime_data.parameters["Auto_tester"]["variation_default"]
-            test_params.utf_counter = -1
+            test_params.utf_default = -1
             test_params.utf_counter_actual = -1
             test_params.num_to_inject = int(test_param)
             print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
@@ -455,7 +455,7 @@ def auto_tester():
     # Counter logic
     if test_params.variation_handler:
         if test_params.exposure_counter_actual < 1 and not test_exit_condition():
-            test_params.exposure_counter_actual = test_params.exposure_counter
+            test_params.exposure_counter_actual = test_params.exposure_default
             test_params.test_attempt_counter += 1
             test_comprehension_logic()
 
@@ -468,7 +468,7 @@ def auto_tester():
         if test_params.utf_handler \
                 and test_params.variation_counter_actual < 0  \
                 and not test_exit_condition():
-                test_params.exposure_counter_actual = test_params.exposure_counter
+                test_params.exposure_counter_actual = test_params.exposure_default
                 test_params.variation_counter_actual = test_params.variation_counter
                 test_params.test_attempt_counter = 0
                 test_params.comprehension_counter = 0
@@ -478,9 +478,9 @@ def auto_tester():
                 if test_params.utf_flag:
                     test_params.num_to_inject -= 1
 
-    # print(test_params.utf_counter,
+    # print(test_params.utf_default,
     #       test_params.variation_counter,
-    #       test_params.exposure_counter)
+    #       test_params.exposure_default)
     #
     # print(test_params.utf_counter_actual,
     #       test_params.variation_counter_actual,
@@ -620,9 +620,9 @@ def injection_manager(injection_mode, injection_param):
             injector_params.variation_handler = True
             injector_params.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
             injector_params.variation_counter_actual = runtime_data.parameters["Auto_injector"]["variation_default"]
-            injector_params.utf_counter = runtime_data.parameters["Auto_injector"]["utf_default"]
+            injector_params.utf_default = runtime_data.parameters["Auto_injector"]["utf_default"]
             injector_params.utf_counter_actual = runtime_data.parameters["Auto_injector"]["utf_default"]
-            injector_params.num_to_inject = injector_params.utf_counter
+            injector_params.num_to_inject = injector_params.utf_default
 
         elif injection_mode == 'l2':
             injector_params.injection_mode = "l2"
@@ -632,7 +632,7 @@ def injection_manager(injection_mode, injection_param):
             injector_params.variation_handler = True
             injector_params.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
             injector_params.variation_counter_actual = runtime_data.parameters["Auto_injector"]["variation_default"]
-            injector_params.utf_counter = 1
+            injector_params.utf_default = 1
             injector_params.utf_counter_actual = 1
             injector_params.num_to_inject = int(injection_param)
             print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
@@ -645,7 +645,7 @@ def injection_manager(injection_mode, injection_param):
             injector_params.utf_flag = False
             injector_params.variation_counter = 0
             injector_params.variation_counter_actual = 0
-            injector_params.utf_counter = -1
+            injector_params.utf_default = -1
             injector_params.utf_counter_actual = -1
             injector_params.num_to_inject = injection_param
 
@@ -658,7 +658,7 @@ def injection_manager(injection_mode, injection_param):
             injector_params.utf_to_inject = injection_param
             injector_params.variation_counter = 0
             injector_params.variation_counter_actual = 0
-            injector_params.utf_counter = -1
+            injector_params.utf_default = -1
             injector_params.utf_counter_actual = -1
 
         else:
@@ -672,6 +672,7 @@ def injection_manager(injection_mode, injection_param):
 
 def auto_injector():
     global injector_params
+
     data_feeder = DataFeeder()
     if injector_params.injection_has_begun:
         # Beginning of a injection process
@@ -681,54 +682,47 @@ def auto_injector():
         if injector_params.img_flag:
             data_feeder.image_feeder(injector_params.num_to_inject)
 
-    # print("Exposure, Variation, and UTF counters actual values are: ",
-    #       injector_params.exposure_counter_actual,
-    #       injector_params.variation_counter_actual,
-    #       injector_params.utf_counter_actual)
-
     # Exposure counter
     injector_params.exposure_counter_actual -= 1
 
-    # print("Exposure counter actual: ", injector_params.exposure_counter_actual)
-    # print("Variation counter actual: ", injector_params.variation_counter_actual,
-    #       injector_params.variation_handler)
-    # print("UTF counter actual: ", injector_params.utf_counter_actual, injector_params.utf_handler)
+    print('### ', injector_params.variation_counter_actual, injector_params.utf_counter_actual, injector_params.exposure_counter_actual, ' ###')
 
-    # Exit condition
-    if injection_exit_condition():
+    # Check if exit condition has been met
+    if injection_exit_condition() or injector_params.variation_counter_actual < 1:
         injection_exit_process()
 
     # Counter logic
-    if injector_params.utf_handler and not injection_exit_condition():
-        if injector_params.exposure_counter_actual < 1:
-            injector_params.exposure_counter_actual = injector_params.exposure_counter
-            # UTF counter
-            injector_params.utf_counter_actual -= 1
-            injector_params.num_to_inject -= 1
-            data_feeder.image_feeder(injector_params.num_to_inject)
-            # Saving brain to disk
-            for cortical_area in runtime_data.cortical_list:
-                with open(runtime_data.parameters['InitData']['connectome_path'] +
-                          cortical_area + '.json', "r+") as data_file:
-                    data = runtime_data.brain[cortical_area]
-                    for _ in data:
-                        data[_]['activity_history'] = ""
-                    data_file.seek(0)  # rewind
-                    data_file.write(json.dumps(data, indent=3))
-                    data_file.truncate()
-            if injector_params.img_flag:
-                data_feeder.image_feeder(injector_params.num_to_inject)
-        if injector_params.utf_counter_actual < 1:
-                injector_params.exposure_counter_actual = injector_params.exposure_counter
-                injector_params.utf_counter_actual = injector_params.utf_counter
-                # Variation counter
-                injector_params.variation_counter_actual -= 1
-                injector_params.utf_counter_actual = runtime_data.parameters["Auto_injector"]["utf_default"]
-                injector_params.num_to_inject = injector_params.utf_counter_actual + 1
-                print('#.#.# Actual training variation counter value is ', injector_params.variation_counter_actual)
+    if injector_params.exposure_counter_actual < 1:
+        # Resetting exposure counter
+        injector_params.exposure_counter_actual = injector_params.exposure_default
+        # UTF counter
+        injector_params.utf_counter_actual -= 1
+        injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
+        print("injector_params.num_to_inject: ", injector_params.num_to_inject)
 
+        # Saving brain to disk
+        # todo: assess the impact of the following disk operation
+        for cortical_area in runtime_data.cortical_list:
+            with open(runtime_data.parameters['InitData']['connectome_path'] +
+                      cortical_area + '.json', "r+") as data_file:
+                data = runtime_data.brain[cortical_area]
+                for _ in data:
+                    data[_]['activity_history'] = ""
+                data_file.seek(0)  # rewind
+                data_file.write(json.dumps(data, indent=3))
+                data_file.truncate()
 
-    if injector_params.img_flag:
+    if injector_params.utf_counter_actual < 0:
+            # Resetting counters to their default value
+            injector_params.exposure_counter_actual = injector_params.exposure_default
+            injector_params.utf_counter_actual = injector_params.utf_default
+            # Variation counter
+            injector_params.variation_counter_actual -= 1
+
+    # Perform the actual information injection to the brain
+    if injector_params.img_flag and injector_params.num_to_inject:
+        print("-->", injector_params.num_to_inject)
+        data_feeder.image_feeder(injector_params.num_to_inject)
         data_feeder.img_neuron_list_feeder()
     if injector_params.utf_flag:
         data_feeder.utf8_feeder()
@@ -736,6 +730,7 @@ def auto_injector():
 
 def injection_exit_condition():
     global injector_params
+
     if (injector_params.utf_handler and
         injector_params.utf_counter_actual < 1 and
         injector_params.variation_counter_actual < 1 and
@@ -757,6 +752,7 @@ def injection_exit_condition():
 def injection_exit_process():
     global init_data
     global injector_params
+
     runtime_data.parameters["Auto_injector"]["injector_status"] = False
     injector_params.num_to_inject = ''
     injector_params.exposure_counter_actual = runtime_data.parameters["Auto_injector"]["exposure_default"]

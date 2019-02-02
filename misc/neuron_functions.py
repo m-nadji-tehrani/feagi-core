@@ -729,20 +729,20 @@ def auto_injector():
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
     if injector_params.burst_skip_flag:
-        print("Skipping the injection for this round...")
+        # print("Skipping the injection for this round...")
         injector_params.burst_skip_counter -= 1
         if injector_params.burst_skip_counter == 0 or len(init_data.fire_candidate_list) < 1:
             injector_params.burst_skip_counter = runtime_data.parameters["Auto_injector"]["injector_burst_skip_counter"]
             injector_params.burst_skip_flag = False
     else:
         # Perform the actual information injection to the brain
-        print(settings.Bcolors.YELLOW + '== == == == Injecting data == == == ==' + settings.Bcolors.ENDC)
+        # print(settings.Bcolors.OKGREEN + '== == == == Injecting data == == == ==' + settings.Bcolors.ENDC)
         if injector_params.img_flag:
             data_feeder.img_neuron_list_feeder()
         if injector_params.utf_flag:
             data_feeder.utf8_feeder()
         injector_params.burst_skip_flag = True
-        print(settings.Bcolors.YELLOW + '     == == == == Done == == == ==' + settings.Bcolors.ENDC)
+        # print(settings.Bcolors.OKGREEN + '     == == == == Done == == == ==' + settings.Bcolors.ENDC)
 
 def injection_exit_condition():
     global injector_params

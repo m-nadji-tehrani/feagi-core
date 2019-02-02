@@ -699,7 +699,7 @@ def auto_injector():
         injector_params.utf_counter_actual -= 1
         injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
         print("injector_params.num_to_inject: ", injector_params.num_to_inject)
-
+        data_feeder.image_feeder(injector_params.num_to_inject)
         # Saving brain to disk
         # todo: assess the impact of the following disk operation
         for cortical_area in runtime_data.cortical_list:
@@ -720,9 +720,7 @@ def auto_injector():
             injector_params.variation_counter_actual -= 1
 
     # Perform the actual information injection to the brain
-    if injector_params.img_flag and injector_params.num_to_inject:
-        print("-->", injector_params.num_to_inject)
-        data_feeder.image_feeder(injector_params.num_to_inject)
+    if injector_params.img_flag:
         data_feeder.img_neuron_list_feeder()
     if injector_params.utf_flag:
         data_feeder.utf8_feeder()

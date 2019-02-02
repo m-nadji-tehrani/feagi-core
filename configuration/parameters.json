@@ -57,7 +57,8 @@
     "exposure_default": 20,
     "utf_default": 9,
     "burst_skip": 0,
-    "injector_status": false
+    "injector_status": false,
+    "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
     "variation_default": 10,

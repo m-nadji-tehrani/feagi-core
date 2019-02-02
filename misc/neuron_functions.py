@@ -616,6 +616,7 @@ def injection_manager(injection_mode, injection_param):
             print("Automatic learning for 0..9 has been turned ON!")
             injector_params.img_flag = True
             injector_params.utf_flag = True
+            injector_params.burst_skip_flag = False
             injector_params.utf_handler = True
             injector_params.variation_handler = True
             injector_params.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
@@ -623,11 +624,13 @@ def injection_manager(injection_mode, injection_param):
             injector_params.utf_default = runtime_data.parameters["Auto_injector"]["utf_default"]
             injector_params.utf_counter_actual = runtime_data.parameters["Auto_injector"]["utf_default"]
             injector_params.num_to_inject = injector_params.utf_default
+            injector_params.burst_skip_counter = runtime_data.parameters["Auto_injector"]["injector_burst_skip_counter"]
 
         elif injection_mode == 'l2':
             injector_params.injection_mode = "l2"
             injector_params.img_flag = True
             injector_params.utf_flag = True
+            injector_params.burst_skip_flag = False
             injector_params.utf_handler = False
             injector_params.variation_handler = True
             injector_params.variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
@@ -635,6 +638,7 @@ def injection_manager(injection_mode, injection_param):
             injector_params.utf_default = 1
             injector_params.utf_counter_actual = 1
             injector_params.num_to_inject = int(injection_param)
+            injector_params.burst_skip_counter = runtime_data.parameters["Auto_injector"]["injector_burst_skip_counter"]
             print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
                   % injection_param)
 
@@ -643,6 +647,7 @@ def injection_manager(injection_mode, injection_param):
             injector_params.variation_handler = False
             injector_params.img_flag = True
             injector_params.utf_flag = False
+            injector_params.burst_skip_flag = False
             injector_params.variation_counter = 0
             injector_params.variation_counter_actual = 0
             injector_params.utf_default = -1
@@ -655,6 +660,7 @@ def injection_manager(injection_mode, injection_param):
             injector_params.utf_handler = False
             injector_params.img_flag = False
             injector_params.utf_flag = True
+            injector_params.burst_skip_flag = False
             injector_params.utf_to_inject = injection_param
             injector_params.variation_counter = 0
             injector_params.variation_counter_actual = 0
@@ -719,12 +725,23 @@ def auto_injector():
             # Variation counter
             injector_params.variation_counter_actual -= 1
 
-    # Perform the actual information injection to the brain
-    if injector_params.img_flag:
-        data_feeder.img_neuron_list_feeder()
-    if injector_params.utf_flag:
-        data_feeder.utf8_feeder()
 
+    # Mechanism to skip a number of bursts between each injections to clean-up FCL
+    if injector_params.burst_skip_flag:
+        print("Skipping the injection for this round...")
+        injector_params.burst_skip_counter -= 1
+        if injector_params.burst_skip_counter == 0 or len(init_data.fire_candidate_list) < 1:
+            injector_params.burst_skip_counter = runtime_data.parameters["Auto_injector"]["injector_burst_skip_counter"]
+            injector_params.burst_skip_flag = False
+    else:
+        # Perform the actual information injection to the brain
+        print('== == == == Injecting data == == == ==')
+        if injector_params.img_flag:
+            data_feeder.img_neuron_list_feeder()
+        if injector_params.utf_flag:
+            data_feeder.utf8_feeder()
+        injector_params.burst_skip_flag = True
+        print('     == == == == Done == == == ==')
 
 def injection_exit_condition():
     global injector_params

@@ -1,7 +1,7 @@
 {
   "Timers": {
-    "burst_timer": 0.01,
-    "idle_burst_timer": 1,
+    "burst_timer": 1,
+    "idle_burst_timer": 0.01,
     "auto_train_delay": 3,
     "auto_train_delay2": 50,
     "auto_test_delay": 3,

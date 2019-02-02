@@ -201,7 +201,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
 
         # Add a delay if fire_candidate_list is empty
-        if len(init_data.fire_candidate_list) < 1:
+        if len(init_data.fire_candidate_list) < 1 and not runtime_data.parameters["Auto_injector"]["injector_status"]:
             sleep(runtime_data.parameters["Timers"]["idle_burst_timer"])
             init_data.empty_fcl_counter += 1
             print("FCL is empty!")
@@ -689,7 +689,8 @@ def auto_injector():
             data_feeder.image_feeder(injector_params.num_to_inject)
 
     # Exposure counter
-    injector_params.exposure_counter_actual -= 1
+    if not injector_params.burst_skip_flag:
+        injector_params.exposure_counter_actual -= 1
 
     print('### ', injector_params.variation_counter_actual, injector_params.utf_counter_actual, injector_params.exposure_counter_actual, ' ###')
 
@@ -735,13 +736,13 @@ def auto_injector():
             injector_params.burst_skip_flag = False
     else:
         # Perform the actual information injection to the brain
-        print('== == == == Injecting data == == == ==')
+        print(settings.Bcolors.YELLOW + '== == == == Injecting data == == == ==' + settings.Bcolors.ENDC)
         if injector_params.img_flag:
             data_feeder.img_neuron_list_feeder()
         if injector_params.utf_flag:
             data_feeder.utf8_feeder()
         injector_params.burst_skip_flag = True
-        print('     == == == == Done == == == ==')
+        print(settings.Bcolors.YELLOW + '     == == == == Done == == == ==' + settings.Bcolors.ENDC)
 
 def injection_exit_condition():
     global injector_params

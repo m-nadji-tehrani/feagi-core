@@ -208,6 +208,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
             # todo: Look into multi-threading for Neuron neuron_fire and wire_neurons function
             # Firing all neurons in the Fire Candidate List
+            # Fire all neurons in FCL
             for x in list(init_data.fire_candidate_list):
                 if verbose:
                     print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
@@ -216,12 +217,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 #           str(runtime_data.brain[x[0]][x[1]]['membrane_potential']) + settings.Bcolors.ENDC)
                 neuron_fire(x[0], x[1])
 
-            # Forming memories through creation of cell assemblies
-            if runtime_data.parameters["Switches"]["memory_formation"]:
-                # memory_formation_start_time = datetime.now()
-                form_memories()
-                # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
-            # print('>>++++>>>>>>>   Number under training: ', injector_params.num_to_inject)
 
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
@@ -231,9 +226,11 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
 
         # todo: need to break down the training function into pieces with one feeding a stream of data
+        # Auto-inject if applicable
         if runtime_data.parameters["Auto_injector"]["injector_status"]:
             auto_injector()
 
+        # Auto-test if applicable
         if runtime_data.parameters["Auto_tester"]["tester_status"]:
             auto_tester()
 
@@ -242,6 +239,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         #     print('Evolution phase reached...')
         #     genethesizer.generation_assessment()
 
+        # Saving FCL to disk for post-processing and running analytics
         if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
             disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
 
@@ -285,6 +283,12 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             else:
                 if list_length >= 2:
                     runtime_data.parameters["Input"]["comprehended_char"] = ''
+
+        # Forming memories through creation of cell assemblies
+        if runtime_data.parameters["Switches"]["memory_formation"]:
+            # memory_formation_start_time = datetime.now()
+            form_memories()
+            # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}
@@ -826,9 +830,9 @@ def form_memories():
     global init_data
 
     pfcl = init_data.previous_fcl
-    print("\nEla joon says pfcl is :                                  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", pfcl)
+    # print("\nEla joon says pfcl is :                                  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", pfcl)
     cfcl = init_data.fire_candidate_list
-    print("\nPsy joon says cfcl is :                                  ++++++++++++++++++++++++++++++++++", cfcl)
+    # print("\nPsy joon says cfcl is :                                  ++++++++++++++++++++++++++++++++++", cfcl)
 
     # The following two sections that are commented out have been implemented as part of neuron fire and update
 
@@ -920,7 +924,7 @@ def form_memories():
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>                                                 "
                   "Mike is cute!!.... .. .. .. .. .. .. .. .. .. .. .. .. ", dst_neuron, pfcl)
             for src_neuron in pfcl:
-                print("^&^&^&: ", src_neuron[0])
+                print("Wiring vision memory to UTF: ", src_neuron[0])
                 if src_neuron[0] == "vision_memory":
                     print("\n\n\n$ $$ $$$ $$ $ -  Pain flag is \n\n\n", pain_flag)
                     if not pain_flag:
@@ -1301,11 +1305,11 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
                                                              src_neuron_id=src_neuron,
                                                              dst_cortical_area=cortical_area,
                                                              dst_neuron_id=dst_neuron_id)
-                                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                                            print(settings.Bcolors.OKGREEN + "WMWMWMW-------Neuron update----------MWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-                                                                         "...........LTP between %s and %s occurred"
-                                                  % (cortical_area, dst_neuron_id)
-                                                  + settings.Bcolors.ENDC)
+                                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                                        #     print(settings.Bcolors.OKGREEN + "WMWMWMW-------Neuron update----------MWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
+                                        #                                  "...........LTP between %s and %s occurred"
+                                        #           % (cortical_area, dst_neuron_id)
+                                        #           + settings.Bcolors.ENDC)
                     ### End of plasticity implementation
 
                     # if cortical_area == 'utf8_memory':

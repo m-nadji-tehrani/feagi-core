@@ -1441,7 +1441,7 @@
           "init_synapse_needed" : false,
           "postsynaptic_current" : 501,
           "plasticity_constant" : 0.05,
-          "postsynaptic_current_max" : 1,
+          "postsynaptic_current_max" : 501,
           "neighbor_locator_rule_id" : "rule_0",
           "neighbor_locator_rule_param_id" : "param_1",
           "cortical_mapping_dst" : {
@@ -1498,7 +1498,7 @@
           "init_synapse_needed" : false,
           "postsynaptic_current" : 11.2,
           "plasticity_constant" : 1,
-          "postsynaptic_current_max" : 1,
+          "postsynaptic_current_max" : 11.2,
           "neighbor_locator_rule_id" : "rule_0",
           "neighbor_locator_rule_param_id" : "param_1",
           "cortical_mapping_dst" : {

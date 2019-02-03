@@ -418,7 +418,7 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
     return neighbor_candidates
 
 
-def neighbor_builder_ext(brain, genome, brain_gen, cortical_area_src, cortical_area_dst, rule, rule_param, postsynaptic_current=1):
+def neighbor_builder_ext(brain, genome, brain_gen, cortical_area_src, cortical_area_dst, rule, rule_param, postsynaptic_current=1.1):
     """
     Crawls thru a Cortical area and builds Synapses with External Cortical Areas
     """

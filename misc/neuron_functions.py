@@ -65,6 +65,7 @@ class InjectorParams:
         self.num_to_inject = ''
         self.utf_to_inject = ''
         self.injection_mode = ''
+        self.cortical_max_numbers = {}
 
 
 class TesterParams:
@@ -193,12 +194,24 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             #       'Burst count = %i  --  Neuron count in FCL is %i  -- Total brain synapse count is %i'
             #       % (init_data.burst_count, len(init_data.fire_candidate_list), brain_synapse_count) +
             # settings.Bcolors.ENDC)
-            if runtime_data.parameters["Logs"]["print_cortical_activity_counters"]:
-                for cortical_area in set([i[0] for i in init_data.fire_candidate_list]):
-                    print(settings.Bcolors.YELLOW + '    %s : %i  '
-                          % (cortical_area, len(set([i[1]
-                                                     for i in init_data.fire_candidate_list if i[0] == cortical_area])))
-                          + settings.Bcolors.ENDC)
+
+            # Capture cortical activity stats
+            for cortical_area in set([i[0] for i in init_data.fire_candidate_list]):
+                if cortical_area in injector_params.cortical_max_numbers:
+                    cortical_neuron_count = len(set([i[1] for i in
+                                                     init_data.fire_candidate_list if i[0] == cortical_area]))
+                    injector_params.cortical_max_numbers[cortical_area] = max(injector_params.cortical_max_numbers[cortical_area],
+                                                                        cortical_neuron_count)
+
+                    if runtime_data.parameters["Logs"]["print_cortical_activity_counters"]:
+                        print(settings.Bcolors.YELLOW + '    %s : %i  '
+                              % (cortical_area, cortical_neuron_count)
+                              + settings.Bcolors.ENDC)
+                else:
+                    injector_params.cortical_max_numbers[cortical_area] = \
+                        len(set([i[1] for i in init_data.fire_candidate_list if i[0] == cortical_area]))
+
+
                 # for entry in init_data.fire_candidate_list:
                 #     if runtime_data.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
                 #         print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)
@@ -253,6 +266,19 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         detected_char = utf_detection_logic(init_data.burst_detection_list)
         comprehension_queue.append(detected_char)
         comprehension_queue.popleft()
+
+
+        # Monitor cortical activity levels and terminate brain if not meeting expectations
+        if runtime_data.parameters["Auto_injector"]["injector_status"] and \
+                init_data.burst_count > runtime_data.parameters["InitData"]["kill_trigger_burst_count"]:
+            if 'vision_memory' in injector_params.cortical_max_numbers:
+                if injector_params.cortical_max_numbers['vision_memory'] < \
+                        runtime_data.parameters["InitData"]["kill_trigger_vision_memory_min"]:
+                    print(settings.Bcolors.RED +
+                          "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low performance! !! !!!" +
+                          settings.Bcolors.ENDC)
+                    print("vision_memory max activation was:", injector_params.cortical_max_numbers['vision_memory'])
+                    burst_exit_process()
 
         # Comprehension check
         counter_list = {}
@@ -933,13 +959,13 @@ def form_memories():
     pain_flag = False
     for src_neuron in set([i[1] for i in cfcl if i[0] == 'pain']):
         pain_flag = True
-        print('^%@! Pain flag is set!')
+        # print('^%@! Pain flag is set!')
 
     # Wiring Vision memory to UIF-8 memory when there is simultaneous firing of neurons in these regions
     for dst_neuron in cfcl:
         if dst_neuron[0] == "utf8_memory":
-            print(settings.Bcolors.RED + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>                                                 "
-                  "\nMika is cute!!.... .. .. .. .. .. .. .. .. .. .. .. .. " + settings.Bcolors.ENDC, '\n')
+            # print(settings.Bcolors.RED + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>                                                 "
+            #       "\nMika is cute!!.... .. .. .. .. .. .. .. .. .. .. .. .. " + settings.Bcolors.ENDC, '\n')
             for src_neuron in cfcl:
                 if src_neuron[0] == "vision_memory":
                     print("\n\n\n$ $$ $$$ $$ $ -  Pain flag is \n\n\n", pain_flag)
@@ -1368,11 +1394,11 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
             # elif cortical_area == 'utf8_memory':
             #     print('SSSS SSS SS S ...  Neuron was prevented from being added to FCL due to Snooze condition')
 
-    else:
-        if cortical_area == 'utf8_memory':
-            print("--------- ----- --- ---- --- Threshold was not met - --- ----- --- - - - - - -")
-            print("membrane_potential:", dst_neuron_obj["membrane_potential"])
-            print("firing_threshold:", dst_neuron_obj["firing_threshold"])
+    # else:
+    #     if cortical_area == 'utf8_memory':
+    #         print("--------- ----- --- ---- --- Threshold was not met - --- ----- --- - - - - - -")
+    #         print("membrane_potential:", dst_neuron_obj["membrane_potential"])
+    #         print("firing_threshold:", dst_neuron_obj["firing_threshold"])
 
     # Resetting last time neuron was updated to the current burst id
     runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"] = init_data.burst_count

@@ -50,7 +50,9 @@
     "activity_history_span": 4,
     "comprehension_span": 1,
     "image_magnification_factor": 200,
-    "image_monochromization_threshold": 100
+    "image_monochromization_threshold": 100,
+    "kill_trigger_burst_count": 50,
+    "kill_trigger_vision_memory_min": 50
   },
   "Auto_injector":{
     "variation_default": 10,
@@ -75,7 +77,7 @@
     "print_activation_counters": false,
     "print_cortical_activity_counters": false,
     "print_mnist_img_info": false,
-    "print_plasticity_info": false,
+    "print_plasticity_info": true,
     "print_burst_info": true,
     "print_brain_gen_activities": false,
     "print_comprehension_queue": true

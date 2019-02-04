@@ -8,3 +8,4 @@ genome_id = ""
 block_dic = {}
 upstream_neurons = {}
 memory_list = {}
+activity_stats = {}

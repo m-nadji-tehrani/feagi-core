@@ -77,7 +77,7 @@ if __name__ == '__main__':
     def initialize_the_brain():
         global user_input_queue, user_input_param_queue, event_queue, \
             genome_test_stats, brain_queue, FCL_queue, genome_stats_queue, \
-            parameters_queue, block_dic_queue, genome_id_queue
+            parameters_queue, block_dic_queue, genome_id_queue, activity_stats_queue
         # Initializing queues
         user_input_queue = mp.Queue()
         user_input_param_queue = mp.Queue()
@@ -88,6 +88,7 @@ if __name__ == '__main__':
         genome_id_queue = mp.Queue()
         parameters_queue = mp.Queue()
         block_dic_queue = mp.Queue()
+        activity_stats_queue = mp.Queue()
 
         # Initialize Fire Candidate List (FCL)
         FCL = []
@@ -100,6 +101,9 @@ if __name__ == '__main__':
         block_dic_data = disk_ops.load_block_dic_in_memory()
         brain_queue.put(brain_data)
         block_dic_queue.put(block_dic_data)
+
+        runtime_data.activity_stats = {}
+        activity_stats_queue.put(runtime_data.activity_stats)
 
         # Setting up runtime_data.parameters queue for multiprocessing
         print(">>", runtime_data.parameters['Switches']['use_static_genome'])
@@ -154,7 +158,7 @@ if __name__ == '__main__':
     process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
                                                         FCL_queue, brain_queue, event_queue,
                                                         genome_stats_queue, parameters_queue,
-                                                        block_dic_queue, genome_id_queue,))
+                                                        block_dic_queue, genome_id_queue, activity_stats_queue,))
     print("The burst engine has been started...")
 
     event_id = event_id_gen()
@@ -209,9 +213,11 @@ if __name__ == '__main__':
             runtime_data.genome_id = genome_id_queue.get()
             print("*")
             runtime_data.block_dic = block_dic_queue.get()
+            runtime_data.activity_stats = activity_stats_queue.get()
             print("**")
             runtime_data.genome_test_stats = genome_stats_queue.get()
             print("***")
+
             join_processes()
             disk_ops.save_block_dic_to_disk(block_dic=runtime_data.block_dic,
                                             parameters=runtime_data.parameters, backup=True)
@@ -234,6 +240,7 @@ if __name__ == '__main__':
                     brain_generation_start_time = datetime.now()
                     print("$$$")
                     runtime_data.block_dic = {}
+                    runtime_data.activity_stats = {}
                     structural_fitness = brain_gen()
                     print("$$$$")
                     brain_generation_duration = datetime.now() - brain_generation_start_time
@@ -245,7 +252,8 @@ if __name__ == '__main__':
                 process_burst = mp.Pool(1, neuron_functions.burst, (user_input_queue, user_input_param_queue,
                                                                     FCL_queue, brain_queue, event_queue,
                                                                     genome_stats_queue, parameters_queue,
-                                                                    block_dic_queue, genome_id_queue,))
+                                                                    block_dic_queue, genome_id_queue,
+                                                                    activity_stats_queue,))
                 print("The burst engine has been started...")
 
                 event_id = event_id_gen()

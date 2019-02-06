@@ -271,7 +271,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         # Monitor cortical activity levels and terminate brain if not meeting expectations
         if runtime_data.parameters["Auto_injector"]["injector_status"] and \
                 init_data.burst_count > runtime_data.parameters["InitData"]["kill_trigger_burst_count"]:
-            if 'vision_memory' in runtime_data.activity_stats:
+            if 'vision_memory' not in runtime_data.activity_stats:
+                runtime_data.activity_stats['vision_memory'] = 0
+            else:
                 if runtime_data.activity_stats['vision_memory'] < \
                         runtime_data.parameters["InitData"]["kill_trigger_vision_memory_min"]:
                     print(settings.Bcolors.RED +
@@ -334,6 +336,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             # memory_formation_start_time = datetime.now()
             form_memories()
             # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
+
+        # Listing the number of neurons activating each UTF memory neuron
+        print(list_upstream_neuron_count_for_digits())
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}
@@ -1032,12 +1037,19 @@ def form_memories():
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
                                              long_term_depression=True, impact_multiplier=4)
-                        # print("$$$$ : LTD occurred between vision_memory and utf8_memory :", src_neuron, dst_neuron)
-                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                            print(
-                                settings.Bcolors.RED + "WMWMWMWMWMW-----Form memories-----MWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
-                                                       "........LTD between vision_memory and UTF8_memory occurred "
-                                + settings.Bcolors.ENDC)
+                        print("$$$$ : LTD occurred between vision_memory and utf8_memory as over 2 UTF activated:",
+                              src_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
+                              dst_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
+
+                        # print(
+                        #     settings.Bcolors.RED + "WMWMWMWMWMW-----Form memories-----MWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
+                        #                            "........LTD between vision_memory and UTF8_memory occurred "
+                        #     + settings.Bcolors.ENDC)
+                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                        #     print(
+                        #         settings.Bcolors.RED + "WMWMWMWMWMW-----Form memories-----MWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
+                        #                                "........LTD between vision_memory and UTF8_memory occurred "
+                        #         + settings.Bcolors.ENDC)
 
 
 def burst_exit_process():
@@ -1266,6 +1278,25 @@ def list_upstream_neurons(cortical_area, neuron_id):
             return runtime_data.upstream_neurons[cortical_area][neuron_id]
     return {}
 
+
+def list_top_n_utf_memory_neurons(n):
+    neuron_list = []
+    counter = 0
+    for neuron_id in runtime_data.brain['utf8_memory']:
+        if counter == n:
+            return neuron_list
+        else:
+            counter += 1
+            neuron_list.append([runtime_data.brain['utf8_memory'][neuron_id]["location"][2]  , neuron_id])
+
+
+def list_upstream_neuron_count_for_digits():
+    results = []
+    for _ in range(10):
+        results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
+    return results
+
+
 def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_count):
     """This function updates the destination parameters upon upstream Neuron firing"""
     global init_data
@@ -1480,8 +1511,9 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     if long_term_depression:
         # When long term depression flag is set, there will be negative synaptic influence caused
         plasticity_constant = plasticity_constant * (-1) * impact_multiplier
+        # plasticity_constant = -100
 
-    # Check if source and destination have an existing synapse if not create one here
+        # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
 

@@ -164,18 +164,32 @@ def folder_backup(src, dst):
             raise
 
 
+
 def calculate_brain_structural_fitness():
-    vision_v2_it_synapse_cnt = synapse_count('vision_v2', 'vision_IT')
-    vision_it_mem_synapse_cnt = synapse_count('vision_IT', 'vision_memory')
+    # vision_v2_it_synapse_cnt = synapse_count('vision_v2', 'vision_IT')
+    # vision_it_mem_synapse_cnt = synapse_count('vision_IT', 'vision_memory')
+    #
+    # print("Synapse count vision_v2 >> vision_IT == ", vision_v2_it_synapse_cnt)
+    # print("Synapse count vision_IT >> vision_memory == ", vision_it_mem_synapse_cnt)
+    #
+    # if vision_v2_it_synapse_cnt < 50 or vision_it_mem_synapse_cnt < 50:
+    #     fitness = 0
+    # else:
+    #     fitness = 1
+    return 1
 
-    print("Synapse count vision_v2 >> vision_IT == ", vision_v2_it_synapse_cnt)
-    print("Synapse count vision_IT >> vision_memory == ", vision_it_mem_synapse_cnt)
-
-    if vision_v2_it_synapse_cnt < 50 or vision_it_mem_synapse_cnt < 50:
-        fitness = 0
-    else:
-        fitness = 1
-    return fitness
+# def calculate_brain_structural_fitness():
+#     vision_v2_it_synapse_cnt = synapse_count('vision_v2', 'vision_IT')
+#     vision_it_mem_synapse_cnt = synapse_count('vision_IT', 'vision_memory')
+#
+#     print("Synapse count vision_v2 >> vision_IT == ", vision_v2_it_synapse_cnt)
+#     print("Synapse count vision_IT >> vision_memory == ", vision_it_mem_synapse_cnt)
+#
+#     if vision_v2_it_synapse_cnt < 50 or vision_it_mem_synapse_cnt < 50:
+#         fitness = 0
+#     else:
+#         fitness = 1
+#     return fitness
 
 
 def synapse_count(cortical_area_src, cortical_area_dst):

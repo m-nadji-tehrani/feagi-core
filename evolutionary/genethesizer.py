@@ -210,6 +210,7 @@ def mutate(genome):
     factor_5 = random.randrange(-30, 30, 1) / 100
     factor_6 = random.randrange(-10, 10, 1) / 100
     factor_7 = random.randrange(-10, 10, 1) / 100
+    factor_8 = random.randrange(-20, 20, 1) / 100
 
     blueprint = genome["blueprint"]
     cortical_list = []
@@ -230,6 +231,7 @@ def mutate(genome):
         genome = GeneModifier.change_snooze_length(genome, cortical_area, factor_5)
         genome = GeneModifier.change_cortical_dimensions(genome, cortical_area, factor_6)
         genome = GeneModifier.change_growth_rule_4_param_2(genome, factor_7)
+        genome = GeneModifier.change_vision_plasticity_constant(genome, factor_8)
 
     return genome
 

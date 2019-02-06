@@ -1269,7 +1269,7 @@
           "orientation_selectivity_pattern" : "",
           "location" : "",
           "kernel_size" : 3,
-          "cortical_neuron_count" : 14030,
+          "cortical_neuron_count" : 14321,
           "location_generation_type" : "random",
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
@@ -1279,9 +1279,9 @@
           "neighbor_locator_rule_id" : "rule_1",
           "neighbor_locator_rule_param_id" : "param_2",
           "cortical_mapping_dst" : {
-              "vision_IT" : {
+              "vision_memory" : {
                   "neighbor_locator_rule_id" : "rule_6",
-                  "neighbor_locator_rule_param_id" : "param_1"
+                  "neighbor_locator_rule_param_id" : "param_2"
               }
           },
           "neuron_params" : {
@@ -1357,7 +1357,7 @@
               "block_boundaries" : [
                   28,
                   28,
-                  7
+                  1
               ],
               "geometric_boundaries" : {
                   "x" : [
@@ -1409,7 +1409,7 @@
               "block_boundaries" : [
                   28,
                   28,
-                  7
+                  1
               ],
               "geometric_boundaries" : {
                   "x" : [

@@ -268,19 +268,34 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         comprehension_queue.popleft()
 
 
+        def training_quality_test():
+            for entry in list_upstream_neuron_count_for_digits():
+                if entry[1] == 0:
+                    return False
+
+
         # Monitor cortical activity levels and terminate brain if not meeting expectations
         if runtime_data.parameters["Auto_injector"]["injector_status"] and \
                 init_data.burst_count > runtime_data.parameters["InitData"]["kill_trigger_burst_count"]:
             if 'vision_memory' not in runtime_data.activity_stats:
                 runtime_data.activity_stats['vision_memory'] = 0
-            else:
-                if runtime_data.activity_stats['vision_memory'] < \
+            elif runtime_data.activity_stats['vision_memory'] < \
                         runtime_data.parameters["InitData"]["kill_trigger_vision_memory_min"]:
                     print(settings.Bcolors.RED +
                           "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low performance! !! !!!" +
                           settings.Bcolors.ENDC)
                     print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
                     burst_exit_process()
+
+        if runtime_data.parameters["Auto_injector"]["injector_status"] and \
+                    init_data.burst_count > 800:
+            if not training_quality_test():
+                print(settings.Bcolors.RED +
+                      "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
+                          settings.Bcolors.ENDC)
+                burst_exit_process()
+
+
 
         # Comprehension check
         counter_list = {}
@@ -338,7 +353,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
 
         # Listing the number of neurons activating each UTF memory neuron
-        print(list_upstream_neuron_count_for_digits())
+        print("list_upstream_neuron_count_for_digits:", list_upstream_neuron_count_for_digits())
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}
@@ -1281,19 +1296,43 @@ def list_upstream_neurons(cortical_area, neuron_id):
 
 def list_top_n_utf_memory_neurons(n):
     neuron_list = []
-    counter = 0
+    counter = ord('0')
     for neuron_id in runtime_data.brain['utf8_memory']:
-        if counter == n:
-            return neuron_list
-        else:
+        if int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) == counter:
+            neuron_list.append([int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2])-48, neuron_id])
             counter += 1
-            neuron_list.append([runtime_data.brain['utf8_memory'][neuron_id]["location"][2]  , neuron_id])
+    return neuron_list
 
 
 def list_upstream_neuron_count_for_digits():
     results = []
+    top_n_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
+    # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
+    # if 'utf8_memory' in runtime_data.upstream_neurons:
+    #     print('runtime_data.upstream_neurons:', runtime_data.upstream_neurons['utf8_memory'], 'end of runtime_data.upstream_neurons')
     for _ in range(10):
-        results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
+        # results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
+        neuron_id = top_n_utf_memory_neurons[_][1]
+        if 'utf8_memory' in runtime_data.upstream_neurons:
+            # print('a1')
+            # print('neuron_id:', neuron_id)
+            # for entry in runtime_data.upstream_neurons['utf8_memory']:
+                # print("A fired neuron part of the utf8_memory in upstream db", entry)
+            if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
+                # print('a2')
+                if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
+                    # print('a3')
+                    results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
+                    # print('*^*^*^*', runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])
+                else:
+                    # print('a-')
+                    results.append([_, 0])
+            else:
+                print('a-')
+                results.append([_, 0])
+        else:
+            print('a-')
+            results.append([_, 0])
     return results
 
 

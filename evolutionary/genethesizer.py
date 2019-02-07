@@ -17,7 +17,7 @@ def select_a_genome():
     5. Mutate genome with highest fitness
     6. TBD
     """
-    random_selector = random.randrange(1, 7, 1)
+    random_selector = random.randrange(1, 10, 1)
 
     if random_selector == 1:
         print("Crossover is happening...")
@@ -133,8 +133,8 @@ class GeneModifier:
         """ Function to increase or decrease the neuron snooze_length in a given cortical area"""
         genome['blueprint']['vision_memory']['plasticity_constant'] += \
             genome['blueprint']['vision_memory']['plasticity_constant'] * change_percentage
-        if genome['blueprint']['vision_memory']['plasticity_constant'] < 1:
-            genome['blueprint']['vision_memory']['plasticity_constant'] = 1
+        if genome['blueprint']['vision_memory']['plasticity_constant'] < 0:
+            genome['blueprint']['vision_memory']['plasticity_constant'] = 0
         return genome
 
 

@@ -287,8 +287,9 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                     print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
                     burst_exit_process()
 
+        # todo: Need to troubleshoot
         if runtime_data.parameters["Auto_injector"]["injector_status"] and \
-                    init_data.burst_count > 800:
+                    init_data.burst_count > 2000:
             if not training_quality_test():
                 print(settings.Bcolors.RED +
                       "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
@@ -354,6 +355,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
         # Listing the number of neurons activating each UTF memory neuron
         print("list_upstream_neuron_count_for_digits:", list_upstream_neuron_count_for_digits())
+        common_neuron_report()
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}
@@ -1334,6 +1336,42 @@ def list_upstream_neuron_count_for_digits():
             print('a-')
             results.append([_, 0])
     return results
+
+
+def list_common_upstream_neurons(neuron_a, neuron_b):
+    common_neuron_list = []
+
+    try:
+        neuron_a_upstream_neurons = runtime_data.upstream_neurons['utf8_memory'][neuron_a]['vision_memory']
+        neuron_b_upstream_neurons = runtime_data.upstream_neurons['utf8_memory'][neuron_b]['vision_memory']
+        for neuron in neuron_a_upstream_neurons:
+            if neuron in neuron_b_upstream_neurons:
+                common_neuron_list.append(neuron)
+        return common_neuron_list
+
+    except:
+        pass
+
+def utf_neuron_id(n):
+    # Returns the neuron id associated with a particular digit
+    for neuron_id in runtime_data.brain['utf8_memory']:
+        if int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) == n+ord('0'):
+            return neuron_id
+
+
+def common_neuron_report():
+    digits = range(10)
+    number_matrix = []
+    for _ in digits:
+        for __ in digits:
+            if _ != __ and [_, __] not in number_matrix and [__, _] not in number_matrix:
+                number_matrix.append([_, __])
+    for item in number_matrix:
+        neuron_a = utf_neuron_id(item[0])
+        neuron_b = utf_neuron_id(item[1])
+        common_count = list_common_upstream_neurons(neuron_a, neuron_b)
+        if common_count:
+            print(item, '> ', len(common_count))
 
 
 def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_count):

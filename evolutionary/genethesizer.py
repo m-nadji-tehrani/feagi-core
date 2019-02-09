@@ -25,11 +25,13 @@ def select_a_genome():
 
     elif random_selector == 2:
         print("A random genome is being selected...")
-        genome = random_genome()
+        # genome = random_genome()
+        genome = highest_fitness_genome()
 
     elif random_selector == 3:
         print("Most recent genome is being selected...")
-        genome = latest_genome()
+        # genome = latest_genome()
+        genome = highest_fitness_genome()
 
     elif random_selector == 4:
         print("The genome with highest fitness so far has been selected...")

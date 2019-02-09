@@ -56,7 +56,7 @@
   },
   "Auto_injector":{
     "variation_default": 10,
-    "exposure_default": 40,
+    "exposure_default": 30,
     "utf_default": 9,
     "burst_skip": 0,
     "injector_status": false,
@@ -70,12 +70,12 @@
     "tester_status": false
   },
   "Logs":{
-    "print_mnist_img": true,
+    "print_mnist_img": false,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
     "print_activation_counters": false,
-    "print_cortical_activity_counters": true,
+    "print_cortical_activity_counters": false,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
     "print_burst_info": true,

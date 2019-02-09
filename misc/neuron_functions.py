@@ -271,6 +271,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         def training_quality_test():
             for entry in list_upstream_neuron_count_for_digits():
                 if entry[1] == 0:
+                    print(list_upstream_neuron_count_for_digits(), "This entry was zero >", entry)
                     return False
 
 
@@ -287,14 +288,14 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                     print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
                     burst_exit_process()
 
-        # todo: Need to troubleshoot
-        if runtime_data.parameters["Auto_injector"]["injector_status"] and \
-                    init_data.burst_count > 2000:
-            if not training_quality_test():
-                print(settings.Bcolors.RED +
-                      "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
-                          settings.Bcolors.ENDC)
-                burst_exit_process()
+        # # todo: Need to troubleshoot
+        # if runtime_data.parameters["Auto_injector"]["injector_status"] and \
+        #             init_data.burst_count > (runtime_data.parameters["Auto_injector"]["exposure_default"] * 11):
+        #     if not training_quality_test():
+        #         print(settings.Bcolors.RED +
+        #               "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
+        #                   settings.Bcolors.ENDC)
+        #         burst_exit_process()
 
 
 
@@ -770,6 +771,13 @@ def auto_injector():
 
     # Counter logic
     if injector_params.exposure_counter_actual < 1:
+        # Effectiveness check
+        print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
+        if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
+            print(settings.Bcolors.RED +
+                  "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
+                  settings.Bcolors.ENDC)
+            burst_exit_process()
         # Resetting exposure counter
         injector_params.exposure_counter_actual = injector_params.exposure_default
         # UTF counter
@@ -780,6 +788,7 @@ def auto_injector():
             injector_params.utf_counter_actual = injector_params.utf_default
             # Variation counter
             injector_params.variation_counter_actual -= 1
+
 
         injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
         print("injector_params.num_to_inject: ", injector_params.num_to_inject)
@@ -1054,9 +1063,9 @@ def form_memories():
                     runtime_data.temp_neuron_list.append(synapse_)
                 if synapse_to_utf >= 2:
                     for dst_neuron in runtime_data.temp_neuron_list:
-                        print("$$$$ : LTD occurred between vision_memory and utf8_memory as over 2 UTF activated:",
-                              src_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
-                              dst_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
+                        # print("$$$$ : LTD occurred between vision_memory and utf8_memory as over 2 UTF activated:",
+                        #       src_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
+                        #       dst_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
                                              long_term_depression=True, impact_multiplier=4)
@@ -1310,32 +1319,38 @@ def list_top_n_utf_memory_neurons(n):
     return neuron_list
 
 
-def list_upstream_neuron_count_for_digits():
+def list_upstream_neuron_count_for_digits(digit='all'):
     results = []
     top_n_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
-    # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
-    # if 'utf8_memory' in runtime_data.upstream_neurons:
-    #     print('runtime_data.upstream_neurons:', runtime_data.upstream_neurons['utf8_memory'], 'end of runtime_data.upstream_neurons')
-    for _ in range(10):
-        # results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
-        neuron_id = top_n_utf_memory_neurons[_][1]
-        if 'utf8_memory' in runtime_data.upstream_neurons:
-            # print('a1')
-            # print('neuron_id:', neuron_id)
-            # for entry in runtime_data.upstream_neurons['utf8_memory']:
-                # print("A fired neuron part of the utf8_memory in upstream db", entry)
-            if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
-                # print('a2')
-                if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
-                    # print('a3')
-                    results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
-                    # print('*^*^*^*', runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])
+    if digit == 'all':
+        # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
+        # if 'utf8_memory' in runtime_data.upstream_neurons:
+        #     print('runtime_data.upstream_neurons:', runtime_data.upstream_neurons['utf8_memory'], 'end of runtime_data.upstream_neurons')
+        for _ in range(10):
+            # results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
+            neuron_id = top_n_utf_memory_neurons[_][1]
+            if 'utf8_memory' in runtime_data.upstream_neurons:
+                if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
+                    if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
+                        results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
+                    else:
+                        results.append([_, 0])
                 else:
                     results.append([_, 0])
             else:
                 results.append([_, 0])
+    else:
+        neuron_id = top_n_utf_memory_neurons[digit][1]
+        if 'utf8_memory' in runtime_data.upstream_neurons:
+            if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
+                if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
+                    results.append([digit, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
+                else:
+                    results.append([digit, 0])
+            else:
+                results.append([digit, 0])
         else:
-            results.append([_, 0])
+            results.append([digit, 0])
     return results
 
 
@@ -1590,7 +1605,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     if long_term_depression:
         # When long term depression flag is set, there will be negative synaptic influence caused
         plasticity_constant = plasticity_constant * (-1) * impact_multiplier
-        # plasticity_constant = -100
+        # plasticity_constant = -20
 
         # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
@@ -1755,7 +1770,6 @@ def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
     """
     Responsible for pruning unused connections between neurons
     """
-    print("&&& &  &  & &  &  &  & &  & &  & & &   & & Pruning neurons... .. .. .... ... .. ... .. .... .. ... .")
     runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
     common_neuron_report()
     runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)

@@ -9,3 +9,4 @@ block_dic = {}
 upstream_neurons = {}
 memory_list = {}
 activity_stats = {}
+temp_neuron_list = []

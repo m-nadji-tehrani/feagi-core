@@ -335,6 +335,7 @@ if __name__ == '__main__':
 # todo: What could trigger evolution of a cortical area?
 # todo: Consider a method to reward or punish neuron so it can evolve
 # todo: Build a Genome Generator
+# todo: Change evolutionary phase to evaluation check-point
 
 
 # Multi processing

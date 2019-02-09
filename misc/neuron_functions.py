@@ -258,7 +258,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
-            print(settings.Bcolors.YELLOW + ">>> Burst duration: %s" % burst_duration + settings.Bcolors.ENDC)
+            print(settings.Bcolors.YELLOW + ">>> Burst duration: %s %i" % (burst_duration, init_data.burst_count) + settings.Bcolors.ENDC)
 
         # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
         fire_list.put(init_data.fire_candidate_list)
@@ -1041,22 +1041,23 @@ def form_memories():
     if len(utf_mem_in_fcl) >= 2:
         for src_neuron in set([i[1] for i in pfcl if i[0] == 'vision_memory']):
             synapse_to_utf = 0
-            dst_neuron_list = []
+            runtime_data.temp_neuron_list = []
             neighbor_list = dict(runtime_data.brain['vision_memory'][src_neuron]['neighbors'])
             print("<><><>")
             for synapse_ in neighbor_list:
                 if runtime_data.brain['vision_memory'][src_neuron]['neighbors'][synapse_]['cortical_area'] \
                         == 'utf8_memory':
                     synapse_to_utf += 1
-                    dst_neuron_list.append(synapse_)
+                    runtime_data.temp_neuron_list.append(synapse_)
                 if synapse_to_utf >= 2:
-                    for dst_neuron in dst_neuron_list:
-                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
-                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
-                                             long_term_depression=True, impact_multiplier=4)
+                    for dst_neuron in runtime_data.temp_neuron_list:
                         print("$$$$ : LTD occurred between vision_memory and utf8_memory as over 2 UTF activated:",
                               src_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
                               dst_neuron, runtime_data.brain['vision_memory'][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
+                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
+                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
+                                             long_term_depression=True, impact_multiplier=4)
+
 
                         # print(
                         #     settings.Bcolors.RED + "WMWMWMWMWMW-----Form memories-----MWMWMWMWM  > 2 UTF detected MWMWMWWMWMWMWMWMWMWM"
@@ -1327,13 +1328,10 @@ def list_upstream_neuron_count_for_digits():
                     results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
                     # print('*^*^*^*', runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])
                 else:
-                    # print('a-')
                     results.append([_, 0])
             else:
-                print('a-')
                 results.append([_, 0])
         else:
-            print('a-')
             results.append([_, 0])
     return results
 
@@ -1554,6 +1552,7 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
     if dst_neuron not in runtime_data.brain[cortical_area][src_neuron]["neighbors"]:
         synapse(cortical_area, src_neuron, cortical_area, dst_neuron,
                 genome["blueprint"][cortical_area]["postsynaptic_current"])
+        update_upstream_db(cortical_area, src_neuron, cortical_area, dst_neuron)
 
     # Every time source and destination neuron is fired at the same time which in case of the code architecture
     # reside in the same burst, the postsynaptic_current will be increased simulating the fire together, wire together.
@@ -1593,6 +1592,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
+        update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
 
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
         plasticity_constant
@@ -1606,6 +1606,12 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     # todo: consider setting a postsynaptic_min in genome to be used instead of 0
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
         max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"], 0)
+
+    # Condition to prune a synapse if its postsynaptic_current is zero
+    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
+        pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
+               cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
+
 
     # print('<**> ', src_cortical_area, src_neuron_id[27:], dst_cortical_area, dst_neuron_id[27:], 'PSC=',
     #       runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
@@ -1740,3 +1746,14 @@ def trigger_pain():
 
     for neuron in runtime_data.brain['pain']:
         init_data.fire_candidate_list.append(['pain', neuron])
+
+
+def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
+    """
+    Responsible for pruning unused connections between neurons
+    """
+    runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
+    runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)
+    if dst_neuron_id in runtime_data.temp_neuron_list:
+        runtime_data.temp_neuron_list.remove(dst_neuron_id)
+

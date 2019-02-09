@@ -521,13 +521,6 @@ def connectome_location_data(cortical_area):
     return neuron_locations
 
 
-def pruner():
-    """
-    Responsible for pruning unused connections between neurons
-    """
-    return
-
-
 def neuron_eliminator():
     """
     Responsible for programmed neuron's death

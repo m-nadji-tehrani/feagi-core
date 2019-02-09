@@ -70,7 +70,7 @@
     "tester_status": false
   },
   "Logs":{
-    "print_mnist_img": false,
+    "print_mnist_img": true,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,

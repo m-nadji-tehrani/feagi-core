@@ -751,8 +751,12 @@ def auto_injector():
         print("----------------------------------------Data injection has begun------------------------------------")
         injector_params.injection_has_begun = False
         injector_params.injection_start_time = datetime.now()
-        if injector_params.img_flag:
-            data_feeder.image_feeder(injector_params.num_to_inject)
+        data_feeder.image_feeder(injector_params.num_to_inject)
+
+    if injector_params.img_flag:
+        data_feeder.img_neuron_list_feeder()
+    if injector_params.utf_flag:
+        data_feeder.utf8_feeder()
 
     # Exposure counter
     if not injector_params.burst_skip_flag:
@@ -770,6 +774,13 @@ def auto_injector():
         injector_params.exposure_counter_actual = injector_params.exposure_default
         # UTF counter
         injector_params.utf_counter_actual -= 1
+
+        if injector_params.utf_counter_actual < 0:
+            # Resetting counters to their default value
+            injector_params.utf_counter_actual = injector_params.utf_default
+            # Variation counter
+            injector_params.variation_counter_actual -= 1
+
         injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
         print("injector_params.num_to_inject: ", injector_params.num_to_inject)
         data_feeder.image_feeder(injector_params.num_to_inject)
@@ -785,12 +796,7 @@ def auto_injector():
                 data_file.write(json.dumps(data, indent=3))
                 data_file.truncate()
 
-    if injector_params.utf_counter_actual < 0:
-            # Resetting counters to their default value
-            injector_params.exposure_counter_actual = injector_params.exposure_default
-            injector_params.utf_counter_actual = injector_params.utf_default
-            # Variation counter
-            injector_params.variation_counter_actual -= 1
+
 
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
@@ -807,10 +813,7 @@ def auto_injector():
     #     print(settings.Bcolors.OKGREEN + '     == == == == Done == == == ==' + settings.Bcolors.ENDC)
 
 
-    if injector_params.img_flag:
-        data_feeder.img_neuron_list_feeder()
-    if injector_params.utf_flag:
-        data_feeder.utf8_feeder()
+
 
 def injection_exit_condition():
     global injector_params
@@ -1752,8 +1755,11 @@ def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
     """
     Responsible for pruning unused connections between neurons
     """
+    print("&&& &  &  & &  &  &  & &  & &  & & &   & & Pruning neurons... .. .. .... ... .. ... .. .... .. ... .")
     runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
+    common_neuron_report()
     runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)
+    common_neuron_report()
     if dst_neuron_id in runtime_data.temp_neuron_list:
         runtime_data.temp_neuron_list.remove(dst_neuron_id)
 

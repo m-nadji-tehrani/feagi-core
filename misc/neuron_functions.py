@@ -1379,9 +1379,17 @@ def common_neuron_report():
     for item in number_matrix:
         neuron_a = utf_neuron_id(item[0])
         neuron_b = utf_neuron_id(item[1])
-        common_count = list_common_upstream_neurons(neuron_a, neuron_b)
-        if common_count:
-            print(item, '> ', len(common_count))
+        common_neuron_list = list_common_upstream_neurons(neuron_a, neuron_b)
+
+        if common_neuron_list:
+            overlap_amount = len(common_neuron_list)
+            print(item, '> ', overlap_amount)
+
+            if overlap_amount > runtime_data.parameters["InitData"]["overlap_prevention_constant"]:
+                # The following action is taken to eliminate the overlap
+                for neuron in common_neuron_list:
+                    pruner('vision_memory', neuron, 'utf8_memory', neuron_a)
+                    pruner('vision_memory', neuron, 'utf8_memory', neuron_b)
 
 
 def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_count):
@@ -1765,9 +1773,7 @@ def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
     Responsible for pruning unused connections between neurons
     """
     runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
-    common_neuron_report()
     runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)
-    common_neuron_report()
     if dst_neuron_id in runtime_data.temp_neuron_list:
         runtime_data.temp_neuron_list.remove(dst_neuron_id)
 

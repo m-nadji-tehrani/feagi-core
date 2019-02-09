@@ -267,13 +267,11 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
         comprehension_queue.append(detected_char)
         comprehension_queue.popleft()
 
-
         def training_quality_test():
             for entry in list_upstream_neuron_count_for_digits():
                 if entry[1] == 0:
                     print(list_upstream_neuron_count_for_digits(), "This entry was zero >", entry)
                     return False
-
 
         # Monitor cortical activity levels and terminate brain if not meeting expectations
         if runtime_data.parameters["Auto_injector"]["injector_status"] and \
@@ -754,74 +752,70 @@ def auto_injector():
         injector_params.injection_start_time = datetime.now()
         data_feeder.image_feeder(injector_params.num_to_inject)
 
-    if injector_params.img_flag:
-        data_feeder.img_neuron_list_feeder()
-    if injector_params.utf_flag:
-        data_feeder.utf8_feeder()
-
-    # Exposure counter
-    if not injector_params.burst_skip_flag:
-        injector_params.exposure_counter_actual -= 1
-
-    print('### ', injector_params.variation_counter_actual, injector_params.utf_counter_actual, injector_params.exposure_counter_actual, ' ###')
-
-    # Check if exit condition has been met
-    if injection_exit_condition() or injector_params.variation_counter_actual < 1:
-        injection_exit_process()
-
-    # Counter logic
-    if injector_params.exposure_counter_actual < 1:
-        # Effectiveness check
-        print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
-        if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
-            print(settings.Bcolors.RED +
-                  "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
-                  settings.Bcolors.ENDC)
-            burst_exit_process()
-        # Resetting exposure counter
-        injector_params.exposure_counter_actual = injector_params.exposure_default
-        # UTF counter
-        injector_params.utf_counter_actual -= 1
-
-        if injector_params.utf_counter_actual < 0:
-            # Resetting counters to their default value
-            injector_params.utf_counter_actual = injector_params.utf_default
-            # Variation counter
-            injector_params.variation_counter_actual -= 1
-
-
-        injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
-        print("injector_params.num_to_inject: ", injector_params.num_to_inject)
-        data_feeder.image_feeder(injector_params.num_to_inject)
-        # Saving brain to disk
-        # todo: assess the impact of the following disk operation
-        for cortical_area in runtime_data.cortical_list:
-            with open(runtime_data.parameters['InitData']['connectome_path'] +
-                      cortical_area + '.json', "r+") as data_file:
-                data = runtime_data.brain[cortical_area]
-                for _ in data:
-                    data[_]['activity_history'] = ""
-                data_file.seek(0)  # rewind
-                data_file.write(json.dumps(data, indent=3))
-                data_file.truncate()
-
-
-
-
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
-    # if injector_params.burst_skip_flag:
-    #     # print("Skipping the injection for this round...")
-    #     injector_params.burst_skip_counter -= 1
-    #     if injector_params.burst_skip_counter == 0 or len(init_data.fire_candidate_list) < 1:
-    #         injector_params.burst_skip_counter = runtime_data.parameters["Auto_injector"]["injector_burst_skip_counter"]
-    #         injector_params.burst_skip_flag = False
-    # else:
-    #     # Perform the actual information injection to the brain
-    #     print(settings.Bcolors.OKGREEN + '== == == == Injecting data == == == ==' + settings.Bcolors.ENDC)
-    #     injector_params.burst_skip_flag = True
-    #     print(settings.Bcolors.OKGREEN + '     == == == == Done == == == ==' + settings.Bcolors.ENDC)
+    if not injector_params.burst_skip_flag:
 
+        if injector_params.img_flag:
+            data_feeder.img_neuron_list_feeder()
+        if injector_params.utf_flag:
+            data_feeder.utf8_feeder()
 
+        # Exposure counter
+        if not injector_params.burst_skip_flag:
+            injector_params.exposure_counter_actual -= 1
+
+        print('### ', injector_params.variation_counter_actual, injector_params.utf_counter_actual,
+              injector_params.exposure_counter_actual, ' ###')
+
+        # Check if exit condition has been met
+        if injection_exit_condition() or injector_params.variation_counter_actual < 1:
+            injection_exit_process()
+
+        # Counter logic
+        if injector_params.exposure_counter_actual < 1:
+            # Effectiveness check
+            print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
+            if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
+                print(settings.Bcolors.RED +
+                      "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
+                      settings.Bcolors.ENDC)
+                burst_exit_process()
+            # Resetting exposure counter
+            injector_params.exposure_counter_actual = injector_params.exposure_default
+            # UTF counter
+            injector_params.utf_counter_actual -= 1
+            # Turning on the skip flag to allow FCL to clear
+            injector_params.burst_skip_flag = True
+
+            if injector_params.utf_counter_actual < 0:
+                # Resetting counters to their default value
+                injector_params.utf_counter_actual = injector_params.utf_default
+                # Variation counter
+                injector_params.variation_counter_actual -= 1
+
+            injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
+            print("injector_params.num_to_inject: ", injector_params.num_to_inject)
+            data_feeder.image_feeder(injector_params.num_to_inject)
+            # Saving brain to disk
+            # todo: assess the impact of the following disk operation
+            if runtime_data.parameters["Switches"]["save_connectome_to_disk"]:
+                for cortical_area in runtime_data.cortical_list:
+                    with open(runtime_data.parameters['InitData']['connectome_path'] +
+                              cortical_area + '.json', "r+") as data_file:
+                        data = runtime_data.brain[cortical_area]
+                        for _ in data:
+                            data[_]['activity_history'] = ""
+                        data_file.seek(0)  # rewind
+                        data_file.write(json.dumps(data, indent=3))
+                        data_file.truncate()
+
+    else:
+        print("Skipping the injection for this round...")
+        injector_params.burst_skip_counter -= 1
+        if injector_params.burst_skip_counter <= 0 or len(init_data.fire_candidate_list) < 1:
+            injector_params.burst_skip_counter = runtime_data.parameters["Auto_injector"][
+                "injector_burst_skip_counter"]
+            injector_params.burst_skip_flag = False
 
 
 def injection_exit_condition():
@@ -1032,7 +1026,7 @@ def form_memories():
                     if pain_flag:
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
                                              dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1],
-                                             long_term_depression=True)
+                                             long_term_depression=True, impact_multiplier=10)
 
                         # print("-.-.-")
 

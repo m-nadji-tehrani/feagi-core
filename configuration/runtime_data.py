@@ -10,3 +10,4 @@ upstream_neurons = {}
 memory_list = {}
 activity_stats = {}
 temp_neuron_list = []
+original_genome_id = []

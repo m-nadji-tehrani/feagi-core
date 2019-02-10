@@ -21,30 +21,30 @@ def select_a_genome():
 
     if random_selector == 1:
         print("Crossover is happening...")
-        genome = crossover()
+        genome, original_genome_id = crossover()
 
     elif random_selector == 2:
         print("A random genome is being selected...")
         # genome = random_genome()
-        genome = highest_fitness_genome()
+        genome, original_genome_id = highest_fitness_genome()
 
     elif random_selector == 3:
         print("Most recent genome is being selected...")
         # genome = latest_genome()
-        genome = highest_fitness_genome()
+        genome, original_genome_id = highest_fitness_genome()
 
     elif random_selector == 4:
         print("The genome with highest fitness so far has been selected...")
-        genome = highest_fitness_genome()
+        genome, original_genome_id = highest_fitness_genome()
 
     elif random_selector >= 5:
         print("Gene mutation has occurred...")
-        genome = mutate(highest_fitness_genome())
+        genome, original_genome_id = mutate(highest_fitness_genome())
 
     # elif random_selector == 6:
     #     genome =
 
-    return genome
+    return genome, original_genome_id
 
 
 class GeneModifier:
@@ -203,7 +203,7 @@ def genethesize():
     return genome
 
 
-def mutate(genome):
+def mutate(genome, original_genome_id):
     # todo: refactor this function to use parameters/genome to drive
     factor_1 = random.randrange(-30, 30, 1) / 100
     factor_2 = random.randrange(-30, 30, 1) / 100
@@ -235,7 +235,7 @@ def mutate(genome):
         genome = GeneModifier.change_growth_rule_4_param_2(genome, factor_7)
         genome = GeneModifier.change_vision_plasticity_constant(genome, factor_8)
 
-    return genome
+    return genome, original_genome_id
 
 
 def get_genome_candidate():
@@ -256,6 +256,10 @@ def crossover():
 
     genome_1, genome_2 = db.id_list_2_genome_list(db.random_m_from_top_n(2, 5))
 
+    original_genome_id = []
+    original_genome_id.append(genome_1['genome_id'])
+    original_genome_id.append(genome_2['genome_id'])
+
     genome_1 = genome_1["properties"]
     genome_2 = genome_2["properties"]
 
@@ -273,7 +277,7 @@ def crossover():
 
     print("--- Gene crossover has occurred ---")
 
-    return genome_2
+    return genome_2, original_genome_id
 
 
 def random_genome():
@@ -282,19 +286,25 @@ def random_genome():
     for item in genomes:
         genome = item
     # print("this is the random genome", genome)
-    return genome['properties']
+    original_genome_id = []
+    original_genome_id.append(genome['genome_id'])
+    return genome['properties'], original_genome_id
 
 
 def latest_genome():
     db = db_handler.MongoManagement()
     genome = db.latest_genome()
-    return genome['properties']
+    original_genome_id = []
+    original_genome_id.append(genome['genome_id'])
+    return genome['properties'], original_genome_id
 
 
 def highest_fitness_genome():
     db = db_handler.MongoManagement()
     genome = db.highest_fitness_genome()
-    return genome['properties']
+    original_genome_id = []
+    original_genome_id.append(genome['genome_id'])
+    return genome['properties'], original_genome_id
 
 
 def translate_genotype2phenotype():

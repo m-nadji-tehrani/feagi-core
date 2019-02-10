@@ -86,10 +86,12 @@ def save_genome_to_disk():
 def stage_genome(connectome_path, dynamic_selection_mode=True):
     from evolutionary.genethesizer import select_a_genome
     if dynamic_selection_mode:
-        genome_data = select_a_genome()
+        genome_data, original_genome_id = select_a_genome()
+        runtime_data.original_genome_id = original_genome_id
     else:
         load_genome_in_memory(connectome_path, static=True)
         genome_data = runtime_data.genome
+        runtime_data.original_genome_id = ["static"]
     with open(connectome_path+'genome_tmp.json', "w") as staged_genome:
         # Saving changes to the connectome
         staged_genome.seek(0)  # rewind

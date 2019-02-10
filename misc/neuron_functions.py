@@ -296,8 +296,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             #                   settings.Bcolors.ENDC)
             #         burst_exit_process()
 
-
-
         # Comprehension check
         counter_list = {}
         if runtime_data.parameters["Logs"]["print_comprehension_queue"]:
@@ -327,8 +325,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             else:
                 if list_length >= 2:
                     runtime_data.parameters["Input"]["comprehended_char"] = ''
-
-
 
         # # # # DEBUGGING
         # print("********************************************************************************************")
@@ -449,6 +445,7 @@ def test_manager(test_mode, test_param):
             print("Automatic learning for 0..9 has been turned ON!")
             test_params.img_flag = True
             test_params.utf_flag = True
+            test_params.exit_flag = False
             test_params.burst_skip_flag = False
             test_params.utf_handler = True
             test_params.variation_handler = True
@@ -463,6 +460,7 @@ def test_manager(test_mode, test_param):
             test_params.test_mode = "t2"
             test_params.img_flag = True
             test_params.utf_flag = True
+            test_params.exit_flag = False
             test_params.burst_skip_flag = False
             test_params.utf_handler = False
             test_params.variation_handler = True
@@ -526,34 +524,9 @@ def auto_tester():
               test_params.variation_handler)
         print("UTF counter actual: ", test_params.utf_counter_actual, test_params.utf_handler)
 
-        # Counter logic
-        if test_params.variation_counter_actual < 1:
-            print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-            print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
-            print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
-            # Resetting all test counters
-            test_params.exposure_counter_actual = test_params.exposure_default
-            test_params.variation_counter_actual = test_params.variation_counter
-            test_params.test_attempt_counter = 0
-            test_params.comprehension_counter = 0
-            test_params.no_response_counter = 0
-            # UTF counter
-            test_params.utf_counter_actual -= 1
-            if test_params.utf_counter_actual < 0:
-                print(">> Test exit condition has been met <<")
-                update_test_stats()
-                test_exit_process()
-
-            if test_params.utf_flag:
-                test_params.num_to_inject -= 1
-
         if test_params.exposure_counter_actual < 1:
-
             # Turning on the skip flag to allow FCL to clear
             test_params.burst_skip_flag = True
-
-
-
 
     else:
         print("Skipping the injection for this round...")
@@ -566,9 +539,6 @@ def auto_tester():
             test_comprehension_logic()
             test_params.test_attempt_counter += 1
 
-            # Test stats
-            update_test_stats()
-
             print("Number to inject:", test_params.num_to_inject)
             print(test_params.utf_default,
                   test_params.variation_counter,
@@ -578,10 +548,9 @@ def auto_tester():
                   test_params.variation_counter_actual,
                   test_params.exposure_counter_actual)
 
-
-            if test_params.img_flag:
-                print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
-                data_feeder.image_feeder(test_params.num_to_inject)
+            # Test stats
+            update_test_stats()
+            print("stats just got updated")
 
             print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
             print(".... .. .. .. ... New Variation... ... ... .. .. ")
@@ -592,6 +561,35 @@ def auto_tester():
             test_params.variation_counter_actual -= 1
             print('#-#-# Current test variation counter is ', test_params.variation_counter_actual)
             print("#-#-# Current number to inject is :", test_params.num_to_inject)
+
+            print("Test stats:\n", test_params.test_stats)
+
+            # Counter logic
+            if test_params.variation_counter_actual < 1:
+                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
+                print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
+                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                # Resetting all test counters
+                test_params.exposure_counter_actual = test_params.exposure_default
+                test_params.variation_counter_actual = test_params.variation_counter
+                test_params.test_attempt_counter = 0
+                test_params.comprehension_counter = 0
+                test_params.no_response_counter = 0
+                # UTF counter
+                test_params.utf_counter_actual -= 1
+                if test_params.utf_counter_actual < 0:
+                    print(">> Test exit condition has been met <<")
+                    test_params.exit_flag = True
+                    test_exit_process()
+
+                if test_params.utf_flag:
+                    test_params.num_to_inject -= 1
+
+            if test_params.img_flag and not test_params.exit_flag:
+                print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
+                data_feeder.image_feeder(test_params.num_to_inject)
 
 
 def update_test_stats():
@@ -618,7 +616,9 @@ def update_test_stats():
 def test_comprehension_logic():
     global test_params
     # Comprehension logic
+    print("\n****************************************")
     print("Comprehended char> ", runtime_data.parameters["Input"]["comprehended_char"], "  Injected char> ", test_params.num_to_inject)
+    print("****************************************\n")
     if runtime_data.parameters["Input"]["comprehended_char"] == '':
         test_params.no_response_counter += 1
     elif runtime_data.parameters["Input"]["comprehended_char"] == str(test_params.num_to_inject):
@@ -678,6 +678,8 @@ def test_exit_process():
 
     print("\n-----------------------------------------------------------------------------------------------")
     print("-----------------------------------------------------------------------------------------------")
+
+    print("test_stats:\n", test_params.test_stats)
 
     test_params.test_attempt_counter = 0
     test_params.comprehension_counter = 0

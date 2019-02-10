@@ -274,26 +274,27 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                     return False
 
         # Monitor cortical activity levels and terminate brain if not meeting expectations
-        if runtime_data.parameters["Auto_injector"]["injector_status"] and \
-                init_data.burst_count > runtime_data.parameters["InitData"]["kill_trigger_burst_count"]:
-            if 'vision_memory' not in runtime_data.activity_stats:
-                runtime_data.activity_stats['vision_memory'] = 0
-            elif runtime_data.activity_stats['vision_memory'] < \
-                        runtime_data.parameters["InitData"]["kill_trigger_vision_memory_min"]:
-                    print(settings.Bcolors.RED +
-                          "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low performance! !! !!!" +
-                          settings.Bcolors.ENDC)
-                    print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
-                    burst_exit_process()
+        if runtime_data.parameters["Switches"]["evaluation_based_termination"]:
+            if runtime_data.parameters["Auto_injector"]["injector_status"] and \
+                    init_data.burst_count > runtime_data.parameters["InitData"]["kill_trigger_burst_count"]:
+                if 'vision_memory' not in runtime_data.activity_stats:
+                    runtime_data.activity_stats['vision_memory'] = 0
+                elif runtime_data.activity_stats['vision_memory'] < \
+                            runtime_data.parameters["InitData"]["kill_trigger_vision_memory_min"]:
+                        print(settings.Bcolors.RED +
+                              "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low performance! !! !!!" +
+                              settings.Bcolors.ENDC)
+                        print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
+                        burst_exit_process()
 
-        # # todo: Need to troubleshoot
-        # if runtime_data.parameters["Auto_injector"]["injector_status"] and \
-        #             init_data.burst_count > (runtime_data.parameters["Auto_injector"]["exposure_default"] * 11):
-        #     if not training_quality_test():
-        #         print(settings.Bcolors.RED +
-        #               "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
-        #                   settings.Bcolors.ENDC)
-        #         burst_exit_process()
+            # # todo: Need to troubleshoot
+            # if runtime_data.parameters["Auto_injector"]["injector_status"] and \
+            #             init_data.burst_count > (runtime_data.parameters["Auto_injector"]["exposure_default"] * 11):
+            #     if not training_quality_test():
+            #         print(settings.Bcolors.RED +
+            #               "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
+            #                   settings.Bcolors.ENDC)
+            #         burst_exit_process()
 
 
 
@@ -509,7 +510,9 @@ def auto_tester():
 
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
-    if not injector_params.burst_skip_flag:
+    if not test_params.burst_skip_flag:
+
+        print(".... .. .. .. ... New Exposure ... ... ... .. .. ")
 
         # Injecting test image to the FCL
         if test_params.img_flag:
@@ -524,27 +527,33 @@ def auto_tester():
         print("UTF counter actual: ", test_params.utf_counter_actual, test_params.utf_handler)
 
         # Counter logic
-        if test_params.exposure_counter_actual < 1:
+        if test_params.variation_counter_actual < 1:
+            print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+            print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
+            print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
+            # Resetting all test counters
             test_params.exposure_counter_actual = test_params.exposure_default
+            test_params.variation_counter_actual = test_params.variation_counter
+            test_params.test_attempt_counter = 0
+            test_params.comprehension_counter = 0
+            test_params.no_response_counter = 0
+            # UTF counter
+            test_params.utf_counter_actual -= 1
+            if test_params.utf_counter_actual < 0:
+                print(">> Test exit condition has been met <<")
+                update_test_stats()
+                test_exit_process()
+
+            if test_params.utf_flag:
+                test_params.num_to_inject -= 1
+
+        if test_params.exposure_counter_actual < 1:
 
             # Turning on the skip flag to allow FCL to clear
             test_params.burst_skip_flag = True
 
-            # Variation counter
-            test_params.variation_counter_actual -= 1
-            print('#-#-# Current test variation counter is ', test_params.variation_counter_actual)
 
-        if test_params.variation_counter_actual < 1:
-                # Resetting all test counters
-                test_params.exposure_counter_actual = test_params.exposure_default
-                test_params.variation_counter_actual = test_params.variation_counter
-                test_params.test_attempt_counter = 0
-                test_params.comprehension_counter = 0
-                test_params.no_response_counter = 0
-                # UTF counter
-                test_params.utf_counter_actual -= 1
-                if test_params.utf_flag:
-                    test_params.num_to_inject -= 1
+
 
     else:
         print("Skipping the injection for this round...")
@@ -569,13 +578,20 @@ def auto_tester():
                   test_params.variation_counter_actual,
                   test_params.exposure_counter_actual)
 
-            # Exit condition
-            if test_exit_condition():
-                test_exit_process()
 
             if test_params.img_flag:
                 print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
                 data_feeder.image_feeder(test_params.num_to_inject)
+
+            print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+            print(".... .. .. .. ... New Variation... ... ... .. .. ")
+            print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
+            test_params.exposure_counter_actual = test_params.exposure_default
+
+            # Variation counter
+            test_params.variation_counter_actual -= 1
+            print('#-#-# Current test variation counter is ', test_params.variation_counter_actual)
+            print("#-#-# Current number to inject is :", test_params.num_to_inject)
 
 
 def update_test_stats():
@@ -585,7 +601,7 @@ def update_test_stats():
     utf_comprehended = str(test_params.num_to_inject) + '_comprehended'
     utf_no_response = str(test_params.num_to_inject) + '_no_response'
     if utf_exposed not in test_params.test_stats:
-        test_params.test_stats[utf_exposed] = runtime_data.parameters["Auto_injector"]["utf_default"]
+        test_params.test_stats[utf_exposed] = runtime_data.parameters["Auto_tester"]["utf_default"]
     if utf_comprehended not in test_params.test_stats:
         test_params.test_stats[utf_comprehended] = 0
     if utf_no_response not in test_params.test_stats:
@@ -625,27 +641,14 @@ def test_comprehension_logic():
         runtime_data.parameters["Input"]["comprehended_char"] = ''
 
 
-def test_exit_condition():
-    global test_params
-    if test_params.utf_counter_actual < 1 and \
-            test_params.variation_counter_actual < 1 and \
-            test_params.exposure_counter_actual < 1:
-        exit_condition = True
-        print(">> Test exit condition has been met <<")
-    else:
-        exit_condition = False
-
-    return exit_condition
-
-
 def test_exit_process():
     global test_params
     global init_data
     
     runtime_data.parameters["Auto_tester"]["tester_status"] = False
-    test_params.exposure_counter_actual = runtime_data.parameters["Auto_tester"]["exposure_default"]
-    test_params.variation_counter_actual = runtime_data.parameters["Auto_tester"]["variation_default"]
-    test_params.utf_counter_actual = runtime_data.parameters["Auto_tester"]["utf_default"]
+    # test_params.exposure_counter_actual = runtime_data.parameters["Auto_tester"]["exposure_default"]
+    # test_params.variation_counter_actual = runtime_data.parameters["Auto_tester"]["variation_default"]
+    # test_params.utf_counter_actual = runtime_data.parameters["Auto_tester"]["utf_default"]
     test_duration = datetime.now() - test_params.test_start_time
     print("----------------------------All testing rounds has been completed-----------------------------")
     print("Total test duration was: ", test_duration)
@@ -657,7 +660,7 @@ def test_exit_process():
     print("-----------------------------------------------------------------------------------------------")
 
     print('               ', end='')
-    for _ in range(10):
+    for _ in reversed(range(1 + runtime_data.parameters["Auto_tester"]["utf_default"])):
         print(_,'    ', end='')
 
     print('\nExposed:       ', end='')
@@ -798,12 +801,13 @@ def auto_injector():
         if injector_params.exposure_counter_actual < 1:
 
             # Effectiveness check
-            print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
-            if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
-                print(settings.Bcolors.RED +
-                      "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
-                      settings.Bcolors.ENDC)
-                burst_exit_process()
+            if runtime_data.parameters["Switches"]["evaluation_based_termination"]:
+                print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
+                if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
+                    print(settings.Bcolors.RED +
+                          "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
+                          settings.Bcolors.ENDC)
+                    burst_exit_process()
 
             # Resetting exposure counter
             injector_params.exposure_counter_actual = injector_params.exposure_default

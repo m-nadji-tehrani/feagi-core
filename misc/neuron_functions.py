@@ -328,6 +328,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                     runtime_data.parameters["Input"]["comprehended_char"] = ''
 
 
+
         # # # # DEBUGGING
         # print("********************************************************************************************")
         # print("************************************************************************************")
@@ -447,6 +448,7 @@ def test_manager(test_mode, test_param):
             print("Automatic learning for 0..9 has been turned ON!")
             test_params.img_flag = True
             test_params.utf_flag = True
+            test_params.burst_skip_flag = False
             test_params.utf_handler = True
             test_params.variation_handler = True
             test_params.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
@@ -454,11 +456,13 @@ def test_manager(test_mode, test_param):
             test_params.utf_default = runtime_data.parameters["Auto_tester"]["utf_default"]
             test_params.utf_counter_actual = runtime_data.parameters["Auto_tester"]["utf_default"]
             test_params.num_to_inject = test_params.utf_default
+            test_params.burst_skip_counter = runtime_data.parameters["Auto_tester"]["tester_burst_skip_counter"]
 
         elif test_mode == 't2':
             test_params.test_mode = "t2"
             test_params.img_flag = True
             test_params.utf_flag = True
+            test_params.burst_skip_flag = False
             test_params.utf_handler = False
             test_params.variation_handler = True
             test_params.variation_counter = runtime_data.parameters["Auto_tester"]["variation_default"]
@@ -466,6 +470,7 @@ def test_manager(test_mode, test_param):
             test_params.utf_default = -1
             test_params.utf_counter_actual = -1
             test_params.num_to_inject = int(test_param)
+            test_params.burst_skip_counter = runtime_data.parameters["Auto_tester"]["tester_burst_skip_counter"]
             print("   <<<   Automatic learning for variations of number << %s >> has been turned ON!   >>>"
                   % test_param)
 
@@ -502,37 +507,35 @@ def auto_tester():
         if test_params.img_flag:
             data_feeder.image_feeder(test_params.num_to_inject)
 
-    # Exposure counter
-    test_params.exposure_counter_actual -= 1
 
-    # print("Exposure counter actual: ", test_params.exposure_counter_actual)
-    # print("Variation counter actual: ", test_params.variation_counter_actual,
-    #       test_params.variation_handler)
-    # print("UTF counter actual: ", test_params.utf_counter_actual, test_params.utf_handler)
+    # Mechanism to skip a number of bursts between each injections to clean-up FCL
+    if not injector_params.burst_skip_flag:
 
-    # Test stats
-    update_test_stats()
+        # Injecting test image to the FCL
+        if test_params.img_flag:
+            data_feeder.img_neuron_list_feeder()
 
-    # Exit condition
-    if test_exit_condition():
-        test_exit_process()
+        # Exposure counter
+        test_params.exposure_counter_actual -= 1
 
-    # Counter logic
-    if test_params.variation_handler:
-        if test_params.exposure_counter_actual < 1 and not test_exit_condition():
+        print("Exposure counter actual: ", test_params.exposure_counter_actual)
+        print("Variation counter actual: ", test_params.variation_counter_actual,
+              test_params.variation_handler)
+        print("UTF counter actual: ", test_params.utf_counter_actual, test_params.utf_handler)
+
+        # Counter logic
+        if test_params.exposure_counter_actual < 1:
             test_params.exposure_counter_actual = test_params.exposure_default
-            test_params.test_attempt_counter += 1
-            test_comprehension_logic()
+
+            # Turning on the skip flag to allow FCL to clear
+            test_params.burst_skip_flag = True
 
             # Variation counter
             test_params.variation_counter_actual -= 1
-            print('#-#-# Current test counter is ', test_params.variation_counter_actual)
-            if test_params.img_flag:
-                data_feeder.image_feeder(test_params.num_to_inject)
+            print('#-#-# Current test variation counter is ', test_params.variation_counter_actual)
 
-        if test_params.utf_handler \
-                and test_params.variation_counter_actual < 0  \
-                and not test_exit_condition():
+        if test_params.variation_counter_actual < 1:
+                # Resetting all test counters
                 test_params.exposure_counter_actual = test_params.exposure_default
                 test_params.variation_counter_actual = test_params.variation_counter
                 test_params.test_attempt_counter = 0
@@ -543,38 +546,58 @@ def auto_tester():
                 if test_params.utf_flag:
                     test_params.num_to_inject -= 1
 
-    # print(test_params.utf_default,
-    #       test_params.variation_counter,
-    #       test_params.exposure_default)
-    #
-    # print(test_params.utf_counter_actual,
-    #       test_params.variation_counter_actual,
-    #       test_params.exposure_counter_actual)
+    else:
+        print("Skipping the injection for this round...")
+        test_params.burst_skip_counter -= 1
+        if test_params.burst_skip_counter <= 0 or len(init_data.fire_candidate_list) < 1:
+            test_params.burst_skip_counter = runtime_data.parameters["Auto_tester"]["tester_burst_skip_counter"]
+            test_params.burst_skip_flag = False
 
-    if test_params.img_flag:
-        data_feeder.img_neuron_list_feeder()
+            # Final phase of a single test instance is to evaluate the comprehension when FCL is cleaned up
+            test_comprehension_logic()
+            test_params.test_attempt_counter += 1
+
+            # Test stats
+            update_test_stats()
+
+            print("Number to inject:", test_params.num_to_inject)
+            print(test_params.utf_default,
+                  test_params.variation_counter,
+                  test_params.exposure_default)
+
+            print(test_params.utf_counter_actual,
+                  test_params.variation_counter_actual,
+                  test_params.exposure_counter_actual)
+
+            # Exit condition
+            if test_exit_condition():
+                test_exit_process()
+
+            if test_params.img_flag:
+                print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
+                data_feeder.image_feeder(test_params.num_to_inject)
 
 
 def update_test_stats():
     global test_params
+    # Initialize parameters
     utf_exposed = str(test_params.num_to_inject) + '_exposed'
     utf_comprehended = str(test_params.num_to_inject) + '_comprehended'
     utf_no_response = str(test_params.num_to_inject) + '_no_response'
-
     if utf_exposed not in test_params.test_stats:
-        test_params.test_stats[utf_exposed] = 1
-
+        test_params.test_stats[utf_exposed] = runtime_data.parameters["Auto_injector"]["utf_default"]
     if utf_comprehended not in test_params.test_stats:
-        test_params.test_stats[utf_exposed] = 0
-
+        test_params.test_stats[utf_comprehended] = 0
     if utf_no_response not in test_params.test_stats:
         test_params.test_stats[utf_no_response] = 0
 
+    # Add current stats to the list
     test_params.test_stats[utf_exposed] = test_params.test_attempt_counter
     test_params.test_stats[utf_comprehended] = test_params.comprehension_counter
     test_params.test_stats[utf_no_response] = test_params.no_response_counter
     print('no_response_counter: ', test_params.no_response_counter)
-
+    print('comprehension_counter: ', test_params.comprehension_counter)
+    print('attempted_counter: ', test_params.test_attempt_counter)
 
 def test_comprehension_logic():
     global test_params
@@ -773,6 +796,7 @@ def auto_injector():
 
         # Counter logic
         if injector_params.exposure_counter_actual < 1:
+
             # Effectiveness check
             print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
             if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
@@ -780,10 +804,13 @@ def auto_injector():
                       "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
                       settings.Bcolors.ENDC)
                 burst_exit_process()
+
             # Resetting exposure counter
             injector_params.exposure_counter_actual = injector_params.exposure_default
+
             # UTF counter
             injector_params.utf_counter_actual -= 1
+
             # Turning on the skip flag to allow FCL to clear
             injector_params.burst_skip_flag = True
 

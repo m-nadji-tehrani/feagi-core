@@ -69,7 +69,8 @@
     "exposure_default": 10,
     "utf_default": 9,
     "burst_skip": 0,
-    "tester_status": false
+    "tester_status": false,
+    "tester_burst_skip_counter": 10
   },
   "Logs":{
     "print_mnist_img": false,

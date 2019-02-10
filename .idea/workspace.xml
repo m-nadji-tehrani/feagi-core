@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/configuration/runtime_data.py" afterPath="$PROJECT_DIR$/configuration/runtime_data.py" />
       <change beforePath="$PROJECT_DIR$/evolutionary/genethesizer.py" afterPath="$PROJECT_DIR$/evolutionary/genethesizer.py" />
-      <change beforePath="$PROJECT_DIR$/misc/disk_ops.py" afterPath="$PROJECT_DIR$/misc/disk_ops.py" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -80,7 +78,7 @@
     <splitter split-orientation="horizontal" split-proportion="0.71812594">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="disk_ops.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="disk_ops.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/disk_ops.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="726">
@@ -309,11 +307,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="genethesizer.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="genethesizer.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="207">
-                  <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="19" />
+                <state relative-caret-position="714">
+                  <caret line="218" column="22" lean-forward="false" selection-start-line="218" selection-start-column="22" selection-end-line="218" selection-end-column="22" />
                   <folding>
                     <element signature="e#83#98#0" expanded="true" />
                   </folding>
@@ -624,9 +622,9 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/configuration/parameters.json" />
         <option value="$PROJECT_DIR$/misc/neuron_functions.py" />
-        <option value="$PROJECT_DIR$/evolutionary/genethesizer.py" />
         <option value="$PROJECT_DIR$/configuration/runtime_data.py" />
         <option value="$PROJECT_DIR$/misc/disk_ops.py" />
+        <option value="$PROJECT_DIR$/evolutionary/genethesizer.py" />
       </list>
     </option>
   </component>
@@ -1063,13 +1061,6 @@
       <option name="presentableId" value="Default" />
       <updated>1463197491590</updated>
     </task>
-    <task id="LOCAL-00157" summary="Misc.">
-      <created>1532919660544</created>
-      <option name="number" value="00157" />
-      <option name="presentableId" value="LOCAL-00157" />
-      <option name="project" value="LOCAL" />
-      <updated>1532919660544</updated>
-    </task>
     <task id="LOCAL-00158" summary="Misc.">
       <created>1533261363124</created>
       <option name="number" value="00158" />
@@ -1406,7 +1397,14 @@
       <option name="project" value="LOCAL" />
       <updated>1549764524052</updated>
     </task>
-    <option name="localTasksCounter" value="206" />
+    <task id="LOCAL-00206" summary="Original genome id (Partial)">
+      <created>1549774023854</created>
+      <option name="number" value="00206" />
+      <option name="presentableId" value="LOCAL-00206" />
+      <option name="project" value="LOCAL" />
+      <updated>1549774023854</updated>
+    </task>
+    <option name="localTasksCounter" value="207" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1529,7 +1527,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Misc" />
     <MESSAGE value="Plasticity &amp; Mem formation refactor" />
     <MESSAGE value="Visualizer 2.0" />
     <MESSAGE value="Visualizer" />
@@ -1554,7 +1551,8 @@
     <MESSAGE value="Burst skip fix" />
     <MESSAGE value="Memory overlap reduction" />
     <MESSAGE value="Auto test refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Auto test refactor" />
+    <MESSAGE value="Original genome id (Partial)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Original genome id (Partial)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2242,16 +2240,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="19" />
-          <folding>
-            <element signature="e#83#98#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -2265,6 +2253,16 @@
         <state relative-caret-position="726">
           <caret line="97" column="62" lean-forward="false" selection-start-line="97" selection-start-column="62" selection-end-line="97" selection-end-column="62" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="218" column="22" lean-forward="false" selection-start-line="218" selection-start-column="22" selection-end-line="218" selection-end-column="22" />
+          <folding>
+            <element signature="e#83#98#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

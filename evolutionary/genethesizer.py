@@ -39,7 +39,8 @@ def select_a_genome():
 
     elif random_selector >= 5:
         print("Gene mutation has occurred...")
-        genome, original_genome_id = mutate(highest_fitness_genome())
+        candidate_genome, original_genome_id = highest_fitness_genome()
+        genome = mutate(candidate_genome)
 
     # elif random_selector == 6:
     #     genome =
@@ -203,7 +204,7 @@ def genethesize():
     return genome
 
 
-def mutate(genome, original_genome_id):
+def mutate(genome):
     # todo: refactor this function to use parameters/genome to drive
     factor_1 = random.randrange(-30, 30, 1) / 100
     factor_2 = random.randrange(-30, 30, 1) / 100
@@ -235,7 +236,7 @@ def mutate(genome, original_genome_id):
         genome = GeneModifier.change_growth_rule_4_param_2(genome, factor_7)
         genome = GeneModifier.change_vision_plasticity_constant(genome, factor_8)
 
-    return genome, original_genome_id
+    return genome
 
 
 def get_genome_candidate():

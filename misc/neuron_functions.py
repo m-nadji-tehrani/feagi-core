@@ -46,6 +46,7 @@ class InitData:
         self.empty_fcl_counter = 0
         self.neuron_mp_list = []
         self.time_neuron_update = datetime.now()
+        self.time_apply_plasticity_ext = datetime.now()
 
 
 class InjectorParams:
@@ -175,6 +176,11 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
         burst_start_time = datetime.now()
+
+        now = datetime.now()
+        init_data.time_apply_plasticity_ext = datetime.now() - now
+
+
         # print(datetime.now(), "Burst count = ", init_data.burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
@@ -296,17 +302,7 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                         print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
                         burst_exit_process()
 
-            # # todo: Need to troubleshoot
-            # if runtime_data.parameters["Auto_injector"]["injector_status"] and \
-            #             init_data.burst_count > (runtime_data.parameters["Auto_injector"]["exposure_default"] * 11):
-            #     if not training_quality_test():
-            #         print(settings.Bcolors.RED +
-            #               "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
-            #                   settings.Bcolors.ENDC)
-            #         burst_exit_process()
         print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
-
-
 
         # Comprehension check
         time_comprehension_check = datetime.now()
@@ -338,24 +334,6 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             else:
                 if list_length >= 2:
                     runtime_data.parameters["Input"]["comprehended_char"] = ''
-
-        # # # # DEBUGGING
-        # print("********************************************************************************************")
-        # print("************************************************************************************")
-        # print("******************************************************************************")
-        # print("\n\nListing PFCL memory entries...")
-        # for entry in init_data.previous_fcl:
-        #     if entry[0] == 'vision_memory' or entry[0] == 'utf_memory':
-        #         print(" >>> PFCL: ", entry[0], entry[1])
-        # print("\n\nListing CFCL memory entries...")
-        # for entry in init_data.fire_candidate_list:
-        #     if entry[0] == 'vision_memory' or entry[0] == 'utf_memory':
-        #         print(" >>> CFCL: ", entry[0], entry[1])
-        # print("******************************************************************************")
-        # print("************************************************************************************")
-        # print("********************************************************************************************")
-        # # # # END of DEBUGGING
-
 
         # Forming memories through creation of cell assemblies
         if runtime_data.parameters["Switches"]["memory_formation"]:
@@ -405,9 +383,13 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
                 new_data.append(new_content)
                 mongo.inset_membrane_potentials(new_content)
 
+        print("Timing : Apply plasticity ext:", init_data.time_apply_plasticity_ext)
+
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
             print(settings.Bcolors.YELLOW + ">>> Burst duration: %s %i --- ---- ---- ---- ---- ---- ----" % (burst_duration, init_data.burst_count) + settings.Bcolors.ENDC)
+
+
 
 
     # Push updated brain data back to the queue
@@ -1232,18 +1214,6 @@ def neuron_fire(cortical_area, neuron_id):
     # Setting Destination to the list of Neurons connected to the firing Neuron
     neighbor_list = runtime_data.brain[cortical_area][neuron_id]["neighbors"]
 
-    # print("<><><>________<><><><>_______<><><><><>", cortical_area, neuron_id, neighbor_list)
-    # print("Neighbor list:", neighbor_list)
-    # if runtime_data.parameters["Switches"]["logging_fire"]:
-    #     print(datetime.now(), "      Neighbors...", neighbor_list, file=open("./logs/fire.log", "a"))
-    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
-    #     print(settings.Bcolors.RED +
-    #           "Firing neuron %s using firing pattern %s" %
-    #           (neuron_id, json.dumps(runtime_data.brain[cortical_area][neuron_id]["firing_pattern_id"], indent=3)) +
-    #           settings.Bcolors.ENDC)
-    #     print(settings.Bcolors.RED + "Neuron %s neighbors are %s" % (neuron_id, json.dumps(neighbor_list, indent=3)) +
-    #           settings.Bcolors.ENDC)
-
     # Condition to update neuron activity history currently only targeted for UTF-OPU
     # todo: move activity_history_span to genome
     activity_history_span = runtime_data.parameters["InitData"]["activity_history_span"]
@@ -1270,42 +1240,33 @@ def neuron_fire(cortical_area, neuron_id):
     runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count_inst"] += 1
 
     # Transferring the signal from firing Neuron's Axon to all connected Neuron Dendrites
-    # Firing pattern to be accommodated here     <<<<<<<<<<  *****
+    # todo: Firing pattern to be accommodated here     <<<<<<<<<<  *****
     # neuron_update_list = []
     neighbor_count = len(neighbor_list)
 
     # Updating downstream neurons
-    update_start_time = datetime.now()
+
     for dst_neuron_id in neighbor_list:
         if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
             print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
-        # print(".......................", dst_cortical_area, dst_neuron_id)
-        # if dst_cortical_area == 'utf8_memory':
-        #         print('--==--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
-        #               runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
 
         postsynaptic_current = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
 
-        # # # # Debugging
-        # if cortical_area == 'utf8':
-        #     print("%%%%% %%%%% %%%%% post synaptic current for the utf neuron is:", postsynaptic_current)
-        #     print(runtime_data.brain[cortical_area][neuron_id]["neighbors"])
-        #     print("cortical area:", cortical_area)
-        #     print("neuron id:", neuron_id)
-        #     print("%%%%% %%%%% %%%%%")
-        # # # # End of debugging
-
         neuron_output = activation_function(postsynaptic_current)
-        neuron_update(dst_cortical_area, dst_neuron_id,
-                      neuron_output,
-                      neighbor_count)
+
+        # Timing the update function
+        update_start_time = datetime.now()
+
+        # Update function
+        neuron_update(dst_cortical_area, dst_neuron_id, neuron_output, neighbor_count)
+
+        # Adding up all update times within a burst span
+        total_update_time = datetime.now() - update_start_time
+        init_data.time_neuron_update = total_update_time + init_data.time_neuron_update
+
         # Time overhead for the following function is about 2ms per each burst cycle
         update_upstream_db(cortical_area, neuron_id, dst_cortical_area, dst_neuron_id)
-        # if dst_cortical_area == 'utf8_memory':
-        #     print('--=+=--', dst_cortical_area, dst_neuron_id[27:], 'mp=',
-        #           runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
-
 
         ### Partial implementation of neuro-plasticity associated with LTD or Long Term Depression
         pfcl = init_data.previous_fcl
@@ -1320,9 +1281,7 @@ def neuron_fire(cortical_area, neuron_id):
                       % (cortical_area, dst_cortical_area)
                       + settings.Bcolors.ENDC)
 
-    # Adding up all update times within a burst span
-    total_update_time = datetime.now() - update_start_time
-    init_data.time_neuron_update = total_update_time + init_data.time_neuron_update
+
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -1463,75 +1422,32 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     """This function updates the destination parameters upon upstream Neuron firing"""
     global init_data
 
-    # # # # Debugging
-    # if cortical_area == 'utf8_memory':
-    #     print("* * * * * * * * * * * * * * UTF8 memory neuron is being updated")
-    #     print("postsynaptic_current:", postsynaptic_current)
-    #     print("neighbor_count:", neighbor_count)
-    # # # # End of Debugging
-
     dst_neuron_obj = runtime_data.brain[cortical_area][dst_neuron_id]
 
     # update the cumulative_intake_total, cumulative_intake_count and postsynaptic_current between source and
     # destination neurons based on XXX algorithm. The source is considered the Axon of the firing neuron and
     # destination is the dendrite of the neighbor.
 
-    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-    #     print("Update request has been processed for: ", cortical_area, dst_neuron_id, " >>>>>>>> >>>>>>> >>>>>>>>>>")
-    #     print(settings.Bcolors.UPDATE +
-    #           "%s's Cumulative_intake_count value before update: %s" %
-    #           (dst_neuron_id, dst_neuron_obj["membrane_potential"])
-    #           + settings.Bcolors.ENDC)
-
     last_membrane_potential_update = \
         max(runtime_data.brain[cortical_area][dst_neuron_id]["last_membrane_potential_reset_burst"],
             runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"])
 
     # Leaky behavior
-    if last_membrane_potential_update < init_data.burst_count:
+    if last_membrane_potential_update < init_data.burst_count and cortical_area != 'vision_memory':
         leak_coefficient = runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["leak_coefficient"]
         leak_window = init_data.burst_count - last_membrane_potential_update
         leak_value = leak_window * leak_coefficient
-        # print("::", cortical_area, "***", dst_neuron_id, "***", leak_value, "::")
         runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] -= leak_value
         if runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] < 0:
             runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] = 0
 
-    # # To simulate a leaky neuron membrane, after x number of burst passing the membrane potential resets to zero
-    # if init_data.burst_count - last_membrane_potential_update > \
-    #         runtime_data.brain[cortical_area][dst_neuron_id]["depolarization_threshold"]:
-    #     dst_neuron_obj["last_membrane_potential_reset_burst"] = init_data.burst_count
-    #     # todo: Might be better to have a reset func.
-    #     dst_neuron_obj["membrane_potential"] = 0
-    #     if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-    #         print(settings.Bcolors.UPDATE + 'Cumulative counters for Neuron ' + dst_neuron_id +
-    #               ' got rest' + settings.Bcolors.ENDC)
-
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
-
-
     runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
 
-    # print("membrane_potential:", destination,
-    #       ":", runtime_data.brain[cortical_area][destination]["membrane_potential"])
+    # todo: Need to figure how to deal with activation function and firing threshold (belongs to fire func)
 
-    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-    #     print(settings.Bcolors.UPDATE + "%s's Cumulative_intake_count value after update: %s" %
-    #           (dst_neuron_id, dst_neuron_obj["membrane_potential"])
-    #           + settings.Bcolors.ENDC)
-
-    # print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # todo: Need to figure how to deal with Activation function and firing threshold (belongs to fire func)
-    # The following will evaluate if the destination neuron is ready to fire and if so adds it to fire_candidate_list
-    # if cortical_area == 'utf8_memory':
-    #     print('&@@@: Testing fire eligibility', dst_neuron_id[27:], 'mp=',
-    #           dst_neuron_obj["membrane_potential"], 'fire threshold=', dst_neuron_obj["firing_threshold"])
     if dst_neuron_obj["membrane_potential"] > dst_neuron_obj["firing_threshold"]:
-        # # # # Debugging
-        # if cortical_area == 'utf8_memory':
-        #     print('&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%&^%: Fire condition has been met for', dst_neuron_id[27:])
-        # # # # End of Debugging
 
         # Refractory period check
         if dst_neuron_obj["last_burst_num"] + \
@@ -1544,12 +1460,6 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
 
                     # Adding neuron to fire candidate list for firing in the next round
                     init_data.fire_candidate_list.append([cortical_area, dst_neuron_id])
-
-                    # # # # Debugging
-                    # if cortical_area == 'utf8_memory':
-                    #     print("* * * * * * * * * * * * * * >>>> >>> >>> >> >> > UTF8 memory neuron has been added to FCL: ", cortical_area, dst_neuron_id)
-                    # # # # End of Debugging
-
 
                     ### This is an alternative approach to plasticity with hopefully less overhead
                     ### LTP or Long Term Potentiation occurs here
@@ -1569,27 +1479,6 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
                                                              src_neuron_id=src_neuron,
                                                              dst_cortical_area=cortical_area,
                                                              dst_neuron_id=dst_neuron_id)
-                                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                                        #     print(settings.Bcolors.OKGREEN + "WMWMWMW-------Neuron update----------MWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-                                        #                                  "...........LTP between %s and %s occurred"
-                                        #           % (cortical_area, dst_neuron_id)
-                                        #           + settings.Bcolors.ENDC)
-                    ### End of plasticity implementation
-
-                    # if cortical_area == 'utf8_memory':
-                    #     print('Following neuron being added to FCL:', dst_neuron_id[27:])
-                    # if runtime_data.parameters["Verbose"]["neuron_functions-neuron_update"]:
-                    #     print(settings.Bcolors.UPDATE +
-                    #           "    Update Function triggered FCL: %s " % init_data.fire_candidate_list
-                    #           + settings.Bcolors.ENDC)
-            # elif cortical_area == 'utf8_memory':
-            #     print('SSSS SSS SS S ...  Neuron was prevented from being added to FCL due to Snooze condition')
-
-    # else:
-    #     if cortical_area == 'utf8_memory':
-    #         print("--------- ----- --- ---- --- Threshold was not met - --- ----- --- - - - - - -")
-    #         print("membrane_potential:", dst_neuron_obj["membrane_potential"])
-    #         print("firing_threshold:", dst_neuron_obj["firing_threshold"])
 
     # Resetting last time neuron was updated to the current burst id
     runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"] = init_data.burst_count
@@ -1663,6 +1552,7 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
 def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
                          dst_neuron_id, long_term_depression=False, impact_multiplier=1):
 
+    operation_start_time = datetime.now()
     genome = runtime_data.genome
     plasticity_constant = genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
@@ -1698,6 +1588,8 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     # print('<**> ', src_cortical_area, src_neuron_id[27:], dst_cortical_area, dst_neuron_id[27:], 'PSC=',
     #       runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
 
+    function_time = datetime.now() - operation_start_time
+    init_data.time_apply_plasticity_ext = init_data.time_apply_plasticity_ext + function_time
     return
 
 

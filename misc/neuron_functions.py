@@ -1433,7 +1433,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
             runtime_data.brain[cortical_area][dst_neuron_id]["last_burst_num"])
 
     # Leaky behavior
-    if last_membrane_potential_update < init_data.burst_count and cortical_area != 'vision_memory':
+    if last_membrane_potential_update < init_data.burst_count:
         leak_coefficient = runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["leak_coefficient"]
         leak_window = init_data.burst_count - last_membrane_potential_update
         leak_value = leak_window * leak_coefficient

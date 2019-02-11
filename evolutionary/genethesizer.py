@@ -17,7 +17,7 @@ def select_a_genome():
     5. Mutate genome with highest fitness
     6. TBD
     """
-    random_selector = random.randrange(1, 10, 1)
+    random_selector = random.randrange(1, 6, 1)
 
     if random_selector == 1:
         print("Crossover is happening...")
@@ -206,14 +206,14 @@ def genethesize():
 
 def mutate(genome):
     # todo: refactor this function to use parameters/genome to drive
-    factor_1 = random.randrange(-30, 30, 1) / 100
-    factor_2 = random.randrange(-30, 30, 1) / 100
-    factor_3 = random.randrange(-30, 30, 1) / 100
-    factor_4 = random.randrange(-30, 30, 1) / 100
-    factor_5 = random.randrange(-30, 30, 1) / 100
+    factor_1 = random.randrange(-10, 10, 1) / 100
+    factor_2 = random.randrange(-10, 10, 1) / 100
+    factor_3 = random.randrange(-10, 10, 1) / 100
+    factor_4 = random.randrange(-10, 10, 1) / 100
+    factor_5 = random.randrange(-10, 10, 1) / 100
     factor_6 = random.randrange(-10, 10, 1) / 100
     factor_7 = random.randrange(-10, 10, 1) / 100
-    factor_8 = random.randrange(-20, 20, 1) / 100
+    factor_8 = random.randrange(-10, 10, 1) / 100
 
     blueprint = genome["blueprint"]
     cortical_list = []

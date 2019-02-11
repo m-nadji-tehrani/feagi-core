@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/misc/neuron_functions.py" afterPath="$PROJECT_DIR$/misc/neuron_functions.py" />
+      <change beforePath="$PROJECT_DIR$/configuration/parameters.json" afterPath="$PROJECT_DIR$/configuration/parameters.json" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -111,8 +111,8 @@
           <file leaf-file-name="neuron_functions.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="478">
-                  <caret line="1424" column="18" lean-forward="false" selection-start-line="1424" selection-start-column="18" selection-end-line="1424" selection-end-column="18" />
+                <state relative-caret-position="293">
+                  <caret line="322" column="0" lean-forward="true" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
                   <folding>
                     <element signature="e#1#362#1" expanded="false" />
                     <element signature="e#363#393#0" expanded="false" />
@@ -122,14 +122,12 @@
                     <element signature="e#1667#2460#0" expanded="false" />
                     <element signature="e#2487#3458#0" expanded="false" />
                     <element signature="e#2515#3458#0" expanded="false" />
-                    <element signature="e#3696#20068#0" expanded="false" />
                     <element signature="e#3763#3858#0" expanded="false" />
                     <element signature="e#5580#5870#0" expanded="false" />
                     <element signature="e#5736#5870#0" expanded="false" />
                     <element signature="e#6785#7075#0" expanded="false" />
                     <element signature="e#6906#7075#0" expanded="false" />
                     <element signature="e#7209#7445#0" expanded="false" />
-                    <element signature="e#7529#19678#0" expanded="false" />
                     <element signature="e#7670#7770#0" expanded="false" />
                     <element signature="e#8366#8506#0" expanded="false" />
                     <element signature="e#8533#11883#0" expanded="false" />
@@ -149,7 +147,6 @@
                     <element signature="e#12452#12568#0" expanded="false" />
                     <element signature="e#12578#12689#0" expanded="false" />
                     <element signature="e#13491#13710#0" expanded="false" />
-                    <element signature="e#13561#13710#0" expanded="false" />
                     <element signature="e#13599#13710#0" expanded="false" />
                     <element signature="e#13954#14813#0" expanded="false" />
                     <element signature="e#14148#14813#0" expanded="false" />
@@ -549,17 +546,17 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="parameters.json" pinned="false" current-in-tab="false">
+          <file leaf-file-name="parameters.json" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="823">
-                  <caret line="65" column="37" lean-forward="false" selection-start-line="65" selection-start-column="37" selection-end-line="65" selection-end-column="37" />
+                <state relative-caret-position="550">
+                  <caret line="68" column="27" lean-forward="false" selection-start-line="68" selection-start-column="27" selection-end-line="68" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="static_genome3.json" pinned="false" current-in-tab="true">
+          <file leaf-file-name="static_genome3.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="3733">
@@ -594,7 +591,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>test_attempt_counter</find>
       <find>test_comprehension_logic</find>
       <find>test_params.comprehension_counter</find>
       <find>test_params.no_response_counter</find>
@@ -624,6 +620,7 @@
       <find>burst_start_time</find>
       <find>fire</find>
       <find>low training ca</find>
+      <find>list_upstream_neuron_count</find>
     </findStrings>
     <replaceStrings>
       <replace>Init_data.live_mode_status</replace>
@@ -722,9 +719,9 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/configuration/runtime_data.py" />
         <option value="$PROJECT_DIR$/misc/disk_ops.py" />
-        <option value="$PROJECT_DIR$/configuration/parameters.json" />
         <option value="$PROJECT_DIR$/evolutionary/genethesizer.py" />
         <option value="$PROJECT_DIR$/misc/neuron_functions.py" />
+        <option value="$PROJECT_DIR$/configuration/parameters.json" />
       </list>
     </option>
   </component>
@@ -1161,13 +1158,6 @@
       <option name="presentableId" value="Default" />
       <updated>1463197491590</updated>
     </task>
-    <task id="LOCAL-00162" summary="IPU_vision refactor">
-      <created>1543951928865</created>
-      <option name="number" value="00162" />
-      <option name="presentableId" value="LOCAL-00162" />
-      <option name="project" value="LOCAL" />
-      <updated>1543951928865</updated>
-    </task>
     <task id="LOCAL-00163" summary="Vision imp. (incomplete)">
       <created>1543988437943</created>
       <option name="number" value="00163" />
@@ -1504,7 +1494,14 @@
       <option name="project" value="LOCAL" />
       <updated>1549846520322</updated>
     </task>
-    <option name="localTasksCounter" value="211" />
+    <task id="LOCAL-00211" summary="Excluding vision memory neurons from leaking">
+      <created>1549852246803</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1549852246804</updated>
+    </task>
+    <option name="localTasksCounter" value="212" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1627,7 +1624,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Misc." />
     <MESSAGE value="Fix for memory not evolving" />
     <MESSAGE value="Increased mutation chance" />
     <MESSAGE value="pre-reinforcement_learning" />
@@ -1652,7 +1648,8 @@
     <MESSAGE value="Original genome id (Partial)&#10;Auto test (Partial)" />
     <MESSAGE value="Auto test bug fix and refactor" />
     <MESSAGE value="Timing of functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Timing of functions" />
+    <MESSAGE value="Excluding vision memory neurons from leaking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Excluding vision memory neurons from leaking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2162,14 +2159,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="823">
-          <caret line="65" column="37" lean-forward="false" selection-start-line="65" selection-start-column="37" selection-end-line="65" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="690">
@@ -2188,10 +2177,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="68" column="27" lean-forward="false" selection-start-line="68" selection-start-column="27" selection-end-line="68" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/misc/neuron_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="1424" column="18" lean-forward="false" selection-start-line="1424" selection-start-column="18" selection-end-line="1424" selection-end-column="18" />
+        <state relative-caret-position="293">
+          <caret line="322" column="0" lean-forward="true" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
           <folding>
             <element signature="e#1#362#1" expanded="false" />
             <element signature="e#363#393#0" expanded="false" />
@@ -2201,14 +2198,12 @@
             <element signature="e#1667#2460#0" expanded="false" />
             <element signature="e#2487#3458#0" expanded="false" />
             <element signature="e#2515#3458#0" expanded="false" />
-            <element signature="e#3696#20068#0" expanded="false" />
             <element signature="e#3763#3858#0" expanded="false" />
             <element signature="e#5580#5870#0" expanded="false" />
             <element signature="e#5736#5870#0" expanded="false" />
             <element signature="e#6785#7075#0" expanded="false" />
             <element signature="e#6906#7075#0" expanded="false" />
             <element signature="e#7209#7445#0" expanded="false" />
-            <element signature="e#7529#19678#0" expanded="false" />
             <element signature="e#7670#7770#0" expanded="false" />
             <element signature="e#8366#8506#0" expanded="false" />
             <element signature="e#8533#11883#0" expanded="false" />
@@ -2228,7 +2223,6 @@
             <element signature="e#12452#12568#0" expanded="false" />
             <element signature="e#12578#12689#0" expanded="false" />
             <element signature="e#13491#13710#0" expanded="false" />
-            <element signature="e#13561#13710#0" expanded="false" />
             <element signature="e#13599#13710#0" expanded="false" />
             <element signature="e#13954#14813#0" expanded="false" />
             <element signature="e#14148#14813#0" expanded="false" />

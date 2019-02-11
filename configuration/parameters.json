@@ -74,12 +74,12 @@
     "tester_burst_skip_counter": 10
   },
   "Logs":{
-    "print_mnist_img": true,
+    "print_mnist_img": false,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
     "print_activation_counters": false,
-    "print_cortical_activity_counters": true,
+    "print_cortical_activity_counters": false,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
     "print_burst_info": true,

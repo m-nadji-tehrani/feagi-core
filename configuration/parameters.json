@@ -66,8 +66,8 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 4,
-    "exposure_default": 10,
+    "variation_default": 5,
+    "exposure_default":15,
     "utf_default": 9,
     "burst_skip": 0,
     "tester_status": false,

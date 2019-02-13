@@ -566,7 +566,7 @@ def auto_tester():
             print('#-#-# Current test variation counter is ', test_params.variation_counter_actual)
             print("#-#-# Current number to inject is :", test_params.num_to_inject)
 
-            print("Test stats:\n", test_params.test_stats)
+            # print("Test stats:\n", test_params.test_stats)
 
             # Counter logic
             if test_params.variation_counter_actual < 1:
@@ -1394,6 +1394,8 @@ def utf_neuron_id(n):
         if int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) == n+ord('0'):
             return neuron_id
 
+def utf_neuron_position(neuron_id):
+    return int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) - ord('0')
 
 def common_neuron_report():
     digits = range(10)
@@ -1441,6 +1443,13 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
         if runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] < 0:
             runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] = 0
 
+    # if runtime_data.parameters["Auto_tester"]["tester_status"] and cortical_area == 'utf8_memory':
+    #     print("++++++ Updating utf_memory  - number - its membrane potential - firing threshold - upstream postsynaptic current >> ",
+    #           utf_neuron_position(dst_neuron_id),
+    #           runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"],
+    #           runtime_data.brain[cortical_area][dst_neuron_id]["firing_threshold"],
+    #           postsynaptic_current)
+
     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
     # The following is considered as LTP or Long Term Potentiation of Neurons
     runtime_data.brain[cortical_area][dst_neuron_id]["membrane_potential"] += (postsynaptic_current / neighbor_count)
@@ -1448,7 +1457,8 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
     # todo: Need to figure how to deal with activation function and firing threshold (belongs to fire func)
 
     if dst_neuron_obj["membrane_potential"] > dst_neuron_obj["firing_threshold"]:
-
+        # if cortical_area == 'utf8_memory':
+            # print('++++++ The membrane potential passed the firing threshold')
         # Refractory period check
         if dst_neuron_obj["last_burst_num"] + \
                 runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["refractory_period"] <= \
@@ -1456,8 +1466,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
             # Inhibitory effect check
             if dst_neuron_obj["snooze_till_burst_num"] <= init_data.burst_count:
                 # To prevent duplicate entries
-                if init_data.fire_candidate_list.count([cortical_area, dst_neuron_id]) == 0:
-
+                if [cortical_area, dst_neuron_id] not in init_data.fire_candidate_list:
                     # Adding neuron to fire candidate list for firing in the next round
                     init_data.fire_candidate_list.append([cortical_area, dst_neuron_id])
 
@@ -1468,6 +1477,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
 
                         pfcl = init_data.previous_fcl
                         cfcl = init_data.fire_candidate_list
+                        # todo: The following statement is not performance optimized!
                         upstream_data = list_upstream_neurons(cortical_area, dst_neuron_id)
 
                         if upstream_data:

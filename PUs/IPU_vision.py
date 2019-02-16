@@ -82,8 +82,14 @@ class MNIST:
             return img_data, img_lbl
         else:
             # hand_picked_list = range(1, 100)
-            hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002
-                ,18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+
+            if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
+                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
+
+            elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
+                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
+                                            18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+
             while img_lbl != int(num):
                 selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]
                 img_lbl, img_data = self.mnist_array[selected_img]

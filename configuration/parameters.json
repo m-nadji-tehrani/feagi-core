@@ -38,7 +38,8 @@
     "capture_neuron_mp": false,
     "capture_neuron_mp_db": false,
     "evaluation_based_termination": true,
-    "use_highest_performing_genome_only": true
+    "use_highest_performing_genome_only": true,
+    "MNIST_set_option": 2
 
   },
   "InitData": {

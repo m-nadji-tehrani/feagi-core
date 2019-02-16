@@ -37,7 +37,8 @@
     "ipu_vision_dynamic_img_fetch": false,
     "capture_neuron_mp": false,
     "capture_neuron_mp_db": false,
-    "evaluation_based_termination": true
+    "evaluation_based_termination": true,
+    "use_highest_performing_genome_only": true
 
   },
   "InitData": {
@@ -58,7 +59,7 @@
     "overlap_prevention_constant": 5
   },
   "Auto_injector":{
-    "variation_default": 10,
+    "variation_default": 2,
     "exposure_default": 30,
     "utf_default": 9,
     "burst_skip": 0,
@@ -66,7 +67,7 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 5,
+    "variation_default": 2,
     "exposure_default":15,
     "utf_default": 9,
     "burst_skip": 0,
@@ -74,16 +75,16 @@
     "tester_burst_skip_counter": 10
   },
   "Logs":{
-    "print_mnist_img": false,
+    "print_mnist_img": true,
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
     "print_activation_counters": false,
-    "print_cortical_activity_counters": false,
+    "print_cortical_activity_counters": true,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
     "print_burst_info": true,
-    "print_brain_gen_activities": false,
+    "print_brain_gen_activities": true,
     "print_comprehension_queue": false
   },
   "Verbose":{

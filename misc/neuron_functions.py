@@ -233,13 +233,12 @@ def burst(user_input, user_input_param, fire_list, brain_queue, event_queue,
             time_actual_firing_activities = datetime.now()
             now = datetime.now()
             init_data.time_neuron_update = datetime.now() - now
-            for x in list(init_data.fire_candidate_list):
-                if verbose:
-                    print(settings.Bcolors.YELLOW + 'Firing Neuron: ' + x[1] + ' from ' + x[0] + settings.Bcolors.ENDC)
-                # if x[0] in ['utf8_out', 'utf8_memory', 'utf8', 'vision_memory']:
-                #     print(settings.Bcolors.RED + '<***>', x[0], x[1][27:], 'MP=',
-                #           str(runtime_data.brain[x[0]][x[1]]['membrane_potential']) + settings.Bcolors.ENDC)
-                neuron_fire(x[0], x[1])
+
+            fcl = list(init_data.fire_candidate_list)
+            # map(neuron_fire, fcl)
+
+            for entry in fcl:
+                neuron_fire(entry)
 
             print("Timing : - Actual firing activities:", datetime.now() - time_actual_firing_activities)
             print("Timing : |___________Neuron updates:", init_data.time_neuron_update)
@@ -1205,8 +1204,11 @@ def activation_function(postsynaptic_current):
     # print("PSC: ", postsynaptic_current)
     return postsynaptic_current
 
-def neuron_fire(cortical_area, neuron_id):
+def neuron_fire(fcl_entry):
     """This function initiate the firing of Neuron in a given cortical area"""
+
+    cortical_area, neuron_id = fcl_entry
+
     global init_data
     # if runtime_data.parameters["Switches"]["logging_fire"]:
     #     print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
@@ -1235,7 +1237,6 @@ def neuron_fire(cortical_area, neuron_id):
     # After neuron fires all cumulative counters on Source gets reset
     runtime_data.brain[cortical_area][neuron_id]["membrane_potential"] = 0
     runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_burst"] = init_data.burst_count
-    # runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.now())
     runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count"] += 1
     runtime_data.brain[cortical_area][neuron_id]["cumulative_fire_count_inst"] += 1
 
@@ -1477,7 +1478,7 @@ def neuron_update(cortical_area, dst_neuron_id, postsynaptic_current, neighbor_c
 
                         pfcl = init_data.previous_fcl
                         cfcl = init_data.fire_candidate_list
-                        # todo: The following statement is not performance optimized!
+
                         upstream_data = list_upstream_neurons(cortical_area, dst_neuron_id)
 
                         if upstream_data:

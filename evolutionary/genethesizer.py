@@ -18,6 +18,7 @@ def select_a_genome():
     6. TBD
     """
     random_selector = random.randrange(1, 6, 1)
+    # random_selector = 4
 
     if random_selector == 1:
         print("Crossover is happening...")
@@ -44,7 +45,7 @@ def select_a_genome():
 
     # elif random_selector == 6:
     #     genome =
-
+    print(">> >> >> >> The genome id used for brain generation is: ", original_genome_id)
     return genome, original_genome_id
 
 
@@ -206,14 +207,20 @@ def genethesize():
 
 def mutate(genome):
     # todo: refactor this function to use parameters/genome to drive
-    factor_1 = random.randrange(-10, 10, 1) / 100
-    factor_2 = random.randrange(-10, 10, 1) / 100
-    factor_3 = random.randrange(-10, 10, 1) / 100
-    factor_4 = random.randrange(-10, 10, 1) / 100
-    factor_5 = random.randrange(-10, 10, 1) / 100
-    factor_6 = random.randrange(-10, 10, 1) / 100
-    factor_7 = random.randrange(-10, 10, 1) / 100
-    factor_8 = random.randrange(-10, 10, 1) / 100
+
+    dice = random.randrange(1,9)
+    selector = [0,0,0,0,0,0,0,0]
+    selector[dice] = 1
+
+
+    factor_1 = selector[0] * random.randrange(-20, 20, 1) / 100
+    factor_2 = selector[1] * random.randrange(-20, 20, 1) / 100
+    factor_3 = selector[2] * random.randrange(-20, 20, 1) / 100
+    factor_4 = selector[3] * random.randrange(-20, 20, 1) / 100
+    factor_5 = selector[4] * random.randrange(-20, 20, 1) / 100
+    factor_6 = selector[5] * random.randrange(-20, 20, 1) / 100
+    factor_7 = selector[6] * random.randrange(-20, 20, 1) / 100
+    factor_8 = selector[7] * random.randrange(-20, 20, 1) / 100
 
     blueprint = genome["blueprint"]
     cortical_list = []

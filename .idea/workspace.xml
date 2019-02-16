@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/PUs/IPU_vision.py" afterPath="$PROJECT_DIR$/PUs/IPU_vision.py" />
-      <change beforePath="$PROJECT_DIR$/configuration/parameters.json" afterPath="$PROJECT_DIR$/configuration/parameters.json" />
-      <change beforePath="$PROJECT_DIR$/connectome/vision_IT.json" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" />
-      <change beforePath="$PROJECT_DIR$/connectome/vision_v2.json" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" />
       <change beforePath="$PROJECT_DIR$/evolutionary/genethesizer.py" afterPath="$PROJECT_DIR$/evolutionary/genethesizer.py" />
-      <change beforePath="$PROJECT_DIR$/misc/neuron_functions.py" afterPath="$PROJECT_DIR$/misc/neuron_functions.py" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -126,8 +121,8 @@
           <file leaf-file-name="genethesizer.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="528">
-                  <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+                <state relative-caret-position="141">
+                  <caret line="198" column="8" lean-forward="true" selection-start-line="198" selection-start-column="8" selection-end-line="198" selection-end-column="8" />
                   <folding>
                     <element signature="e#83#98#0" expanded="true" />
                   </folding>
@@ -168,8 +163,8 @@
           <file leaf-file-name="IPU_vision.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="585">
-                  <caret line="72" column="20" lean-forward="false" selection-start-line="72" selection-start-column="20" selection-end-line="72" selection-end-column="20" />
+                <state relative-caret-position="405">
+                  <caret line="356" column="60" lean-forward="false" selection-start-line="356" selection-start-column="60" selection-end-line="356" selection-end-column="60" />
                   <folding />
                 </state>
               </provider>
@@ -340,7 +335,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>genome_tmp</find>
       <find>mutate</find>
       <find>select_a_genome</find>
       <find>load_genome_in_memory</find>
@@ -370,6 +364,7 @@
       <find>leak</find>
       <find>random</find>
       <find>rand</find>
+      <find>dice</find>
     </findStrings>
     <replaceStrings>
       <replace>Init_data.live_mode_status</replace>
@@ -922,13 +917,6 @@
       <option name="presentableId" value="Default" />
       <updated>1463197491590</updated>
     </task>
-    <task id="LOCAL-00166" summary="Vision imp. final">
-      <created>1544247099853</created>
-      <option name="number" value="00166" />
-      <option name="presentableId" value="LOCAL-00166" />
-      <option name="project" value="LOCAL" />
-      <updated>1544247099853</updated>
-    </task>
     <task id="LOCAL-00167" summary="Cortex visualizer">
       <created>1544418897931</created>
       <option name="number" value="00167" />
@@ -1265,7 +1253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1550033719592</updated>
     </task>
-    <option name="localTasksCounter" value="215" />
+    <task id="LOCAL-00215" summary="Mutate only one gene at a time">
+      <created>1550282402535</created>
+      <option name="number" value="00215" />
+      <option name="presentableId" value="LOCAL-00215" />
+      <option name="project" value="LOCAL" />
+      <updated>1550282402535</updated>
+    </task>
+    <option name="localTasksCounter" value="216" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1388,7 +1383,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Feeling of pain - Reinforcement learning" />
     <MESSAGE value="Training order adj." />
     <MESSAGE value="Counter logic modification" />
     <MESSAGE value="Burst engine modification" />
@@ -1413,7 +1407,8 @@
     <MESSAGE value="Misc." />
     <MESSAGE value="Removing leak exclusion from vision_memory" />
     <MESSAGE value="Performance improvement through Neuron Update code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Performance improvement through Neuron Update code" />
+    <MESSAGE value="Mutate only one gene at a time" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mutate only one gene at a time" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1934,16 +1929,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="72" column="20" lean-forward="false" selection-start-line="72" selection-start-column="20" selection-end-line="72" selection-end-column="20" />
+        <state relative-caret-position="405">
+          <caret line="356" column="60" lean-forward="false" selection-start-line="356" selection-start-column="60" selection-end-line="356" selection-end-column="60" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+        <state relative-caret-position="141">
+          <caret line="198" column="8" lean-forward="true" selection-start-line="198" selection-start-column="8" selection-end-line="198" selection-end-column="8" />
           <folding>
             <element signature="e#83#98#0" expanded="true" />
           </folding>

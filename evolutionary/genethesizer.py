@@ -208,7 +208,7 @@ def genethesize():
 def mutate(genome):
     # todo: refactor this function to use parameters/genome to drive
 
-    dice = random.randrange(1,9)
+    dice = random.randrange(0,8)
     selector = [0,0,0,0,0,0,0,0]
     selector[dice] = 1
 

@@ -5,7 +5,7 @@ import struct
 import numpy as np
 
 
-def read_mnist_labels(dataset="training", path="../../MNIST/"):
+def read_mnist_labels(dataset="training", path="../../Fashion-MNIST/"):
     """
     Python function for importing the MNIST data set.  It returns an iterator
     of 2-tuples with the first element being the label and the second element

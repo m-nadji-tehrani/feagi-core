@@ -1271,16 +1271,17 @@ def neuron_fire(fcl_entry):
 
         ### Partial implementation of neuro-plasticity associated with LTD or Long Term Depression
         pfcl = init_data.previous_fcl
-        if [dst_cortical_area, dst_neuron_id] in pfcl and dst_cortical_area in ['vision_memory']:
-            apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
-                                 dst_cortical_area=dst_cortical_area, dst_neuron_id=dst_neuron_id,
-                                 long_term_depression=True)
+        if cortical_area not in ['vision_memory']:
+            if [dst_cortical_area, dst_neuron_id] in pfcl and dst_cortical_area in ['vision_memory']:
+                apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
+                                     dst_cortical_area=dst_cortical_area, dst_neuron_id=dst_neuron_id,
+                                     long_term_depression=True)
 
-            if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                print(settings.Bcolors.RED + "WMWMWM-------- Neuron Fire --------MWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-                                             "...........LTD between %s and %s occurred"
-                      % (cortical_area, dst_cortical_area)
-                      + settings.Bcolors.ENDC)
+                if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                    print(settings.Bcolors.RED + "WMWMWM-------- Neuron Fire --------MWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
+                                                 "...........LTD between %s and %s occurred"
+                          % (cortical_area, dst_cortical_area)
+                          + settings.Bcolors.ENDC)
 
 
 

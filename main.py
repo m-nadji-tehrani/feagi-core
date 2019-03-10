@@ -275,12 +275,17 @@ if __name__ == '__main__':
 # todo: 2. Run the same genome with different exposure variables
 # todo: Move more items to genome
 
+# Performance
+# todo: Cython adoption
+# todo: proper use of multiprocessing
+# todo: GPU support
+
+# Scale-out
+# todo: availability of accessing genome on a remote machine
+# todo: Explore services like Digital ocean, AWS, Spark, etc.
+
 # Key problem on hand
-
 # todo: memory formation is not spread across the whole memory space
-
-# todo: Need to reject bad genomes as soon as brain is generated and rebuild
-
 # todo: only when the right portion of cell assembly is activated the rest should become active
 # todo: One number's visual memory is resembling all others
 # todo: Neuron finder is too inefficient
@@ -290,7 +295,6 @@ if __name__ == '__main__':
 # Problems to fix
 # todo: Synaptic activities in Memory eventually get to a point that does not ramp down
 # todo: Event queue and events in general are not being used for any application or stored anywhere
-
 # todo: Brain is being loaded in memory too regularly
 
 # General Architecture - Anatomy
@@ -308,13 +312,12 @@ if __name__ == '__main__':
 # todo: Build a cost function to measure the effectiveness and quality of relative synapse count in each layer
 
 # Input handling
-# todo: Use directional kernal analysis data as part of input data
+# todo: Use directional kernel analysis data as part of input data
 # todo: Update IPU module to include combination of multiple input types e.g. brightness, edges, etc.
 # todo: Perform edge detection on the images from MNIST and feed them to network (OpenCL or other methods)
 # todo: Figure how to Associate ASCii characters with neuronal readouts
 # todo: Need to figure how the Direction sensitive neurons in brain function
 # todo: Need to design a neuronal system that can receive an input and its output be a combination of matching objects
-
 
 # Neuron functions - Physiology
 # todo: Let all the Neuron times be a factor of average Burst duration instead of fix number
@@ -327,7 +330,6 @@ if __name__ == '__main__':
 # todo: Need to imp. a looped structure to account for connecting events happening within a time delay of each-other
 # todo: Ability to detect the dominant direction before higher level processing
 
-
 # Genetic Evolution
 # todo: capture phenotype(connectome) highlights in database
 # todo: regenerative model.
@@ -337,16 +339,13 @@ if __name__ == '__main__':
 # todo: Build a Genome Generator
 # todo: Change evolutionary phase to evaluation check-point
 
-
 # Multi processing
 # todo: Look into  GPU leverage
 # todo: Main function is running with every process along with all the initializations. This needs optimization
 
-
 # Analysis
 # todo: Come up with a way to analyze and categorize output data
 # todo: Add ability to show activity percentage for each cortical area
-
 
 # Memory
 # todo: Think of how to implement an alternative path so when an object is seen by visual it can be labeled “trained”
@@ -357,7 +356,6 @@ if __name__ == '__main__':
 # todo: Configure an output module so after Memory module is activated the activation can be read back.
 # todo: How to get output from memory ??? How to comprehend it ????
 
-
 # Visualization
 # todo: Fix issue where some cortical activities are not showing up    <<<  NEXT !!!!!
 # todo: Histogram of memory region activities when a single alphabet is trained
@@ -365,15 +363,11 @@ if __name__ == '__main__':
 # Vision
 # todo: Print visual memory to output in the form of pixels
 
-
 # Speech
 # todo: Make it learn to speak!
-
 
 # Auto training
 # todo: Compare results if you randomly show different variation of the same number vs one at a time
 
 
-# Scalability
-# todo: Explore services like Digital ocean, AWS, Spark, etc.
-# todo: Figure how to manage running multiple instances of the brain on the same machine
+

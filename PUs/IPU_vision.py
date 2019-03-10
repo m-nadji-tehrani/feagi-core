@@ -29,7 +29,7 @@ class MNIST:
         # print(len(mnist_array))
 
     @staticmethod
-    def read_mnist_raw(dataset="training", path="../MNIST/"):
+    def read_mnist_raw(dataset="training", path="../Fashion-MNIST/"):
         """
         Python function for importing the MNIST data set.  It returns an iterator
         of 2-tuples with the first element being the label and the second element
@@ -48,11 +48,11 @@ class MNIST:
             raise Exception(ValueError, "data set must be 'testing' or 'training'")
 
         # Load everything in some numpy arrays
-        with open("/Users/mntehrani/PycharmProjects/MNIST/" + fname_lbl, 'rb') as flbl:
+        with open("/Users/mntehrani/PycharmProjects/Fashion-MNIST/" + fname_lbl, 'rb') as flbl:
             magic, num = struct.unpack(">II", flbl.read(8))
             lbl = np.fromfile(flbl, dtype=np.int8)
 
-        with open("/Users/mntehrani/PycharmProjects/MNIST/" + fname_img, 'rb') as fimg:
+        with open("/Users/mntehrani/PycharmProjects/Fashion-MNIST/" + fname_img, 'rb') as fimg:
             magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
             img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
 
@@ -81,14 +81,14 @@ class MNIST:
                 print("The image for number %s has been fetched." %str(num))
             return img_data, img_lbl
         else:
-            # hand_picked_list = range(1, 100)
-
-            if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
-                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
-
-            elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
-                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
-                                            18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+            hand_picked_list = range(100, 200)
+            #
+            # if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
+            #             hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
+            #
+            # elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
+            #             hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
+            #                                 18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
 
             while img_lbl != int(num):
                 selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]

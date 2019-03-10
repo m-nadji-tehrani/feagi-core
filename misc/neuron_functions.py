@@ -941,78 +941,9 @@ def form_memories():
     global init_data
 
     pfcl = init_data.previous_fcl
-    # print("\nEla joon says pfcl is :                                  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", pfcl)
     cfcl = init_data.fire_candidate_list
-    # print("\nPsy joon says cfcl is :                                  ++++++++++++++++++++++++++++++++++", cfcl)
-
-    # The following two sections that are commented out have been implemented as part of neuron fire and update
-
-    # Long Term Potentiation (LTP)
-    # for entry in pfcl:
-    #     cortical_area = entry[0]
-    #     neuron_id = entry[1]
-    #     for neighbor_id in runtime_data.brain[cortical_area][neuron_id]["neighbors"]:
-    #         neighbor_cortical_area = \
-    #             runtime_data.brain[cortical_area][neuron_id]["neighbors"][neighbor_id]['cortical_area']
-    #         if [neighbor_cortical_area, neighbor_id] in cfcl and cortical_area != neighbor_cortical_area:
-    #             apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
-    #                                  dst_cortical_area=neighbor_cortical_area, dst_neuron_id=neighbor_id,
-    #                                  long_term_depression=False)
-    #             if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-    #                 print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-    #                                              "...........LTP between %s and %s occurred"
-    #                       % (cortical_area, neighbor_cortical_area)
-    #                       + settings.Bcolors.ENDC)
-
-    # Long Term Depression
-    # for entry in cfcl:
-    #     cortical_area = entry[0]
-    #     neuron_id = entry[1]
-    #     for neighbor_id in runtime_data.brain[cortical_area][neuron_id]["neighbors"]:
-    #         neighbor_cortical_area = \
-    #             runtime_data.brain[cortical_area][neuron_id]["neighbors"][neighbor_id]['cortical_area']
-    #         if [neighbor_cortical_area, neighbor_id] in pfcl and cortical_area != neighbor_cortical_area:
-    #             apply_plasticity_ext(src_cortical_area=cortical_area, src_neuron_id=neuron_id,
-    #                                  dst_cortical_area=neighbor_cortical_area, dst_neuron_id=neighbor_id,
-    #                                  long_term_depression=True)
-    #
-    #             if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-    #                 print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-    #                                              "...........LTD between %s and %s occurred"
-    #                       % (cortical_area, neighbor_cortical_area)
-    #                       + settings.Bcolors.ENDC)
-
-    # # Plasticity between T1 and Vision memory
-    # # todo: generalize this function
-    # # Long Term Potentiation (LTP) between vision_IT and vision_memory
-    # for src_neuron in pfcl:
-    #     if src_neuron[0] == "vision_IT":
-    #         for dst_neuron in cfcl:
-    #             if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-    #                     in runtime_data.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-    #                 apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-    #                                      dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1])
-    #                 if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-    #                     print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWMWMWM"
-    #                                                  "...........LTP between vision_IT and vision_memory occurred "
-    #                           + settings.Bcolors.ENDC)
-    #
-    # # Long Term Depression (LTD) between vision_IT and vision_memory
-    # for src_neuron in cfcl:
-    #     if src_neuron[0] == "vision_IT":
-    #         for dst_neuron in pfcl:
-    #             if dst_neuron[0] == "vision_memory" and dst_neuron[1] \
-    #                     in runtime_data.brain["vision_IT"][src_neuron[1]]["neighbors"]:
-    #                 apply_plasticity_ext(src_cortical_area='vision_IT', src_neuron_id=src_neuron[1],
-    #                                      dst_cortical_area='vision_memory', dst_neuron_id=dst_neuron[1],
-    #                                      long_term_depression=True)
-    #                 if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-    #                     print(settings.Bcolors.RED + "WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWWMWMWMWMWMWMWM"
-    #                                                  "...........LTD between vision_IT and vision_memory occurred "
-    #                           + settings.Bcolors.ENDC)
 
     # todo: The following loop is very inefficient___ fix it!!
-
     # Building the cell assemblies
     for cortical_area in runtime_data.memory_list:
         if runtime_data.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
@@ -1045,22 +976,12 @@ def form_memories():
 
                         # print("-.-.-")
 
-                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                            print(settings.Bcolors.UPDATE + "..........MWMWMWM-----Form memories-----WMWMWMWWMWMWMWMWMWMWM"
-                                                         "..........LTP between vision_memory and UTF8_memory occurred "
-                                  + settings.Bcolors.ENDC)
-                            # print(cfcl)
-                            print("*************________**************")
-
-                        # print(
-                        #     settings.Bcolors.OKGREEN + "............................................................."
-                        #                                "........A new memory was formed against utf8_memory location "
-                        #     + OPU_utf8.convert_neuron_acticity_to_utf8_char('utf8_memory',
-                        #                                                     dst_neuron[1]) + settings.Bcolors.ENDC)
-                        # dst_neuron_id_list = neighbor_finder_ext('utf8_memory', 'utf8_out', _[1], 'rule_3', 0)
-                        # for dst_neuron_id in dst_neuron_id_list:
-                        #     wire_neurons_together_ext(src_cortical_area='vision_memory', src_neuron=neuron[1],
-                        #                               dst_cortical_area='utf8_out', dst_neuron=dst_neuron_id)
+                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                        #     print(settings.Bcolors.UPDATE + "..........MWMWMWM-----Form memories-----WMWMWMWWMWMWMWMWMWMWM"
+                        #                                  "..........LTP between vision_memory and UTF8_memory occurred "
+                        #           + settings.Bcolors.ENDC)
+                        #     # print(cfcl)
+                        #     print("*************________**************")
 
                     if pain_flag:
                         apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
@@ -1069,12 +990,12 @@ def form_memories():
 
                         # print("-.-.-")
 
-                        if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                            print(settings.Bcolors.RED + "..........WMWMWMWMW-----Form memories-----WMWWMWM--PAIN---WMWMWMWMWM"
-                                                         "..........LTD between vision_memory and UTF8_memory occurred "
-                                  + settings.Bcolors.ENDC)
-                            # print(cfcl)
-                            print("*************________**************")
+                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
+                        #     print(settings.Bcolors.RED + "..........WMWMWMWMW-----Form memories-----WMWWMWM--PAIN---WMWMWMWMWM"
+                        #                                  "..........LTD between vision_memory and UTF8_memory occurred "
+                        #           + settings.Bcolors.ENDC)
+                        #     # print(cfcl)
+                        #     print("*************________**************")
 
     # Counting number of active UTF8_memory cells in the fire_candidate_list
     utf_mem_in_fcl = []

@@ -41,6 +41,7 @@ class InitData:
         self.burst_count = 0
         self.fire_candidate_list = []
         self.previous_fcl = []
+        self.future_fcl = []
         self.labeled_image = []
         self.training_neuron_list_utf = []
         self.training_neuron_list_img = []
@@ -166,11 +167,9 @@ def burst():
         # print(datetime.now(), "Burst count = ", init_data.burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
-
-        # Read FCL from the Multiprocessing Queue
-        init_data.fire_candidate_list = runtime_data.fire_list
         init_data.previous_fcl = list(init_data.fire_candidate_list)
         init_data.burst_count += 1
+
 
         # Fire all neurons within fire_candidate_list (FCL) or add a delay if FCL is empty
         time_firing_activities = datetime.now()
@@ -218,9 +217,13 @@ def burst():
 
             fcl = list(init_data.fire_candidate_list)
             # map(neuron_fire, fcl)
-
+            init_data.future_fcl = []
             for entry in fcl:
                 neuron_fire(entry)
+            print("PFCL:", len(init_data.previous_fcl),
+                  "\nCFCL:", len(init_data.fire_candidate_list),
+                  "\nFFCL:", len(init_data.future_fcl))
+            init_data.fire_candidate_list = list(init_data.future_fcl)
 
             print("Timing : - Actual firing activities:", datetime.now() - time_actual_firing_activities)
             print("Timing : |___________Neuron updates:", init_data.time_neuron_update)
@@ -231,7 +234,6 @@ def burst():
 
             # print_cortical_neuron_mappings('vision_memory', 'utf8_memory')
         print("Timing : Overall firing activities:", datetime.now() - time_firing_activities)
-
 
         # todo: need to break down the training function into pieces with one feeding a stream of data
         # Auto-inject if applicable
@@ -255,8 +257,6 @@ def burst():
         if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
             disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
 
-        # Push back updated fire_candidate_list into FCL from Multiprocessing Queue
-        runtime_data.fire_list = init_data.fire_candidate_list
 
         detected_char = utf_detection_logic(init_data.burst_detection_list)
         comprehension_queue.append(detected_char)
@@ -354,7 +354,6 @@ def burst():
                     new_content = (init_data.burst_count, fcl_item[0], fcl_item[1], runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"])
                     new_data.append(new_content)
                 neuron_mp_writer.writerows(new_data)
-
 
         if runtime_data.parameters["Switches"]["capture_neuron_mp_db"]:
             new_data = []
@@ -1173,17 +1172,15 @@ def neuron_fire(fcl_entry):
                 # Inhibitory effect check
                 if dst_neuron_obj["snooze_till_burst_num"] <= init_data.burst_count:
                     # To prevent duplicate entries
-                    if [dst_cortical_area, dst_neuron_id] not in init_data.fire_candidate_list:
+                    # todo: need to find a faster alternative to not in future_fcl <<< This is costly!!!
+                    if [dst_cortical_area, dst_neuron_id] not in init_data.future_fcl:
                         # Adding neuron to fire candidate list for firing in the next round
-                        init_data.fire_candidate_list.append([dst_cortical_area, dst_neuron_id])
+                        init_data.future_fcl.append([dst_cortical_area, dst_neuron_id])
 
                         ### This is an alternative approach to plasticity with hopefully less overhead
                         ### LTP or Long Term Potentiation occurs here
 
                         if runtime_data.parameters["Switches"]["plasticity"]:
-
-                            pfcl = init_data.previous_fcl
-                            cfcl = init_data.fire_candidate_list
 
                             upstream_data = list_upstream_neurons(dst_cortical_area, dst_neuron_id)
 
@@ -1191,7 +1188,7 @@ def neuron_fire(fcl_entry):
                                 for src_cortital_area in upstream_data:
                                     for src_neuron in upstream_data[src_cortital_area]:
                                         if src_cortital_area != dst_cortical_area and \
-                                                [src_cortital_area, src_neuron] in pfcl:
+                                                [src_cortital_area, src_neuron] in init_data.previous_fcl:
                                             apply_plasticity_ext(src_cortical_area=src_cortital_area,
                                                                  src_neuron_id=src_neuron,
                                                                  dst_cortical_area=dst_cortical_area,
@@ -1361,29 +1358,29 @@ def common_neuron_report():
                     pruner('vision_memory', neuron, 'utf8_memory', neuron_b)
 
 
-def neuron_update(presynaptic_current,
-                  burst_count,
-                  last_membrane_potential_update,
-                  leak_coefficient,
-                  membrane_potential):
-    """
-    This function's only task is to update the membrane potential of the destination neuron.
-    """
-
-    # Leaky behavior
-    if last_membrane_potential_update < burst_count:
-        leak_window = burst_count - last_membrane_potential_update
-        leak_value = leak_window * leak_coefficient
-        membrane_potential -= leak_value
-        if membrane_potential < 0:
-            membrane_potential = 0
-
-    # Increasing the cumulative counter on destination based on the received signal from upstream Axon
-    # The following is considered as LTP or Long Term Potentiation of Neurons
-
-    membrane_potential += presynaptic_current
-
-    return membrane_potential
+# def neuron_update(presynaptic_current,
+#                   burst_count,
+#                   last_membrane_potential_update,
+#                   leak_coefficient,
+#                   membrane_potential):
+#     """
+#     This function's only task is to update the membrane potential of the destination neuron.
+#     """
+#
+#     # Leaky behavior
+#     if last_membrane_potential_update < burst_count:
+#         leak_window = burst_count - last_membrane_potential_update
+#         leak_value = leak_window * leak_coefficient
+#         membrane_potential -= leak_value
+#         if membrane_potential < 0:
+#             membrane_potential = 0
+#
+#     # Increasing the cumulative counter on destination based on the received signal from upstream Axon
+#     # The following is considered as LTP or Long Term Potentiation of Neurons
+#
+#     membrane_potential += presynaptic_current
+#
+#     return membrane_potential
 
 
 def neuron_prop(cortical_area, neuron_id):
@@ -1621,7 +1618,7 @@ def trigger_pain():
     print("*******************************************************************")
 
     for neuron in runtime_data.brain['pain']:
-        init_data.fire_candidate_list.append(['pain', neuron])
+        init_data.future_fcl.append(['pain', neuron])
 
 
 def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):

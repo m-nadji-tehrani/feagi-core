@@ -23,6 +23,7 @@ from misc import db_handler
 from configuration import settings, runtime_data
 from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
+from cython_libs import neuron_functions_cy as cy
 
 
 class InitData:
@@ -1153,7 +1154,7 @@ def neuron_fire(fcl_entry):
         # Update function
         # todo: (neuron_output/neighbor_count) needs to be moved outside the loop for efficiency
         dst_neuron_obj = runtime_data.brain[dst_cortical_area][dst_neuron_id]
-        dst_neuron_obj["membrane_potential"] = neuron_update((neuron_output/neighbor_count),
+        dst_neuron_obj["membrane_potential"] = cy.neuron_update((neuron_output/neighbor_count),
                                                              init_data.burst_count,
                                                              max(dst_neuron_obj["last_membrane_potential_reset_burst"],
                                                                  dst_neuron_obj["last_burst_num"]),

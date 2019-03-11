@@ -4,4 +4,4 @@ sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-
 from distutils.core import setup
 from Cython.Build import cythonize
 
-setup(ext_modules=cythonize("mycython_test.pyx"))
+setup(ext_modules=cythonize("neuron_functions_cy.pyx"))

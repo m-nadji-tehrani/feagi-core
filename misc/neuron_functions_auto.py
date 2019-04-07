@@ -49,6 +49,7 @@ class InitData:
         self.neuron_mp_list = []
         self.time_neuron_update = datetime.now()
         self.time_apply_plasticity_ext = datetime.now()
+        self.pain_flag = False
 
 
 class InjectorParams:
@@ -312,6 +313,7 @@ def burst():
                 # In the event that the comprehended UTF character is not matching the injected one pain is triggered
                 if runtime_data.parameters["Input"]["comprehended_char"] != str(init_data.labeled_image[1]):
                     trigger_pain()
+                    init_data.pain_flag = True
             else:
                 if list_length >= 2:
                     runtime_data.parameters["Input"]["comprehended_char"] = ''
@@ -907,65 +909,53 @@ class DataFeeder:
 
 
 def form_memories():
-    # The following handles neuro-plasticity
+    """
+    This function provides logics related to memory formation as follows:
+    - Logic to wire memory neurons together when they fire together
+
+    :return:
+    """
+
     global init_data
 
     pfcl = init_data.previous_fcl
     cfcl = init_data.fire_candidate_list
 
-    # todo: The following loop is very inefficient___ fix it!!
-    # Building the cell assemblies
-    for cortical_area in runtime_data.memory_list:
-        if runtime_data.genome['blueprint'][cortical_area]['location_generation_type'] == 'random':
-            for src_neuron in set([i[1] for i in cfcl if i[0] == cortical_area]):
-                for dst_neuron in set([j[1] for j in cfcl if j[0] == cortical_area]):
-                    if src_neuron != dst_neuron:
-                        apply_plasticity(cortical_area=cortical_area,
-                                         src_neuron=src_neuron, dst_neuron=dst_neuron)
-                        # print("...")
+    # todo: The following section to be generalized
+    cfcl_vision_memory_neurons = []
+    cfcl_utf8_memory_neurons = []
 
-    # Detecting pain
-    pain_flag = False
-    for src_neuron in set([i[1] for i in cfcl if i[0] == 'pain']):
-        pain_flag = True
-        # print('^%@! Pain flag is set!')
+    for neuron in cfcl:
+        if neuron[0] == 'vision_memory':
+            cfcl_vision_memory_neurons.append(neuron[1])
+        elif neuron[0] == 'utf8_memory':
+            cfcl_utf8_memory_neurons.append(neuron[1])
 
 
+    if cfcl_vision_memory_neurons:
+        print("Number of vision memory neurons fired in this burst:",len(cfcl_vision_memory_neurons))
+        tmp_plasticity_list = []
+        # Wiring visual memory neurons who are firing together
+        for source_neuron in cfcl_vision_memory_neurons:
+            # Every visual memory neuron in CFCL is going to wire to evey other vision memory neuron
+            for destination_neuron in cfcl_vision_memory_neurons:
+                if destination_neuron != source_neuron and destination_neuron not in tmp_plasticity_list:
+                    apply_plasticity(cortical_area='vision_memory',
+                                     src_neuron=source_neuron,
+                                     dst_neuron=destination_neuron)
+            # Wiring visual memory neurons to the utf_memory ones
+            for destination_neuron in cfcl_utf8_memory_neurons:
+                if not init_data.pain_flag:
+                    apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=source_neuron[1],
+                                             dst_cortical_area='utf8_memory', dst_neuron_id=destination_neuron[1])
 
-    # Wiring Vision memory to UIF-8 memory when there is simultaneous firing of neurons in these regions
-    for dst_neuron in cfcl:
-        if dst_neuron[0] == "utf8_memory":
-            # print(settings.Bcolors.RED + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>                                                 "
-            #       "\nMika is cute!!.... .. .. .. .. .. .. .. .. .. .. .. .. " + settings.Bcolors.ENDC, '\n')
-            for src_neuron in cfcl:
-                if src_neuron[0] == "vision_memory":
-                    # print("\n\n\n$ $$ $$$ $$ $ -  Pain flag is \n\n\n", pain_flag)
-                    if not pain_flag:
-                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1])
+                if init_data.pain_flag:
+                    apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=source_neuron[1],
+                                         dst_cortical_area='utf8_memory', dst_neuron_id=destination_neuron[1],
+                                         long_term_depression=True, impact_multiplier=10)
 
-                        # print("-.-.-")
+            tmp_plasticity_list.append(source_neuron)
 
-                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                        #     print(settings.Bcolors.UPDATE + "..........MWMWMWM-----Form memories-----WMWMWMWWMWMWMWMWMWMWM"
-                        #                                  "..........LTP between vision_memory and UTF8_memory occurred "
-                        #           + settings.Bcolors.ENDC)
-                        #     # print(cfcl)
-                        #     print("*************________**************")
-
-                    if pain_flag:
-                        apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron[1],
-                                             dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron[1],
-                                             long_term_depression=True, impact_multiplier=10)
-
-                        # print("-.-.-")
-
-                        # if runtime_data.parameters["Logs"]["print_plasticity_info"]:
-                        #     print(settings.Bcolors.RED + "..........WMWMWMWMW-----Form memories-----WMWWMWM--PAIN---WMWMWMWMWM"
-                        #                                  "..........LTD between vision_memory and UTF8_memory occurred "
-                        #           + settings.Bcolors.ENDC)
-                        #     # print(cfcl)
-                        #     print("*************________**************")
 
     # Counting number of active UTF8_memory cells in the fire_candidate_list
     utf_mem_in_fcl = []
@@ -1138,9 +1128,8 @@ def neuron_fire(fcl_entry):
 
     # Updating downstream neurons
 
+
     for dst_neuron_id in neighbor_list:
-        if runtime_data.parameters["Verbose"]["neuron_functions-neuron_fire"]:
-            print(settings.Bcolors.RED + 'Updating connectome for Neuron ' + dst_neuron_id + settings.Bcolors.ENDC)
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
 
         postsynaptic_current = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
@@ -1619,6 +1608,7 @@ def trigger_pain():
 
     for neuron in runtime_data.brain['pain']:
         init_data.future_fcl.append(['pain', neuron])
+
 
 
 def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):

@@ -120,6 +120,7 @@ if __name__ == '__main__':
             print("The burst engine has been started...")
 
             runtime_data.event_id = event_id_gen()
+
             print(
                 " <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:",
                 runtime_data.event_id)

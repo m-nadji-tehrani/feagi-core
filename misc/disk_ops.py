@@ -73,6 +73,9 @@ def save_genome_to_disk():
     # if brain_fitness > runtime_data.parameters["Alerts"]["email_fitness_threshold"]:
     #     alerts.send_email(mail_body)
 
+    print(">>>>", runtime_data.genome_test_stats)
+    print(">>>>", runtime_data.genome_id)
+
     for stat in runtime_data.genome_test_stats:
         stat_to_save = stat
         mongo.insert_test_stats(stat_to_save)

@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/main-auto.py" afterPath="$PROJECT_DIR$/main-auto.py" />
+      <change beforePath="$PROJECT_DIR$/misc/disk_ops.py" afterPath="$PROJECT_DIR$/misc/disk_ops.py" />
       <change beforePath="$PROJECT_DIR$/misc/neuron_functions_auto.py" afterPath="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
     </list>
     <ignored path="My_Brian.iws" />
@@ -46,6 +48,7 @@
     <SUITE FILE_PATH="coverage/My_Brian$OPU_utf8.coverage" NAME="OPU_utf8 Coverage Results" MODIFIED="1502472243019" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$multiprocess_test.coverage" NAME="multiprocess_test Coverage Results" MODIFIED="1501639743328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$brain_gen.coverage" NAME="brain_gen Coverage Results" MODIFIED="1530286033146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evolutionary" />
+    <SUITE FILE_PATH="coverage/My_Brian$main_auto.coverage" NAME="main-auto Coverage Results" MODIFIED="1554655505000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$genethesizer.coverage" NAME="genethesizer Coverage Results" MODIFIED="1530058758617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evolutionary" />
     <SUITE FILE_PATH="coverage/My_Brian$mnist_helper_maker.coverage" NAME="mnist_helper_maker Coverage Results" MODIFIED="1528647448771" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
     <SUITE FILE_PATH="coverage/My_Brian$getchar.coverage" NAME="getchar Coverage Results" MODIFIED="1501374246460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -78,30 +81,88 @@
     <splitter split-orientation="horizontal" split-proportion="0.70377505">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="disk_ops.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="disk_ops.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/misc/disk_ops.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1656">
-                  <caret line="76" column="40" lean-forward="false" selection-start-line="76" selection-start-column="31" selection-end-line="76" selection-end-column="40" />
+                <state relative-caret-position="276">
+                  <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+                  <folding>
+                    <element signature="e#33#62#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main-manual.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/main-manual.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="485">
+                  <caret line="105" column="61" lean-forward="false" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="neuron_functions_auto.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="runtime_data.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="238">
+                  <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="genome_tmp.json" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/connectome/genome_tmp.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="153">
+                  <caret line="842" column="0" lean-forward="false" selection-start-line="842" selection-start-column="0" selection-end-line="842" selection-end-column="0" />
+                  <folding>
+                    <element signature="n#!!block;n#firing_patterns#0;n#!!top" expanded="false" />
+                    <element signature="n#!!block;n#neighbor_locator_rule#0;n#!!top" expanded="false" />
+                    <element signature="n#!!block;n#IPU_vision_filters#0;n#!!top" expanded="false" />
+                    <element signature="n#!!block;n#performance_stats#0;n#!!top" expanded="false" />
+                    <element signature="n#!!block;n#blueprint#0;n#!!top" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="brain_gen.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/evolutionary/brain_gen.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1122">
+                  <caret line="77" column="16" lean-forward="false" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="genethesizer.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="338">
+                  <caret line="156" column="17" lean-forward="false" selection-start-line="156" selection-start-column="4" selection-end-line="156" selection-end-column="17" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="neuron_functions_auto.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="549">
-                  <caret line="948" column="14" lean-forward="false" selection-start-line="948" selection-start-column="14" selection-end-line="948" selection-end-column="14" />
+                <state relative-caret-position="66">
+                  <caret line="926" column="8" lean-forward="false" selection-start-line="926" selection-start-column="8" selection-end-line="926" selection-end-column="8" />
                   <folding>
                     <element signature="e#414#423#0" expanded="true" />
                     <element signature="e#16668#17201#0" expanded="false" />
-                    <element signature="e#60675#61139#0" expanded="false" />
-                    <element signature="e#61856#62065#0" expanded="false" />
-                    <element signature="e#62110#62454#0" expanded="false" />
-                    <element signature="e#62517#64441#0" expanded="false" />
-                    <element signature="e#64502#64962#0" expanded="false" />
-                    <element signature="e#65382#66308#0" expanded="false" />
+                    <element signature="e#59510#59974#0" expanded="false" />
+                    <element signature="e#60691#60900#0" expanded="false" />
+                    <element signature="e#60945#61289#0" expanded="false" />
+                    <element signature="e#61352#63276#0" expanded="false" />
+                    <element signature="e#63337#63797#0" expanded="false" />
+                    <element signature="e#64217#65143#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -117,26 +178,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="cython_setup.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cython_libs/cython_setup.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="144">
-                  <caret line="6" column="48" lean-forward="false" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cython_libs/test.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="neuron_functions_cy.pyx" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx">
               <provider selected="true" editor-type-id="text-editor">
@@ -147,31 +188,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="main-manual.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/main-manual.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-4133">
-                  <caret line="42" column="51" lean-forward="false" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="main-auto.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main-auto.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="411">
-                  <caret line="168" column="96" lean-forward="false" selection-start-line="168" selection-start-column="96" selection-end-line="168" selection-end-column="96" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="db_handler.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/misc/db_handler.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-415">
-                  <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="21" />
+                <state relative-caret-position="37">
+                  <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
                   <folding />
                 </state>
               </provider>
@@ -181,17 +202,17 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="parameters.json" pinned="false" current-in-tab="false">
+          <file leaf-file-name="parameters.json" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="522">
+                <state relative-caret-position="1138">
                   <caret line="68" column="4" lean-forward="false" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="static_genome3.json" pinned="false" current-in-tab="true">
+          <file leaf-file-name="static_genome3.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="338">
@@ -234,23 +255,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>highest_fitness_genome</find>
-      <find>leak</find>
-      <find>random</find>
-      <find>rand</find>
-      <find>dice</find>
-      <find>/MNIST</find>
-      <find>apply_plasticity_ext</find>
-      <find>neuron_functions</find>
-      <find>event_id</find>
-      <find>cortical_area</find>
       <find>update_start_time</find>
       <find>neuron_update</find>
       <find>fire_candidate_list.append</find>
       <find>not in init</find>
       <find>fire_list</find>
       <find>&lt;&gt;&lt;&gt;&lt;&gt;</find>
-      <find>genome_id</find>
       <find>insert_genome</find>
       <find>vision_me</find>
       <find>vision_memory</find>
@@ -264,6 +274,17 @@
       <find>trigger_pain</find>
       <find>form_mem</find>
       <find>temp_neuron_list</find>
+      <find>Genome  has been preserved for future generations!</find>
+      <find>&quot;Genome  has been preserved for future generations!&quot;</find>
+      <find>&quot;future generations&quot;</find>
+      <find>save_genome_to_disk</find>
+      <find>runtime_data.genome_id</find>
+      <find>genome_id</find>
+      <find>id_gen</find>
+      <find>genome_id_gen</find>
+      <find>load_genome_in_memory</find>
+      <find>future</find>
+      <find>initialize_the_brain</find>
     </findStrings>
     <replaceStrings>
       <replace>Init_data.live_mode_status</replace>
@@ -360,11 +381,11 @@
         <option value="$PROJECT_DIR$/cython/neuron_functions_cy.py" />
         <option value="$PROJECT_DIR$/cython/cython_setup.py" />
         <option value="$PROJECT_DIR$/cython/neuron_functions_cy.pyx" />
-        <option value="$PROJECT_DIR$/main-auto.py" />
         <option value="$PROJECT_DIR$/configuration/parameters.json" />
-        <option value="$PROJECT_DIR$/misc/disk_ops.py" />
         <option value="$PROJECT_DIR$/documentation/algorithms.py" />
         <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
+        <option value="$PROJECT_DIR$/main-auto.py" />
+        <option value="$PROJECT_DIR$/misc/disk_ops.py" />
       </list>
     </option>
   </component>
@@ -828,13 +849,6 @@
       <option name="presentableId" value="Default" />
       <updated>1463197491590</updated>
     </task>
-    <task id="LOCAL-00175" summary="Visualizer">
-      <created>1545949566763</created>
-      <option name="number" value="00175" />
-      <option name="presentableId" value="LOCAL-00175" />
-      <option name="project" value="LOCAL" />
-      <updated>1545949566764</updated>
-    </task>
     <task id="LOCAL-00176" summary="Visualizer">
       <created>1545979430233</created>
       <option name="number" value="00176" />
@@ -1171,7 +1185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1554610719988</updated>
     </task>
-    <option name="localTasksCounter" value="224" />
+    <task id="LOCAL-00224" summary="form_memory efficiency improvements">
+      <created>1554612504060</created>
+      <option name="number" value="00224" />
+      <option name="presentableId" value="LOCAL-00224" />
+      <option name="project" value="LOCAL" />
+      <updated>1554612504060</updated>
+    </task>
+    <option name="localTasksCounter" value="225" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1188,7 +1209,7 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2479883" sideWeight="0.4978903" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30194473" sideWeight="0.4072039" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20128119" sideWeight="0.5927961" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28287256" sideWeight="0.5737204" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22112416" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20382953" sideWeight="0.57241744" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -1196,11 +1217,11 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.124747135" sideWeight="0.49235475" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19147623" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27671403" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17226093" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1753203" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2818611" sideWeight="0.4935145" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30647337" sideWeight="0.50648546" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2818611" sideWeight="0.4756022" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2818611" sideWeight="0.5243978" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1360,18 +1381,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="391" />
+      <option name="time" value="392" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/documentation/write_csv_test.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/documentation/write_csv_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -1519,14 +1533,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evolutionary/brain_gen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="77" column="16" lean-forward="false" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1683,16 +1689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="63" column="87" lean-forward="false" selection-start-line="63" selection-start-column="87" selection-end-line="63" selection-end-column="87" />
-          <folding>
-            <element signature="e#83#98#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -1725,14 +1721,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cython_libs/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -1741,42 +1729,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main-manual.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4133">
-          <caret line="42" column="51" lean-forward="false" selection-start-line="42" selection-start-column="51" selection-end-line="42" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="68" column="4" lean-forward="false" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main-auto.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="168" column="96" lean-forward="false" selection-start-line="168" selection-start-column="96" selection-end-line="168" selection-end-column="96" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/misc/db_handler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-415">
           <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/misc/disk_ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1656">
-          <caret line="76" column="40" lean-forward="false" selection-start-line="76" selection-start-column="31" selection-end-line="76" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -1852,19 +1808,91 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1138">
+          <caret line="68" column="4" lean-forward="false" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="948" column="14" lean-forward="false" selection-start-line="948" selection-start-column="14" selection-end-line="948" selection-end-column="14" />
+        <state relative-caret-position="66">
+          <caret line="926" column="8" lean-forward="false" selection-start-line="926" selection-start-column="8" selection-end-line="926" selection-end-column="8" />
           <folding>
             <element signature="e#414#423#0" expanded="true" />
             <element signature="e#16668#17201#0" expanded="false" />
-            <element signature="e#60675#61139#0" expanded="false" />
-            <element signature="e#61856#62065#0" expanded="false" />
-            <element signature="e#62110#62454#0" expanded="false" />
-            <element signature="e#62517#64441#0" expanded="false" />
-            <element signature="e#64502#64962#0" expanded="false" />
-            <element signature="e#65382#66308#0" expanded="false" />
+            <element signature="e#59510#59974#0" expanded="false" />
+            <element signature="e#60691#60900#0" expanded="false" />
+            <element signature="e#60945#61289#0" expanded="false" />
+            <element signature="e#61352#63276#0" expanded="false" />
+            <element signature="e#63337#63797#0" expanded="false" />
+            <element signature="e#64217#65143#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/connectome/genome_tmp.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="842" column="0" lean-forward="false" selection-start-line="842" selection-start-column="0" selection-end-line="842" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#firing_patterns#0;n#!!top" expanded="false" />
+            <element signature="n#!!block;n#neighbor_locator_rule#0;n#!!top" expanded="false" />
+            <element signature="n#!!block;n#IPU_vision_filters#0;n#!!top" expanded="false" />
+            <element signature="n#!!block;n#performance_stats#0;n#!!top" expanded="false" />
+            <element signature="n#!!block;n#blueprint#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolutionary/brain_gen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="77" column="16" lean-forward="false" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="156" column="17" lean-forward="false" selection-start-line="156" selection-start-column="4" selection-end-line="156" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main-auto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="37">
+          <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main-manual.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="485">
+          <caret line="105" column="61" lean-forward="false" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc/disk_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" column="20" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding>
+            <element signature="e#33#62#0" expanded="true" />
           </folding>
         </state>
       </provider>

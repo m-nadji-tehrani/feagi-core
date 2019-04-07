@@ -6,6 +6,7 @@ import os.path
 import json
 from misc import db_handler, alerts, stats
 from configuration import runtime_data, settings
+from evolutionary.genethesizer import genome_id_gen
 
 
 # Reads the list of all Cortical areas defined in Genome
@@ -35,6 +36,8 @@ def load_genome_in_memory(connectome_path, static=False):
         with open(runtime_data.parameters["InitData"]["static_genome_path"], "r") as genome_file:
             genome_data = json.load(genome_file)
             runtime_data.genome = genome_data
+    # todo: The following is suitable for the main_auto but needs to be adjusted for the main_manual
+    runtime_data.genome_id = genome_id_gen()
 
 
 def save_genome_to_disk():
@@ -49,7 +52,7 @@ def save_genome_to_disk():
         updated_genome_test_stats.append(item)
 
     # print(updated_genome_test_stats)
-    # print("*** @@@ *** @@@ *** \n ", genome_id)
+    print("*** @@@ *** @@@ *** \n ", genome_id)
 
     genome_db = {}
     genome_db["genome_id"] = genome_id
@@ -92,9 +95,12 @@ def stage_genome(connectome_path, dynamic_selection_mode=True):
         genome_data, original_genome_id = select_a_genome()
         runtime_data.original_genome_id = original_genome_id
     else:
-        load_genome_in_memory(connectome_path, static=True)
+        # load_genome_in_memory(connectome_path, static=True)
         genome_data = runtime_data.genome
         runtime_data.original_genome_id = ["static"]
+
+    print("Staged genome had the following genome id:", runtime_data.original_genome_id)
+    genome_data['genome_id_source'] = runtime_data.original_genome_id
     with open(connectome_path+'genome_tmp.json', "w") as staged_genome:
         # Saving changes to the connectome
         staged_genome.seek(0)  # rewind

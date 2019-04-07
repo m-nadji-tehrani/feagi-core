@@ -19,7 +19,6 @@ if __name__ == '__main__':
     disk_ops.load_parameters_in_memory()
     from misc import disk_ops
     from configuration import runtime_data, settings
-    from evolutionary.genethesizer import genome_id_gen
 
     try:
         connectome_file_path = sys.argv[1]
@@ -31,7 +30,10 @@ if __name__ == '__main__':
 
     global connectome_path
     connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
+
+    # The following stages the genome in the proper connectome path and loads it into the memory
     disk_ops.genome_handler(connectome_path)
+
     # Initialize runtime cortical list
     blueprint = runtime_data.genome["blueprint"]
     cortical_list = []
@@ -102,10 +104,11 @@ if __name__ == '__main__':
             runtime_data.parameters["Input"]["user_input"] = ""
             print("Starting a new generation...")
             # Regenerate the brain
-            disk_ops.stage_genome(connectome_path)
-            print("$")
-            disk_ops.load_genome_in_memory(connectome_path)
-            print("$$")
+            disk_ops.genome_handler(connectome_path)
+            # disk_ops.stage_genome(connectome_path)
+            # print("$")
+            # disk_ops.load_genome_in_memory(connectome_path)
+            # print("$$")
             structural_fitness = 0
             while structural_fitness < 1:
                 brain_generation_start_time = datetime.now()

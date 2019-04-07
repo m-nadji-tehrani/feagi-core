@@ -935,12 +935,14 @@ def form_memories():
         tmp_plasticity_list = []
         # Wiring visual memory neurons who are firing together
         for source_neuron in cfcl_vision_memory_neurons:
+
             # Every visual memory neuron in CFCL is going to wire to evey other vision memory neuron
             for destination_neuron in cfcl_vision_memory_neurons:
                 if destination_neuron != source_neuron and destination_neuron not in tmp_plasticity_list:
                     apply_plasticity(cortical_area='vision_memory',
                                      src_neuron=source_neuron,
                                      dst_neuron=destination_neuron)
+
             # Wiring visual memory neurons to the utf_memory ones
             for destination_neuron in cfcl_utf8_memory_neurons:
                 if not init_data.pain_flag:
@@ -950,6 +952,7 @@ def form_memories():
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=source_neuron,
                                          dst_cortical_area='utf8_memory', dst_neuron_id=destination_neuron,
                                          long_term_depression=True, impact_multiplier=10)
+
             # Reducing synaptic connectivity when a single memory neuron is associated with more than one utf_memory one
             if utf8_memory_count >= 2:
                 synapse_to_utf = 0
@@ -967,26 +970,6 @@ def form_memories():
                                                  dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
                                                  long_term_depression=True, impact_multiplier=4)
             tmp_plasticity_list.append(source_neuron)
-
-
-
-    # # Reducing synaptic strength when one vision memory cell activates more than one UTF cell
-    # if len(cfcl_utf8_memory_neurons) >= 2:
-    #     for src_neuron in set([i[1] for i in pfcl if i[0] == 'vision_memory']):
-    #         synapse_to_utf = 0
-    #         runtime_data.temp_neuron_list = []
-    #         neighbor_list = dict(runtime_data.brain['vision_memory'][src_neuron]['neighbors'])
-    #         print("<><><>")
-    #         for synapse_ in neighbor_list:
-    #             if runtime_data.brain['vision_memory'][src_neuron]['neighbors'][synapse_]['cortical_area'] \
-    #                     == 'utf8_memory':
-    #                 synapse_to_utf += 1
-    #                 runtime_data.temp_neuron_list.append(synapse_)
-    #             if synapse_to_utf >= 2:
-    #                 for dst_neuron in runtime_data.temp_neuron_list:
-    #                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=src_neuron,
-    #                                          dst_cortical_area='utf8_memory', dst_neuron_id=dst_neuron,
-    #                                          long_term_depression=True, impact_multiplier=4)
 
 
 def burst_exit_process():

@@ -102,8 +102,16 @@ global init_data, injector_params, test_params
 
 def burst():
     """This function behaves as instance of Neuronal activities"""
+    print("\n\n\n\n\n")
+    print("**** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** ****")
+    print("**** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** ****")
+    print("**** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** ****")
+    print("**** **** **** **** ****       Starting the burst engine...      **** **** **** **** ****")
+    print("**** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** ****")
+    print("**** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** ****")
+    print("**** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** **** ****")
+    print("\n\n\n\n\n")
 
-    print('Starting the burst engine...')
     print(runtime_data.parameters['Switches']['use_static_genome'])
     disk_ops.genome_handler(runtime_data.parameters['InitData']['connectome_path'])
 
@@ -115,6 +123,7 @@ def burst():
 
     global init_data, test_params, injector_params
 
+    runtime_data.parameters["Auto_injector"]["injector_status"] = False
     init_data = InitData()
     injector_params = InjectorParams()
     test_params = TesterParams()
@@ -157,6 +166,9 @@ def burst():
         print(
             settings.Bcolors.RED + "Starting an automated learning process...<> <> <> <>" + settings.Bcolors.ENDC)
         injection_manager(injection_mode="l1", injection_param="")
+
+
+    print("\n\n >> >> >> Ready to exist burst engine flag:",runtime_data.parameters["Switches"]["ready_to_exit_burst"])
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
         burst_start_time = datetime.now()
@@ -677,6 +689,7 @@ def injection_manager(injection_mode, injection_param):
     Mode r: Assist in exposing a single image to the brain for a number of bursts
     Mode c: Assist in exposing a single utf8 char to the brain for a number of bursts
     """
+    print("\nInjection Manager...")
     global injector_params
     try:
         if injection_mode == 'l1':
@@ -741,6 +754,7 @@ def injection_manager(injection_mode, injection_param):
             return
 
     finally:
+        print("Injection Manager... Finally!")
         toggle_injection_mode()
         injector_params.injection_has_begun = True
 

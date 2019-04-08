@@ -18,6 +18,14 @@ from misc import stats, disk_ops
 
 
 def brain_gen():
+
+    print("-----------------------------------------------\n\n\n\n\n\n")
+    print("-----------------------------------------------\n\n\n\n\n\n")
+    print("------------  Brain generation has begon-------\n\n\n\n\n\n")
+    print("-----------------------------------------------\n\n\n\n\n\n")
+    print("-----------------------------------------------\n\n\n\n\n\n")
+    
+
     genome = runtime_data.genome
     parameters = runtime_data.parameters
     runtime_data.brain = {}

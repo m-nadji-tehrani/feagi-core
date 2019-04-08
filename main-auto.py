@@ -90,6 +90,7 @@ if __name__ == '__main__':
 
 
     while 1==1:
+        runtime_data.parameters["Switches"]["ready_to_exit_burst"] = False
         neuron_functions_auto.burst()
 
         disk_ops.save_block_dic_to_disk(block_dic=runtime_data.block_dic,
@@ -119,8 +120,6 @@ if __name__ == '__main__':
                 print("$$$$")
                 brain_generation_duration = datetime.now() - brain_generation_start_time
             initialize_the_brain()
-
-            print("The burst engine has been started...")
 
             runtime_data.event_id = event_id_gen()
 

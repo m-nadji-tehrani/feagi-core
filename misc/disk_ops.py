@@ -52,7 +52,7 @@ def save_genome_to_disk():
         updated_genome_test_stats.append(item)
 
     # print(updated_genome_test_stats)
-    print("*** @@@ *** @@@ *** \n ", genome_id)
+    print("*** @@@ *** @@@ *** Genome_id:  \n ", genome_id)
 
     genome_db = {}
     genome_db["genome_id"] = genome_id
@@ -76,8 +76,8 @@ def save_genome_to_disk():
     # if brain_fitness > runtime_data.parameters["Alerts"]["email_fitness_threshold"]:
     #     alerts.send_email(mail_body)
 
-    print(">>>>", runtime_data.genome_test_stats)
-    print(">>>>", runtime_data.genome_id)
+    print(">>>Genome test stats: >", runtime_data.genome_test_stats)
+    print(">>>Genome_id: >", runtime_data.genome_id)
 
     for stat in runtime_data.genome_test_stats:
         stat_to_save = stat

@@ -1276,7 +1276,8 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
                         if runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
                             counter = 0
                             for neuron in runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
-                                if ('vision_memory', neuron) in cfcl:
+                                fcl_entry = ['vision_memory', neuron]
+                                if fcl_entry in cfcl:
                                     counter += 1
                             fcl_results.append([_, counter])
 

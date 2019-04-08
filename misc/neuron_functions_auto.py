@@ -276,9 +276,10 @@ def burst():
         comprehension_queue.popleft()
 
         def training_quality_test():
-            for entry in list_upstream_neuron_count_for_digits():
+            upstream_general_stats = list_upstream_neuron_count_for_digits()
+            for entry in upstream_general_stats:
                 if entry[1] == 0:
-                    print(list_upstream_neuron_count_for_digits(), "This entry was zero >", entry)
+                    print(upstream_general_stats, "This entry was zero >", entry)
                     return False
 
         # Monitor cortical activity levels and terminate brain if not meeting expectations
@@ -340,7 +341,9 @@ def burst():
 
         # Listing the number of neurons activating each UTF memory neuron
         upstream_report_time = datetime.now()
-        print("list_upstream_neuron_count_for_digits:", list_upstream_neuron_count_for_digits())
+        upstream_general_stats, upstream_fcl_stats = list_upstream_neuron_count_for_digits(mode=1, cfcl=init_data.fire_candidate_list)
+        print("list_upstream_neuron_count_for_digits:", upstream_general_stats)
+        print("list_upstream___FCL__count_for_digits:", upstream_fcl_stats)
         common_neuron_report()
         print("Timing : Upstream + common neuron report:", datetime.now() - upstream_report_time)
 
@@ -794,7 +797,7 @@ def auto_injector():
 
             # Effectiveness check
             if runtime_data.parameters["Switches"]["evaluation_based_termination"]:
-                print('## ## ###:', list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual))
+                print('## ## ###:', list_upstream_neuron_count_for_digits(digit=injector_params.utf_counter_actual))
                 if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
                     print(settings.Bcolors.RED +
                           "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
@@ -1254,9 +1257,10 @@ def list_top_n_utf_memory_neurons(n):
     return neuron_list
 
 
-def list_upstream_neuron_count_for_digits(digit='all'):
+def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
     function_start_time = datetime.now()
     results = []
+    fcl_results = []
     top_n_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
     if digit == 'all':
         # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
@@ -1269,12 +1273,22 @@ def list_upstream_neuron_count_for_digits(digit='all'):
                 if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
                     if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
                         results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
+                        if runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
+                            counter = 0
+                            for neuron in runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
+                                if ('vision_memory', neuron) in cfcl:
+                                    counter += 1
+                            fcl_results.append([_, counter])
+
                     else:
                         results.append([_, 0])
+                        fcl_results.append([_, 0])
                 else:
                     results.append([_, 0])
+                    fcl_results.append([_, 0])
             else:
                 results.append([_, 0])
+                fcl_results.append([_, 0])
     else:
         neuron_id = top_n_utf_memory_neurons[digit][1]
         if 'utf8_memory' in runtime_data.upstream_neurons:
@@ -1288,7 +1302,11 @@ def list_upstream_neuron_count_for_digits(digit='all'):
         else:
             results.append([digit, 0])
     print("Timing : list_upstream_neuron_count_for_digits:", datetime.now()-function_start_time)
-    return results
+
+    if mode == 0:
+        return results
+    else:
+        return results, fcl_results
 
 
 def list_common_upstream_neurons(neuron_a, neuron_b):

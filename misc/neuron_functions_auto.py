@@ -1280,7 +1280,8 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
                                 if fcl_entry in cfcl:
                                     counter += 1
                             fcl_results.append([_, counter])
-
+                        else:
+                            fcl_results.append([_, 0])
                     else:
                         results.append([_, 0])
                         fcl_results.append([_, 0])

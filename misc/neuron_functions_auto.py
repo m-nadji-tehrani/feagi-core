@@ -172,7 +172,7 @@ def burst():
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
         burst_start_time = datetime.now()
-
+        init_data.pain_flag = False
         now = datetime.now()
         init_data.time_apply_plasticity_ext = datetime.now() - now
 
@@ -276,7 +276,7 @@ def burst():
         comprehension_queue.popleft()
 
         def training_quality_test():
-            upstream_general_stats = list_upstream_neuron_count_for_digits()
+            upstream_general_stats = list_upstream_neuron_count_for_digits(cfcl=init_data.fire_candidate_list)
             for entry in upstream_general_stats:
                 if entry[1] == 0:
                     print(upstream_general_stats, "This entry was zero >", entry)
@@ -298,6 +298,10 @@ def burst():
                         burst_exit_process()
 
         print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
+
+        # Pain check
+        if init_data.pain_flag:
+            exhibit_pain()
 
         # Comprehension check
         time_comprehension_check = datetime.now()
@@ -334,7 +338,8 @@ def burst():
         # Forming memories through creation of cell assemblies
         if runtime_data.parameters["Switches"]["memory_formation"]:
             # memory_formation_start_time = datetime.now()
-            form_memories()
+            # todo: instead of passing a pain flag simply detect of pain neuron is activated
+            form_memories(init_data.fire_candidate_list, init_data.pain_flag)
             # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
         print("Timing : Comprehension check:", datetime.now() - time_comprehension_check)
 
@@ -797,8 +802,11 @@ def auto_injector():
 
             # Effectiveness check
             if runtime_data.parameters["Switches"]["evaluation_based_termination"]:
-                print('## ## ###:', list_upstream_neuron_count_for_digits(digit=injector_params.utf_counter_actual))
-                if list_upstream_neuron_count_for_digits(injector_params.utf_counter_actual)[0][1] == 0:
+                upstream_neuron_count_for_digits = \
+                    list_upstream_neuron_count_for_digits(digit=injector_params.utf_counter_actual,
+                                                          cfcl=init_data.fire_candidate_list)
+                print('## ## ###:', upstream_neuron_count_for_digits)
+                if upstream_neuron_count_for_digits[0][1] == 0:
                     print(settings.Bcolors.RED +
                           "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
                           settings.Bcolors.ENDC)
@@ -925,15 +933,12 @@ class DataFeeder:
         # print("image has been converted to neuronal activities...")
 
 
-def form_memories():
+def form_memories(cfcl, pain_flag):
     """
     This function provides logics related to memory formation as follows:
     - Logic to wire memory neurons together when they fire together
     - Logic to reduce synaptic connectivity when one vision memory leads to activation of two UTF neurons
     """
-    global init_data
-    pfcl = init_data.previous_fcl
-    cfcl = init_data.fire_candidate_list
 
     # todo: The following section to be generalized
     cfcl_vision_memory_neurons = []
@@ -944,7 +949,7 @@ def form_memories():
             cfcl_vision_memory_neurons.append(neuron[1])
         elif neuron[0] == 'utf8_memory':
             cfcl_utf8_memory_neurons.append(neuron[1])
-
+    print("+++++++++cfcl_utf8_memory_neurons:", cfcl_utf8_memory_neurons)
     utf8_memory_count = len(cfcl_utf8_memory_neurons)
     if cfcl_vision_memory_neurons:
         print("Number of vision memory neurons fired in this burst:",len(cfcl_vision_memory_neurons))
@@ -962,13 +967,15 @@ def form_memories():
 
             # Wiring visual memory neurons to the utf_memory ones
             for destination_neuron in cfcl_utf8_memory_neurons:
-                if not init_data.pain_flag:
+                if not pain_flag:
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=source_neuron,
                                              dst_cortical_area='utf8_memory', dst_neuron_id=destination_neuron)
-                if init_data.pain_flag:
+                    # print("wiring visual to utf:", source_neuron, destination_neuron)
+                if pain_flag:
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=source_neuron,
                                          dst_cortical_area='utf8_memory', dst_neuron_id=destination_neuron,
                                          long_term_depression=True, impact_multiplier=10)
+                    # print("un-wiring visual to utf:", source_neuron, destination_neuron)
 
             # Reducing synaptic connectivity when a single memory neuron is associated with more than one utf_memory one
             if utf8_memory_count >= 2:
@@ -1261,6 +1268,7 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
     function_start_time = datetime.now()
     results = []
     fcl_results = []
+
     top_n_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
     if digit == 'all':
         # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
@@ -1271,6 +1279,7 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
             neuron_id = top_n_utf_memory_neurons[_][1]
             if 'utf8_memory' in runtime_data.upstream_neurons:
                 if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
+                    print("upstream_neuron's neuron id: ", neuron_id)
                     if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
                         results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
                         if runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
@@ -1306,8 +1315,10 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
     print("Timing : list_upstream_neuron_count_for_digits:", datetime.now()-function_start_time)
 
     if mode == 0:
+        print("&& && & &&& && && & : The mode is == 0")
         return results
     else:
+        print("&& && & &&& && && & : The mode is != 0")
         return results, fcl_results
 
 
@@ -1606,8 +1617,8 @@ def reset_cumulative_counter_instances():
             runtime_data.brain[cortical_area][neuron]['cumulative_fire_count_inst'] = 0
     return
 
-def trigger_pain():
 
+def exhibit_pain():
     print("*******************************************************************")
     print("*******************************************************************")
     print("*********************                                 *************")
@@ -1616,9 +1627,11 @@ def trigger_pain():
     print("*******************************************************************")
     print("*******************************************************************")
 
+
+def trigger_pain():
+    exhibit_pain()
     for neuron in runtime_data.brain['pain']:
         init_data.future_fcl.append(['pain', neuron])
-
 
 
 def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):

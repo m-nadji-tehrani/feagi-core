@@ -415,6 +415,10 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
         #                     cortical_area_dst=cortical_area_dst, dst_neuron_id=dst_neuron_id, src_neuron_id=src_neuron_id):
         #         neighbor_candidates.append(dst_neuron_id)
 
+
+    # if cortical_area_dst == 'vision_memory':
+    #     print('*%i*' %len(neighbor_candidates))
+
     return neighbor_candidates
 
 

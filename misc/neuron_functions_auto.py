@@ -50,6 +50,7 @@ class InitData:
         self.time_neuron_update = datetime.now()
         self.time_apply_plasticity_ext = datetime.now()
         self.pain_flag = False
+        self.cumulative_neighbor_count = 0
 
 
 class InjectorParams:
@@ -231,8 +232,10 @@ def burst():
             fcl = list(init_data.fire_candidate_list)
             # map(neuron_fire, fcl)
             init_data.future_fcl = []
+            init_data.cumulative_neighbor_count = 0
             for entry in fcl:
                 neuron_fire(entry)
+            print("cumulative vision_memory neighbor count for this burst = ", init_data.cumulative_neighbor_count)
             print("PFCL:", len(init_data.previous_fcl),
                   "\nCFCL:", len(init_data.fire_candidate_list),
                   "\nFFCL:", len(init_data.future_fcl))
@@ -299,6 +302,7 @@ def burst():
 
         print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
 
+
         # Pain check
         if init_data.pain_flag:
             exhibit_pain()
@@ -343,13 +347,20 @@ def burst():
             # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
         print("Timing : Comprehension check:", datetime.now() - time_comprehension_check)
 
+        # Burst stats
+        for area in runtime_data.brain:
+            print("### Average postSynaptic current in --- %s --- was: %i" %(area, average_postsynaptic_current(area)))
 
         # Listing the number of neurons activating each UTF memory neuron
         upstream_report_time = datetime.now()
         upstream_general_stats, upstream_fcl_stats = list_upstream_neuron_count_for_digits(mode=1, cfcl=init_data.fire_candidate_list)
         print("list_upstream_neuron_count_for_digits:", upstream_general_stats)
         print("list_upstream___FCL__count_for_digits:", upstream_fcl_stats)
+
+        # todo: investigate the efficiency of the common neuron report
+        print("The following is the common neuron report:")
         common_neuron_report()
+
         print("Timing : Upstream + common neuron report:", datetime.now() - upstream_report_time)
 
         # Resetting burst detection list
@@ -959,11 +970,11 @@ def form_memories(cfcl, pain_flag):
         for source_neuron in cfcl_vision_memory_neurons:
 
             # Every visual memory neuron in CFCL is going to wire to evey other vision memory neuron
-            for destination_neuron in cfcl_vision_memory_neurons:
-                if destination_neuron != source_neuron and destination_neuron not in tmp_plasticity_list:
-                    apply_plasticity(cortical_area='vision_memory',
-                                     src_neuron=source_neuron,
-                                     dst_neuron=destination_neuron)
+            # for destination_neuron in cfcl_vision_memory_neurons:
+            #     if destination_neuron != source_neuron and destination_neuron not in tmp_plasticity_list:
+            #         apply_plasticity(cortical_area='vision_memory',
+            #                          src_neuron=source_neuron,
+            #                          dst_neuron=destination_neuron)
 
             # Wiring visual memory neurons to the utf_memory ones
             for destination_neuron in cfcl_utf8_memory_neurons:
@@ -1125,19 +1136,21 @@ def neuron_fire(fcl_entry):
     # todo: Firing pattern to be accommodated here     <<<<<<<<<<  *****
     # neuron_update_list = []
     neighbor_count = len(neighbor_list)
+    if cortical_area == 'vision_memory':
+        init_data.cumulative_neighbor_count += neighbor_count
+
 
     # Updating downstream neurons
-
-
     for dst_neuron_id in neighbor_list:
-        dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
-
-        postsynaptic_current = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
-
-        neuron_output = activation_function(postsynaptic_current)
 
         # Timing the update function
         update_start_time = datetime.now()
+
+        dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
+        postsynaptic_current = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
+        # if cortical_area == 'vision_memory':
+            # print("< %i >" %postsynaptic_current)
+        neuron_output = activation_function(postsynaptic_current)
 
         # Update function
         # todo: (neuron_output/neighbor_count) needs to be moved outside the loop for efficiency
@@ -1186,11 +1199,6 @@ def neuron_fire(fcl_entry):
         # Resetting last time neuron was updated to the current burst id
         runtime_data.brain[dst_cortical_area][dst_neuron_id]["last_burst_num"] = init_data.burst_count
 
-
-        # Adding up all update times within a burst span
-        total_update_time = datetime.now() - update_start_time
-        init_data.time_neuron_update = total_update_time + init_data.time_neuron_update
-
         # Time overhead for the following function is about 2ms per each burst cycle
         update_upstream_db(cortical_area, neuron_id, dst_cortical_area, dst_neuron_id)
 
@@ -1208,6 +1216,9 @@ def neuron_fire(fcl_entry):
                           % (dst_cortical_area, dst_cortical_area)
                           + settings.Bcolors.ENDC)
 
+        # Adding up all update times within a burst span
+        total_update_time = datetime.now() - update_start_time
+        init_data.time_neuron_update = total_update_time + init_data.time_neuron_update
 
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
@@ -1366,6 +1377,7 @@ def common_neuron_report():
                 for neuron in common_neuron_list:
                     pruner('vision_memory', neuron, 'utf8_memory', neuron_a)
                     pruner('vision_memory', neuron, 'utf8_memory', neuron_b)
+                    print("--+--+--+--+--+: Common synapses has been pruned.")
 
 
 # def neuron_update(presynaptic_current,
@@ -1428,32 +1440,34 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
     # by default hence here we first need to synapse the source and destination together
     # Build neighbor relationship between the source and destination if its not already in place
 
-    # Check if source and destination have an existing synapse if not create one here
-    if dst_neuron not in runtime_data.brain[cortical_area][src_neuron]["neighbors"]:
-        synapse(cortical_area, src_neuron, cortical_area, dst_neuron,
-                genome["blueprint"][cortical_area]["postsynaptic_current"])
-        update_upstream_db(cortical_area, src_neuron, cortical_area, dst_neuron)
+    neighbor_count = len(runtime_data.brain[cortical_area][src_neuron]["neighbors"])
+    if neighbor_count < runtime_data.parameters["InitData"]["max_neighbor_count"]:
+        # Check if source and destination have an existing synapse if not create one here
+        if dst_neuron not in runtime_data.brain[cortical_area][src_neuron]["neighbors"]:
+            synapse(cortical_area, src_neuron, cortical_area, dst_neuron,
+                    genome["blueprint"][cortical_area]["postsynaptic_current"])
+            update_upstream_db(cortical_area, src_neuron, cortical_area, dst_neuron)
 
-    # Every time source and destination neuron is fired at the same time which in case of the code architecture
-    # reside in the same burst, the postsynaptic_current will be increased simulating the fire together, wire together.
-    # This phenomenon is also considered as long term potentiation or LTP
-    runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] += \
-        genome["blueprint"][cortical_area]["plasticity_constant"]
+        # Every time source and destination neuron is fired at the same time which in case of the code architecture
+        # reside in the same burst, the postsynaptic_current will be increased simulating the fire together, wire together.
+        # This phenomenon is also considered as long term potentiation or LTP
+        runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] += \
+            genome["blueprint"][cortical_area]["plasticity_constant"]
 
-    # Condition to cap the postsynaptic_current and provide prohibitory reaction
-    runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] = \
-        min(runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
-            genome["blueprint"][cortical_area]["postsynaptic_current_max"])
+        # Condition to cap the postsynaptic_current and provide prohibitory reaction
+        runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] = \
+            min(runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
+                genome["blueprint"][cortical_area]["postsynaptic_current_max"])
 
-    # print('<*> ', cortical_area, src_neuron[27:], dst_neuron[27:], 'PSC=',
-    #       runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
+        # print('<*> ', cortical_area, src_neuron[27:], dst_neuron[27:], 'PSC=',
+        #       runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
 
-    # Append a Group ID so Memory clusters can be uniquely identified
-    if init_data.event_id:
-        if init_data.event_id in runtime_data.brain[cortical_area][src_neuron]["event_id"]:
-            runtime_data.brain[cortical_area][src_neuron]["event_id"][init_data.event_id] += 1
-        else:
-            runtime_data.brain[cortical_area][src_neuron]["event_id"][init_data.event_id] = 1
+        # Append a Group ID so Memory clusters can be uniquely identified
+        if init_data.event_id:
+            if init_data.event_id in runtime_data.brain[cortical_area][src_neuron]["event_id"]:
+                runtime_data.brain[cortical_area][src_neuron]["event_id"][init_data.event_id] += 1
+            else:
+                runtime_data.brain[cortical_area][src_neuron]["event_id"][init_data.event_id] = 1
 
     return
 
@@ -1470,7 +1484,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         plasticity_constant = plasticity_constant * (-1) * impact_multiplier
         # plasticity_constant = -20
 
-        # Check if source and destination have an existing synapse if not create one here
+    # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
         synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
         update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
@@ -1492,6 +1506,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
         pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
                cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
+        print("Synapse pruned due to having low synaptic strength.")
 
 
     # print('<**> ', src_cortical_area, src_neuron_id[27:], dst_cortical_area, dst_neuron_id[27:], 'PSC=',
@@ -1638,8 +1653,23 @@ def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
     """
     Responsible for pruning unused connections between neurons
     """
+    print(".....Pruning.....")
+    print("pre pruning: ", cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
     runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
+    print("post pruning: ",  cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
     runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)
     if dst_neuron_id in runtime_data.temp_neuron_list:
         runtime_data.temp_neuron_list.remove(dst_neuron_id)
 
+def average_postsynaptic_current(cortical_area):
+    count = 0
+    sum = 0
+    for neuron in runtime_data.brain[cortical_area]:
+        for neighbor in runtime_data.brain[cortical_area][neuron]['neighbors']:
+            count += 1
+            sum += runtime_data.brain[cortical_area][neuron]['neighbors'][neighbor]['postsynaptic_current']
+    if count > 0:
+        avg_postsynaptic_current = sum / count
+    else:
+        avg_postsynaptic_current = 0
+    return avg_postsynaptic_current

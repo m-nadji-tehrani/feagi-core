@@ -25,7 +25,7 @@
     "logging_fire": false,
     "folder_backup": false,
     "memory_formation": true,
-    "plasticity": true,
+    "plasticity": false,
     "capture_brain_activities": false,
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
@@ -57,7 +57,8 @@
     "image_monochromization_threshold": 100,
     "kill_trigger_burst_count": 50,
     "kill_trigger_vision_memory_min": 10,
-    "overlap_prevention_constant": 5
+    "overlap_prevention_constant": 2,
+    "max_neighbor_count": 100
   },
   "Auto_injector":{
     "variation_default": 15,

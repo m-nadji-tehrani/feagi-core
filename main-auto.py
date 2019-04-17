@@ -131,6 +131,7 @@ if __name__ == '__main__':
 
 #          <<<<<<<   T O   D O   L I S T   >>>>>>>>
 #
+# todo: Figure the fire power of each neuron and how to balance it
 # todo: Find a way to cap different processes to not go out of hand
 # todo: 0. Run with multiple variation of each number
 # todo: 1. Run the system with a single genome and assess the deviation between fitness results

@@ -29,12 +29,16 @@ class MNIST:
         # print(len(mnist_array))
 
     @staticmethod
-    def read_mnist_raw(dataset="training", path="../Fashion-MNIST/"):
+    def read_mnist_raw(dataset="training", database=runtime_data.parameters["InitData"]["image_database"]):
         """
         Python function for importing the MNIST data set.  It returns an iterator
         of 2-tuples with the first element being the label and the second element
         being a numpy.uint8 2D array of pixel data for the given image.
         """
+
+        path = "../" + database + "/"
+        absolute_path = "/Users/mntehrani/PycharmProjects/"  + database + "/"
+
         if dataset is "training":
             fname_img = os.path.join(path, 'train-images.idx3-ubyte')
             fname_lbl = os.path.join(path, 'train-labels.idx1-ubyte')
@@ -48,11 +52,11 @@ class MNIST:
             raise Exception(ValueError, "data set must be 'testing' or 'training'")
 
         # Load everything in some numpy arrays
-        with open("/Users/mntehrani/PycharmProjects/Fashion-MNIST/" + fname_lbl, 'rb') as flbl:
+        with open(absolute_path + fname_lbl, 'rb') as flbl:
             magic, num = struct.unpack(">II", flbl.read(8))
             lbl = np.fromfile(flbl, dtype=np.int8)
 
-        with open("/Users/mntehrani/PycharmProjects/Fashion-MNIST/" + fname_img, 'rb') as fimg:
+        with open(absolute_path + fname_img, 'rb') as fimg:
             magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
             img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
 

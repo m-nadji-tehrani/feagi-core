@@ -88,9 +88,9 @@ if __name__ == '__main__':
     runtime_data.event_id = event_id_gen()
     print(" <> ^^ <> ^^ <> ^^ <> ^^ <> An event related to mnist reading with following id has been logged:", runtime_data.event_id)
 
-
     while 1==1:
         runtime_data.parameters["Switches"]["ready_to_exit_burst"] = False
+        runtime_data.genome_test_stats = []
         neuron_functions_auto.burst()
 
         disk_ops.save_block_dic_to_disk(block_dic=runtime_data.block_dic,

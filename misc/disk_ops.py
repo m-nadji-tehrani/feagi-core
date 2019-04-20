@@ -81,7 +81,9 @@ def save_genome_to_disk():
 
     for stat in runtime_data.genome_test_stats:
         stat_to_save = stat
-        mongo.insert_test_stats(stat_to_save)
+        # todo: The following is leading to duplicate db record ---> Investigate
+        # mongo.insert_test_stats(stat_to_save)
+
 
     print("Genome %s has been preserved for future generations!" % genome_id)
     stats.print_fcl_stats(genome_id)

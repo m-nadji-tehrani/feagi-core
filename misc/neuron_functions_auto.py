@@ -129,6 +129,7 @@ def burst():
     injector_params = InjectorParams()
     test_params = TesterParams()
     mongo = db_handler.MongoManagement()
+    influxdb = db_handler.InfluxManagement()
 
     if not init_data.brain_is_running:
         toggle_brain_status()
@@ -168,7 +169,6 @@ def burst():
             settings.Bcolors.RED + "Starting an automated learning process...<> <> <> <>" + settings.Bcolors.ENDC)
         injection_manager(injection_mode="l1", injection_param="")
 
-
     print("\n\n >> >> >> Ready to exist burst engine flag:",runtime_data.parameters["Switches"]["ready_to_exit_burst"])
 
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
@@ -177,13 +177,20 @@ def burst():
         now = datetime.now()
         init_data.time_apply_plasticity_ext = datetime.now() - now
 
-
         # print(datetime.now(), "Burst count = ", init_data.burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         init_data.previous_fcl = list(init_data.fire_candidate_list)
         init_data.burst_count += 1
 
+        # logging neuron activities to the influxdb
+        if runtime_data.parameters["Switches"]["influx_logger"]:
+            connectome_path = runtime_data.parameters['InitData']['connectome_path']
+            for fcl_item in init_data.fire_candidate_list:
+                influxdb.insert_neuron_activity(connectome_path=connectome_path,
+                                                cortical_area=fcl_item[0],
+                                                neuron_id=fcl_item[1],
+                                                membrane_potential=runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"]/1)
 
         # Fire all neurons within fire_candidate_list (FCL) or add a delay if FCL is empty
         time_firing_activities = datetime.now()
@@ -348,8 +355,9 @@ def burst():
         print("Timing : Comprehension check:", datetime.now() - time_comprehension_check)
 
         # Burst stats
-        for area in runtime_data.brain:
-            print("### Average postSynaptic current in --- %s --- was: %i" %(area, average_postsynaptic_current(area)))
+        if runtime_data.parameters["Logs"]["print_burst_stats"]:
+            for area in runtime_data.brain:
+                print("### Average postSynaptic current in --- %s --- was: %i" %(area, average_postsynaptic_current(area)))
 
         # Listing the number of neurons activating each UTF memory neuron
         upstream_report_time = datetime.now()
@@ -401,7 +409,6 @@ def burst():
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
             print(settings.Bcolors.YELLOW + ">>> Burst duration: %s %i --- ---- ---- ---- ---- ---- ----" % (burst_duration, init_data.burst_count) + settings.Bcolors.ENDC)
-
 
 
 def utf_detection_logic(detection_list):
@@ -1106,7 +1113,10 @@ def neuron_fire(fcl_entry):
     #     print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
-    neighbor_list = runtime_data.brain[cortical_area][neuron_id]["neighbors"]
+    try:
+        neighbor_list = runtime_data.brain[cortical_area][neuron_id]["neighbors"]
+    except KeyError:
+        print(settings.Bcolors.RED + "KeyError on accessing neighbor_list while firing a neuron" + settings.Bcolors.ENDC)
 
     # Condition to update neuron activity history currently only targeted for UTF-OPU
     # todo: move activity_history_span to genome
@@ -1290,7 +1300,7 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
             neuron_id = top_n_utf_memory_neurons[_][1]
             if 'utf8_memory' in runtime_data.upstream_neurons:
                 if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
-                    print("upstream_neuron's neuron id: ", neuron_id)
+                    # print("upstream_neuron's neuron id: ", neuron_id)
                     if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
                         results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
                         if runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:

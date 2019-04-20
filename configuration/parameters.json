@@ -39,6 +39,7 @@
     "capture_neuron_mp_db": false,
     "evaluation_based_termination": true,
     "use_highest_performing_genome_only": true,
+    "influx_logger": true,
     "MNIST_set_option": 2
 
   },
@@ -49,6 +50,7 @@
     "rules_path": "./evolutionary/rules.json",
     "static_genome_path": "./evolutionary/static_genome3.json",
     "fcl_to_visualize": "./fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" ,
+    "image_database": "MNIST",
     "training_counter_default": 10,
     "training_rounds_default": 40,
     "activity_history_span": 4,
@@ -86,6 +88,7 @@
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
     "print_burst_info": true,
+    "print_burst_stats": false,
     "print_brain_gen_activities": true,
     "print_comprehension_queue": false
   },

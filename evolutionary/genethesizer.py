@@ -31,8 +31,8 @@ def select_a_genome():
 
     elif random_selector == 3:
         print("Most recent genome is being selected...")
-        # genome = latest_genome()
-        genome, original_genome_id = highest_fitness_genome()
+        genome, original_genome_id = latest_genome()
+        # genome, original_genome_id = highest_fitness_genome()
 
     elif random_selector == 4:
         print("The genome with highest fitness so far has been selected...")

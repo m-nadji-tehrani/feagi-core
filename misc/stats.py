@@ -34,8 +34,7 @@ def connectome_total_synapse_cnt(cortical_area):
     """
     Returns the total number of Neurons and Synapses for a given cortical area
     """
-    brain = disk_ops.load_brain_in_memory()
-    data = brain[cortical_area]
+    data = runtime_data.brain[cortical_area]
     total_synapse_count = 0
     total_neuron_count = 0
     for neuron in data:

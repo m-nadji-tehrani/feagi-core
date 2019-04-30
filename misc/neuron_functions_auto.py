@@ -19,7 +19,7 @@ from time import sleep
 from PUs import OPU_utf8, IPU_utf8
 from . import brain_functions
 from misc import disk_ops
-from misc import db_handler
+from misc import db_handler, stats
 from configuration import settings, runtime_data
 from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
@@ -213,6 +213,12 @@ def burst():
                     runtime_data.activity_stats[cortical_area] = max(runtime_data.activity_stats[cortical_area],
                                                                         cortical_neuron_count)
 
+                    if runtime_data.parameters["Switches"]["influx_logger"]:
+                        influxdb.insert_burst_activity(connectome_path= connectome_path,
+                                                       burst_sequence= init_data.burst_count,
+                                                       cortical_area=cortical_area,
+                                                       neuron_count=cortical_neuron_count)
+
                     if runtime_data.parameters["Logs"]["print_cortical_activity_counters"]:
                         print(settings.Bcolors.YELLOW + '    %s : %i  '
                               % (cortical_area, cortical_neuron_count)
@@ -272,14 +278,20 @@ def burst():
             print("Timing : Test:", datetime.now() - test_time)
 
         # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
-        # if init_data.burst_count % runtime_data.genome['evolution_burst_count'] == 0:
-        #     print('Evolution phase reached...')
-        #     genethesizer.generation_assessment()
+        if init_data.burst_count % runtime_data.genome['evolution_burst_count'] == 0:
+            print('Evolution phase reached...')
+            for area in runtime_data.cortical_list:
+                neuron_count, synapse_count = stats.connectome_total_synapse_cnt(area)
+                if runtime_data.parameters["Switches"]["influx_logger"]:
+                    influxdb.insert_connectome_stats(connectome_path=connectome_path,
+                                                     cortical_area=area,
+                                                     neuron_count=neuron_count,
+                                                     synapse_count=synapse_count)
+            # genethesizer.generation_assessment()
 
         # Saving FCL to disk for post-processing and running analytics
         if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
             disk_ops.save_fcl_in_db(init_data.burst_count, init_data.fire_candidate_list, injector_params.num_to_inject)
-
 
         detected_char = utf_detection_logic(init_data.burst_detection_list)
         comprehension_queue.append(detected_char)

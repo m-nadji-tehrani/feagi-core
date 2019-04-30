@@ -1,0 +1,1046 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Vision Mem",
+          "groupBy": [],
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_memory"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V2",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v2"
+            }
+          ]
+        },
+        {
+          "alias": "Vision IT",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_IT"
+            }
+          ]
+        },
+        {
+          "alias": "UTF8 Mem",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "utf8_memory"
+            }
+          ]
+        },
+        {
+          "alias": "UTF8",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "utf8"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V1-1",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-1"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V1-2",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-2"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V1-3",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "H",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-3"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V1-4",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "I",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-4"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V1-6",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "J",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-6"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V1-7",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "burstStats",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "K",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "neuron_count"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            },
+            {
+              "condition": "AND",
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-7"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": "5m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Burst Stats",
+      "tooltip": {
+        "shared": false,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "InfluxDB",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "percentage": false,
+      "pointradius": 5,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "V1-1 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-1"
+            },
+            {
+              "condition": "AND",
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            }
+          ]
+        },
+        {
+          "alias": "V1-2 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-2"
+            },
+            {
+              "condition": "AND",
+              "key": "connectome",
+              "operator": "=",
+              "value": "./connectome_1/"
+            }
+          ]
+        },
+        {
+          "alias": "V1-3 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-3"
+            }
+          ]
+        },
+        {
+          "alias": "V1-4 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "D",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-4"
+            }
+          ]
+        },
+        {
+          "alias": "V1-5 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "E",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-5"
+            }
+          ]
+        },
+        {
+          "alias": "V1-6 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-6"
+            }
+          ]
+        },
+        {
+          "alias": "V1-7 MP",
+          "groupBy": [],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v1-7"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": "5m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Vision V1 Membrane Potentials",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Vision IT's Membrane Potential": "#447ebc"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "InfluxDB",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "hideTimeOverride": false,
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "percentage": false,
+      "pointradius": 1,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Vision Memory's Membrane Potential",
+          "groupBy": [
+            {
+              "params": [
+                "1s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT sum(\"membrane_potential\") FROM \"autogen\".\"membranePotential\" WHERE (\"cortical_area\" = 'vision_memory') AND $timeFilter GROUP BY time(1s) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_memory"
+            }
+          ]
+        },
+        {
+          "alias": "Vision V2's Membrane Potential",
+          "groupBy": [
+            {
+              "params": [
+                "1s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_v2"
+            }
+          ]
+        },
+        {
+          "alias": "Vision IT's Membrane Potential",
+          "groupBy": [
+            {
+              "params": [
+                "1s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "membranePotential",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "membrane_potential"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "cortical_area",
+              "operator": "=",
+              "value": "vision_IT"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": "5m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory Membrane Potentials",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "transparent": true,
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "test-dash",
+  "uid": "FpjAq3Xik",
+  "version": 15
+}

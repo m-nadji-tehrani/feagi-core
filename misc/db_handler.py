@@ -156,6 +156,38 @@ class InfluxManagement:
         ]
         self.client.write_points(raw_data)
 
+    def insert_burst_activity(self, connectome_path, burst_sequence, cortical_area, neuron_count):
+        raw_data = [
+            {
+                "measurement": "burstStats",
+                "tags": {
+                    "connectome": connectome_path,
+                    "cortical_area": cortical_area,
+                },
+                "fields": {
+                    "burst_sequence": burst_sequence,
+                    "neuron_count": neuron_count
+                }
+            }
+        ]
+        self.client.write_points(raw_data)
+
+    def insert_connectome_stats(self, connectome_path, cortical_area, neuron_count, synapse_count):
+        raw_data = [
+            {
+                "measurement": "connectomeStats",
+                "tags": {
+                    "connectome": connectome_path,
+                    "cortical_area": cortical_area,
+                },
+                "fields": {
+                    "neuron_count": neuron_count,
+                    "synapse_count": synapse_count
+                }
+            }
+        ]
+        self.client.write_points(raw_data)
+
     def drop_neuron_activity(self):
         self.client.drop_database(self.database)
 

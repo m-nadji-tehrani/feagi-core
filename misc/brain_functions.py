@@ -51,7 +51,7 @@ class Brain:
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Original image:\n", image)
         # Converting image to monochrome
-        image = IPU_vision.Filter.monochrome(image)
+        image = filter.monochrome(image)
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Monochrome version of image:\n", image)
 
@@ -59,11 +59,11 @@ class Brain:
         image = IPU_vision.Image.resize_image(image)
 
         # Contrast adjustment
-        image = IPU_vision.Filter.contrast(image,3)
+        image = filter.contrast(image,3)
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Image seen by retina:\n", image)
 
-        image = IPU_vision.Filter.monochrome(image)
+        image = filter.monochrome(image)
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Monochrome version of what is seen by retina:\n", image)
 

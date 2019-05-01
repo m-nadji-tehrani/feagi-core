@@ -140,7 +140,6 @@ def burst():
 
     init_data.event_id = runtime_data.event_id
 
-
     print('runtime_data.genome_id = ', runtime_data.genome_id)
 
     cortical_list = []
@@ -184,7 +183,7 @@ def burst():
         init_data.burst_count += 1
 
         # logging neuron activities to the influxdb
-        if runtime_data.parameters["Switches"]["influx_logger"]:
+        if runtime_data.parameters["Switches"]["influx_stat_logger"]:
             connectome_path = runtime_data.parameters['InitData']['connectome_path']
             for fcl_item in init_data.fire_candidate_list:
                 influxdb.insert_neuron_activity(connectome_path=connectome_path,
@@ -213,7 +212,7 @@ def burst():
                     runtime_data.activity_stats[cortical_area] = max(runtime_data.activity_stats[cortical_area],
                                                                         cortical_neuron_count)
 
-                    if runtime_data.parameters["Switches"]["influx_logger"]:
+                    if runtime_data.parameters["Switches"]["influx_stat_logger"]:
                         influxdb.insert_burst_activity(connectome_path= connectome_path,
                                                        burst_sequence= init_data.burst_count,
                                                        cortical_area=cortical_area,
@@ -282,7 +281,7 @@ def burst():
             print('Evolution phase reached...')
             for area in runtime_data.cortical_list:
                 neuron_count, synapse_count = stats.connectome_total_synapse_cnt(area)
-                if runtime_data.parameters["Switches"]["influx_logger"]:
+                if runtime_data.parameters["Switches"]["influx_stat_logger"]:
                     influxdb.insert_connectome_stats(connectome_path=connectome_path,
                                                      cortical_area=area,
                                                      neuron_count=neuron_count,
@@ -320,7 +319,6 @@ def burst():
                         burst_exit_process()
 
         print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
-
 
         # Pain check
         if init_data.pain_flag:

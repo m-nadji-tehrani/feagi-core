@@ -130,7 +130,10 @@ if __name__ == '__main__':
 
 
 #          <<<<<<<   T O   D O   L I S T   >>>>>>>>
-#
+# todo: Implement localized gene modification and localized fitness scores associated with various genome sections
+        """
+        This change can enable brain structure to carry its own fitness and neuron model a separate one
+        """
 # todo: Figure the fire power of each neuron and how to balance it
 # todo: Find a way to cap different processes to not go out of hand
 # todo: 0. Run with multiple variation of each number

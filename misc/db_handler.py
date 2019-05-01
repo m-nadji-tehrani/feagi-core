@@ -2,6 +2,7 @@ import sys
 sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 from pymongo import MongoClient, DESCENDING, ASCENDING
 from influxdb import InfluxDBClient
+from configuration import runtime_data
 import random
 
 
@@ -126,16 +127,23 @@ class MongoManagement:
 class InfluxManagement:
     def __init__(self):
         self.client = InfluxDBClient(host='localhost', port=8086)
-        self.database = 'feagi5'
-        self.client.drop_database(self.database)
-        self.db_list = self.client.get_list_database()
-        if self.database not in [db['name'] for db in self.db_list]:
-            print("Creating database named ", self.database)
-            self.client.create_database(self.database)
-            self.client.switch_database(self.database)
-        else:
-            print("Database was in there somewhere ;-)")
-            self.client.switch_database(self.database)
+        self.stats_database = runtime_data.parameters["InitData"]["influxdb_stat_db"]
+        self.evolutionary_database = runtime_data.parameters["InitData"]["influxdb_evolutionary_db"]
+
+        if not runtime_data.parameters["Switches"]["influx_keep_stats"]:
+            self.client.drop_database(self.stats_database)
+
+        def db_existence_check(db_name):
+            """Checks the existence of a database and creates it if it doesnt exist."""
+            self.db_list = self.client.get_list_database()
+            if db_name not in [db['name'] for db in self.db_list]:
+                print("Creating database named ", db_name)
+                self.client.create_database(db_name)
+            else:
+                print("Database was in there somewhere ;-)")
+
+        db_existence_check(self.stats_database)
+        db_existence_check(self.evolutionary_database)
 
     def get_db_list(self):
         print(self.client.get_list_database())
@@ -154,6 +162,7 @@ class InfluxManagement:
                 }
             }
         ]
+        self.client.switch_database(self.stats_database)
         self.client.write_points(raw_data)
 
     def insert_burst_activity(self, connectome_path, burst_sequence, cortical_area, neuron_count):
@@ -170,6 +179,7 @@ class InfluxManagement:
                 }
             }
         ]
+        self.client.switch_database(self.stats_database)
         self.client.write_points(raw_data)
 
     def insert_connectome_stats(self, connectome_path, cortical_area, neuron_count, synapse_count):
@@ -186,10 +196,61 @@ class InfluxManagement:
                 }
             }
         ]
+        self.client.switch_database(self.stats_database)
         self.client.write_points(raw_data)
 
+    def insert_inter_cortical_stats(self, connectome_path, cortical_area_src, cortical_area_dst, synapse_count):
+        raw_data = [
+            {
+                "measurement": "interCorticalStats",
+                "tags": {
+                    "connectome": connectome_path,
+                    "Source_cortical_area": cortical_area_src,
+                    "Destination_cortical_area": cortical_area_dst
+                },
+                "fields": {
+                    "synapse_count": synapse_count
+                }
+            }
+        ]
+        self.client.switch_database(self.stats_database)
+        self.client.write_points(raw_data)
+
+    def insert_evolutionary_fitness_stats(self, connectome_path, fitness_score):
+        raw_data = [
+            {
+                "measurement": "fitness",
+                "tags": {
+                    "connectome": connectome_path
+                },
+                "fields": {
+                    "brain_fitness": fitness_score
+                }
+            }
+        ]
+        self.client.switch_database(self.evolutionary_database)
+        self.client.write_points(raw_data)
+
+    def insert_evolutionary_connectome_stats(self, connectome_path, cortical_area, neuron_count, synapse_count):
+        raw_data = [
+            {
+                "measurement": "evolutionaryConnectomeStats",
+                "tags": {
+                    "connectome": connectome_path,
+                    "cortical_area": cortical_area,
+                },
+                "fields": {
+                    "neuron_count": neuron_count,
+                    "synapse_count": synapse_count
+                }
+            }
+        ]
+        self.client.switch_database(self.evolutionary_database)
+        self.client.write_points(raw_data)
+        print(">>>>>--------->>>>--------->>> Evolutionary stats logged in influx")
+
     def drop_neuron_activity(self):
-        self.client.drop_database(self.database)
+        self.client.drop_database(self.stats_database)
 
 
 if __name__ == "__main__":

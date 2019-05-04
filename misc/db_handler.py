@@ -165,7 +165,7 @@ class InfluxManagement:
         self.client.switch_database(self.stats_database)
         self.client.write_points(raw_data)
 
-    def insert_burst_activity(self, connectome_path, burst_sequence, cortical_area, neuron_count):
+    def insert_burst_activity(self, connectome_path, burst_id, cortical_area, neuron_count):
         raw_data = [
             {
                 "measurement": "burstStats",
@@ -174,8 +174,23 @@ class InfluxManagement:
                     "cortical_area": cortical_area,
                 },
                 "fields": {
-                    "burst_sequence": burst_sequence,
+                    "burst_id": burst_id,
                     "neuron_count": neuron_count
+                }
+            }
+        ]
+        self.client.switch_database(self.stats_database)
+        self.client.write_points(raw_data)
+
+    def insert_burst_checkpoints(self, connectome_path, burst_id):
+        raw_data = [
+            {
+                "measurement": "burstCheckpoints",
+                "tags": {
+                    "connectome": connectome_path
+                },
+                "fields": {
+                    "burst_id": 1
                 }
             }
         ]

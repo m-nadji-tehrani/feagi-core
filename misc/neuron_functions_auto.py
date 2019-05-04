@@ -170,7 +170,10 @@ def burst():
 
     print("\n\n >> >> >> Ready to exist burst engine flag:",runtime_data.parameters["Switches"]["ready_to_exit_burst"])
 
+    connectome_path = runtime_data.parameters['InitData']['connectome_path']
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
+        if runtime_data.parameters["Switches"]["influx_stat_logger"]:
+            influxdb.insert_burst_checkpoints(connectome_path, init_data.burst_count)
         burst_start_time = datetime.now()
         init_data.pain_flag = False
         now = datetime.now()
@@ -213,8 +216,8 @@ def burst():
                                                                         cortical_neuron_count)
 
                     if runtime_data.parameters["Switches"]["influx_stat_logger"]:
-                        influxdb.insert_burst_activity(connectome_path= connectome_path,
-                                                       burst_sequence= init_data.burst_count,
+                        influxdb.insert_burst_activity(connectome_path=connectome_path,
+                                                       burst_id=init_data.burst_count,
                                                        cortical_area=cortical_area,
                                                        neuron_count=cortical_neuron_count)
 

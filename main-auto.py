@@ -13,11 +13,8 @@ if __name__ == '__main__':
     import sys
     # sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
-    from time import sleep
-
     from misc import disk_ops
     disk_ops.load_parameters_in_memory()
-    from misc import disk_ops
     from configuration import runtime_data, settings
 
     try:

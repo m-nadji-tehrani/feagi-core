@@ -4,7 +4,7 @@
 from datetime import datetime
 import os.path
 import json
-from misc import db_handler, alerts, stats
+from misc import db_handler, stats
 from configuration import runtime_data, settings
 from evolutionary.genethesizer import genome_id_gen
 
@@ -19,7 +19,7 @@ def cortical_list():
 
 
 def load_parameters_in_memory():
-    with open("./configuration/parameters.json", "r") as data_file:
+    with open("/Users/mntehrani/PycharmProjects/Metis/configuration/parameters.json", "r") as data_file:
         runtime_data.parameters = json.load(data_file)
         # print("Parameters has been read from file")
 

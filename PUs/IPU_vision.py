@@ -1,11 +1,4 @@
 
-"""
-# This file acts as the Input Processing Unit (IPU) for the system.
-# Functions in this file will provide methods to pass raw data through basic filters and feed them to the
-# Ocipital lobe processing layers such as V1, V2, V4 and IT
-
-# For test purposes only and need to see how it can be eliminated from code for efficiency
-"""
 import sys
 sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 import os
@@ -17,6 +10,25 @@ from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
 np.set_printoptions(threshold=np.nan)
+
+"""
+# This file acts as the Input Processing Unit (IPU) for the system.
+# Functions in this file will provide methods to pass raw data through basic filters and feed them to the
+# Ocipital lobe processing layers such as V1, V2, V4 and IT
+
+# For test purposes only and need to see how it can be eliminated from code for efficiency
+"""
+
+
+if __name__ == '__main__':
+
+    from misc import disk_ops
+    disk_ops.load_parameters_in_memory()
+    from configuration import runtime_data
+
+    disk_ops.genome_handler("/Users/mntehrani/PycharmProjects/Metis/connectome/")
+
+
 
 # todo: change MNIST class to have a switch for returning image from TEST vs. Training Db.
 class MNIST:
@@ -100,7 +112,6 @@ class MNIST:
             if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
                 print("The image for number %s has been fetched." % str(num))
             return img_data, img_lbl
-
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function
@@ -228,12 +239,14 @@ class Kernel:
 
         end_result = {}
         kernel_size = self.kernel_sizer(kernel_values)
+        # print("Kernel size is: ", kernel_size)
         for filter_entry in runtime_data.genome["IPU_vision_filters"][str(kernel_size)]:
             end_result[filter_entry] = Filter.direction(kernel_values, kernel_size, filter_entry)
 
         tmpArray = []
         # print('this is tmp before all appends', tmpArray)
         for entry in end_result:
+            # print(entry, "\n", end_result[entry], "\n\n\n")
             sumation = np.sum(end_result[entry])
             # print("Appending: %s Sum: %d \n End_result: \n %s" % (entry, summation,end_result[entry]))
             # tmp = np.append(tmp, [entry, np.sum(end_result[entry])], axis=0)
@@ -242,12 +255,18 @@ class Kernel:
         # print("This is the end result: \n %s" % end_result)
         # print('tmp after appends %s' % tmpArray)
         maxValue = max(list(zip(*tmpArray))[1])
+        # print("MaxValue: ", maxValue)
         maxValueIndex = list(zip(*tmpArray))[1].index(maxValue)
         direction = tmpArray[maxValueIndex][0]
         # direction = direction.replace('\\', '\')
         # print('max value is %s' % maxValue)
         # print('max index is %s' % maxValueIndex)
         # print('direction is %s' % direction)
+        tempSum = 0
+        for entry in tmpArray:
+            tempSum += abs(entry[1])
+        if tempSum == 0:
+            return "^"
         return direction
 
     @staticmethod
@@ -443,44 +462,110 @@ class Image:
         return stats
 
 
-# settings.init()
-#
-#
-# print(kernel_direction([
-#   [ .1,  .1,  .1]
-#  ,[ .1,  .1,  .1]
-#  ,[ .1,  .1,  .1]]))
-# print(kernel_direction([
-#   [ 1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1]]))
-# print(kernel_direction([
-#   [ 10,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  10,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  10,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  10,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  10,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  10,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  10]]))
+if __name__ == '__main__':
 
-#
-# print(direction_stats(kernel_direction([
-#   [ 1,  1,  1]
-#  ,[ 1,  10,  1]
-#  ,[ 1,  1,  1]])))
+    filter = Filter()
+    kernel = Kernel()
+    image = Image()
+
+    a = [
+      [ .1,  .1,  .1]
+     ,[ .1,  .1,  .1]
+     ,[ .1,  .1,  .1]]
 
 
-# print(apply_direction_filter([
-#   [ 1,  10,  1]
-#  ,[ 1,  10,  1]
-#  ,[ 1,  10,  1]], '\\'))
-#
-# print(kernel_sizer([
-#   [ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]
-#  ,[ 1,  1,  1,  1,  1,  1,  1]]))
+    b1 =[
+      [ 10,  1,  1,  1,  1]
+     ,[ 1,  10,  1,  1,  1]
+     ,[ 1,  1,  10,  1,  1]
+     ,[ 1,  1,  1,  10,  1]
+     ,[ 1,  1,  1,  1,  10]]
+
+    b2 =[
+      [ 1,  1,  1,  1,  10]
+     ,[ 1,  1,  1,  10,  1]
+     ,[ 1,  1,  10,  1,  1]
+     ,[ 1,  10,  1,  1,  1]
+     ,[ 10,  1,  1,  1,  1]]
+
+
+    b3 =[
+      [ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 10,  10,  10,  10,  10]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]]
+
+
+    b4 =[
+      [ 1,  1,  10,  1,  1]
+     ,[ 1,  1,  10,  1,  1]
+     ,[ 1,  1,  10,  1,  1]
+     ,[ 1,  1,  10,  1,  1]
+     ,[ 1,  1,  10,  1,  1]]
+
+
+    b5 =[
+      [ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  10,  1,  1]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]]
+
+
+    b6 =[
+      [ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1]]
+
+    b7 =[
+      [ 0,  0,  0,  0,  0]
+     ,[ 0,  0,  0,  0,  0]
+     ,[ 0,  0,  0,  0,  0]
+     ,[ 0,  0,  0,  0,  0]
+     ,[ 0,  0,  0,  0,  0]]
+
+
+    c = [
+      [ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]]
+
+    d = [
+      [ 1,  1,  1]
+     ,[ 1,  10,  1]
+     ,[ 1,  1,  1]]
+
+    e = [
+      [10,  1,  1]
+     ,[1, 10, 1]
+     ,[1,  1,  10]]
+
+    f = [
+      [ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]
+     ,[ 1,  1,  1,  1,  1,  1,  1]]
+
+    thing = [b1, b2, b3, b4, b5, b6, b7]
+
+    for l1 in runtime_data.genome["IPU_vision_filters"]:
+        print(l1)
+        for l2 in runtime_data.genome["IPU_vision_filters"][l1]:
+            print("    ", l2, "\n           ", runtime_data.genome["IPU_vision_filters"][l1][l2])
+
+    for item in thing:
+        print("\n\n\n\n** ** ** ** ** ")
+        matrix = item
+        for _ in matrix:
+            print(_)
+        print("\nKernel direction is: ", kernel.kernel_direction(matrix))
+        print("** ** ** ** ** ")

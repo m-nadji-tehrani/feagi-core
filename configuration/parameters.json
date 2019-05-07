@@ -38,8 +38,8 @@
     "capture_neuron_mp": false,
     "capture_neuron_mp_db": false,
     "evaluation_based_termination": true,
-    "use_highest_performing_genome_only": true,
-    "influx_stat_logger": true,
+    "use_highest_performing_genome_only": false,
+    "influx_stat_logger": false,
     "influx_keep_stats": false,
     "MNIST_set_option": 2
 

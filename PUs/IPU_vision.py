@@ -97,14 +97,16 @@ class MNIST:
                 print("The image for number %s has been fetched." %str(num))
             return img_data, img_lbl
         else:
-            hand_picked_list = range(100, 200)
-            #
-            # if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
-            #             hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
-            #
-            # elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
-            #             hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
-            #                                 18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+
+            if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
+                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
+
+            elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
+                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
+                                            18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+
+            elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 3:
+                        hand_picked_list = range(100, 200)
 
             while img_lbl != int(num):
                 selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]
@@ -112,6 +114,24 @@ class MNIST:
             if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
                 print("The image for number %s has been fetched." % str(num))
             return img_data, img_lbl
+
+    def mnist_img_fetcher2(self, num, seq):
+        """
+        returns the nth digit within MNIST that equals the desirable number
+        """
+        img_lbl = ''
+        img_data_ = ''
+        counter = 1
+        counter2 = 1
+        while not (img_lbl == int(num) and counter == seq):
+            img_lbl, img_data_ = self.mnist_array[counter2]
+            if img_lbl == int(num):
+                counter += 1
+                print(counter)
+            counter2 += 1
+
+        return img_data_, img_lbl
+
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function
@@ -569,3 +589,12 @@ if __name__ == '__main__':
             print(_)
         print("\nKernel direction is: ", kernel.kernel_direction(matrix))
         print("** ** ** ** ** ")
+
+    mnist = MNIST()
+
+    img_label, img_data = mnist.mnist_img_fetcher2(3, 201)
+
+    print(">>>", img_label, "\n", img_data)
+
+
+

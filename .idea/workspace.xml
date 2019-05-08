@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="Burst Checkpoints in InfluxDb">
+    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="Misc">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PUs/IPU_vision.py" beforeDir="false" afterPath="$PROJECT_DIR$/PUs/IPU_vision.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configuration/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/configuration/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectome/vision_IT.json" beforeDir="false" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectome/vision_v2.json" beforeDir="false" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evolutionary/static_genome3.json" beforeDir="false" afterPath="$PROJECT_DIR$/evolutionary/static_genome3.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main-auto.py" beforeDir="false" afterPath="$PROJECT_DIR$/main-auto.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/misc/disk_ops.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/disk_ops.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/misc/neuron_functions_auto.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/neuron_functions_auto.py" afterDir="false" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -112,8 +109,11 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-13646">
-                  <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+                <state relative-caret-position="-404">
+                  <caret line="962" column="42" lean-forward="true" selection-start-line="962" selection-start-column="42" selection-end-line="962" selection-end-column="42" />
+                  <folding>
+                    <element signature="e#414#423#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -133,8 +133,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2726">
-                  <caret line="254" column="19" selection-start-line="254" selection-start-column="19" selection-end-line="254" selection-end-column="19" />
+                <state relative-caret-position="289">
+                  <caret line="86" column="22" selection-start-line="86" selection-start-column="22" selection-end-line="86" selection-end-column="22" />
                   <folding>
                     <element signature="e#329#662#1" />
                     <element signature="e#5088#5432#0" />
@@ -201,6 +201,15 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file:///usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/codecs.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1189">
+                  <caret line="311" selection-start-line="311" selection-end-line="311" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/alerts.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="80">
@@ -243,8 +252,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1347">
-                  <caret line="84" column="29" lean-forward="true" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="29" />
+                <state relative-caret-position="961">
+                  <caret line="86" column="28" lean-forward="true" selection-start-line="86" selection-start-column="28" selection-end-line="86" selection-end-column="28" />
                 </state>
               </provider>
             </entry>
@@ -301,7 +310,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Terminating the brain due to low training capability</find>
       <find>latest_genome</find>
       <find>Brain fitness factor was evaluated as</find>
       <find>mongo</find>
@@ -331,6 +339,7 @@
       <find>filter</find>
       <find>connectome_path</find>
       <find>kernel</find>
+      <find>mnist_img_fetcher</find>
     </findStrings>
     <replaceStrings>
       <replace>runtime_data.parameters</replace>
@@ -425,12 +434,12 @@
         <option value="$PROJECT_DIR$/misc/stats.py" />
         <option value="$PROJECT_DIR$/configuration/runtime_data.py" />
         <option value="$PROJECT_DIR$/evolutionary/brain_gen.py" />
-        <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
         <option value="$PROJECT_DIR$/misc/db_handler.py" />
         <option value="$PROJECT_DIR$/main-auto.py" />
         <option value="$PROJECT_DIR$/misc/disk_ops.py" />
         <option value="$PROJECT_DIR$/evolutionary/static_genome3.json" />
         <option value="$PROJECT_DIR$/PUs/IPU_vision.py" />
+        <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
         <option value="$PROJECT_DIR$/configuration/parameters.json" />
       </list>
     </option>
@@ -783,21 +792,7 @@
       <workItem from="1555703939561" duration="13547000" />
       <workItem from="1555778433278" duration="3239000" />
       <workItem from="1555981311750" duration="209000" />
-      <workItem from="1556152592149" duration="34962000" />
-    </task>
-    <task id="LOCAL-00187" summary="Counter logic modification">
-      <created>1549073343034</created>
-      <option name="number" value="00187" />
-      <option name="presentableId" value="LOCAL-00187" />
-      <option name="project" value="LOCAL" />
-      <updated>1549073343035</updated>
-    </task>
-    <task id="LOCAL-00188" summary="Counter logic modification">
-      <created>1549078510429</created>
-      <option name="number" value="00188" />
-      <option name="presentableId" value="LOCAL-00188" />
-      <option name="project" value="LOCAL" />
-      <updated>1549078510429</updated>
+      <workItem from="1556152592149" duration="40969000" />
     </task>
     <task id="LOCAL-00189" summary="Counter logic modification">
       <created>1549081917761</created>
@@ -1128,11 +1123,25 @@
       <option name="project" value="LOCAL" />
       <updated>1556984865084</updated>
     </task>
-    <option name="localTasksCounter" value="236" />
+    <task id="LOCAL-00236" summary="Kernel adjustments">
+      <created>1557203815167</created>
+      <option name="number" value="00236" />
+      <option name="presentableId" value="LOCAL-00236" />
+      <option name="project" value="LOCAL" />
+      <updated>1557203815167</updated>
+    </task>
+    <task id="LOCAL-00237" summary="Misc">
+      <created>1557204050541</created>
+      <option name="number" value="00237" />
+      <option name="presentableId" value="LOCAL-00237" />
+      <option name="project" value="LOCAL" />
+      <updated>1557204050541</updated>
+    </task>
+    <option name="localTasksCounter" value="238" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51957000" />
+    <option name="totallyTimeSpent" value="57964000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1150,7 +1159,7 @@
       <window_info id="Structure" order="1" weight="0.1753203" />
       <window_info id="Favorites" order="2" sideWeight="0.5243978" side_tool="true" weight="0.2818611" />
       <window_info id="Run" order="3" sideWeight="0.5737204" weight="0.3563722" />
-      <window_info id="Debug" order="4" sideWeight="0.4756022" weight="0.13418746" />
+      <window_info id="Debug" order="4" sideWeight="0.4756022" weight="0.22589345" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" visible="true" weight="0.15474723" />
@@ -1266,8 +1275,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Auto test refactor" />
-    <MESSAGE value="Original genome id (Partial)" />
     <MESSAGE value="Original genome id (Partial)&#10;Auto test (Partial)" />
     <MESSAGE value="Auto test bug fix and refactor" />
     <MESSAGE value="Timing of functions" />
@@ -1291,7 +1298,9 @@
     <MESSAGE value="Misc." />
     <MESSAGE value="Evolutionary stat logging in InfluxDb" />
     <MESSAGE value="Burst Checkpoints in InfluxDb" />
-    <option name="LAST_COMMIT_MESSAGE" value="Burst Checkpoints in InfluxDb" />
+    <MESSAGE value="Kernel adjustments" />
+    <MESSAGE value="Misc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Misc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1334,7 +1343,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/My_Brian$main_auto.coverage" NAME="main-auto Coverage Results" MODIFIED="1557113799666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1557195612424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Brian$IPU_vision.coverage" NAME="IPU_vision Coverage Results" MODIFIED="1557203111861" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
+    <SUITE FILE_PATH="coverage/My_Brian$IPU_vision.coverage" NAME="IPU_vision Coverage Results" MODIFIED="1557291212176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
     <SUITE FILE_PATH="coverage/My_Brian$influx_test.coverage" NAME="influx_test Coverage Results" MODIFIED="1555718234702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/misc" />
   </component>
   <component name="editorHistoryManager">
@@ -1717,24 +1726,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="311" selection-start-line="311" selection-end-line="311" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/misc/alerts.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-13646">
-          <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -1772,10 +1767,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="59">
+          <caret line="1175" column="11" lean-forward="true" selection-start-line="1175" selection-start-column="11" selection-end-line="1175" selection-end-column="11" />
+          <folding>
+            <element signature="n#!!block;n#3#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1189">
+          <caret line="311" selection-start-line="311" selection-end-line="311" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-404">
+          <caret line="962" column="42" lean-forward="true" selection-start-line="962" selection-start-column="42" selection-end-line="962" selection-end-column="42" />
+          <folding>
+            <element signature="e#414#423#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="961">
+          <caret line="86" column="28" lean-forward="true" selection-start-line="86" selection-start-column="28" selection-end-line="86" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2726">
-          <caret line="254" column="19" selection-start-line="254" selection-start-column="19" selection-end-line="254" selection-end-column="19" />
+        <state relative-caret-position="289">
+          <caret line="86" column="22" selection-start-line="86" selection-start-column="22" selection-end-line="86" selection-end-column="22" />
           <folding>
             <element signature="e#329#662#1" />
             <element signature="e#5088#5432#0" />
@@ -1837,23 +1866,6 @@
             <element signature="e#17761#17852#0" />
             <element signature="e#17861#17912#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="59">
-          <caret line="1175" column="11" lean-forward="true" selection-start-line="1175" selection-start-column="11" selection-end-line="1175" selection-end-column="11" />
-          <folding>
-            <element signature="n#!!block;n#3#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1347">
-          <caret line="84" column="29" lean-forward="true" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="29" />
         </state>
       </provider>
     </entry>

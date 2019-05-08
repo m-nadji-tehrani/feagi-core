@@ -957,7 +957,8 @@ class DataFeeder:
             print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
                   settings.Bcolors.ENDC)
         mnist = MNIST()
-        init_data.labeled_image = mnist.mnist_img_fetcher(num)
+        # init_data.labeled_image = mnist.mnist_img_fetcher(num)
+        init_data.labeled_image = mnist.mnist_img_fetcher2(num, injector_params.variation_counter_actual)
         print('+++++ ', num, init_data.labeled_image[1])
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)

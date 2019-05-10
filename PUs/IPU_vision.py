@@ -29,15 +29,17 @@ if __name__ == '__main__':
     disk_ops.genome_handler("/Users/mntehrani/PycharmProjects/Metis/connectome/")
 
 
-
-# todo: change MNIST class to have a switch for returning image from TEST vs. Training Db.
 class MNIST:
     def __init__(self):
         # global mnist_array, mnist_iterator
-        self.mnist_iterator = self.read_mnist_raw()
-        self.mnist_array = []
-        for _ in self.mnist_iterator:
-            self.mnist_array.append(_)
+        self.mnist_training_iterator = self.read_mnist_raw(dataset="training")
+        self.mnist_test_iterator = self.read_mnist_raw(dataset="testing")
+        self.mnist_training_array = []
+        self.mnist_test_array = []
+        for _ in self.mnist_training_iterator:
+            self.mnist_training_array.append(_)
+        for __ in self.mnist_test_iterator:
+            self.mnist_test_array.append(__)
         # print(len(mnist_array))
 
     @staticmethod
@@ -83,55 +85,60 @@ class MNIST:
     #     training_image = read_image(image_num)
     #     return training_image
 
-    def mnist_img_fetcher(self, num):
-        # Returns a random image from the entire MNIST matching the requested number
-        # global mnist_array
-        img_lbl = ''
-        # print("An image is being fetched from MNIST")
-        if runtime_data.parameters["Switches"]["ipu_vision_dynamic_img_fetch"]:
-            while img_lbl != int(num):
-                img_index = random.randrange(10, len(self.mnist_array), 1)
-                img_lbl, img_data = self.mnist_array[img_index]
-            print('>>> MNIST img id >>>', img_index)
-            if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
-                print("The image for number %s has been fetched." %str(num))
-            return img_data, img_lbl
-        else:
+    # def mnist_img_fetcher(self, num):
+    #     # Returns a random image from the entire MNIST matching the requested number
+    #     # global mnist_array
+    #     img_lbl = ''
+    #     # print("An image is being fetched from MNIST")
+    #     if runtime_data.parameters["Switches"]["ipu_vision_dynamic_img_fetch"]:
+    #         while img_lbl != int(num):
+    #             img_index = random.randrange(10, len(self.mnist_array), 1)
+    #             img_lbl, img_data = self.mnist_array[img_index]
+    #         print('>>> MNIST img id >>>', img_index)
+    #         if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
+    #             print("The image for number %s has been fetched." %str(num))
+    #         return img_data, img_lbl
+    #     else:
+    #
+    #         if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
+    #                     hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
+    #
+    #         elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
+    #                     hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
+    #                                         18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
+    #
+    #         elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 3:
+    #                     hand_picked_list = range(100, 200)
+    #
+    #         while img_lbl != int(num):
+    #             selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]
+    #             img_lbl, img_data = self.mnist_array[selected_img]
+    #         if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
+    #             print("The image for number %s has been fetched." % str(num))
+    #         return img_data, img_lbl
 
-            if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
-                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
-
-            elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
-                        hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
-                                            18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
-
-            elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 3:
-                        hand_picked_list = range(100, 200)
-
-            while img_lbl != int(num):
-                selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]
-                img_lbl, img_data = self.mnist_array[selected_img]
-            if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
-                print("The image for number %s has been fetched." % str(num))
-            return img_data, img_lbl
-
-    def mnist_img_fetcher2(self, num, seq):
+    def mnist_img_fetcher2(self, num, seq, mnist_type):
         """
         returns the nth digit within MNIST that equals the desirable number
         """
         img_lbl = ''
         img_data_ = ''
-        counter = 1
+        counter = 0
         counter2 = 1
         while not (img_lbl == int(num) and counter == seq):
-            img_lbl, img_data_ = self.mnist_array[counter2]
+            if mnist_type == 'training':
+                img_lbl, img_data_ = self.mnist_training_array[counter2]
+            elif mnist_type == 'test':
+                img_lbl, img_data_ = self.mnist_test_array[counter2]
+                # print("%%%:", img_lbl, img_data_)
+            else:
+                print("ERROR: Invalid data type selected for MNIST")
             if img_lbl == int(num):
                 counter += 1
-                print(counter)
+                # print("$->>-->>", counter, "$->>-->>", seq)
             counter2 += 1
 
         return img_data_, img_lbl
-
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function
@@ -592,7 +599,7 @@ if __name__ == '__main__':
 
     mnist = MNIST()
 
-    img_label, img_data = mnist.mnist_img_fetcher2(3, 201)
+    img_label, img_data = mnist.mnist_img_fetcher2(4, 1, "training")
 
     print(">>>", img_label, "\n", img_data)
 

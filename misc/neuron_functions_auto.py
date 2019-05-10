@@ -530,8 +530,7 @@ def auto_tester():
         test_params.testing_has_begun = False
         test_params.test_start_time = datetime.now()
         if test_params.img_flag:
-            data_feeder.image_feeder(test_params.num_to_inject)
-
+            data_feeder.image_feeder(test_params.num_to_inject, dataset_type='test')
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
     if not test_params.burst_skip_flag:
@@ -615,7 +614,7 @@ def auto_tester():
 
             if test_params.img_flag and not test_params.exit_flag:
                 print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
-                data_feeder.image_feeder(test_params.num_to_inject)
+                data_feeder.image_feeder(test_params.num_to_inject, dataset_type='test')
 
 
 def update_test_stats():
@@ -807,7 +806,7 @@ def auto_injector():
         print("----------------------------------------Data injection has begun------------------------------------")
         injector_params.injection_has_begun = False
         injector_params.injection_start_time = datetime.now()
-        data_feeder.image_feeder(injector_params.num_to_inject)
+        data_feeder.image_feeder(injector_params.num_to_inject, dataset_type='training')
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
     if not injector_params.burst_skip_flag:
@@ -862,7 +861,7 @@ def auto_injector():
 
                 injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
                 print("injector_params.num_to_inject: ", injector_params.num_to_inject)
-                data_feeder.image_feeder(injector_params.num_to_inject)
+                data_feeder.image_feeder(injector_params.num_to_inject, dataset_type='training')
                 # Saving brain to disk
                 # todo: assess the impact of the following disk operation
                 if runtime_data.parameters["Switches"]["save_connectome_to_disk"]:
@@ -949,7 +948,7 @@ class DataFeeder:
         # print("Activities caused by image are now part of the FCL")
 
     @staticmethod
-    def image_feeder(num):
+    def image_feeder(num, dataset_type):
         global init_data
         brain = brain_functions.Brain()
         if int(num) < 0 or num == '':
@@ -958,7 +957,7 @@ class DataFeeder:
                   settings.Bcolors.ENDC)
         mnist = MNIST()
         # init_data.labeled_image = mnist.mnist_img_fetcher(num)
-        init_data.labeled_image = mnist.mnist_img_fetcher2(num, injector_params.variation_counter_actual)
+        init_data.labeled_image = mnist.mnist_img_fetcher2(num, injector_params.variation_counter_actual, dataset_type)
         print('+++++ ', num, init_data.labeled_image[1])
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)

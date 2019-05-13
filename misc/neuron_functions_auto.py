@@ -246,7 +246,7 @@ def burst():
         if runtime_data.parameters["Switches"]["save_fcl_to_db"]:
             disk_ops.save_fcl_in_db(init_data.burst_count,
                                     init_data.fire_candidate_list,
-                                    injector.injector_params.num_to_inject)
+                                    injector.injector_num_to_inject)
 
         detected_char = utf_detection_logic(init_data.burst_detection_list)
         comprehension_queue.append(detected_char)
@@ -581,6 +581,7 @@ class Injector:
             self.injector_injection_has_begun = True
 
     def auto_injector(self):
+        global init_data
         if self.injector_injection_has_begun:
             # Beginning of a injection process
             print("----------------------------------------Data injection has begun-----------------------------------")
@@ -705,7 +706,6 @@ class Injector:
         Mode t1: Assist in learning numbers from 0 to 9
         Mode t2: Assist in learning variations of the same number
         """
-        global test_params
         global init_data
         try:
             if test_mode == 't1':
@@ -763,7 +763,6 @@ class Injector:
         - Collect stats for each number and report at the end of testing
 
         """
-        global test_params
         if self.tester_testing_has_begun:
             # Beginning of a injection process
             print("----------------------------------------Testing has begun------------------------------------")
@@ -857,7 +856,6 @@ class Injector:
                     self.data_feeder.image_feeder(self.tester_num_to_inject, dataset_type='test')
 
     def update_test_stats(self):
-        global test_params
         # Initialize parameters
         utf_exposed = str(self.tester_num_to_inject) + '_exposed'
         utf_comprehended = str(self.tester_num_to_inject) + '_comprehended'
@@ -878,7 +876,6 @@ class Injector:
         print('attempted_counter: ', self.tester_test_attempt_counter)
 
     def test_comprehension_logic(self):
-        global test_params
         # Comprehension logic
         print("\n****************************************")
         print("Comprehended char> ", runtime_data.parameters["Input"]["comprehended_char"], "  Injected char> ",
@@ -906,7 +903,6 @@ class Injector:
             runtime_data.parameters["Input"]["comprehended_char"] = ''
 
     def test_exit_process(self):
-        global test_params
         global init_data
 
         runtime_data.parameters["Auto_tester"]["tester_status"] = False

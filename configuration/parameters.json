@@ -37,10 +37,10 @@
     "ipu_vision_dynamic_img_fetch": false,
     "capture_neuron_mp": false,
     "capture_neuron_mp_db": false,
-    "evaluation_based_termination": true,
+    "evaluation_based_termination": false,
     "use_highest_performing_genome_only": false,
     "influx_stat_logger": false,
-    "influx_keep_stats": false,
+    "influx_keep_stats": true,
     "MNIST_set_option": 2
 
   },
@@ -58,15 +58,15 @@
     "comprehension_span": 1,
     "image_magnification_factor": 200,
     "image_monochromization_threshold": 100,
-    "kill_trigger_burst_count": 50,
-    "kill_trigger_vision_memory_min": 10,
+    "kill_trigger_burst_count": 250,
+    "kill_trigger_vision_memory_min": 5,
     "overlap_prevention_constant": 2,
     "max_neighbor_count": 100,
     "influxdb_stat_db": "feagi5",
     "influxdb_evolutionary_db": "feagi_evolutionary"
   },
   "Auto_injector":{
-    "variation_default": 15,
+    "variation_default": 20,
     "exposure_default": 30,
     "utf_default": 9,
     "burst_skip": 0,
@@ -74,7 +74,7 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 5,
+    "variation_default": 10,
     "exposure_default":30,
     "utf_default": 9,
     "burst_skip": 0,
@@ -82,9 +82,9 @@
     "tester_burst_skip_counter": 10
   },
   "Logs":{
-    "print_mnist_img": true,
+    "print_mnist_img": false,
     "print_polarized_img": false,
-    "print_seen_img": false,
+    "print_seen_img": true,
     "print_filtered_img": false,
     "print_activation_counters": false,
     "print_cortical_activity_counters": false,

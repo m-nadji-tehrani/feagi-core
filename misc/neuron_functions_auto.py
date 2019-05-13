@@ -125,6 +125,7 @@ def burst():
     global init_data, test_params, injector_params
 
     runtime_data.parameters["Auto_injector"]["injector_status"] = False
+    runtime_data.termination_flag = False
     init_data = InitData()
     injector_params = InjectorParams()
     test_params = TesterParams()
@@ -319,6 +320,7 @@ def burst():
                               "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low performance! !! !!!" +
                               settings.Bcolors.ENDC)
                         print("vision_memory max activation was:", runtime_data.activity_stats['vision_memory'])
+                        runtime_data.termination_flag = True
                         burst_exit_process()
 
         print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
@@ -840,6 +842,7 @@ def auto_injector():
                     print(settings.Bcolors.RED +
                           "\n\n\n\n\n\n!!!!! !! !Terminating the brain due to low training capability! !! !!!" +
                           settings.Bcolors.ENDC)
+                    runtime_data.termination_flag = True
                     burst_exit_process()
                     injector_params.exit_flag = True
 
@@ -926,6 +929,10 @@ def injection_exit_process():
 
 
 class DataFeeder:
+    def __init__(self):
+        self.mnist = MNIST()
+        print("*** *** ***\n\n\n*** *AA BB CC ** ***\n\n\n*** *** ***")
+
     @staticmethod
     def utf8_feeder():
         global init_data
@@ -947,17 +954,16 @@ class DataFeeder:
         init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_img, init_data.fire_candidate_list)
         # print("Activities caused by image are now part of the FCL")
 
-    @staticmethod
-    def image_feeder(num, dataset_type):
+    def image_feeder(self, num, dataset_type):
         global init_data
         brain = brain_functions.Brain()
         if int(num) < 0 or num == '':
             num = 0
             print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
                   settings.Bcolors.ENDC)
-        mnist = MNIST()
+
         # init_data.labeled_image = mnist.mnist_img_fetcher(num)
-        init_data.labeled_image = mnist.mnist_img_fetcher2(num, injector_params.variation_counter_actual, dataset_type)
+        init_data.labeled_image = self.mnist.mnist_img_fetcher2(num, injector_params.variation_counter_actual, dataset_type)
         print('+++++ ', num, init_data.labeled_image[1])
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)

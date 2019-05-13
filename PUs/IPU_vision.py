@@ -40,6 +40,7 @@ class MNIST:
             self.mnist_training_array.append(_)
         for __ in self.mnist_test_iterator:
             self.mnist_test_array.append(__)
+        print(">><<>><<>><<>><< **  **  **  **   **  **  **  ****  >><<>><<>><<>><<>><<")
         # print(len(mnist_array))
 
     @staticmethod
@@ -123,21 +124,23 @@ class MNIST:
         """
         img_lbl = ''
         img_data_ = ''
-        counter = 0
-        counter2 = 1
-        while not (img_lbl == int(num) and counter == seq):
+        seq_counter = 0
+        mnist_counter = 1
+        while not (img_lbl == int(num) and seq_counter == seq):
             if mnist_type == 'training':
-                img_lbl, img_data_ = self.mnist_training_array[counter2]
+                img_lbl, img_data_ = self.mnist_training_array[mnist_counter]
+                print("img_lbl=", img_lbl)
+                print("mnist_counter=", mnist_counter)
+                print("seq_counter=", seq_counter)
             elif mnist_type == 'test':
-                img_lbl, img_data_ = self.mnist_test_array[counter2]
+                img_lbl, img_data_ = self.mnist_test_array[mnist_counter]
                 # print("%%%:", img_lbl, img_data_)
             else:
                 print("ERROR: Invalid data type selected for MNIST")
             if img_lbl == int(num):
-                counter += 1
+                seq_counter += 1
                 # print("$->>-->>", counter, "$->>-->>", seq)
-            counter2 += 1
-
+            mnist_counter += 1
         return img_data_, img_lbl
 
     def read_image(self, index):
@@ -152,7 +155,6 @@ class MNIST:
                 img = labeledImage[1]
                 label = labeledImage[0]
                 return img, label
-
 
 class Filter:
     @staticmethod

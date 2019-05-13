@@ -13,3 +13,5 @@ temp_neuron_list = []
 original_genome_id = []
 fire_list = []
 event_id = ""
+termination_flag = False
+

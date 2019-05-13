@@ -777,6 +777,7 @@ def auto_injector():
     global injector_params
 
     data_feeder = DataFeeder()
+    print("                                                                             $$$ $$$ $$$ $$$ $$$")
     if injector_params.injection_has_begun:
         # Beginning of a injection process
         print("----------------------------------------Data injection has begun------------------------------------")

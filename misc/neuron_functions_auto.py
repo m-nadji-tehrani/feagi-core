@@ -119,7 +119,7 @@ def burst():
             settings.Bcolors.RED + "Starting an automated learning process...<> <> <> <>" + settings.Bcolors.ENDC)
         injector.injection_manager(injection_mode="l1", injection_param="")
 
-    print("\n\n >> >> >> Ready to exist burst engine flag:",runtime_data.parameters["Switches"]["ready_to_exit_burst"])
+    print("\n\n >> >> >> Ready to exist burst engine flag:", runtime_data.parameters["Switches"]["ready_to_exit_burst"])
 
     connectome_path = runtime_data.parameters['InitData']['connectome_path']
     while not runtime_data.parameters["Switches"]["ready_to_exit_burst"]:
@@ -143,7 +143,8 @@ def burst():
                 influxdb.insert_neuron_activity(connectome_path=connectome_path,
                                                 cortical_area=fcl_item[0],
                                                 neuron_id=fcl_item[1],
-                                                membrane_potential=runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"]/1)
+                                                membrane_potential=
+                                                runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"]/1)
 
         # Fire all neurons within fire_candidate_list (FCL) or add a delay if FCL is empty
         time_firing_activities = datetime.now()
@@ -221,6 +222,7 @@ def burst():
         # Auto-inject if applicable
         if runtime_data.parameters["Auto_injector"]["injector_status"]:
             injection_time = datetime.now()
+            print("-------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ auto_injector")
             injector.auto_injector()
             print("Timing : Injection:", datetime.now() - injection_time)
 
@@ -324,11 +326,13 @@ def burst():
         # Burst stats
         if runtime_data.parameters["Logs"]["print_burst_stats"]:
             for area in runtime_data.brain:
-                print("### Average postSynaptic current in --- %s --- was: %i" %(area, average_postsynaptic_current(area)))
+                print("### Average postSynaptic current in --- %s --- was: %i"
+                      % (area, average_postsynaptic_current(area)))
 
         # Listing the number of neurons activating each UTF memory neuron
         upstream_report_time = datetime.now()
-        upstream_general_stats, upstream_fcl_stats = list_upstream_neuron_count_for_digits(mode=1, cfcl=init_data.fire_candidate_list)
+        upstream_general_stats, upstream_fcl_stats = \
+            list_upstream_neuron_count_for_digits(mode=1, cfcl=init_data.fire_candidate_list)
         print("list_upstream_neuron_count_for_digits:", upstream_general_stats)
         print("list_upstream___FCL__count_for_digits:", upstream_fcl_stats)
 
@@ -359,7 +363,8 @@ def burst():
                 neuron_mp_writer = csv.writer(neuron_mp_file,  delimiter=',')
                 new_data = []
                 for fcl_item in init_data.fire_candidate_list:
-                    new_content = (init_data.burst_count, fcl_item[0], fcl_item[1], runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"])
+                    new_content = (init_data.burst_count, fcl_item[0], fcl_item[1],
+                                   runtime_data.brain[fcl_item[0]][fcl_item[1]]["membrane_potential"])
                     new_data.append(new_content)
                 neuron_mp_writer.writerows(new_data)
 
@@ -375,7 +380,9 @@ def burst():
 
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
-            print(settings.Bcolors.YELLOW + ">>> Burst duration: %s %i --- ---- ---- ---- ---- ---- ----" % (burst_duration, init_data.burst_count) + settings.Bcolors.ENDC)
+            print(settings.Bcolors.YELLOW +
+                  ">>> Burst duration: %s %i --- ---- ---- ---- ---- ---- ----"
+                  % (burst_duration, init_data.burst_count) + settings.Bcolors.ENDC)
 
 
 def utf_detection_logic(detection_list):
@@ -454,53 +461,48 @@ class Injector:
         self.tester_exit_flag = False
         self.tester_burst_skip_flag = False
         self.tester_burst_skip_counter = 0
+        print("-------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Injector init")
+        self.mnist = MNIST()
+        print("*** *** ***\n\n\n*** *AA BB CC ** ***\n\n\n*** *** ***")
 
-        self.data_feeder = self.DataFeeder()
+    def utf8_feeder(self):
+        global init_data
+        # inject label to FCL
 
-    class DataFeeder:
-        def __init__(self):
-            self.mnist = MNIST()
-            self.injector = Injector()
-            print("*** *** ***\n\n\n*** *AA BB CC ** ***\n\n\n*** *** ***")
+        if self.injector_injection_mode == 'c':
+            init_data.training_neuron_list_utf = \
+                IPU_utf8.convert_char_to_fire_list(self.injector_utf_to_inject)
+        else:
+            init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(init_data.labeled_image[1]))
+            print("!!! Image label: ", init_data.labeled_image[1])
+        init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_utf,
+                                                      init_data.fire_candidate_list)
+        print("           UTF8 activities has been injected to the FCL                      ^^^^^^^^^^^^^^^^^^^^^^")
 
-        def utf8_feeder(self):
-            global init_data
-            # inject label to FCL
+    @staticmethod
+    def img_neuron_list_feeder():
+        global init_data
+        # inject neuron activity to FCL
+        init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_img,
+                                                      init_data.fire_candidate_list)
+        # print("Activities caused by image are now part of the FCL")
 
-            if self.injector.injector_injection_mode == 'c':
-                init_data.training_neuron_list_utf = \
-                    IPU_utf8.convert_char_to_fire_list(self.injector.injector_utf_to_inject)
-            else:
-                init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(init_data.labeled_image[1]))
-                print("!!! Image label: ", init_data.labeled_image[1])
-            init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_utf,
-                                                          init_data.fire_candidate_list)
-            print("           UTF8 activities has been injected to the FCL                      ^^^^^^^^^^^^^^^^^^^^^^")
+    def image_feeder(self, num, dataset_type):
+        global init_data
+        brain = brain_functions.Brain()
+        if int(num) < 0 or num == '':
+            num = 0
+            print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
+                  settings.Bcolors.ENDC)
 
-        @staticmethod
-        def img_neuron_list_feeder():
-            global init_data
-            # inject neuron activity to FCL
-            init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_img,
-                                                          init_data.fire_candidate_list)
-            # print("Activities caused by image are now part of the FCL")
-
-        def image_feeder(self, num, dataset_type):
-            global init_data
-            brain = brain_functions.Brain()
-            if int(num) < 0 or num == '':
-                num = 0
-                print(settings.Bcolors.RED + "Error: image feeder has been fed a Null or less than 0 number" +
-                      settings.Bcolors.ENDC)
-
-            # init_data.labeled_image = mnist.mnist_img_fetcher(num)
-            init_data.labeled_image = self.mnist.mnist_img_fetcher2(num,
-                                                                    runtime_data.variation_counter_actual,
-                                                                    dataset_type)
-            print('+++++ ', num, init_data.labeled_image[1])
-            # Convert image to neuron activity
-            init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
-            # print("image has been converted to neuronal activities...")
+        # init_data.labeled_image = mnist.mnist_img_fetcher(num)
+        init_data.labeled_image = self.mnist.mnist_img_fetcher2(num,
+                                                                runtime_data.variation_counter_actual,
+                                                                dataset_type)
+        print('+++++ ', num, init_data.labeled_image[1])
+        # Convert image to neuron activity
+        init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
+        # print("image has been converted to neuronal activities...")
 
     def injection_manager(self, injection_mode, injection_param):
         """
@@ -587,15 +589,15 @@ class Injector:
             print("----------------------------------------Data injection has begun-----------------------------------")
             self.injector_injection_has_begun = False
             self.injector_injection_start_time = datetime.now()
-            self.data_feeder.image_feeder(self.injector_num_to_inject, dataset_type='training')
+            self.image_feeder(self.injector_num_to_inject, dataset_type='training')
 
         # Mechanism to skip a number of bursts between each injections to clean-up FCL
         if not self.injector_burst_skip_flag:
 
             if self.injector_img_flag:
-                self.data_feeder.img_neuron_list_feeder()
+                self.img_neuron_list_feeder()
             if self.injector_utf_flag:
-                self.data_feeder.utf8_feeder()
+                self.utf8_feeder()
 
             # Exposure counter
             if not self.injector_burst_skip_flag:
@@ -643,7 +645,7 @@ class Injector:
 
                     self.injector_num_to_inject = max(self.injector_utf_counter_actual, 0)
                     print("self.num_to_inject: ", self.injector_num_to_inject)
-                    self.data_feeder.image_feeder(self.injector_num_to_inject, dataset_type='training')
+                    self.image_feeder(self.injector_num_to_inject, dataset_type='training')
                     # Saving brain to disk
                     # todo: assess the impact of the following disk operation
                     if runtime_data.parameters["Switches"]["save_connectome_to_disk"]:
@@ -769,7 +771,7 @@ class Injector:
             self.tester_testing_has_begun = False
             self.tester_test_start_time = datetime.now()
             if self.tester_img_flag:
-                self.data_feeder.image_feeder(self.tester_num_to_inject, dataset_type='test')
+                self.image_feeder(self.tester_num_to_inject, dataset_type='test')
 
         # Mechanism to skip a number of bursts between each injections to clean-up FCL
         if not self.tester_burst_skip_flag:
@@ -778,7 +780,7 @@ class Injector:
 
             # Injecting test image to the FCL
             if self.tester_img_flag:
-                self.data_feeder.img_neuron_list_feeder()
+                self.img_neuron_list_feeder()
 
             # Exposure counter
             runtime_data.exposure_counter_actual -= 1
@@ -853,7 +855,7 @@ class Injector:
 
                 if self.tester_img_flag and not self.tester_exit_flag:
                     print('#-#-# Current number that is about to be tested is ', self.tester_num_to_inject)
-                    self.data_feeder.image_feeder(self.tester_num_to_inject, dataset_type='test')
+                    self.image_feeder(self.tester_num_to_inject, dataset_type='test')
 
     def update_test_stats(self):
         # Initialize parameters
@@ -1153,7 +1155,6 @@ def neuron_fire(fcl_entry):
     if cortical_area == 'vision_memory':
         init_data.cumulative_neighbor_count += neighbor_count
 
-
     # Updating downstream neurons
     for dst_neuron_id in neighbor_list:
 
@@ -1161,20 +1162,22 @@ def neuron_fire(fcl_entry):
         update_start_time = datetime.now()
 
         dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
-        postsynaptic_current = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
+        postsynaptic_current = \
+            runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
         # if cortical_area == 'vision_memory':
-            # print("< %i >" %postsynaptic_current)
+        #    print("< %i >" %postsynaptic_current)
         neuron_output = activation_function(postsynaptic_current)
 
         # Update function
         # todo: (neuron_output/neighbor_count) needs to be moved outside the loop for efficiency
         dst_neuron_obj = runtime_data.brain[dst_cortical_area][dst_neuron_id]
-        dst_neuron_obj["membrane_potential"] = cy.neuron_update((neuron_output/neighbor_count),
-                                                             init_data.burst_count,
-                                                             max(dst_neuron_obj["last_membrane_potential_reset_burst"],
-                                                                 dst_neuron_obj["last_burst_num"]),
-                                                             runtime_data.genome["blueprint"][dst_cortical_area]["neuron_params"]["leak_coefficient"],
-                                                             dst_neuron_obj["membrane_potential"])
+        dst_neuron_obj["membrane_potential"] = \
+            cy.neuron_update((neuron_output/neighbor_count),
+                             init_data.burst_count,
+                             max(dst_neuron_obj["last_membrane_potential_reset_burst"],
+                             dst_neuron_obj["last_burst_num"]),
+                             runtime_data.genome["blueprint"][dst_cortical_area]["neuron_params"]["leak_coefficient"],
+                             dst_neuron_obj["membrane_potential"])
 
         # todo: Need to figure how to deal with activation function and firing threshold (belongs to fire func)
 
@@ -1193,8 +1196,8 @@ def neuron_fire(fcl_entry):
                         # Adding neuron to fire candidate list for firing in the next round
                         init_data.future_fcl.append([dst_cortical_area, dst_neuron_id])
 
-                        ### This is an alternative approach to plasticity with hopefully less overhead
-                        ### LTP or Long Term Potentiation occurs here
+                        # This is an alternative approach to plasticity with hopefully less overhead
+                        # LTP or Long Term Potentiation occurs here
 
                         if runtime_data.parameters["Switches"]["plasticity"]:
 
@@ -1216,7 +1219,7 @@ def neuron_fire(fcl_entry):
         # Time overhead for the following function is about 2ms per each burst cycle
         update_upstream_db(cortical_area, neuron_id, dst_cortical_area, dst_neuron_id)
 
-        ### Partial implementation of neuro-plasticity associated with LTD or Long Term Depression
+        # Partial implementation of neuro-plasticity associated with LTD or Long Term Depression
         pfcl = init_data.previous_fcl
         if cortical_area not in ['vision_memory']:
             if [dst_cortical_area, dst_neuron_id] in pfcl and dst_cortical_area in ['vision_memory']:
@@ -1233,7 +1236,6 @@ def neuron_fire(fcl_entry):
         # Adding up all update times within a burst span
         total_update_time = datetime.now() - update_start_time
         init_data.time_neuron_update = total_update_time + init_data.time_neuron_update
-
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -1298,7 +1300,8 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
     if digit == 'all':
         # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
         # if 'utf8_memory' in runtime_data.upstream_neurons:
-        #     print('runtime_data.upstream_neurons:', runtime_data.upstream_neurons['utf8_memory'], 'end of runtime_data.upstream_neurons')
+        #     print('runtime_data.upstream_neurons:',
+        #     runtime_data.upstream_neurons['utf8_memory'], 'end of runtime_data.upstream_neurons')
         for _ in range(10):
             # results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
             neuron_id = top_n_utf_memory_neurons[_][1]
@@ -1306,7 +1309,8 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
                 if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
                     # print("upstream_neuron's neuron id: ", neuron_id)
                     if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
-                        results.append([_, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
+                        results.append([_,
+                                        len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
                         if runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
                             counter = 0
                             for neuron in runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory']:
@@ -1330,7 +1334,8 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
         if 'utf8_memory' in runtime_data.upstream_neurons:
             if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
                 if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
-                    results.append([digit, len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
+                    results.append([digit,
+                                    len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])
                 else:
                     results.append([digit, 0])
             else:

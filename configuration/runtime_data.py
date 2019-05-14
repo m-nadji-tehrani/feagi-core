@@ -14,6 +14,6 @@ original_genome_id = []
 fire_list = []
 event_id = ""
 termination_flag = False
-variation_counter_actual = ''
-exposure_counter_actual = ''
+variation_counter_actual = 0
+exposure_counter_actual = 0
 

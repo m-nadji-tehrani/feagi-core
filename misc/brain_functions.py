@@ -100,23 +100,26 @@ class Brain:
                         if item == '':
                             print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
 
-            # print("Conversion of image locations to neuron id: ", datetime.now() - retina_start_time, cortical_area)
             # print("Polarized image for :", cortical_area)
-            # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
 
-            ipu_vision_array = \
-                IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image[cortical_direction_sensitivity])
+            try:
+                # print(np.array2string(np.array(polarized_image[cortical_direction_sensitivity]), max_line_width=np.inf))
 
-            if runtime_data.parameters['Logs']['print_activation_counters']:
-                print("\n Bipolar cell activation count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
+                ipu_vision_array = \
+                    IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image[cortical_direction_sensitivity])
 
-            neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
+                if runtime_data.parameters['Logs']['print_activation_counters']:
+                    print("\n Bipolar cell activation count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
 
-            if runtime_data.parameters['Logs']['print_activation_counters']:
-                print("Neuron id count activated in layer %s is %i\n\n" % (cortical_area, len(neuron_id_list)))
+                neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
-            for item in neuron_id_list:
-                neuron_list.append([cortical_area, item])
+                if runtime_data.parameters['Logs']['print_activation_counters']:
+                    print("Neuron id count activated in layer %s is %i\n\n" % (cortical_area, len(neuron_id_list)))
+
+                for item in neuron_id_list:
+                    neuron_list.append([cortical_area, item])
+            except:
+                print("Error on direction selectivity")
 
 
         # # Event is an instance of time where an IPU event has occurred

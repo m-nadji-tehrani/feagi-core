@@ -181,7 +181,6 @@ def burst():
                     runtime_data.activity_stats[cortical_area] = \
                         len(set([i[1] for i in init_data.fire_candidate_list if i[0] == cortical_area]))
 
-
                 # for entry in init_data.fire_candidate_list:
                 #     if runtime_data.genome['blueprint'][entry[0]]['group_id'] == 'Memory':
                 #         print(settings.Bcolors.YELLOW + entry[0], entry[1] + settings.Bcolors.ENDC)

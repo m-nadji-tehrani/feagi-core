@@ -10,6 +10,7 @@ import numpy as np
 from configuration import settings
 from PUs import IPU_vision
 from configuration import runtime_data
+from datetime import datetime
 
 
 class Brain:
@@ -33,7 +34,7 @@ class Brain:
         print("Retina has been exposed to a version of :", mnist_labled_image[1])
         neuron_list = []
 
-        # IPU_vision_array = IPU_vision.Image.convert_image_to_coordinates(mnist.read_image(image_number)[0])   # todo  ?????
+        # IPU_vision_array = IPU_vision.Image.convert_image_to_coordinates(mnist.read_image(image_number)[0]) # todo ??
         vision_group = self.cortical_sub_group_members('vision_v1')
 
         image = mnist_labled_image[0]
@@ -59,7 +60,7 @@ class Brain:
         image = IPU_vision.Image.resize_image(image)
 
         # Contrast adjustment
-        image = filter.contrast(image,3)
+        image = filter.contrast(image, 3)
         if runtime_data.parameters['Logs']['print_seen_img']:
             print("Image seen by retina:\n", image)
 
@@ -80,6 +81,8 @@ class Brain:
         # todo: Investigate the following section of code VVVVVVVVVVVVVVVVVVVVVVVVVVV
         for cortical_area in vision_group:
 
+            starting_point = datetime.now()
+
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
             kernel_size = runtime_data.genome['blueprint'][cortical_area]['kernel_size']
@@ -88,9 +91,16 @@ class Brain:
             # polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
             kernel = IPU_vision.Kernel()
             # image = IPU_vision.Image.resize_image(image)
+
+            starting_point2 = datetime.now()
+
+            # todo: The following line is the cause of performance degradation!!! ! !  !  !  !  !  !
             polarized_image = kernel.create_direction_matrix(image=image,
                                                              kernel_size=kernel_size,
                                                              direction_sensitivity=cortical_direction_sensitivity)
+
+            print(" $$$$$$$$$$$$$$$$$$$$$$$$$$ -------- >>>>>>>  Retina operation took: ", cortical_area,
+                  datetime.now() - starting_point, datetime.now() - starting_point2)
 
             if runtime_data.parameters['Logs']['print_polarized_img']:
                 print("\nPrinting polarized image for ", cortical_area)
@@ -113,10 +123,11 @@ class Brain:
             neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
 
             if runtime_data.parameters['Logs']['print_activation_counters']:
-                print("Neuron id count activated in layer %s is %i\n\n" %(cortical_area, len(neuron_id_list)))
+                print("Neuron id count activated in layer %s is %i\n\n" % (cortical_area, len(neuron_id_list)))
 
             for item in neuron_id_list:
                 neuron_list.append([cortical_area, item])
+
 
         # # Event is an instance of time where an IPU event has occurred
         # event_id = event_id_gen()
@@ -233,6 +244,5 @@ class Brain:
     def terminate():
         """To terminate the brain activities without recording the genome in database or recording any stat.
         This function to be used when a brain instance is detected to be dysfunctional."""
-
 
         return

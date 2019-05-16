@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="Injector Class; buggy">
+    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="Injector Class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configuration/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/configuration/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configuration/runtime_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/configuration/runtime_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectome/vision_IT.json" beforeDir="false" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectome/vision_v2.json" beforeDir="false" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PUs/IPU_vision.py" beforeDir="false" afterPath="$PROJECT_DIR$/PUs/IPU_vision.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/cython_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/cython_libs/cython_setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/misc/brain_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/brain_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/misc/neuron_functions_auto.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/neuron_functions_auto.py" afterDir="false" />
     </list>
     <ignored path="My_Brian.iws" />
@@ -81,22 +81,19 @@
     <favorites_list name="My_Brian" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.66163695">
+    <splitter split-orientation="horizontal" split-proportion="0.75826013">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="724">
-                  <caret line="603" column="57" lean-forward="true" selection-start-line="603" selection-start-column="57" selection-end-line="603" selection-end-column="57" />
-                  <folding>
-                    <element signature="e#363#372#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="552">
+                  <caret line="24" selection-start-line="24" selection-end-line="24" selection-end-column="49" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="323">
@@ -105,14 +102,24 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="904">
-                  <caret line="601" column="12" selection-start-line="601" selection-start-column="12" selection-end-line="601" selection-end-column="12" />
+                <state relative-caret-position="6018">
+                  <caret line="682" column="38" lean-forward="true" selection-start-line="682" selection-start-column="38" selection-end-line="682" selection-end-column="38" />
                   <folding>
                     <element signature="e#329#662#1" />
+                    <element signature="e#3094#3131#0" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="625">
+                  <caret line="25" selection-start-line="25" selection-end-line="25" />
                 </state>
               </provider>
             </entry>
@@ -138,26 +145,288 @@
               </provider>
             </entry>
           </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="707">
-                  <caret line="85" column="33" lean-forward="true" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
+                <state relative-caret-position="-3103">
+                  <caret line="68" column="75" lean-forward="true" selection-start-line="68" selection-start-column="75" selection-end-line="68" selection-end-column="75" />
+                  <folding>
+                    <element signature="e#2#30#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1368">
+                  <caret line="72" selection-start-line="71" selection-end-line="72" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="18224">
-                  <caret line="1175" column="11" selection-start-line="1175" selection-start-column="11" selection-end-line="1175" selection-end-column="11" />
+                <state relative-caret-position="51">
+                  <caret line="47" column="21" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="21" />
                   <folding>
-                    <element signature="n#!!block;n#3#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
+                    <element signature="n#!!block;n#firing_patterns#0;n#!!top" />
+                    <element signature="n#!!block;n#A#0;n#!!block;n#firing_patterns#0;n#!!top" />
+                    <element signature="n#!!block;n#B#0;n#!!block;n#firing_patterns#0;n#!!top" />
+                    <element signature="n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_0#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_1#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_2#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_3#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_4#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_5#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="n#!!block;n#rule_6#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+                    <element signature="e#993#1296#0" />
+                    <element signature="e#1009#1091#0" />
+                    <element signature="e#1107#1186#0" />
+                    <element signature="e#1202#1284#0" />
+                    <element signature="e#1314#1617#0" />
+                    <element signature="e#1330#1411#0" />
+                    <element signature="e#1427#1508#0" />
+                    <element signature="e#1524#1605#0" />
+                    <element signature="e#1635#1932#0" />
+                    <element signature="e#1651#1730#0" />
+                    <element signature="e#1746#1825#0" />
+                    <element signature="e#1841#1920#0" />
+                    <element signature="e#1950#2255#0" />
+                    <element signature="e#1966#2048#0" />
+                    <element signature="e#2064#2145#0" />
+                    <element signature="e#2161#2243#0" />
+                    <element signature="e#2273#2576#0" />
+                    <element signature="e#2289#2370#0" />
+                    <element signature="e#2386#2467#0" />
+                    <element signature="e#2483#2564#0" />
+                    <element signature="e#2595#2898#0" />
+                    <element signature="e#2611#2692#0" />
+                    <element signature="e#2708#2789#0" />
+                    <element signature="e#2805#2886#0" />
+                    <element signature="n#!!block;n#5#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
+                    <element signature="e#2938#3655#0" />
+                    <element signature="e#2954#3080#0" />
+                    <element signature="e#3096#3222#0" />
+                    <element signature="e#3238#3359#0" />
+                    <element signature="e#3375#3501#0" />
+                    <element signature="e#3517#3643#0" />
+                    <element signature="e#3673#4370#0" />
+                    <element signature="e#3689#3810#0" />
+                    <element signature="e#3826#3947#0" />
+                    <element signature="e#3963#4084#0" />
+                    <element signature="e#4100#4221#0" />
+                    <element signature="e#4237#4358#0" />
+                    <element signature="e#4388#5105#0" />
+                    <element signature="e#4404#4529#0" />
+                    <element signature="e#4545#4670#0" />
+                    <element signature="e#4686#4811#0" />
+                    <element signature="e#4827#4952#0" />
+                    <element signature="e#4968#5093#0" />
+                    <element signature="e#5123#5845#0" />
+                    <element signature="e#5139#5265#0" />
+                    <element signature="e#5281#5407#0" />
+                    <element signature="e#5423#5549#0" />
+                    <element signature="e#5565#5691#0" />
+                    <element signature="e#5707#5833#0" />
+                    <element signature="e#5863#6580#0" />
+                    <element signature="e#5879#6004#0" />
+                    <element signature="e#6020#6145#0" />
+                    <element signature="e#6161#6286#0" />
+                    <element signature="e#6302#6427#0" />
+                    <element signature="e#6443#6568#0" />
+                    <element signature="e#6599#7316#0" />
+                    <element signature="e#6615#6740#0" />
+                    <element signature="e#6756#6881#0" />
+                    <element signature="e#6897#7022#0" />
+                    <element signature="e#7038#7163#0" />
+                    <element signature="e#7179#7304#0" />
+                    <element signature="n#!!block;n#7#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
+                    <element signature="e#7356#8663#0" />
+                    <element signature="e#7372#7542#0" />
+                    <element signature="e#7558#7728#0" />
+                    <element signature="e#7744#7914#0" />
+                    <element signature="e#7930#8093#0" />
+                    <element signature="e#8109#8279#0" />
+                    <element signature="e#8295#8465#0" />
+                    <element signature="e#8481#8651#0" />
+                    <element signature="e#8681#9946#0" />
+                    <element signature="e#8697#8860#0" />
+                    <element signature="e#8876#9039#0" />
+                    <element signature="e#9055#9218#0" />
+                    <element signature="e#9234#9397#0" />
+                    <element signature="e#9413#9576#0" />
+                    <element signature="e#9592#9755#0" />
+                    <element signature="e#9771#9934#0" />
+                    <element signature="e#9964#11271#0" />
+                    <element signature="e#9980#10149#0" />
+                    <element signature="e#10165#10334#0" />
+                    <element signature="e#10350#10519#0" />
+                    <element signature="e#10535#10704#0" />
+                    <element signature="e#10720#10889#0" />
+                    <element signature="e#10905#11074#0" />
+                    <element signature="e#11090#11259#0" />
+                    <element signature="e#11289#12598#0" />
+                    <element signature="e#11305#11475#0" />
+                    <element signature="e#11491#11660#0" />
+                    <element signature="e#11676#11845#0" />
+                    <element signature="e#11861#12030#0" />
+                    <element signature="e#12046#12215#0" />
+                    <element signature="e#12231#12400#0" />
+                    <element signature="e#12416#12586#0" />
+                    <element signature="e#12616#13930#0" />
+                    <element signature="e#12632#12802#0" />
+                    <element signature="e#12818#12988#0" />
+                    <element signature="e#13004#13174#0" />
+                    <element signature="e#13190#13360#0" />
+                    <element signature="e#13376#13546#0" />
+                    <element signature="e#13562#13732#0" />
+                    <element signature="e#13748#13918#0" />
+                    <element signature="e#13948#15255#0" />
+                    <element signature="e#13964#14133#0" />
+                    <element signature="e#14149#14318#0" />
+                    <element signature="e#14334#14503#0" />
+                    <element signature="e#14519#14688#0" />
+                    <element signature="e#14704#14873#0" />
+                    <element signature="e#14889#15058#0" />
+                    <element signature="e#15074#15243#0" />
+                    <element signature="e#15274#16581#0" />
+                    <element signature="e#15290#15459#0" />
+                    <element signature="e#15475#15644#0" />
+                    <element signature="e#15660#15829#0" />
+                    <element signature="e#15845#16014#0" />
+                    <element signature="e#16030#16199#0" />
+                    <element signature="e#16215#16384#0" />
+                    <element signature="e#16400#16569#0" />
+                    <element signature="n#!!block;n#performance_stats#0;n#!!top" />
+                    <element signature="n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#18429#18510#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#18577#18648#0" />
+                    <element signature="e#18674#18745#0" />
+                    <element signature="e#18771#18842#0" />
+                    <element signature="n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#20459#20540#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#20607#20678#0" />
+                    <element signature="e#20704#20775#0" />
+                    <element signature="e#20801#20872#0" />
+                    <element signature="n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#22488#22569#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#22636#22707#0" />
+                    <element signature="e#22733#22804#0" />
+                    <element signature="e#22830#22901#0" />
+                    <element signature="n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#24518#24599#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#24666#24737#0" />
+                    <element signature="e#24763#24834#0" />
+                    <element signature="e#24860#24931#0" />
+                    <element signature="n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#26548#26629#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#26696#26767#0" />
+                    <element signature="e#26793#26864#0" />
+                    <element signature="e#26890#26961#0" />
+                    <element signature="n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#28578#28659#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#28726#28797#0" />
+                    <element signature="e#28823#28894#0" />
+                    <element signature="e#28920#28991#0" />
+                    <element signature="n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#30608#30689#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#30756#30827#0" />
+                    <element signature="e#30853#30924#0" />
+                    <element signature="e#30950#31021#0" />
+                    <element signature="n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_memory#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#32527#32608#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#32676#32747#0" />
+                    <element signature="e#32773#32844#0" />
+                    <element signature="e#32870#32941#0" />
+                    <element signature="n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#vision_memory#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#34451#34532#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#34599#34670#0" />
+                    <element signature="e#34696#34767#0" />
+                    <element signature="e#34793#34864#0" />
+                    <element signature="n#!!block;n#vision_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#36170#36251#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#36318#36390#0" />
+                    <element signature="e#36416#36488#0" />
+                    <element signature="e#36514#36586#0" />
+                    <element signature="n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#utf8_memory#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#38067#38148#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#38215#38285#0" />
+                    <element signature="e#38311#38381#0" />
+                    <element signature="e#38407#38479#0" />
+                    <element signature="n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#utf8_out#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#39968#40049#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#40116#40186#0" />
+                    <element signature="e#40212#40282#0" />
+                    <element signature="e#40308#40380#0" />
+                    <element signature="n#!!block;n#utf8_out#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#utf8_out#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#41686#41767#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#utf8_out#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#41834#41904#0" />
+                    <element signature="e#41930#42000#0" />
+                    <element signature="e#42026#42098#0" />
+                    <element signature="n#!!block;n#pain#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="n#!!block;n#neuron_params#0;n#!!block;n#pain#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#43395#43474#0" />
+                    <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#pain#0;n#!!block;n#blueprint#0;n#!!top" />
+                    <element signature="e#43541#43611#0" />
+                    <element signature="e#43637#43707#0" />
+                    <element signature="e#43733#43803#0" />
                   </folding>
                 </state>
               </provider>
@@ -203,11 +472,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>filter</find>
-      <find>connectome_path</find>
-      <find>kernel</find>
-      <find>mnist_img_fetcher</find>
-      <find>image_feeder</find>
       <find>injector_params.num_to_inject:</find>
       <find>mnist_img_fetcher2</find>
       <find>mnist_test_array</find>
@@ -233,6 +497,11 @@
       <find>injection_mode</find>
       <find>DataFeeder</find>
       <find>utf8_feeder</find>
+      <find>Retina has been exposed to a version of :</find>
+      <find>img_lbl=</find>
+      <find>kernel</find>
+      <find>create_direction_matrix</find>
+      <find>cy</find>
     </findStrings>
     <replaceStrings>
       <replace>global test_params</replace>
@@ -283,8 +552,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/misc/auto_pilot.py" />
-        <option value="$PROJECT_DIR$/documentation/genome_84.json" />
         <option value="$PROJECT_DIR$/documentation/genome_34.json" />
         <option value="$PROJECT_DIR$/documentation/Important_event_timeline" />
         <option value="$PROJECT_DIR$/documentation/shell_commands.txt" />
@@ -314,26 +581,28 @@
         <option value="$PROJECT_DIR$/cython/cython_setup.py" />
         <option value="$PROJECT_DIR$/cython/neuron_functions_cy.pyx" />
         <option value="$PROJECT_DIR$/documentation/algorithms.py" />
-        <option value="$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx" />
-        <option value="$PROJECT_DIR$/cython_libs/cython_setup.py" />
         <option value="$PROJECT_DIR$/evolutionary/architect.py" />
         <option value="$PROJECT_DIR$/PUs/mnist.py" />
         <option value="$PROJECT_DIR$/evolutionary/genethesizer.py" />
         <option value="$PROJECT_DIR$/misc/influx_test.py" />
         <option value="$PROJECT_DIR$/documentation/environment_setup.txt" />
         <option value="$PROJECT_DIR$/visualization/grafana.json" />
-        <option value="$PROJECT_DIR$/misc/brain_functions.py" />
         <option value="$PROJECT_DIR$/misc/stats.py" />
         <option value="$PROJECT_DIR$/evolutionary/brain_gen.py" />
         <option value="$PROJECT_DIR$/misc/db_handler.py" />
         <option value="$PROJECT_DIR$/main-auto.py" />
         <option value="$PROJECT_DIR$/evolutionary/static_genome3.json" />
         <option value="$PROJECT_DIR$/misc/disk_ops.py" />
-        <option value="$PROJECT_DIR$/PUs/IPU_vision.py" />
         <option value="$PROJECT_DIR$/misc/neuron_functions.py" />
-        <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
         <option value="$PROJECT_DIR$/configuration/runtime_data.py" />
         <option value="$PROJECT_DIR$/configuration/parameters.json" />
+        <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
+        <option value="$PROJECT_DIR$/misc/brain_functions.py" />
+        <option value="$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx" />
+        <option value="$PROJECT_DIR$/cython_libs/ipu_vision_cy.py" />
+        <option value="$PROJECT_DIR$/cython_libs/ipu_vision_cy.cyx" />
+        <option value="$PROJECT_DIR$/cython_libs/cython_setup.py" />
+        <option value="$PROJECT_DIR$/PUs/IPU_vision.py" />
       </list>
     </option>
   </component>
@@ -425,7 +694,7 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="recentsLimit" value="5" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/documentation/genome_34.json" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -464,7 +733,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main-auto">
+  <component name="RunManager" selected="Python.IPU_vision">
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -664,8 +933,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main-auto" />
         <item itemvalue="Python.IPU_vision" />
+        <item itemvalue="Python.main-auto" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.influx_test" />
         <item itemvalue="Python.cython_setup" />
@@ -686,14 +955,7 @@
       <workItem from="1555778433278" duration="3239000" />
       <workItem from="1555981311750" duration="209000" />
       <workItem from="1556152592149" duration="46886000" />
-      <workItem from="1557452703834" duration="25225000" />
-    </task>
-    <task id="LOCAL-00194" summary="Performance-based early termination">
-      <created>1549246710854</created>
-      <option name="number" value="00194" />
-      <option name="presentableId" value="LOCAL-00194" />
-      <option name="project" value="LOCAL" />
-      <updated>1549246710854</updated>
+      <workItem from="1557452703834" duration="40517000" />
     </task>
     <task id="LOCAL-00195" summary="Capture activity stats">
       <created>1549253765529</created>
@@ -1031,11 +1293,18 @@
       <option name="project" value="LOCAL" />
       <updated>1557720713005</updated>
     </task>
-    <option name="localTasksCounter" value="243" />
+    <task id="LOCAL-00243" summary="Injector Class">
+      <created>1557803148506</created>
+      <option name="number" value="00243" />
+      <option name="presentableId" value="LOCAL-00243" />
+      <option name="project" value="LOCAL" />
+      <updated>1557803148506</updated>
+    </task>
+    <option name="localTasksCounter" value="244" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="89106000" />
+    <option name="totallyTimeSpent" value="104398000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1048,12 +1317,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-3008" y="-610" width="3008" height="1692" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49235475" visible="true" weight="0.1938638" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49235475" visible="true" weight="0.1641942" />
       <window_info id="Structure" order="1" weight="0.1753203" />
       <window_info id="Favorites" order="2" sideWeight="0.5243978" side_tool="true" weight="0.2818611" />
-      <window_info id="Run" order="3" sideWeight="0.5737204" weight="0.18678355" />
+      <window_info id="Run" order="3" sideWeight="0.5737204" weight="0.28894132" />
       <window_info id="Debug" order="4" sideWeight="0.4756022" weight="0.3246797" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="1" />
@@ -1063,7 +1331,7 @@
       <window_info anchor="bottom" id="TODO" order="5" sideWeight="0.4978903" weight="0.2479883" />
       <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.4072039" side_tool="true" weight="0.30194473" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.22112416" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.57241744" visible="true" weight="0.2188656" />
+      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.57241744" weight="0.2188656" />
       <window_info anchor="bottom" id="Messages" order="9" />
       <window_info anchor="bottom" id="Application Servers" order="10" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32893288" />
@@ -1170,7 +1438,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Excluding vision memory neurons from leaking" />
     <MESSAGE value="Removing leak exclusion from vision_memory" />
     <MESSAGE value="Performance improvement through Neuron Update code" />
     <MESSAGE value="Mutate only one gene at a time" />
@@ -1195,7 +1462,8 @@
     <MESSAGE value="MNIST Test Dataset" />
     <MESSAGE value="Misc." />
     <MESSAGE value="Injector Class; buggy" />
-    <option name="LAST_COMMIT_MESSAGE" value="Injector Class; buggy" />
+    <MESSAGE value="Injector Class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Injector Class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1238,17 +1506,10 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/My_Brian$main_auto.coverage" NAME="main-auto Coverage Results" MODIFIED="1557793982945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1557195612424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Brian$IPU_vision.coverage" NAME="IPU_vision Coverage Results" MODIFIED="1557453367065" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
+    <SUITE FILE_PATH="coverage/My_Brian$IPU_vision.coverage" NAME="IPU_vision Coverage Results" MODIFIED="1557978260370" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
     <SUITE FILE_PATH="coverage/My_Brian$influx_test.coverage" NAME="influx_test Coverage Results" MODIFIED="1555718234702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/misc" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/visualizer_standalone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/connectome/pain.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1389,20 +1650,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="485">
           <caret line="105" column="61" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cython_libs/cython_setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -1600,27 +1847,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="67" column="63" selection-start-line="67" selection-start-column="57" selection-end-line="67" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/configuration/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="10" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18224">
-          <caret line="1175" column="11" selection-start-line="1175" selection-start-column="11" selection-end-line="1175" selection-end-column="11" />
-          <folding>
-            <element signature="n#!!block;n#3#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1669,22 +1899,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="904">
-          <caret line="601" column="12" selection-start-line="601" selection-start-column="12" selection-end-line="601" selection-end-column="12" />
-          <folding>
-            <element signature="e#329#662#1" />
-          </folding>
+        <state relative-caret-position="1368">
+          <caret line="72" selection-start-line="71" selection-end-line="72" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
+    <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="724">
-          <caret line="603" column="57" lean-forward="true" selection-start-line="603" selection-start-column="57" selection-end-line="603" selection-end-column="57" />
+        <state relative-caret-position="-3103">
+          <caret line="68" column="75" lean-forward="true" selection-start-line="68" selection-start-column="75" selection-end-line="68" selection-end-column="75" />
           <folding>
-            <element signature="e#363#372#0" expanded="true" />
+            <element signature="e#2#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1696,10 +1923,302 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+    <entry file="file://$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="707">
-          <caret line="85" column="33" lean-forward="true" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
+        <state relative-caret-position="625">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cython_libs/ipu_vision_cy.cyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="754">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="24" selection-start-line="24" selection-end-line="24" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cython_libs/cython_setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="47" column="21" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="21" />
+          <folding>
+            <element signature="n#!!block;n#firing_patterns#0;n#!!top" />
+            <element signature="n#!!block;n#A#0;n#!!block;n#firing_patterns#0;n#!!top" />
+            <element signature="n#!!block;n#B#0;n#!!block;n#firing_patterns#0;n#!!top" />
+            <element signature="n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_0#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_1#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_2#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_3#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_4#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_5#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="n#!!block;n#rule_6#0;n#!!block;n#neighbor_locator_rule#0;n#!!top" />
+            <element signature="e#993#1296#0" />
+            <element signature="e#1009#1091#0" />
+            <element signature="e#1107#1186#0" />
+            <element signature="e#1202#1284#0" />
+            <element signature="e#1314#1617#0" />
+            <element signature="e#1330#1411#0" />
+            <element signature="e#1427#1508#0" />
+            <element signature="e#1524#1605#0" />
+            <element signature="e#1635#1932#0" />
+            <element signature="e#1651#1730#0" />
+            <element signature="e#1746#1825#0" />
+            <element signature="e#1841#1920#0" />
+            <element signature="e#1950#2255#0" />
+            <element signature="e#1966#2048#0" />
+            <element signature="e#2064#2145#0" />
+            <element signature="e#2161#2243#0" />
+            <element signature="e#2273#2576#0" />
+            <element signature="e#2289#2370#0" />
+            <element signature="e#2386#2467#0" />
+            <element signature="e#2483#2564#0" />
+            <element signature="e#2595#2898#0" />
+            <element signature="e#2611#2692#0" />
+            <element signature="e#2708#2789#0" />
+            <element signature="e#2805#2886#0" />
+            <element signature="n#!!block;n#5#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
+            <element signature="e#2938#3655#0" />
+            <element signature="e#2954#3080#0" />
+            <element signature="e#3096#3222#0" />
+            <element signature="e#3238#3359#0" />
+            <element signature="e#3375#3501#0" />
+            <element signature="e#3517#3643#0" />
+            <element signature="e#3673#4370#0" />
+            <element signature="e#3689#3810#0" />
+            <element signature="e#3826#3947#0" />
+            <element signature="e#3963#4084#0" />
+            <element signature="e#4100#4221#0" />
+            <element signature="e#4237#4358#0" />
+            <element signature="e#4388#5105#0" />
+            <element signature="e#4404#4529#0" />
+            <element signature="e#4545#4670#0" />
+            <element signature="e#4686#4811#0" />
+            <element signature="e#4827#4952#0" />
+            <element signature="e#4968#5093#0" />
+            <element signature="e#5123#5845#0" />
+            <element signature="e#5139#5265#0" />
+            <element signature="e#5281#5407#0" />
+            <element signature="e#5423#5549#0" />
+            <element signature="e#5565#5691#0" />
+            <element signature="e#5707#5833#0" />
+            <element signature="e#5863#6580#0" />
+            <element signature="e#5879#6004#0" />
+            <element signature="e#6020#6145#0" />
+            <element signature="e#6161#6286#0" />
+            <element signature="e#6302#6427#0" />
+            <element signature="e#6443#6568#0" />
+            <element signature="e#6599#7316#0" />
+            <element signature="e#6615#6740#0" />
+            <element signature="e#6756#6881#0" />
+            <element signature="e#6897#7022#0" />
+            <element signature="e#7038#7163#0" />
+            <element signature="e#7179#7304#0" />
+            <element signature="n#!!block;n#7#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
+            <element signature="e#7356#8663#0" />
+            <element signature="e#7372#7542#0" />
+            <element signature="e#7558#7728#0" />
+            <element signature="e#7744#7914#0" />
+            <element signature="e#7930#8093#0" />
+            <element signature="e#8109#8279#0" />
+            <element signature="e#8295#8465#0" />
+            <element signature="e#8481#8651#0" />
+            <element signature="e#8681#9946#0" />
+            <element signature="e#8697#8860#0" />
+            <element signature="e#8876#9039#0" />
+            <element signature="e#9055#9218#0" />
+            <element signature="e#9234#9397#0" />
+            <element signature="e#9413#9576#0" />
+            <element signature="e#9592#9755#0" />
+            <element signature="e#9771#9934#0" />
+            <element signature="e#9964#11271#0" />
+            <element signature="e#9980#10149#0" />
+            <element signature="e#10165#10334#0" />
+            <element signature="e#10350#10519#0" />
+            <element signature="e#10535#10704#0" />
+            <element signature="e#10720#10889#0" />
+            <element signature="e#10905#11074#0" />
+            <element signature="e#11090#11259#0" />
+            <element signature="e#11289#12598#0" />
+            <element signature="e#11305#11475#0" />
+            <element signature="e#11491#11660#0" />
+            <element signature="e#11676#11845#0" />
+            <element signature="e#11861#12030#0" />
+            <element signature="e#12046#12215#0" />
+            <element signature="e#12231#12400#0" />
+            <element signature="e#12416#12586#0" />
+            <element signature="e#12616#13930#0" />
+            <element signature="e#12632#12802#0" />
+            <element signature="e#12818#12988#0" />
+            <element signature="e#13004#13174#0" />
+            <element signature="e#13190#13360#0" />
+            <element signature="e#13376#13546#0" />
+            <element signature="e#13562#13732#0" />
+            <element signature="e#13748#13918#0" />
+            <element signature="e#13948#15255#0" />
+            <element signature="e#13964#14133#0" />
+            <element signature="e#14149#14318#0" />
+            <element signature="e#14334#14503#0" />
+            <element signature="e#14519#14688#0" />
+            <element signature="e#14704#14873#0" />
+            <element signature="e#14889#15058#0" />
+            <element signature="e#15074#15243#0" />
+            <element signature="e#15274#16581#0" />
+            <element signature="e#15290#15459#0" />
+            <element signature="e#15475#15644#0" />
+            <element signature="e#15660#15829#0" />
+            <element signature="e#15845#16014#0" />
+            <element signature="e#16030#16199#0" />
+            <element signature="e#16215#16384#0" />
+            <element signature="e#16400#16569#0" />
+            <element signature="n#!!block;n#performance_stats#0;n#!!top" />
+            <element signature="n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#18429#18510#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-1#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#18577#18648#0" />
+            <element signature="e#18674#18745#0" />
+            <element signature="e#18771#18842#0" />
+            <element signature="n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#20459#20540#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#20607#20678#0" />
+            <element signature="e#20704#20775#0" />
+            <element signature="e#20801#20872#0" />
+            <element signature="n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#22488#22569#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-3#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#22636#22707#0" />
+            <element signature="e#22733#22804#0" />
+            <element signature="e#22830#22901#0" />
+            <element signature="n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#24518#24599#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-4#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#24666#24737#0" />
+            <element signature="e#24763#24834#0" />
+            <element signature="e#24860#24931#0" />
+            <element signature="n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#26548#26629#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-5#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#26696#26767#0" />
+            <element signature="e#26793#26864#0" />
+            <element signature="e#26890#26961#0" />
+            <element signature="n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#28578#28659#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-6#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#28726#28797#0" />
+            <element signature="e#28823#28894#0" />
+            <element signature="e#28920#28991#0" />
+            <element signature="n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#30608#30689#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v1-7#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#30756#30827#0" />
+            <element signature="e#30853#30924#0" />
+            <element signature="e#30950#31021#0" />
+            <element signature="n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_memory#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#32527#32608#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_v2#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#32676#32747#0" />
+            <element signature="e#32773#32844#0" />
+            <element signature="e#32870#32941#0" />
+            <element signature="n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#vision_memory#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#34451#34532#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_IT#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#34599#34670#0" />
+            <element signature="e#34696#34767#0" />
+            <element signature="e#34793#34864#0" />
+            <element signature="n#!!block;n#vision_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#vision_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#36170#36251#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#vision_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#36318#36390#0" />
+            <element signature="e#36416#36488#0" />
+            <element signature="e#36514#36586#0" />
+            <element signature="n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#utf8_memory#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#38067#38148#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#utf8#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#38215#38285#0" />
+            <element signature="e#38311#38381#0" />
+            <element signature="e#38407#38479#0" />
+            <element signature="n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#utf8_out#0;n#!!block;n#cortical_mapping_dst#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#39968#40049#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#utf8_memory#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#40116#40186#0" />
+            <element signature="e#40212#40282#0" />
+            <element signature="e#40308#40380#0" />
+            <element signature="n#!!block;n#utf8_out#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#utf8_out#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#41686#41767#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#utf8_out#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#41834#41904#0" />
+            <element signature="e#41930#42000#0" />
+            <element signature="e#42026#42098#0" />
+            <element signature="n#!!block;n#pain#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="n#!!block;n#neuron_params#0;n#!!block;n#pain#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#43395#43474#0" />
+            <element signature="n#!!block;n#geometric_boundaries#0;n#!!block;n#neuron_params#0;n#!!block;n#pain#0;n#!!block;n#blueprint#0;n#!!top" />
+            <element signature="e#43541#43611#0" />
+            <element signature="e#43637#43707#0" />
+            <element signature="e#43733#43803#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6018">
+          <caret line="682" column="38" lean-forward="true" selection-start-line="682" selection-start-column="38" selection-end-line="682" selection-end-column="38" />
+          <folding>
+            <element signature="e#329#662#1" />
+            <element signature="e#3094#3131#0" />
+          </folding>
         </state>
       </provider>
     </entry>

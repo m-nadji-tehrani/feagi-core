@@ -9,6 +9,8 @@ from math import floor
 from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
+from datetime import datetime
+# from cython_libs import ipu_vision_cy as ipu_cy
 np.set_printoptions(threshold=np.nan)
 
 """
@@ -52,7 +54,7 @@ class MNIST:
         """
 
         path = "../" + database + "/"
-        absolute_path = "/Users/mntehrani/PycharmProjects/"  + database + "/"
+        absolute_path = "/Users/mntehrani/PycharmProjects/" + database + "/"
 
         if dataset is "training":
             fname_img = os.path.join(path, 'train-images.idx3-ubyte')
@@ -129,9 +131,9 @@ class MNIST:
         while not (img_lbl == int(num) and seq_counter == seq):
             if mnist_type == 'training':
                 img_lbl, img_data_ = self.mnist_training_array[mnist_counter]
-                print("img_lbl=", img_lbl)
-                print("mnist_counter=", mnist_counter)
-                print("seq_counter=", seq_counter)
+                # print("img_lbl=", img_lbl)
+                # print("mnist_counter=", mnist_counter)
+                # print("seq_counter=", seq_counter)
             elif mnist_type == 'test':
                 img_lbl, img_data_ = self.mnist_test_array[mnist_counter]
                 # print("%%%:", img_lbl, img_data_)
@@ -155,6 +157,7 @@ class MNIST:
                 img = labeledImage[1]
                 label = labeledImage[0]
                 return img, label
+
 
 class Filter:
     @staticmethod
@@ -307,13 +310,11 @@ class Kernel:
             contrast_value = 0
         return contrast_value
 
+    # todo: This function is super slow............
     def create_direction_matrix(self, image, kernel_size, direction_sensitivity=''):
         """
         Generates a Matrix where each element outlines the direction detected by the Kernel filters against each
         corresponding pixel in the image.
-        :param image:
-        :param kernel_size:
-        :return:
         """
         # print(">>> >>>", kernel_size, type(kernel_size))
         if divmod(kernel_size, 2)[1] == 0:
@@ -329,6 +330,39 @@ class Kernel:
                     direction_matrix[row_index].append(direction)
                 else:
                     direction_matrix[row_index].append('')
+                col_index += 1
+            col_index = 0
+            row_index += 1
+        return direction_matrix
+
+    def create_direction_matrix2(self, image, kernel_size):
+        """
+        Generates a Matrix where each element outlines the direction detected by the Kernel filters against each
+        corresponding pixel in the image.
+        """
+        if divmod(kernel_size, 2)[1] == 0:
+            print("Error: Kernel size should only be Odd number!")
+            return
+        direction_sensitivity_options = runtime_data.genome["IPU_vision_filters"][str(kernel_size)]
+        direction_matrix = {}
+
+        row_index = 0
+        col_index = 0
+
+        # building a blank direction matrix
+        blank_matrix_template = [[] for x in range(np.shape(image)[1])]
+        for direction_sensitivity in direction_sensitivity_options:
+            direction_matrix[direction_sensitivity] = blank_matrix_template
+
+        for row in image:
+            for row_item in row:
+                image_block = Image.image_read_by_block(image, kernel_size, [row_index, col_index])
+                for direction_sensitivity in direction_sensitivity_options:
+                    actual_direction = self.kernel_direction(image_block)
+                    if actual_direction == direction_sensitivity or direction_sensitivity == '':
+                        direction_matrix[direction_sensitivity][row_index].append(direction_sensitivity)
+                    else:
+                        direction_matrix[direction_sensitivity][row_index].append('')
                 col_index += 1
             col_index = 0
             row_index += 1
@@ -586,24 +620,66 @@ if __name__ == '__main__':
 
     thing = [b1, b2, b3, b4, b5, b6, b7]
 
-    for l1 in runtime_data.genome["IPU_vision_filters"]:
-        print(l1)
-        for l2 in runtime_data.genome["IPU_vision_filters"][l1]:
-            print("    ", l2, "\n           ", runtime_data.genome["IPU_vision_filters"][l1][l2])
-
-    for item in thing:
-        print("\n\n\n\n** ** ** ** ** ")
-        matrix = item
-        for _ in matrix:
-            print(_)
-        print("\nKernel direction is: ", kernel.kernel_direction(matrix))
-        print("** ** ** ** ** ")
+    # for l1 in runtime_data.genome["IPU_vision_filters"]:
+    #     print(l1)
+    #     for l2 in runtime_data.genome["IPU_vision_filters"][l1]:
+    #         print("    ", l2, "\n           ", runtime_data.genome["IPU_vision_filters"][l1][l2])
+    #
+    # for item in thing:
+    #     print("\n\n\n\n** ** ** ** ** ")
+    #     matrix = item
+    #     for _ in matrix:
+    #         print(_)
+    #     print("\nKernel direction is: ", kernel.kernel_direction(matrix))
+    #     print("** ** ** ** ** ")
 
     mnist = MNIST()
 
-    img_label, img_data = mnist.mnist_img_fetcher2(4, 1, "training")
+    img = mnist.mnist_img_fetcher2(4, 2, "training")
 
-    print(">>>", img_label, "\n", img_data)
+    print(">>>", img[0], "\n", img[1])
 
+    direction = '/'
 
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=3, direction_sensitivity=direction))
+    # print(">> Time taken for kernel=3: ", datetime.now()-start_time)
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=5, direction_sensitivity=direction))
+    # print(">> Time taken for kernel=5: ", datetime.now()-start_time)
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=7, direction_sensitivity=direction))
+    # print(">> Time taken for kernel=7: ", datetime.now()-start_time)
+    #
+    # print("\n")
+    # direction = '/'
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=3, direction_sensitivity=direction))
+    # print(">> Time taken for kernel=3: ", datetime.now()-start_time)
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=5, direction_sensitivity=direction))
+    # print(">> Time taken for kernel=5: ", datetime.now()-start_time)
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=7, direction_sensitivity=direction))
+    # print(">> Time taken for kernel=7: ", datetime.now()-start_time)
+
+    start_time = datetime.now()
+    direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=3))
+    print(">> Time taken for 3: ", datetime.now()-start_time)
+
+    start_time = datetime.now()
+    direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=5))
+    print(">> Time taken for 5: ", datetime.now()-start_time)
+
+    start_time = datetime.now()
+    direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=7))
+    print(">> Time taken for 7: ", datetime.now()-start_time)
+
+    for direction in direction_matrix:
+        print(direction, "\n", direction_matrix[direction])
 

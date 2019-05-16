@@ -78,33 +78,22 @@ class Brain:
 
         # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
 
-        # todo: Investigate the following section of code VVVVVVVVVVVVVVVVVVVVVVVVVVV
+        # todo: the following is assuming all cortical vision v1 sublayers have the same kernel size (hardcoded value)
+        kernel_size = runtime_data.genome['blueprint']['vision_v1-1']['kernel_size']
+
+        kernel = IPU_vision.Kernel()
+        # image = IPU_vision.Image.resize_image(image)
+
+        polarized_image = kernel.create_direction_matrix2(image=image,
+                                                          kernel_size=kernel_size)
+
         for cortical_area in vision_group:
-
-            starting_point = datetime.now()
-
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
-            kernel_size = runtime_data.genome['blueprint'][cortical_area]['kernel_size']
-            # print("Kernel size = ", kernel_size)
-            # retina_start_time = datetime.now()
-            # polarized_image = IPU_vision.create_direction_matrix(image, kernel_size, cortical_direction_sensitivity)
-            kernel = IPU_vision.Kernel()
-            # image = IPU_vision.Image.resize_image(image)
-
-            starting_point2 = datetime.now()
-
-            # todo: The following line is the cause of performance degradation!!! ! !  !  !  !  !  !
-            polarized_image = kernel.create_direction_matrix(image=image,
-                                                             kernel_size=kernel_size,
-                                                             direction_sensitivity=cortical_direction_sensitivity)
-
-            print(" $$$$$$$$$$$$$$$$$$$$$$$$$$ -------- >>>>>>>  Retina operation took: ", cortical_area,
-                  datetime.now() - starting_point, datetime.now() - starting_point2)
 
             if runtime_data.parameters['Logs']['print_polarized_img']:
                 print("\nPrinting polarized image for ", cortical_area)
-                for row in polarized_image:
+                for row in polarized_image[cortical_direction_sensitivity]:
                     print(" ***")
                     for item in row:
                         print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
@@ -115,7 +104,8 @@ class Brain:
             # print("Polarized image for :", cortical_area)
             # print(np.array2string(np.array(polarized_image), max_line_width=np.inf))
 
-            ipu_vision_array = IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image)
+            ipu_vision_array = \
+                IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image[cortical_direction_sensitivity])
 
             if runtime_data.parameters['Logs']['print_activation_counters']:
                 print("\n Bipolar cell activation count in %s is  %i" % (cortical_area, len(ipu_vision_array)))

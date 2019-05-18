@@ -57,7 +57,6 @@ class MNIST:
                 template[key][str(number)] = []
 
         all_of_mnist_training = template
-        all_of_mnist_test = template
 
         training_processing_start_time = datetime.now()
         counter = 0
@@ -65,6 +64,7 @@ class MNIST:
             for digit in all_of_mnist_training[kernel_size]:
                 for entry in self.mnist_training_array:
                     counter += 1
+                    print("Kernel size:", kernel_size, "Digit:", digit, "Training counter: ", counter)
                     if counter == 10:
                         counter = 0
                         break
@@ -72,6 +72,7 @@ class MNIST:
                     if str(mnist_instance_label) == digit:
                         direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
                                                                              kernel_size=int(kernel_size)))
+                        # direction_matrix_["original"] = mnist_instance_data
                         all_of_mnist_training[kernel_size][digit].append(direction_matrix_)
 
         save_processed_mnist_to_disk(data_type='training', data=all_of_mnist_training)
@@ -80,17 +81,21 @@ class MNIST:
 
         test_processing_start_time = datetime.now()
         counter = 0
+        all_of_mnist_test = template
+
         for kernel_size in all_of_mnist_test:
             for digit in all_of_mnist_test[kernel_size]:
                 for entry in self.mnist_test_array:
                     counter += 1
-                    if counter == 10:
+                    print("Kernel size:", kernel_size, "Digit:", digit, "Test counter: ", counter)
+                    if counter == 20:
                         counter = 0
                         break
                     mnist_instance_label, mnist_instance_data = entry
-                    if mnist_instance_label == digit:
+                    if str(mnist_instance_label) == digit:
                         direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
                                                                              kernel_size=int(kernel_size)))
+                        # direction_matrix_["original"] = mnist_instance_data
                         all_of_mnist_test[kernel_size][digit].append(direction_matrix_)
 
         save_processed_mnist_to_disk(data_type='test', data=all_of_mnist_test)

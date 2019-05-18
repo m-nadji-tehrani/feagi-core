@@ -16,4 +16,5 @@ event_id = ""
 termination_flag = False
 variation_counter_actual = 0
 exposure_counter_actual = 0
-
+mnist_training = {}
+mnist_testing = {}

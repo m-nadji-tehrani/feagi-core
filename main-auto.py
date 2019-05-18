@@ -15,7 +15,11 @@ if __name__ == '__main__':
 
     from misc import disk_ops
     disk_ops.load_parameters_in_memory()
+
     from configuration import runtime_data, settings
+
+    disk_ops.load_mnist_data_in_memory()
+    print("\n\n MNIST training data:\n", runtime_data.mnist_training)
 
     try:
         connectome_file_path = sys.argv[1]

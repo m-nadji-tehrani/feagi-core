@@ -258,6 +258,21 @@ def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters
     return
 
 
+def save_processed_mnist_to_disk(data_type, data):
+    if data_type == 'training':
+        with open('mnist_processed_training.json', "w") as data_file:
+            data_file.seek(0)  # rewind
+            data_file.write(json.dumps(data, indent=3))
+            data_file.truncate()
+    elif data_type == 'test':
+        with open('mnist_processed_test.json', "w") as data_file:
+            data_file.seek(0)  # rewind
+            data_file.write(json.dumps(data, indent=3))
+            data_file.truncate()
+    else:
+        print("ERROR: Invalid type provided to save_processed_mnist_to_disk function")
+
+
 def load_rules_in_memory():
     with open(runtime_data.parameters["InitData"]["rules_path"], "r") as data_file:
         rules = json.load(data_file)

@@ -10,6 +10,7 @@ from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
 from datetime import datetime
+from disk_ops import save_processed_mnist_to_disk
 # from cython_libs import ipu_vision_cy as ipu_cy
 np.set_printoptions(threshold=np.nan)
 
@@ -44,6 +45,59 @@ class MNIST:
             self.mnist_test_array.append(__)
         print(">><<>><<>><<>><< **  **  **  **   **  **  **  ****  >><<>><<>><<>><<>><<")
         # print(len(mnist_array))
+
+    def mnist_direction_matrix_builder(self):
+        template = {
+            "3": {},
+            "5": {},
+            "7": {}
+        }
+        for key in template:
+            for number in range(0, 10):
+                template[key][str(number)] = []
+
+        all_of_mnist_training = template
+        all_of_mnist_test = template
+
+        training_processing_start_time = datetime.now()
+        counter = 0
+        for kernel_size in all_of_mnist_training:
+            for digit in all_of_mnist_training[kernel_size]:
+                for entry in self.mnist_training_array:
+                    counter += 1
+                    print("Training Digit=", digit, "Kernel= ", kernel_size, "Counter=", counter)
+                    if counter == 2:
+                        counter = 0
+                        break
+                    mnist_instance_label, mnist_instance_data = entry
+                    if str(mnist_instance_label) == digit:
+                        direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
+                                                                             kernel_size=int(kernel_size)))
+                        all_of_mnist_training[kernel_size][digit].append(direction_matrix_)
+
+        save_processed_mnist_to_disk(data_type='training', data=all_of_mnist_training)
+        print("Processed MNIST Training data has been saved to disk.")
+        print(">> Processing of MNIST Training data set took: ", datetime.now() - training_processing_start_time)
+
+        test_processing_start_time = datetime.now()
+        counter = 0
+        for kernel_size in all_of_mnist_test:
+            for digit in all_of_mnist_test[kernel_size]:
+                for entry in self.mnist_test_array:
+                    counter += 1
+                    print("Test Digit=", digit, "Kernel= ", kernel_size, "Counter=", counter)
+                    if counter == 2:
+                        counter = 0
+                        break
+                    mnist_instance_label, mnist_instance_data = entry
+                    if mnist_instance_label == digit:
+                        direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
+                                                                             kernel_size=int(kernel_size)))
+                        all_of_mnist_test[kernel_size][digit].append(direction_matrix_)
+
+        save_processed_mnist_to_disk(data_type='test', data=all_of_mnist_test)
+        print("Processed MNIST Test data has been saved to disk.")
+        print(">> Processing of MNIST Test data set took: ", datetime.now() - test_processing_start_time)
 
     @staticmethod
     def read_mnist_raw(dataset="training", database=runtime_data.parameters["InitData"]["image_database"]):
@@ -359,13 +413,16 @@ class Kernel:
                 image_block = Image.image_read_by_block(image, kernel_size, [row_index, col_index])
                 for direction_sensitivity in direction_sensitivity_options:
                     actual_direction = self.kernel_direction(image_block)
-                    if actual_direction == direction_sensitivity or direction_sensitivity == '':
+                    if actual_direction == direction_sensitivity:
                         direction_matrix[direction_sensitivity][row_index].append(direction_sensitivity)
                     else:
                         direction_matrix[direction_sensitivity][row_index].append('')
                 col_index += 1
+            print("col_index: ", row_index, col_index)
+            print("direction matrix shape:", len(direction_matrix['-']), len(direction_matrix['-'][0]))
             col_index = 0
             row_index += 1
+        print("direction matrix shape:", len(direction_matrix['-']), len(direction_matrix['-'][0]))
         return direction_matrix
 
     @staticmethod
@@ -668,18 +725,19 @@ if __name__ == '__main__':
     # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=7, direction_sensitivity=direction))
     # print(">> Time taken for kernel=7: ", datetime.now()-start_time)
 
-    start_time = datetime.now()
-    direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=3))
-    print(">> Time taken for 3: ", datetime.now()-start_time)
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=3))
+    # print(">> Time taken for 3: ", datetime.now()-start_time)
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=5))
+    # print(">> Time taken for 5: ", datetime.now()-start_time)
+    #
+    # start_time = datetime.now()
+    # direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=7))
+    # print(">> Time taken for 7: ", datetime.now()-start_time)
+    #
+    # for direction in direction_matrix:
+    #     print(direction, "\n", direction_matrix[direction])
 
-    start_time = datetime.now()
-    direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=5))
-    print(">> Time taken for 5: ", datetime.now()-start_time)
-
-    start_time = datetime.now()
-    direction_matrix = (kernel.create_direction_matrix2(image=img[0], kernel_size=7))
-    print(">> Time taken for 7: ", datetime.now()-start_time)
-
-    for direction in direction_matrix:
-        print(direction, "\n", direction_matrix[direction])
-
+    mnist.mnist_direction_matrix_builder()

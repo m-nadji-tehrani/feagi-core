@@ -65,8 +65,7 @@ class MNIST:
             for digit in all_of_mnist_training[kernel_size]:
                 for entry in self.mnist_training_array:
                     counter += 1
-                    print("Training Digit=", digit, "Kernel= ", kernel_size, "Counter=", counter)
-                    if counter == 2:
+                    if counter == 10:
                         counter = 0
                         break
                     mnist_instance_label, mnist_instance_data = entry
@@ -85,8 +84,7 @@ class MNIST:
             for digit in all_of_mnist_test[kernel_size]:
                 for entry in self.mnist_test_array:
                     counter += 1
-                    print("Test Digit=", digit, "Kernel= ", kernel_size, "Counter=", counter)
-                    if counter == 2:
+                    if counter == 10:
                         counter = 0
                         break
                     mnist_instance_label, mnist_instance_data = entry
@@ -100,7 +98,7 @@ class MNIST:
         print(">> Processing of MNIST Test data set took: ", datetime.now() - test_processing_start_time)
 
     @staticmethod
-    def read_mnist_raw(dataset="training", database=runtime_data.parameters["InitData"]["image_database"]):
+    def read_mnist_raw(dataset, database=runtime_data.parameters["InitData"]["image_database"]):
         """
         Python function for importing the MNIST data set.  It returns an iterator
         of 2-tuples with the first element being the label and the second element
@@ -113,8 +111,6 @@ class MNIST:
         if dataset is "training":
             fname_img = os.path.join(path, 'train-images.idx3-ubyte')
             fname_lbl = os.path.join(path, 'train-labels.idx1-ubyte')
-            # fname_img = 'train-images.idx3-ubyte'
-            # fname_lbl = 'train-labels.idx1-ubyte'
 
         elif dataset is "testing":
             fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
@@ -403,26 +399,18 @@ class Kernel:
         row_index = 0
         col_index = 0
 
-        # building a blank direction matrix
-        blank_matrix_template = [[] for x in range(np.shape(image)[1])]
         for direction_sensitivity in direction_sensitivity_options:
-            direction_matrix[direction_sensitivity] = blank_matrix_template
+            direction_matrix[direction_sensitivity] = []
 
         for row in image:
             for row_item in row:
                 image_block = Image.image_read_by_block(image, kernel_size, [row_index, col_index])
-                for direction_sensitivity in direction_sensitivity_options:
-                    actual_direction = self.kernel_direction(image_block)
-                    if actual_direction == direction_sensitivity:
-                        direction_matrix[direction_sensitivity][row_index].append(direction_sensitivity)
-                    else:
-                        direction_matrix[direction_sensitivity][row_index].append('')
+                actual_direction = self.kernel_direction(image_block)
+                if actual_direction in direction_sensitivity_options:
+                    direction_matrix[actual_direction].append([row_index, col_index])
                 col_index += 1
-            print("col_index: ", row_index, col_index)
-            print("direction matrix shape:", len(direction_matrix['-']), len(direction_matrix['-'][0]))
             col_index = 0
             row_index += 1
-        print("direction matrix shape:", len(direction_matrix['-']), len(direction_matrix['-'][0]))
         return direction_matrix
 
     @staticmethod

@@ -507,7 +507,7 @@ def auto_tester():
         test_params.testing_has_begun = False
         test_params.test_start_time = datetime.now()
         if test_params.img_flag:
-            data_feeder.image_feeder(test_params.num_to_inject)
+            data_feeder.image_feeder2(test_params.num_to_inject)
 
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
@@ -592,7 +592,7 @@ def auto_tester():
 
             if test_params.img_flag and not test_params.exit_flag:
                 print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
-                data_feeder.image_feeder(test_params.num_to_inject)
+                data_feeder.image_feeder2(test_params.num_to_inject)
 
 
 def update_test_stats():
@@ -783,7 +783,7 @@ def auto_injector():
         print("----------------------------------------Data injection has begun------------------------------------")
         injector_params.injection_has_begun = False
         injector_params.injection_start_time = datetime.now()
-        data_feeder.image_feeder(injector_params.num_to_inject)
+        data_feeder.image_feeder2(injector_params.num_to_inject)
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
     if not injector_params.burst_skip_flag:
@@ -835,7 +835,7 @@ def auto_injector():
 
                 injector_params.num_to_inject = max(injector_params.utf_counter_actual, 0)
                 print("injector_params.num_to_inject: ", injector_params.num_to_inject)
-                data_feeder.image_feeder(injector_params.num_to_inject)
+                data_feeder.image_feeder2(injector_params.num_to_inject)
                 # Saving brain to disk
                 # todo: assess the impact of the following disk operation
                 if runtime_data.parameters["Switches"]["save_connectome_to_disk"]:
@@ -936,6 +936,11 @@ class DataFeeder:
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
         # print("image has been converted to neuronal activities...")
 
+    @staticmethod
+    def image_feeder2(num):
+        brain = brain_functions.Brain()
+        init_data.training_neuron_list_img = brain.retina2(num=num)
+
 
 def form_memories():
     # The following handles neuro-plasticity
@@ -960,8 +965,6 @@ def form_memories():
     for src_neuron in set([i[1] for i in cfcl if i[0] == 'pain']):
         pain_flag = True
         # print('^%@! Pain flag is set!')
-
-
 
     # Wiring Vision memory to UIF-8 memory when there is simultaneous firing of neurons in these regions
     for dst_neuron in cfcl:

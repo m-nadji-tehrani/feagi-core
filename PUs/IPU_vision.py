@@ -10,7 +10,7 @@ from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
 from datetime import datetime
-from disk_ops import save_processed_mnist_to_disk
+# from disk_ops import save_processed_mnist_to_disk
 # from cython_libs import ipu_vision_cy as ipu_cy
 np.set_printoptions(threshold=np.nan)
 
@@ -199,6 +199,30 @@ class MNIST:
                 # print("$->>-->>", counter, "$->>-->>", seq)
             mnist_counter += 1
         return img_data_, img_lbl
+
+    @staticmethod
+    def mnist_img_fetcher3(num, seq, mnist_type, random_num=False):
+        """
+        Reads a number from pre-processed dataset and returns direction matrix data
+        """
+
+        if mnist_type == 'training':
+            data_set = runtime_data.mnist_training
+
+        elif mnist_type == 'testing':
+            data_set = runtime_data.mnist_testing
+        else:
+            print("ERROR: Invalid mnist_type")
+            return
+
+        kernel_size = runtime_data.genome["blueprint"]['vision_v1-1']["kernel_size"]
+
+        if random_num:
+            available_number_count = len(data_set[str(kernel_size)][str(num)])
+            image_data = data_set[str(kernel_size)][str(num)][random.randrange(0, available_number_count)]
+        else:
+            image_data = data_set[str(kernel_size)][str(num)][seq]
+        return image_data
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function
@@ -576,7 +600,7 @@ class Image:
 
 
 if __name__ == '__main__':
-
+    from disk_ops import save_processed_mnist_to_disk
     filter = Filter()
     kernel = Kernel()
     image = Image()
@@ -733,4 +757,7 @@ if __name__ == '__main__':
     # for direction in direction_matrix:
     #     print(direction, "\n", direction_matrix[direction])
 
-    mnist.mnist_direction_matrix_builder()
+    # mnist.mnist_direction_matrix_builder()
+
+    runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training')
+    print("+++++ >> ", mnist.mnist_img_fetcher3(num=2, seq=1, mnist_type='training', random_num=True))

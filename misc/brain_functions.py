@@ -87,18 +87,20 @@ class Brain:
         polarized_image = kernel.create_direction_matrix2(image=image,
                                                           kernel_size=kernel_size)
 
+        print("polarized_image", polarized_image)
+
         for cortical_area in vision_group:
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
 
-            if runtime_data.parameters['Logs']['print_polarized_img']:
-                print("\nPrinting polarized image for ", cortical_area)
-                for row in polarized_image[cortical_direction_sensitivity]:
-                    print(" ***")
-                    for item in row:
-                        print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
-                        if item == '':
-                            print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
+            # if runtime_data.parameters['Logs']['print_polarized_img']:
+            #     print("\nPrinting polarized image for ", cortical_area)
+            #     for row in polarized_image[cortical_direction_sensitivity]:
+            #         print(" ***")
+            #         for item in row:
+            #             print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
+            #             if item == '':
+            #                 print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
 
             # print("Polarized image for :", cortical_area)
 
@@ -137,6 +139,70 @@ class Brain:
         #         n += 1
         #     print(item[0], item[1], n)
         #     n = 0
+
+        return neuron_list
+
+    def retina2(self, num, seq, random_num):
+        """
+        Input:
+        Output: List of neurons from various Vision V1 layers that are activated
+        """
+
+        mnist = IPU_vision.MNIST()
+
+
+
+        print("Retina has been exposed to a version of :", num)
+        neuron_list = []
+
+        vision_group = self.cortical_sub_group_members('vision_v1')
+
+        # todo: the following is assuming all cortical vision v1 sublayers have the same kernel size (hardcoded value)
+        kernel_size = runtime_data.genome['blueprint']['vision_v1-1']['kernel_size']
+
+        kernel = IPU_vision.Kernel()
+
+        polarized_image = mnist.mnist_img_fetcher3(num=num, seq=seq, random_num=random_num)
+
+        for cortical_area in vision_group:
+            cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
+                'direction_sensitivity']
+
+            for key in polarized_image:
+                if key == cortical_direction_sensitivity:
+                    try:
+                        # print(np.array2string(np.array(polarized_image[cortical_direction_sensitivity]), max_line_width=np.inf))
+
+                        # ipu_vision_array = \
+                        #     IPU_vision.Image.convert_direction_matrix_to_coordinates(
+                        #         polarized_image[cortical_direction_sensitivity])
+
+                        ipu_vision_array = polarized_image[cortical_direction_sensitivity]
+
+                        if runtime_data.parameters['Logs']['print_activation_counters']:
+                            print("\n Bipolar cell activation count in %s is  %i" %
+                                  (cortical_area, len(ipu_vision_array)))
+
+                        neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array,
+                                                                                                cortical_area)
+
+                        if runtime_data.parameters['Logs']['print_activation_counters']:
+                            print("Neuron id count activated in layer %s is %i\n\n" %
+                                  (cortical_area, len(neuron_id_list)))
+
+                        for item in neuron_id_list:
+                            neuron_list.append([cortical_area, item])
+                    except:
+                        print("Error on direction selectivity")
+
+                if runtime_data.parameters['Logs']['print_polarized_img']:
+                    print("\nPrinting polarized image for ", cortical_area)
+                    for row in polarized_image[cortical_direction_sensitivity]:
+                        print(" ***")
+                        for item in row:
+                            print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
+                            if item == '':
+                                print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
 
         return neuron_list
 

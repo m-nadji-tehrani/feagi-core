@@ -259,39 +259,33 @@ def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters
     return
 
 
-def load_processed_mnist_from_disk(data_type):
-    if data_type == 'training':
-        with open("/Users/mntehrani/PycharmProjects/Metis/PUs/mnist_processed_training.pkl", 'rb') as pickled_data:
-            data = pickle.load(pickled_data)
-        return data
-    elif data_type == 'test':
-        with open("/Users/mntehrani/PycharmProjects/Metis/PUs/mnist_processed_test.pkl", 'rb') as pickled_data:
-            data = pickle.load(pickled_data)
-        return data
-    else:
-        print("ERROR: Invalid type provided to save_processed_mnist_to_disk function")
+def load_processed_mnist_from_disk(mnist_type, kernel_size):
+    with open("/Users/mntehrani/PycharmProjects/Metis/PUs/mnist_processed_" +
+              mnist_type + "_k" + str(kernel_size) + ".pkl", 'rb') as pickled_data:
+        data = pickle.load(pickled_data)
+    return data
 
 
-def load_mnist_data_in_memory():
-    runtime_data.mnist_training = load_processed_mnist_from_disk(data_type='training')
-    print("MNIST training data has been loaded into memory.")
-    runtime_data.mnist_testing = load_processed_mnist_from_disk(data_type='test')
-    print("MNIST testing data has been loaded into memory.")
+def load_mnist_data_in_memory(mnist_type, kernel_size):
+    runtime_data.mnist_training[str(kernel_size)] = \
+        load_processed_mnist_from_disk(mnist_type=mnist_type, kernel_size=kernel_size)
+    print("MNIST %s data has been loaded into memory." % mnist_type)
+
 
 
 def save_processed_mnist_to_disk(data_type, data):
     if data_type == 'training':
-        with open('mnist_processed_training.json', "w") as data_file:
-            data_file.seek(0)  # rewind
-            data_file.write(json.dumps(data, indent=3))
-            data_file.truncate()
+        # with open('mnist_processed_training.json', "w") as data_file:
+        #     data_file.seek(0)  # rewind
+        #     data_file.write(json.dumps(data, indent=3))
+        #     data_file.truncate()
         with open("mnist_processed_training.pkl", 'wb') as output:
             pickle.dump(data, output)
     elif data_type == 'test':
-        with open('mnist_processed_test.json', "w") as data_file:
-            data_file.seek(0)  # rewind
-            data_file.write(json.dumps(data, indent=3))
-            data_file.truncate()
+        # with open('mnist_processed_test.json', "w") as data_file:
+        #     data_file.seek(0)  # rewind
+        #     data_file.write(json.dumps(data, indent=3))
+        #     data_file.truncate()
         with open("mnist_processed_test.pkl", 'wb') as output:
             pickle.dump(data, output)
     else:

@@ -65,9 +65,9 @@ class MNIST:
                 for entry in self.mnist_training_array:
                     counter += 1
                     print("Kernel size:", kernel_size, "Digit:", digit, "Training counter: ", counter)
-                    if counter == 100:
-                        counter = 0
-                        break
+                    # if counter == 100:
+                    #     counter = 0
+                    #     break
                     mnist_instance_label, mnist_instance_data = entry
                     if str(mnist_instance_label) == digit:
                         direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
@@ -88,9 +88,9 @@ class MNIST:
                 for entry in self.mnist_test_array:
                     counter += 1
                     print("Kernel size:", kernel_size, "Digit:", digit, "Test counter: ", counter)
-                    if counter == 100:
-                        counter = 0
-                        break
+                    # if counter == 100:
+                    #     counter = 0
+                    #     break
                     mnist_instance_label, mnist_instance_data = entry
                     if str(mnist_instance_label) == digit:
                         direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
@@ -221,7 +221,10 @@ class MNIST:
             available_number_count = len(data_set[str(kernel_size)][str(num)])
             image_data = data_set[str(kernel_size)][str(num)][random.randrange(0, available_number_count)]
         else:
-            print("_+_+_+_+_", len(data_set[str(kernel_size)][str(num)]), seq, data_set[str(kernel_size)][str(num)])
+            # print("_+_+_+_+_", len(data_set[str(kernel_size)][str(num)]), seq)
+            for item in data_set[str(kernel_size)][str(num)]:
+                print(item)
+
             image_data = data_set[str(kernel_size)][str(num)][seq]
         return image_data
 
@@ -758,7 +761,26 @@ if __name__ == '__main__':
     # for direction in direction_matrix:
     #     print(direction, "\n", direction_matrix[direction])
 
-    mnist.mnist_direction_matrix_builder()
+    # mnist.mnist_direction_matrix_builder()
 
     # runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training')
     # print("+++++ >> ", mnist.mnist_img_fetcher3(num=2, seq=1, mnist_type='training', random_num=True))
+
+    # processed_data = disk_ops.load_processed_mnist_from_disk('training')
+
+    # for kernel_size in processed_data:
+    #     for digit in processed_data[kernel_size]:
+    #         print(len(processed_data[kernel_size][digit]))
+
+    # import pickle
+    #
+    #
+    #
+    # with open("mnist_processed_training_k3.pkl", 'wb') as output:
+    #     pickle.dump(processed_data["3"], output)
+    #
+    # with open("mnist_processed_training_k5.pkl", 'wb') as output:
+    #     pickle.dump(processed_data["5"], output)
+    #
+    # with open("mnist_processed_training_k7.pkl", 'wb') as output:
+    #     pickle.dump(processed_data["7"], output)

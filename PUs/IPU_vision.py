@@ -209,7 +209,7 @@ class MNIST:
         if mnist_type == 'training':
             data_set = runtime_data.mnist_training
 
-        elif mnist_type == 'testing':
+        elif mnist_type == 'test':
             data_set = runtime_data.mnist_testing
         else:
             print("ERROR: Invalid mnist_type")
@@ -222,9 +222,8 @@ class MNIST:
             image_data = data_set[str(kernel_size)][str(num)][random.randrange(0, available_number_count)]
         else:
             # print("_+_+_+_+_", len(data_set[str(kernel_size)][str(num)]), seq)
-            for item in data_set[str(kernel_size)][str(num)]:
-                print(item)
-
+            # for item in data_set[str(kernel_size)][str(num)]:
+            #     print(item)
             image_data = data_set[str(kernel_size)][str(num)][seq]
         return image_data
 

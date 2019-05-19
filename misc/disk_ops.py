@@ -267,10 +267,14 @@ def load_processed_mnist_from_disk(mnist_type, kernel_size):
 
 
 def load_mnist_data_in_memory(mnist_type, kernel_size):
-    runtime_data.mnist_training[str(kernel_size)] = \
-        load_processed_mnist_from_disk(mnist_type=mnist_type, kernel_size=kernel_size)
-    print("MNIST %s data has been loaded into memory." % mnist_type)
-
+    if mnist_type == 'training':
+        runtime_data.mnist_training[str(kernel_size)] = \
+            load_processed_mnist_from_disk(mnist_type=mnist_type, kernel_size=kernel_size)
+        print("MNIST %s data has been loaded into memory." % mnist_type)
+    if mnist_type == 'test':
+        runtime_data.mnist_testing[str(kernel_size)] = \
+            load_processed_mnist_from_disk(mnist_type=mnist_type, kernel_size=kernel_size)
+        print("MNIST %s data has been loaded into memory." % mnist_type)
 
 
 def save_processed_mnist_to_disk(data_type, data):

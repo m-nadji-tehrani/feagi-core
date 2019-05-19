@@ -221,6 +221,7 @@ class MNIST:
             available_number_count = len(data_set[str(kernel_size)][str(num)])
             image_data = data_set[str(kernel_size)][str(num)][random.randrange(0, available_number_count)]
         else:
+            print("_+_+_+_+_", len(data_set[str(kernel_size)][str(num)]), seq, data_set[str(kernel_size)][str(num)])
             image_data = data_set[str(kernel_size)][str(num)][seq]
         return image_data
 

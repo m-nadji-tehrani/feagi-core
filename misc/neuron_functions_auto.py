@@ -503,10 +503,14 @@ class Injector:
     #     init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
     #     # print("image has been converted to neuronal activities...")
 
-    @staticmethod
-    def image_feeder2(num, seq, mnist_type):
+    def image_feeder2(self, num, seq, mnist_type):
+        global init_data
         brain = brain_functions.Brain()
-        init_data.training_neuron_list_img = brain.retina2(num=num, seq=seq, mnist_type=mnist_type, random_num=False)
+        init_data.labeled_image = ['', num]
+        init_data.training_neuron_list_img = brain.retina2(num=num,
+                                                           seq=seq,
+                                                           mnist_type=mnist_type,
+                                                           random_num=False)
 
     def injection_manager(self, injection_mode, injection_param):
         """
@@ -651,7 +655,9 @@ class Injector:
 
                     self.injector_num_to_inject = max(self.injector_utf_counter_actual, 0)
                     print("self.num_to_inject: ", self.injector_num_to_inject)
-                    self.image_feeder2(num=self.injector_num_to_inject, seq=runtime_data.variation_counter_actual,_type='training')
+                    self.image_feeder2(num=self.injector_num_to_inject,
+                                       seq=runtime_data.variation_counter_actual,
+                                       mnist_type='training')
                     # Saving brain to disk
                     # todo: assess the impact of the following disk operation
                     if runtime_data.parameters["Switches"]["save_connectome_to_disk"]:

@@ -26,131 +26,129 @@ class Brain:
         print(' \rexiting', cp.name, cp.pid)
         return
 
-    def retina(self, mnist_labled_image):
-        # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
-        # from datetime import datetime
-        # from architect import event_id_gen
+    # def retina(self, mnist_labled_image):
+    #     # Read image from MNIST database and translate them to activation in vision_v1 neurons & injects to FCL
+    #     # from datetime import datetime
+    #     # from architect import event_id_gen
+    #
+    #     print("Retina has been exposed to a version of :", mnist_labled_image[1])
+    #     neuron_list = []
+    #
+    #     # IPU_vision_array = IPU_vision.Image.convert_image_to_coordinates(mnist.read_image(image_number)[0]) # todo ??
+    #     vision_group = self.cortical_sub_group_members('vision_v1')
+    #
+    #     image = mnist_labled_image[0]
+    #     if runtime_data.parameters['Logs']['print_mnist_img']:
+    #         print("Original MNIST image:\n", image)
+    #
+    #     # print("*** Image label from MNIST was :", mnist_labled_image[1])
+    #     # print("*** Image read from MNIST was :", image_[0])
+    #     # print('image :\n ', np.array2string(image, max_line_width=np.inf))
+    #
+    #     filter = IPU_vision.Filter()
+    #
+    #     np.set_printoptions(linewidth=200)
+    #
+    #     if runtime_data.parameters['Logs']['print_seen_img']:
+    #         print("Original image:\n", image)
+    #     # Converting image to monochrome
+    #     image = filter.monochrome(image)
+    #     if runtime_data.parameters['Logs']['print_seen_img']:
+    #         print("Monochrome version of image:\n", image)
+    #
+    #     # Resizing image
+    #     image = IPU_vision.Image.resize_image(image)
+    #
+    #     # Contrast adjustment
+    #     image = filter.contrast(image, 3)
+    #     if runtime_data.parameters['Logs']['print_seen_img']:
+    #         print("Image seen by retina:\n", image)
+    #
+    #     image = filter.monochrome(image)
+    #     if runtime_data.parameters['Logs']['print_seen_img']:
+    #         print("Monochrome version of what is seen by retina:\n", image)
+    #
+    #     # print("Re-sized image:\n", IPU_vision.resize_image(image))
+    #
+    #     # Apply the brightness filter to get rid of noise in the image
+    #     # image = filter.brightness(image)
+    #
+    #     if runtime_data.parameters['Logs']['print_filtered_img']:
+    #         print("Filtered image:\n", image)
+    #
+    #     # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
+    #
+    #     # todo: the following is assuming all cortical vision v1 sublayers have the same kernel size (hardcoded value)
+    #     kernel_size = runtime_data.genome['blueprint']['vision_v1-1']['kernel_size']
+    #
+    #     kernel = IPU_vision.Kernel()
+    #     # image = IPU_vision.Image.resize_image(image)
+    #
+    #     polarized_image = kernel.create_direction_matrix2(image=image,
+    #                                                       kernel_size=kernel_size)
+    #
+    #     print("polarized_image", polarized_image)
+    #
+    #     for cortical_area in vision_group:
+    #         cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
+    #             'direction_sensitivity']
+    #
+    #         # if runtime_data.parameters['Logs']['print_polarized_img']:
+    #         #     print("\nPrinting polarized image for ", cortical_area)
+    #         #     for row in polarized_image[cortical_direction_sensitivity]:
+    #         #         print(" ***")
+    #         #         for item in row:
+    #         #             print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
+    #         #             if item == '':
+    #         #                 print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
+    #
+    #         # print("Polarized image for :", cortical_area)
+    #
+    #         try:
+    #             # print(np.array2string(np.array(polarized_image[cortical_direction_sensitivity]), max_line_width=np.inf))
+    #
+    #             ipu_vision_array = \
+    #                 IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image[cortical_direction_sensitivity])
+    #
+    #             if runtime_data.parameters['Logs']['print_activation_counters']:
+    #                 print("\n Bipolar cell activation count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
+    #
+    #             neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
+    #
+    #             if runtime_data.parameters['Logs']['print_activation_counters']:
+    #                 print("Neuron id count activated in layer %s is %i\n\n" % (cortical_area, len(neuron_id_list)))
+    #
+    #             for item in neuron_id_list:
+    #                 neuron_list.append([cortical_area, item])
+    #         except:
+    #             print("Error on direction selectivity")
+    #
+    #
+    #     # # Event is an instance of time where an IPU event has occurred
+    #     # event_id = event_id_gen()
+    #     # print(" <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
+    #     #       event_id)
+    #     # event_queue.put(event_id)
+    #     # print('Initial Fire List:')
+    #     # print(init_fire_list)
+    #
+    #     # print("** ** ** ** **", "* * * *")
+    #     # n = 0
+    #     # for item in neuron_list:
+    #     #     for n in runtime_data.brain[item[0]][item[1]]['neighbors']:
+    #     #         n += 1
+    #     #     print(item[0], item[1], n)
+    #     #     n = 0
+    #
+    #     return neuron_list
 
-        print("Retina has been exposed to a version of :", mnist_labled_image[1])
-        neuron_list = []
-
-        # IPU_vision_array = IPU_vision.Image.convert_image_to_coordinates(mnist.read_image(image_number)[0]) # todo ??
-        vision_group = self.cortical_sub_group_members('vision_v1')
-
-        image = mnist_labled_image[0]
-        if runtime_data.parameters['Logs']['print_mnist_img']:
-            print("Original MNIST image:\n", image)
-
-        # print("*** Image label from MNIST was :", mnist_labled_image[1])
-        # print("*** Image read from MNIST was :", image_[0])
-        # print('image :\n ', np.array2string(image, max_line_width=np.inf))
-
-        filter = IPU_vision.Filter()
-
-        np.set_printoptions(linewidth=200)
-
-        if runtime_data.parameters['Logs']['print_seen_img']:
-            print("Original image:\n", image)
-        # Converting image to monochrome
-        image = filter.monochrome(image)
-        if runtime_data.parameters['Logs']['print_seen_img']:
-            print("Monochrome version of image:\n", image)
-
-        # Resizing image
-        image = IPU_vision.Image.resize_image(image)
-
-        # Contrast adjustment
-        image = filter.contrast(image, 3)
-        if runtime_data.parameters['Logs']['print_seen_img']:
-            print("Image seen by retina:\n", image)
-
-        image = filter.monochrome(image)
-        if runtime_data.parameters['Logs']['print_seen_img']:
-            print("Monochrome version of what is seen by retina:\n", image)
-
-        # print("Re-sized image:\n", IPU_vision.resize_image(image))
-
-        # Apply the brightness filter to get rid of noise in the image
-        # image = filter.brightness(image)
-
-        if runtime_data.parameters['Logs']['print_filtered_img']:
-            print("Filtered image:\n", image)
-
-        # print('Filtered image :\n ', np.array2string(filter.brightness(image), max_line_width=np.inf))
-
-        # todo: the following is assuming all cortical vision v1 sublayers have the same kernel size (hardcoded value)
-        kernel_size = runtime_data.genome['blueprint']['vision_v1-1']['kernel_size']
-
-        kernel = IPU_vision.Kernel()
-        # image = IPU_vision.Image.resize_image(image)
-
-        polarized_image = kernel.create_direction_matrix2(image=image,
-                                                          kernel_size=kernel_size)
-
-        print("polarized_image", polarized_image)
-
-        for cortical_area in vision_group:
-            cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
-                'direction_sensitivity']
-
-            # if runtime_data.parameters['Logs']['print_polarized_img']:
-            #     print("\nPrinting polarized image for ", cortical_area)
-            #     for row in polarized_image[cortical_direction_sensitivity]:
-            #         print(" ***")
-            #         for item in row:
-            #             print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
-            #             if item == '':
-            #                 print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
-
-            # print("Polarized image for :", cortical_area)
-
-            try:
-                # print(np.array2string(np.array(polarized_image[cortical_direction_sensitivity]), max_line_width=np.inf))
-
-                ipu_vision_array = \
-                    IPU_vision.Image.convert_direction_matrix_to_coordinates(polarized_image[cortical_direction_sensitivity])
-
-                if runtime_data.parameters['Logs']['print_activation_counters']:
-                    print("\n Bipolar cell activation count in %s is  %i" % (cortical_area, len(ipu_vision_array)))
-
-                neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array, cortical_area)
-
-                if runtime_data.parameters['Logs']['print_activation_counters']:
-                    print("Neuron id count activated in layer %s is %i\n\n" % (cortical_area, len(neuron_id_list)))
-
-                for item in neuron_id_list:
-                    neuron_list.append([cortical_area, item])
-            except:
-                print("Error on direction selectivity")
-
-
-        # # Event is an instance of time where an IPU event has occurred
-        # event_id = event_id_gen()
-        # print(" <> <> <> <> <> <> <> <> An event related to mnist reading with following id has been logged:",
-        #       event_id)
-        # event_queue.put(event_id)
-        # print('Initial Fire List:')
-        # print(init_fire_list)
-
-        # print("** ** ** ** **", "* * * *")
-        # n = 0
-        # for item in neuron_list:
-        #     for n in runtime_data.brain[item[0]][item[1]]['neighbors']:
-        #         n += 1
-        #     print(item[0], item[1], n)
-        #     n = 0
-
-        return neuron_list
-
-    def retina2(self, num, seq, random_num):
+    def retina2(self, num, seq, mnist_type, random_num):
         """
         Input:
         Output: List of neurons from various Vision V1 layers that are activated
         """
 
         mnist = IPU_vision.MNIST()
-
-
 
         print("Retina has been exposed to a version of :", num)
         neuron_list = []
@@ -162,7 +160,7 @@ class Brain:
 
         kernel = IPU_vision.Kernel()
 
-        polarized_image = mnist.mnist_img_fetcher3(num=num, seq=seq, random_num=random_num)
+        polarized_image = mnist.mnist_img_fetcher3(num=num, seq=seq, mnist_type=mnist_type, random_num=random_num)
 
         for cortical_area in vision_group:
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
@@ -195,14 +193,14 @@ class Brain:
                     except:
                         print("Error on direction selectivity")
 
-                if runtime_data.parameters['Logs']['print_polarized_img']:
-                    print("\nPrinting polarized image for ", cortical_area)
-                    for row in polarized_image[cortical_direction_sensitivity]:
-                        print(" ***")
-                        for item in row:
-                            print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
-                            if item == '':
-                                print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
+                # if runtime_data.parameters['Logs']['print_polarized_img']:
+                #     print("\nPrinting polarized image for ", cortical_area)
+                #     for row in polarized_image[cortical_direction_sensitivity]:
+                #         print(" ***")
+                #         for item in row:
+                #             print(settings.Bcolors.YELLOW + item + settings.Bcolors.ENDC, end='')
+                #             if item == '':
+                #                 print(settings.Bcolors.RED + '.' + settings.Bcolors.ENDC, end='')
 
         return neuron_list
 

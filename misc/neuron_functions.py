@@ -507,7 +507,7 @@ def auto_tester():
         test_params.testing_has_begun = False
         test_params.test_start_time = datetime.now()
         if test_params.img_flag:
-            data_feeder.image_feeder2(test_params.num_to_inject)
+            data_feeder.image_feeder(test_params.num_to_inject)
 
 
     # Mechanism to skip a number of bursts between each injections to clean-up FCL
@@ -592,7 +592,7 @@ def auto_tester():
 
             if test_params.img_flag and not test_params.exit_flag:
                 print('#-#-# Current number that is about to be tested is ', test_params.num_to_inject)
-                data_feeder.image_feeder2(test_params.num_to_inject)
+                data_feeder.image_feeder(test_params.num_to_inject)
 
 
 def update_test_stats():
@@ -935,11 +935,6 @@ class DataFeeder:
         # Convert image to neuron activity
         init_data.training_neuron_list_img = brain.retina(init_data.labeled_image)
         # print("image has been converted to neuronal activities...")
-
-    @staticmethod
-    def image_feeder2(num):
-        brain = brain_functions.Brain()
-        init_data.training_neuron_list_img = brain.retina2(num=num)
 
 
 def form_memories():

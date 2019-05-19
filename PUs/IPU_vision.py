@@ -65,7 +65,7 @@ class MNIST:
                 for entry in self.mnist_training_array:
                     counter += 1
                     print("Kernel size:", kernel_size, "Digit:", digit, "Training counter: ", counter)
-                    if counter == 10:
+                    if counter == 100:
                         counter = 0
                         break
                     mnist_instance_label, mnist_instance_data = entry
@@ -88,7 +88,7 @@ class MNIST:
                 for entry in self.mnist_test_array:
                     counter += 1
                     print("Kernel size:", kernel_size, "Digit:", digit, "Test counter: ", counter)
-                    if counter == 20:
+                    if counter == 100:
                         counter = 0
                         break
                     mnist_instance_label, mnist_instance_data = entry
@@ -757,7 +757,7 @@ if __name__ == '__main__':
     # for direction in direction_matrix:
     #     print(direction, "\n", direction_matrix[direction])
 
-    # mnist.mnist_direction_matrix_builder()
+    mnist.mnist_direction_matrix_builder()
 
-    runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training')
-    print("+++++ >> ", mnist.mnist_img_fetcher3(num=2, seq=1, mnist_type='training', random_num=True))
+    # runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training')
+    # print("+++++ >> ", mnist.mnist_img_fetcher3(num=2, seq=1, mnist_type='training', random_num=True))

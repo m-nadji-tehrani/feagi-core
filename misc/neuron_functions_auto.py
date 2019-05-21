@@ -80,6 +80,7 @@ def burst():
 
     runtime_data.parameters["Auto_injector"]["injector_status"] = False
     runtime_data.termination_flag = False
+    runtime_data.top_10_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
     init_data = InitData()
     injector = Injector()
     mongo = db_handler.MongoManagement()
@@ -1314,15 +1315,10 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
     results = []
     fcl_results = []
 
-    top_n_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
     if digit == 'all':
-        # print('top_n_utf_memory_neurons:\n', top_n_utf_memory_neurons, 'end of top_n_utf_memory_neurons')
-        # if 'utf8_memory' in runtime_data.upstream_neurons:
-        #     print('runtime_data.upstream_neurons:',
-        #     runtime_data.upstream_neurons['utf8_memory'], 'end of runtime_data.upstream_neurons')
         for _ in range(10):
-            # results.append([_, len(list_upstream_neurons('utf8_memory', list_top_n_utf_memory_neurons(10)[_][1]))])
-            neuron_id = top_n_utf_memory_neurons[_][1]
+            # results.append([_, len(list_upstream_neurons('utf8_memory', runtime_data.top_10_utf_memory_neurons[_][1]))])
+            neuron_id = runtime_data.top_10_utf_memory_neurons[_][1]
             if 'utf8_memory' in runtime_data.upstream_neurons:
                 if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
                     # print("upstream_neuron's neuron id: ", neuron_id)
@@ -1348,7 +1344,7 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
                 results.append([_, 0])
                 fcl_results.append([_, 0])
     else:
-        neuron_id = top_n_utf_memory_neurons[digit][1]
+        neuron_id = runtime_data.top_10_utf_memory_neurons[digit][1]
         if 'utf8_memory' in runtime_data.upstream_neurons:
             if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
                 if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
@@ -1693,10 +1689,10 @@ def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
     """
     Responsible for pruning unused connections between neurons
     """
-    print(".....Pruning.....")
-    print("pre pruning: ", cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
+    # print(".....Pruning.....")
+    # print("pre pruning: ", cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
     runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
-    print("post pruning: ",  cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
+    # print("post pruning: ",  cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
     runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)
     if dst_neuron_id in runtime_data.temp_neuron_list:
         runtime_data.temp_neuron_list.remove(dst_neuron_id)

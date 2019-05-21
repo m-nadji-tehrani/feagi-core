@@ -511,6 +511,7 @@ class Injector:
                                                            seq=seq,
                                                            mnist_type=mnist_type,
                                                            random_num=False)
+        # print("\n\n\n\n\n>>> > > > > > ", init_data.training_neuron_list_img)
 
     def injection_manager(self, injection_mode, injection_param):
         """
@@ -1409,14 +1410,14 @@ def common_neuron_report():
 
         if common_neuron_list:
             overlap_amount = len(common_neuron_list)
-            print(item, '> ', overlap_amount)
+            # print(item, '> ', overlap_amount)
 
             if overlap_amount > runtime_data.parameters["InitData"]["overlap_prevention_constant"]:
                 # The following action is taken to eliminate the overlap
                 for neuron in common_neuron_list:
                     pruner('vision_memory', neuron, 'utf8_memory', neuron_a)
                     pruner('vision_memory', neuron, 'utf8_memory', neuron_b)
-                    print("--+--+--+--+--+: Common synapses has been pruned.")
+                    # print("--+--+--+--+--+: Common synapses has been pruned.")
 
 
 # def neuron_update(presynaptic_current,

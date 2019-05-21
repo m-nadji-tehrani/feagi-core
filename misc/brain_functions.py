@@ -177,6 +177,8 @@ class Brain:
 
                         ipu_vision_array = polarized_image[cortical_direction_sensitivity]
 
+                        # print(">>> IPU vision array:", ipu_vision_array)
+
                         if runtime_data.parameters['Logs']['print_activation_counters']:
                             print("\n Bipolar cell activation count in %s is  %i" %
                                   (cortical_area, len(ipu_vision_array)))

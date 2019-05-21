@@ -218,14 +218,11 @@ class MNIST:
         kernel_size = runtime_data.genome["blueprint"]['vision_v1-1']["kernel_size"]
 
         if random_num:
-            available_number_count = len(data_set[str(kernel_size)][str(num)])
-            image_data = data_set[str(kernel_size)][str(num)][random.randrange(0, available_number_count)]
+            available_number_count = len(data_set[str(num)])
+            return data_set[random.randrange(0, available_number_count)]
         else:
-            # print("_+_+_+_+_", len(data_set[str(kernel_size)][str(num)]), seq)
-            # for item in data_set[str(kernel_size)][str(num)]:
-            #     print(item)
-            image_data = data_set[str(kernel_size)][str(num)][seq]
-        return image_data
+            # todo: kernel size in the following statement is hardcoded; fix it!
+            return data_set["5"][str(num)][seq]
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function
@@ -518,18 +515,22 @@ class Image:
         :param image_locations:
         :return:
         """
+        # print("$$$$$ $  $  $ $  $ $ Image locations:", image_locations)
         neuron_id_list = []
         for x in range(len(image_locations)):
-                block_reference = str(image_locations[x][0]) + '-' + \
-                                  str(image_locations[x][1]) + '-' + \
-                                  str(image_locations[x][2])
-                if block_reference in runtime_data.block_dic[cortical_area]:
-                    neuron_list = runtime_data.block_dic[cortical_area][block_reference]
-                    # print("XXXXXXXXXX    XXXXXXXXX     XXXXXXXX", cortical_area, block_reference, len(neuron_list))
-                    for item in neuron_list:
-                        if (item is not None) and (neuron_id_list.count(item) == 0):
-                            neuron_id_list.append(item)
-        # print("YYYYYYYY    YYYYYYYY     YYYYYYY", cortical_area, neuron_id_list)
+            # print(">> Image location item:", x)
+
+            block_reference = str(image_locations[x][0]) + '-' + \
+                              str(image_locations[x][1]) + '-' + \
+                              str(0)
+            if block_reference in runtime_data.block_dic[cortical_area]:
+                neuron_list = runtime_data.block_dic[cortical_area][block_reference]
+                # print(">>..>> Neuron list:", neuron_list)
+                # print("XXXXXXXXXX    XXXXXXXXX     XXXXXXXX", cortical_area, block_reference, len(neuron_list))
+                for item in neuron_list:
+                    if (item is not None) and (neuron_id_list.count(item) == 0):
+                        neuron_id_list.append(item)
+        # print("+++++++++\n\n\n-----------\n\n\n++++++++\n\n\nYYYYYYYY    YYYYYYYY     YYYYYYY", cortical_area, neuron_id_list)
         return neuron_id_list
 
     @staticmethod
@@ -712,11 +713,11 @@ if __name__ == '__main__':
 
     mnist = MNIST()
 
-    img = mnist.mnist_img_fetcher2(4, 2, "training")
+    # img = mnist.mnist_img_fetcher2(4, 2, "training")
 
-    print(">>>", img[0], "\n", img[1])
-
-    direction = '/'
+    # print(">>>", img[0], "\n", img[1])
+    #
+    # direction = '/'
 
     # start_time = datetime.now()
     # direction_matrix = (kernel.create_direction_matrix(image=img[0], kernel_size=3, direction_sensitivity=direction))
@@ -762,8 +763,8 @@ if __name__ == '__main__':
 
     # mnist.mnist_direction_matrix_builder()
 
-    # runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training')
-    # print("+++++ >> ", mnist.mnist_img_fetcher3(num=2, seq=1, mnist_type='training', random_num=True))
+    runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training', kernel_size=5)
+    print("+++++ >> ", mnist.mnist_img_fetcher3(num=9, seq=1, mnist_type='training', random_num=False))
 
     # processed_data = disk_ops.load_processed_mnist_from_disk('training')
 

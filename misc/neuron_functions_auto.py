@@ -199,10 +199,10 @@ def burst():
             fcl = list(init_data.fire_candidate_list)
             # map(neuron_fire, fcl)
             init_data.future_fcl = []
-            init_data.cumulative_neighbor_count = 0
+            # init_data.cumulative_neighbor_count = 0
             for entry in fcl:
                 neuron_fire(entry)
-            print("cumulative vision_memory neighbor count for this burst = ", init_data.cumulative_neighbor_count)
+            # print("cumulative vision_memory neighbor count for this burst = ", init_data.cumulative_neighbor_count)
             print("PFCL:", len(init_data.previous_fcl),
                   "\nCFCL:", len(init_data.fire_candidate_list),
                   "\nFFCL:", len(init_data.future_fcl))
@@ -222,7 +222,7 @@ def burst():
         # Auto-inject if applicable
         if runtime_data.parameters["Auto_injector"]["injector_status"]:
             injection_time = datetime.now()
-            print("-------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ auto_injector")
+            # print("-------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ auto_injector")
             injector.auto_injector()
             print("Timing : Injection:", datetime.now() - injection_time)
 
@@ -329,18 +329,19 @@ def burst():
                 print("### Average postSynaptic current in --- %s --- was: %i"
                       % (area, average_postsynaptic_current(area)))
 
-        # Listing the number of neurons activating each UTF memory neuron
-        upstream_report_time = datetime.now()
-        upstream_general_stats, upstream_fcl_stats = \
-            list_upstream_neuron_count_for_digits(mode=1, cfcl=init_data.fire_candidate_list)
-        print("list_upstream_neuron_count_for_digits:", upstream_general_stats)
-        print("list_upstream___FCL__count_for_digits:", upstream_fcl_stats)
+        if runtime_data.parameters["Logs"]["print_upstream_neuron_stats"]:
+            # Listing the number of neurons activating each UTF memory neuron
+            upstream_report_time = datetime.now()
+            upstream_general_stats, upstream_fcl_stats = \
+                list_upstream_neuron_count_for_digits(mode=1, cfcl=init_data.fire_candidate_list)
+            print("list_upstream_neuron_count_for_digits:", upstream_general_stats)
+            print("list_upstream___FCL__count_for_digits:", upstream_fcl_stats)
+            print("Timing : Upstream + common neuron report:", datetime.now() - upstream_report_time)
 
-        # todo: investigate the efficiency of the common neuron report
-        print("The following is the common neuron report:")
-        common_neuron_report()
-
-        print("Timing : Upstream + common neuron report:", datetime.now() - upstream_report_time)
+        if runtime_data.parameters["Logs"]["print_common_neuron_report"]:
+            # todo: investigate the efficiency of the common neuron report
+            print("The following is the common neuron report:")
+            common_neuron_report()
 
         # Resetting burst detection list
         init_data.burst_detection_list = {}
@@ -477,7 +478,7 @@ class Injector:
             print("!!! Image label: ", init_data.labeled_image[1])
         init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_utf,
                                                       init_data.fire_candidate_list)
-        print("           UTF8 activities has been injected to the FCL                      ^^^^^^^^^^^^^^^^^^^^^^")
+        # print("           UTF8 activities has been injected to the FCL                      ^^^^^^^^^^^^^^^^^^^^^^")
 
     @staticmethod
     def img_neuron_list_feeder():
@@ -1057,7 +1058,7 @@ def form_memories(cfcl, pain_flag):
                 synapse_to_utf = 0
                 runtime_data.temp_neuron_list = []
                 neighbor_list = dict(runtime_data.brain['vision_memory'][source_neuron]['neighbors'])
-                print("<><><>")
+                # print("<><><>")
                 for synapse_ in neighbor_list:
                     if runtime_data.brain['vision_memory'][source_neuron]['neighbors'][synapse_]['cortical_area'] \
                             == 'utf8_memory':
@@ -1171,8 +1172,8 @@ def neuron_fire(fcl_entry):
     # todo: Firing pattern to be accommodated here     <<<<<<<<<<  *****
     # neuron_update_list = []
     neighbor_count = len(neighbor_list)
-    if cortical_area == 'vision_memory':
-        init_data.cumulative_neighbor_count += neighbor_count
+    # if cortical_area == 'vision_memory':
+    #     init_data.cumulative_neighbor_count += neighbor_count
 
     # Updating downstream neurons
     for dst_neuron_id in neighbor_list:
@@ -1541,8 +1542,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
         pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
                cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
-        print("Synapse pruned due to having low synaptic strength.")
-
+        # print("Synapse pruned due to having low synaptic strength.")
 
     # print('<**> ', src_cortical_area, src_neuron_id[27:], dst_cortical_area, dst_neuron_id[27:], 'PSC=',
     #       runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])

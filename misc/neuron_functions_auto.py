@@ -1024,7 +1024,7 @@ def form_memories(cfcl, pain_flag):
             cfcl_vision_memory_neurons.append(neuron[1])
         elif neuron[0] == 'utf8_memory':
             cfcl_utf8_memory_neurons.append(neuron[1])
-    print("+++++++++cfcl_utf8_memory_neurons:", cfcl_utf8_memory_neurons)
+    # print("+++++++++cfcl_utf8_memory_neurons:", cfcl_utf8_memory_neurons)
     utf8_memory_count = len(cfcl_utf8_memory_neurons)
     if cfcl_vision_memory_neurons:
         print("Number of vision memory neurons fired in this burst:", len(cfcl_vision_memory_neurons))
@@ -1321,7 +1321,6 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0, cfcl=[]):
             neuron_id = runtime_data.top_10_utf_memory_neurons[_][1]
             if 'utf8_memory' in runtime_data.upstream_neurons:
                 if neuron_id in runtime_data.upstream_neurons['utf8_memory']:
-                    # print("upstream_neuron's neuron id: ", neuron_id)
                     if 'vision_memory' in runtime_data.upstream_neurons['utf8_memory'][neuron_id]:
                         results.append([_,
                                         len(runtime_data.upstream_neurons['utf8_memory'][neuron_id]['vision_memory'])])

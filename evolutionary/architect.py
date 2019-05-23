@@ -250,6 +250,8 @@ def three_dim_growth(cortical_area):
     for _ in neuron_loc_list:
         # neuron_blk_list.append(block_id_gen(_[0], _[1], _[2]))
         neuron_block = block_id_gen2(_, space_dimensions=cortical_area_dim, total_block_count=block_boundaries)
+        if neuron_block[0] >= 500:
+            print("Block with value >50 was detected!", cortical_area, _, neuron_block, cortical_area_dim, block_boundaries)
         neuron_blk_list.append(neuron_block)
     neuron_loc_blk = zip(neuron_loc_list, neuron_blk_list)
     neuron_count = 0
@@ -388,6 +390,7 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
         # todo: make the next line generic
         if cortical_area_dst == 'vision_v2':
             block_reference = str(neuron_block_src[0]) + '-' + str(neuron_block_src[1]) + '-' + str(block_index)
+            # print("block_reference:", block_reference)
         else:
             block_reference = str(neuron_block_src[0]) + '-' + str(neuron_block_src[1]) + '-' + str(neuron_block_src[2])
 
@@ -655,9 +658,11 @@ def block_id_gen2(coordinate, space_dimensions, total_block_count):
     block_id = []
     index = 0
     for location in coordinate:
-        block_number = floor(location / (floor(space_dimensions[index] / total_block_count[index] + 0.00001) + 0.00001))
+        block_number = floor(location / ((space_dimensions[index] / (total_block_count[index] + 0.00001)) + 0.00001))
         block_id.append(block_number)
         index += 1
+    if block_id[0] > 100:
+        print("large block detected")
     return block_id
 
 

@@ -102,6 +102,7 @@ def burst():
         cortical_list.append(cortical_area)
     runtime_data.cortical_list = cortical_list
     runtime_data.memory_list = cortical_group_members('Memory')
+    print("Memory list is: ", runtime_data.memory_list)
 
     verbose = runtime_data.parameters["Switches"]["verbose"]
 
@@ -476,16 +477,14 @@ class Injector:
         else:
             init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(init_data.labeled_image[1]))
             print("!!! Image label: ", init_data.labeled_image[1])
-        init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_utf,
-                                                      init_data.fire_candidate_list)
+        init_data.fire_candidate_list = init_data.training_neuron_list_utf + init_data.fire_candidate_list
         # print("           UTF8 activities has been injected to the FCL                      ^^^^^^^^^^^^^^^^^^^^^^")
 
     @staticmethod
     def img_neuron_list_feeder():
         global init_data
         # inject neuron activity to FCL
-        init_data.fire_candidate_list = inject_to_fcl(init_data.training_neuron_list_img,
-                                                      init_data.fire_candidate_list)
+        init_data.fire_candidate_list = init_data.training_neuron_list_img + init_data.fire_candidate_list
         # print("Activities caused by image are now part of the FCL")
 
     # def image_feeder(self, num, dataset_type):
@@ -1517,28 +1516,51 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
         # When long term depression flag is set, there will be negative synaptic influence caused
         plasticity_constant = plasticity_constant * (-1) * impact_multiplier
 
-    # Check if source and destination have an existing synapse if not create one here
-    if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
-        synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
-        update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
+    try:
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
+            plasticity_constant
 
-    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
-        plasticity_constant
+        # Condition to cap the postsynaptic_current and provide prohibitory reaction
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+            min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+                runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
 
-    # Condition to cap the postsynaptic_current and provide prohibitory reaction
-    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
-        min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
-            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
+        # Condition to prevent postsynaptic current to become negative
+        # todo: consider setting a postsynaptic_min in genome to be used instead of 0
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+            max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"], 0)
 
-    # Condition to prevent postsynaptic current to become negative
-    # todo: consider setting a postsynaptic_min in genome to be used instead of 0
-    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
-        max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"], 0)
+        # todo: move pruning to burst level or even as a higher level activity such as every n burst
+        # Condition to prune a synapse if its postsynaptic_current is zero
+        if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
+            pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
+                   cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
+    except:
+        # Check if source and destination have an existing synapse if not create one here
+        if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
+            synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
+            update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
 
-    # Condition to prune a synapse if its postsynaptic_current is zero
-    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
-        pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
-               cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
+            plasticity_constant
+
+        # Condition to cap the postsynaptic_current and provide prohibitory reaction
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+            min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id][
+                    "postsynaptic_current"],
+                runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
+
+        # Condition to prevent postsynaptic current to become negative
+        # todo: consider setting a postsynaptic_min in genome to be used instead of 0
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+            max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id][
+                    "postsynaptic_current"], 0)
+
+        # Condition to prune a synapse if its postsynaptic_current is zero
+        if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id][
+            "postsynaptic_current"] == 0:
+            pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
+                   cortical_area_dst=dst_cortical_area, dst_neuron_id=dst_neuron_id)
 
 
 def snooze_till(cortical_area, neuron_id, burst_id):
@@ -1551,16 +1573,6 @@ def snooze_till(cortical_area, neuron_id, burst_id):
         = burst_id + runtime_data.genome["blueprint"][cortical_area]["neuron_params"]["snooze_length"]
     # print("%s : %s has been snoozed!" % (cortical_area, neuron_id))
     return
-
-
-def inject_to_fcl(neuron_list, fcl):
-    # print("Injecting to FCL.../\/\/\/")
-    # print("Neuron list is: ", neuron_list)
-    # Update FCL with new input data. FCL is read from the Queue and updated
-    for item in neuron_list:
-        fcl.append(item)
-    # print("Injected to FCL.../\/\/\/")
-    return fcl
 
 
 def save_fcl_to_disk():
@@ -1640,11 +1652,11 @@ def toggle_brain_status():
 
 
 def cortical_group_members(group):
-    members = []
-    for item in runtime_data.cortical_list:
-        if runtime_data.genome['blueprint'][item]['group_id'] == group:
-            members.append(item)
-    return members
+    # members = []
+    # for item in runtime_data.cortical_list:
+    #     if runtime_data.genome['blueprint'][item]['group_id'] == group:
+    #         members.append(item)
+    return [item for item in runtime_data.cortical_list if runtime_data.genome['blueprint'][item]['group_id'] == group]
 
 
 def reset_cumulative_counter_instances():

@@ -150,10 +150,11 @@ def build_synapse_ext(genome, brain, parameters, block_dic, key):
                                                                    ["neighbor_locator_rule_param_id"]],
                                            postsynaptic_current=genome["blueprint"]
                                            [key]["postsynaptic_current"])
-        influxdb.insert_inter_cortical_stats(connectome_path=parameters["InitData"]["connectome_path"],
-                                             cortical_area_src=key,
-                                             cortical_area_dst=mapped_cortical_area,
-                                             synapse_count=synapse_count)
+        if parameters["Switches"]["influx_brain_gen_stats"]:
+            influxdb.insert_inter_cortical_stats(connectome_path=parameters["InitData"]["connectome_path"],
+                                                 cortical_area_src=key,
+                                                 cortical_area_dst=mapped_cortical_area,
+                                                 synapse_count=synapse_count)
         if parameters["Logs"]["print_brain_gen_activities"]:
             print("Synapse creation between Cortical area %s and %s is now complete. Count: %i  Duration: %s"
                   % (key, mapped_cortical_area, synapse_count, datetime.datetime.now() - timer))

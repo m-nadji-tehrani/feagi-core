@@ -1511,14 +1511,11 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
 def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
                          dst_neuron_id, long_term_depression=False, impact_multiplier=1):
 
-    operation_start_time = datetime.now()
-    genome = runtime_data.genome
-    plasticity_constant = genome["blueprint"][src_cortical_area]["plasticity_constant"]
+    plasticity_constant = runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
     if long_term_depression:
         # When long term depression flag is set, there will be negative synaptic influence caused
         plasticity_constant = plasticity_constant * (-1) * impact_multiplier
-        # plasticity_constant = -20
 
     # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
@@ -1531,7 +1528,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     # Condition to cap the postsynaptic_current and provide prohibitory reaction
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
         min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
-            genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
+            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
 
     # Condition to prevent postsynaptic current to become negative
     # todo: consider setting a postsynaptic_min in genome to be used instead of 0
@@ -1542,14 +1539,6 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
     if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
         pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
                cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
-        # print("Synapse pruned due to having low synaptic strength.")
-
-    # print('<**> ', src_cortical_area, src_neuron_id[27:], dst_cortical_area, dst_neuron_id[27:], 'PSC=',
-    #       runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"])
-
-    function_time = datetime.now() - operation_start_time
-    init_data.time_apply_plasticity_ext = init_data.time_apply_plasticity_ext + function_time
-    return
 
 
 def snooze_till(cortical_area, neuron_id, burst_id):

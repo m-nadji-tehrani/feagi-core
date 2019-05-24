@@ -40,7 +40,8 @@
     "evaluation_based_termination": false,
     "use_highest_performing_genome_only": false,
     "influx_stat_logger": false,
-    "influx_keep_stats": true,
+    "influx_keep_stats": false,
+    "influx_brain_gen_stats": false,
     "MNIST_set_option": 2
 
   },
@@ -74,7 +75,7 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 10,
+    "variation_default": 20,
     "exposure_default":30,
     "utf_default": 9,
     "burst_skip": 0,

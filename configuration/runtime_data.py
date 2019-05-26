@@ -19,3 +19,4 @@ exposure_counter_actual = 0
 mnist_training = {}
 mnist_testing = {}
 top_10_utf_memory_neurons = {}
+v1_members = []

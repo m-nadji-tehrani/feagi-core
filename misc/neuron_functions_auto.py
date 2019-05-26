@@ -118,8 +118,6 @@ def burst():
 
     init_data.fire_candidate_list = fcl_template
 
-
-    print("Fire candidate list: >>>> ", init_data.fire_candidate_list)
     runtime_data.cortical_list = cortical_list
     runtime_data.memory_list = cortical_group_members('Memory')
     print("Memory list is: ", runtime_data.memory_list)
@@ -206,9 +204,16 @@ def burst():
 
             init_data.future_fcl = fcl_template
 
+            # Firing all neurons in the fire_candidate_list
             for cortical_area in init_data.fire_candidate_list:
-                for neuron in init_data.fire_candidate_list[cortical_area]:
-                    neuron_fire(cortical_area, neuron)
+                while init_data.fire_candidate_list[cortical_area]:
+                    neuron_to_fire = init_data.fire_candidate_list[cortical_area].pop()
+                    neuron_fire(cortical_area, neuron_to_fire)
+
+
+            # for cortical_area in init_data.fire_candidate_list:
+            #     for neuron in init_data.fire_candidate_list[cortical_area]:
+            #         neuron_fire(cortical_area, neuron)
 
             print("PFCL:", candidate_list_counter(init_data.previous_fcl),
                   "\nCFCL:", candidate_list_counter(init_data.fire_candidate_list),
@@ -488,8 +493,7 @@ class Injector:
             init_data.training_neuron_list_utf = IPU_utf8.convert_char_to_fire_list(str(init_data.labeled_image[1]))
             print("!!! Image label: ", init_data.labeled_image[1])
         print("Fire candidate list: >> ", init_data.fire_candidate_list)
-        init_data.fire_candidate_list['utf8'] = \
-            set(init_data.training_neuron_list_utf) | set(init_data.fire_candidate_list['utf8'])
+        init_data.fire_candidate_list['utf8'].update(init_data.training_neuron_list_utf)
 
     @staticmethod
     def img_neuron_list_feeder():
@@ -497,8 +501,7 @@ class Injector:
         # inject neuron activity to FCL
 
         for cortical_area in runtime_data.v1_members:
-            init_data.fire_candidate_list[cortical_area] = \
-                set(init_data.training_neuron_list_img[cortical_area]) | set(init_data.fire_candidate_list[cortical_area])
+            init_data.fire_candidate_list[cortical_area].update(init_data.training_neuron_list_img[cortical_area])
 
         # print("Activities caused by image are now part of the FCL")
 
@@ -1140,8 +1143,6 @@ def activation_function(postsynaptic_current):
 def neuron_fire(cortical_area, neuron_id):
     """This function initiate the firing of Neuron in a given cortical area"""
 
-    print("Firing >>", cortical_area, neuron_id)
-
     global init_data
     # if runtime_data.parameters["Switches"]["logging_fire"]:
     #     print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
@@ -1232,7 +1233,7 @@ def neuron_fire(cortical_area, neuron_id):
                             for src_cortital_area in upstream_data:
                                 for src_neuron in upstream_data[src_cortital_area]:
                                     if src_cortital_area != dst_cortical_area and \
-                                            [src_cortital_area, src_neuron] in init_data.previous_fcl:
+                                            src_neuron in init_data.previous_fcl[src_cortital_area]:
                                         apply_plasticity_ext(src_cortical_area=src_cortital_area,
                                                              src_neuron_id=src_neuron,
                                                              dst_cortical_area=dst_cortical_area,
@@ -1285,8 +1286,8 @@ def neuron_fire(cortical_area, neuron_id):
             init_data.burst_detection_list[detected_item]['count'] += 1
         init_data.burst_detection_list[detected_item]['rank'] = activity_rank
 
-    # Removing the fired neuron from the FCL
-    init_data.fire_candidate_list[cortical_area].remove(neuron_id)
+    # # Removing the fired neuron from the FCL
+    # init_data.fire_candidate_list[cortical_area].remove(neuron_id)
 
     # todo: add a check that if the firing neuron is part of OPU to perform an action
 

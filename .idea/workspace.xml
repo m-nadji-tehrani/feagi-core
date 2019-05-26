@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="Perf. imp.">
+    <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="fire-candidate-list to dictionary">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configuration/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/configuration/parameters.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/misc/neuron_functions_auto.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/neuron_functions_auto.py" afterDir="false" />
     </list>
     <ignored path="My_Brian.iws" />
@@ -84,8 +83,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="611">
-                  <caret line="1208" column="42" lean-forward="true" selection-start-line="1208" selection-start-column="42" selection-end-line="1208" selection-end-column="42" />
+                <state relative-caret-position="565">
+                  <caret line="1244" lean-forward="true" selection-start-line="1244" selection-end-line="1244" />
                   <folding>
                     <element signature="e#363#372#0" expanded="true" />
                   </folding>
@@ -94,58 +93,19 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/evolutionary/architect.py">
+            <entry file="file://$PROJECT_DIR$/PUs/IPU_utf8.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2924">
-                  <caret line="375" column="28" selection-start-line="375" selection-start-column="28" selection-end-line="375" selection-end-column="28" />
-                  <folding>
-                    <element signature="e#0#364#1" />
-                    <element signature="e#626#1155#0" />
-                    <element signature="e#626#767#1" />
-                    <element signature="e#772#805#0" />
-                    <element signature="e#1016#1148#0" />
-                    <element signature="e#1234#1763#0" />
-                    <element signature="e#1234#1375#1" />
-                    <element signature="e#1380#1413#0" />
-                    <element signature="e#1624#1756#0" />
-                    <element signature="e#1841#2370#0" />
-                    <element signature="e#1841#1982#1" />
-                    <element signature="e#1987#2020#0" />
-                    <element signature="e#2231#2363#0" />
-                    <element signature="e#2447#2976#0" />
-                    <element signature="e#2447#2588#1" />
-                    <element signature="e#2593#2626#0" />
-                    <element signature="e#2837#2969#0" />
-                    <element signature="e#3026#5260#0" />
-                    <element signature="e#3026#3088#1" />
-                    <element signature="e#4471#4536#0" />
-                    <element signature="e#5356#6327#0" />
-                    <element signature="e#5356#5928#1" />
-                    <element signature="e#6086#6148#0" />
-                    <element signature="e#6389#6777#0" />
-                    <element signature="e#6389#6499#1" />
-                    <element signature="e#6504#6550#0" />
-                    <element signature="e#6823#10751#0" />
-                    <element signature="e#6823#6935#1" />
-                    <element signature="e#6941#6966#0" />
-                    <element signature="e#7683#7750#0" />
-                    <element signature="e#7869#8617#0" />
-                    <element signature="e#7961#8617#0" />
-                    <element signature="e#9270#9372#0" />
-                    <element signature="e#10449#10723#0" />
-                    <element signature="e#10486#10684#0" />
-                    <element signature="e#10528#10641#0" />
-                    <element signature="e#10795#10872#1" />
-                  </folding>
+                <state relative-caret-position="276">
+                  <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cython_libs/test.py">
+            <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="493">
-                  <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+                <state relative-caret-position="504">
+                  <caret line="21" column="14" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
                 </state>
               </provider>
             </entry>
@@ -174,8 +134,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2992">
-                  <caret line="180" selection-start-line="180" selection-end-line="180" />
+                <state relative-caret-position="642">
+                  <caret line="167" selection-start-line="167" selection-end-line="170" selection-end-column="36" />
                   <folding>
                     <element signature="e#2#30#0" expanded="true" />
                   </folding>
@@ -207,7 +167,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/evolutionary/brain_gen.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2533">
+                <state relative-caret-position="1290">
                   <caret line="161" column="10" lean-forward="true" selection-start-line="161" selection-start-column="10" selection-end-line="161" selection-end-column="10" />
                   <folding>
                     <element signature="e#98#109#0" expanded="true" />
@@ -232,20 +192,20 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="953">
+                <state relative-caret-position="678">
                   <caret line="77" column="27" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="935">
-                  <caret line="862" column="19" selection-start-line="862" selection-start-column="19" selection-end-line="862" selection-end-column="19" />
+                <state relative-caret-position="538">
+                  <caret line="847" column="37" selection-start-line="847" selection-start-column="28" selection-end-line="847" selection-end-column="37" />
                   <folding>
                     <element signature="n#!!block;n#firing_patterns#0;n#!!top" />
                     <element signature="n#!!block;n#A#0;n#!!block;n#firing_patterns#0;n#!!top" />
@@ -538,21 +498,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>image_feeder2</find>
-      <find>init_data.labeled_image</find>
-      <find>mnist_direction_matrix_builder</find>
-      <find>MNIST training da</find>
-      <find>_+_+_+_+_</find>
-      <find>runtime_data.mnist_</find>
-      <find>convert_image</find>
-      <find>Error on direction selectivity</find>
-      <find>image_feeder</find>
-      <find>fetch</find>
-      <find>$$$$$ $  $  $ $  $ $</find>
-      <find>&gt;&gt;&gt; IPU vision array:</find>
-      <find>upstream_fcl_stats</find>
-      <find>list_upstream_neuron_count_for_digits</find>
-      <find>list_top_n_utf_memory_neurons</find>
       <find>top_n_utf_memory_neurons</find>
       <find>cumulative_neighbor_count</find>
       <find>init_data.cumulative_neighbor_count</find>
@@ -566,8 +511,23 @@
       <find>genome</find>
       <find>inject_to_fcl</find>
       <find>.append</find>
-      <find>neuron_fire</find>
       <find>try:</find>
+      <find>fcl_history</find>
+      <find>activity_stats</find>
+      <find>cfcl</find>
+      <find>list_upstream_neuron_count_for_digits</find>
+      <find>form_memories</find>
+      <find>fire_candidate_list</find>
+      <find>training_neuron_list_img</find>
+      <find>vision</find>
+      <find>group</find>
+      <find>training_neuron_list</find>
+      <find>future_fcl</find>
+      <find>pfcl</find>
+      <find>previous_fcl</find>
+      <find>{}</find>
+      <find>neuron_fire</find>
+      <find>|</find>
     </findStrings>
     <replaceStrings>
       <replace>runtime_data.genome_test_stats</replace>
@@ -618,7 +578,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/documentation/Important_event_timeline" />
         <option value="$PROJECT_DIR$/documentation/shell_commands.txt" />
         <option value="$PROJECT_DIR$/evolutionary/static_genome2.json" />
         <option value="$PROJECT_DIR$/connectome_4/genome_tmp.json" />
@@ -662,12 +621,13 @@
         <option value="$PROJECT_DIR$/main-auto.py" />
         <option value="$PROJECT_DIR$/misc/disk_ops.py" />
         <option value="$PROJECT_DIR$/PUs/IPU_vision.py" />
-        <option value="$PROJECT_DIR$/misc/brain_functions.py" />
-        <option value="$PROJECT_DIR$/configuration/runtime_data.py" />
         <option value="$PROJECT_DIR$/evolutionary/architect.py" />
         <option value="$PROJECT_DIR$/evolutionary/brain_gen.py" />
         <option value="$PROJECT_DIR$/cython_libs/test.py" />
         <option value="$PROJECT_DIR$/configuration/parameters.json" />
+        <option value="$PROJECT_DIR$/misc/brain_functions.py" />
+        <option value="$PROJECT_DIR$/configuration/runtime_data.py" />
+        <option value="$PROJECT_DIR$/PUs/IPU_utf8.py" />
         <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
       </list>
     </option>
@@ -1026,21 +986,7 @@
       <workItem from="1558205856672" duration="12638000" />
       <workItem from="1558223364960" duration="23545000" />
       <workItem from="1558496828139" duration="20549000" />
-      <workItem from="1558727420581" duration="3790000" />
-    </task>
-    <task id="LOCAL-00212" summary="Misc.">
-      <created>1549861315920</created>
-      <option name="number" value="00212" />
-      <option name="presentableId" value="LOCAL-00212" />
-      <option name="project" value="LOCAL" />
-      <updated>1549861315921</updated>
-    </task>
-    <task id="LOCAL-00213" summary="Removing leak exclusion from vision_memory">
-      <created>1549888834901</created>
-      <option name="number" value="00213" />
-      <option name="presentableId" value="LOCAL-00213" />
-      <option name="project" value="LOCAL" />
-      <updated>1549888834902</updated>
+      <workItem from="1558727420581" duration="17918000" />
     </task>
     <task id="LOCAL-00214" summary="Performance improvement through Neuron Update code">
       <created>1550033719592</created>
@@ -1371,11 +1317,25 @@
       <option name="project" value="LOCAL" />
       <updated>1558724843304</updated>
     </task>
-    <option name="localTasksCounter" value="261" />
+    <task id="LOCAL-00261" summary="pre conversion of fire-candidate-list to dictionary">
+      <created>1558738536707</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1558738536708</updated>
+    </task>
+    <task id="LOCAL-00262" summary="fire-candidate-list to dictionary">
+      <created>1558851755217</created>
+      <option name="number" value="00262" />
+      <option name="presentableId" value="LOCAL-00262" />
+      <option name="project" value="LOCAL" />
+      <updated>1558851755221</updated>
+    </task>
+    <option name="localTasksCounter" value="263" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="193594000" />
+    <option name="totallyTimeSpent" value="207722000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1390,20 +1350,20 @@
     <frame x="-3008" y="-610" width="3008" height="1692" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49235475" visible="true" weight="0.16554283" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49235475" visible="true" weight="0.16554283" />
       <window_info id="Structure" order="1" weight="0.1753203" />
       <window_info id="Favorites" order="2" sideWeight="0.5243978" side_tool="true" weight="0.2818611" />
       <window_info id="Run" order="3" sideWeight="0.5737204" weight="0.2670263" />
       <window_info id="Debug" order="4" sideWeight="0.4756022" weight="0.15273096" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" visible="true" weight="0.15474723" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.15474723" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" sideWeight="0.4978903" weight="0.2479883" />
       <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.4072039" side_tool="true" weight="0.30194473" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.22112416" />
-      <window_info anchor="bottom" id="Python Console" order="8" sideWeight="0.57241744" weight="0.2188656" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="8" sideWeight="0.57241744" visible="true" weight="0.2188656" />
       <window_info anchor="bottom" id="Messages" order="9" />
       <window_info anchor="bottom" id="Application Servers" order="10" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32893288" />
@@ -1511,8 +1471,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Cythonized neuron_update" />
-    <MESSAGE value="Future Candidate List" />
     <MESSAGE value="Parameters adj." />
     <MESSAGE value="form_memory efficiency improvements" />
     <MESSAGE value="Genome_id fix" />
@@ -1536,7 +1494,9 @@
     <MESSAGE value="Stable checkpoint" />
     <MESSAGE value="External synapse creation bug fix" />
     <MESSAGE value="Perf. imp." />
-    <option name="LAST_COMMIT_MESSAGE" value="Perf. imp." />
+    <MESSAGE value="pre conversion of fire-candidate-list to dictionary" />
+    <MESSAGE value="fire-candidate-list to dictionary" />
+    <option name="LAST_COMMIT_MESSAGE" value="fire-candidate-list to dictionary" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1653,13 +1613,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/connectome_1/genome_tmp.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PUs/IPU_utf8.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cython_libs/mycython_test.pyx">
       <provider selected="true" editor-type-id="text-editor">
@@ -1808,13 +1761,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" selection-start-line="20" selection-end-line="20" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/architect.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2924">
@@ -1885,16 +1831,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2992">
-          <caret line="180" selection-start-line="180" selection-end-line="180" />
-          <folding>
-            <element signature="e#2#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9248">
@@ -1912,16 +1848,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evolutionary/brain_gen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2533">
-          <caret line="161" column="10" lean-forward="true" selection-start-line="161" selection-start-column="10" selection-end-line="161" selection-end-column="10" />
-          <folding>
-            <element signature="e#98#109#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/genethesizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4080">
@@ -1932,10 +1858,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/documentation/algorithms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" selection-start-line="20" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/connectome/utf8_memory.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualization/grafana.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16490">
+          <caret line="970" column="11" selection-start-line="970" selection-start-column="11" selection-end-line="970" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="678">
+          <caret line="77" column="27" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evolutionary/brain_gen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1290">
+          <caret line="161" column="10" lean-forward="true" selection-start-line="161" selection-start-column="10" selection-end-line="161" selection-end-column="10" />
+          <folding>
+            <element signature="e#98#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="642">
+          <caret line="167" selection-start-line="167" selection-end-line="170" selection-end-column="36" />
+          <folding>
+            <element signature="e#2#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="862" column="19" selection-start-line="862" selection-start-column="19" selection-end-line="862" selection-end-column="19" />
+        <state relative-caret-position="538">
+          <caret line="847" column="37" selection-start-line="847" selection-start-column="28" selection-end-line="847" selection-end-column="37" />
           <folding>
             <element signature="n#!!block;n#firing_patterns#0;n#!!top" />
             <element signature="n#!!block;n#A#0;n#!!block;n#firing_patterns#0;n#!!top" />
@@ -2187,38 +2161,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/documentation/algorithms.py">
+    <entry file="file://$PROJECT_DIR$/configuration/runtime_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" selection-start-line="20" selection-end-line="21" />
+        <state relative-caret-position="504">
+          <caret line="21" column="14" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/connectome/utf8_memory.json">
+    <entry file="file://$PROJECT_DIR$/PUs/IPU_utf8.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="2" selection-start-column="2" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/visualization/grafana.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16490">
-          <caret line="970" column="11" selection-start-line="970" selection-start-column="11" selection-end-line="970" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="953">
-          <caret line="77" column="27" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
+        <state relative-caret-position="276">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="1208" column="42" lean-forward="true" selection-start-line="1208" selection-start-column="42" selection-end-line="1208" selection-end-column="42" />
+        <state relative-caret-position="565">
+          <caret line="1244" lean-forward="true" selection-start-line="1244" selection-end-line="1244" />
           <folding>
             <element signature="e#363#372#0" expanded="true" />
           </folding>

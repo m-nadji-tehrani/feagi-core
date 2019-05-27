@@ -112,16 +112,13 @@ def burst():
     init_data.event_id = runtime_data.event_id
 
     print('runtime_data.genome_id = ', runtime_data.genome_id)
-    fcl_template = {}
     cortical_list = []
 
     for cortical_area in runtime_data.genome['blueprint']:
         cortical_list.append(cortical_area)
-        fcl_template[cortical_area] = set()
-
-    init_data.fire_candidate_list = fcl_template.copy()
-    init_data.future_fcl = fcl_template.copy()
-    init_data.previous_fcl = fcl_template.copy()
+        init_data.fire_candidate_list[cortical_area] = set()
+        init_data.future_fcl[cortical_area] = set()
+        init_data.previous_fcl[cortical_area] = set()
 
     runtime_data.cortical_list = cortical_list
     runtime_data.memory_list = cortical_group_members('Memory')
@@ -158,7 +155,9 @@ def burst():
         # print(datetime.now(), "Burst count = ", init_data.burst_count, file=open("./logs/burst.log", "a"))
 
         # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
-        init_data.previous_fcl = dict(init_data.fire_candidate_list)
+        for cortical_area in init_data.fire_candidate_list:
+            init_data.previous_fcl[cortical_area] = set([item for item in init_data.fire_candidate_list[cortical_area]])
+
         init_data.burst_count += 1
 
         # logging neuron activities to the influxdb
@@ -207,9 +206,7 @@ def burst():
             now = datetime.now()
             init_data.time_neuron_update = datetime.now() - now
 
-            print("PFCL:", candidate_list_counter(init_data.previous_fcl),
-                  "\nCFCL:", candidate_list_counter(init_data.fire_candidate_list),
-                  "\nFFCL:", candidate_list_counter(init_data.future_fcl))
+            print(id(init_data.previous_fcl), id(init_data.fire_candidate_list), id(init_data.future_fcl))
 
             # Firing all neurons in the fire_candidate_list
             for cortical_area in init_data.fire_candidate_list:
@@ -221,7 +218,8 @@ def burst():
                   "\nCFCL:", candidate_list_counter(init_data.fire_candidate_list),
                   "\nFFCL:", candidate_list_counter(init_data.future_fcl))
 
-            init_data.fire_candidate_list = dict(init_data.future_fcl)
+            for cortical_area in init_data.future_fcl:
+                init_data.fire_candidate_list[cortical_area] = set([item for item in init_data.future_fcl[cortical_area]])
 
             print("Timing : - Actual firing activities:", datetime.now() - time_actual_firing_activities)
             print("Timing : |___________Neuron updates:", init_data.time_neuron_update)
@@ -985,7 +983,7 @@ class Injector:
         self.tester_comprehension_counter = 0
         self.tester_no_response_counter = 0
         # logging stats into Genome
-        runtime_data.genome_test_stats.append(self.tester_test_stats.copy())
+        runtime_data.genome_test_stats.append(self.tester_test_stats.deepcopy())
         self.tester_test_stats = {}
         if runtime_data.parameters["Switches"]["live_mode"] and init_data.live_mode_status == 'testing':
             init_data.live_mode_status = 'idle'

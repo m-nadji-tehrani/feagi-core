@@ -394,6 +394,9 @@ def burst():
 
         print("Timing : Apply plasticity ext:", init_data.time_apply_plasticity_ext)
 
+        # Prune all prune candidate synapses
+        prune_all_candidates()
+
         burst_duration = datetime.now() - burst_start_time
         if runtime_data.parameters["Logs"]["print_burst_info"]:
             print(settings.Bcolors.YELLOW +
@@ -1409,9 +1412,8 @@ def common_neuron_report():
             if overlap_amount > runtime_data.parameters["InitData"]["overlap_prevention_constant"]:
                 # The following action is taken to eliminate the overlap
                 for neuron in common_neuron_list:
-                    pruner('vision_memory', neuron, 'utf8_memory', neuron_a)
-                    pruner('vision_memory', neuron, 'utf8_memory', neuron_b)
-                    # print("--+--+--+--+--+: Common synapses has been pruned.")
+                    runtime_data.prunning_candidates.add(('vision_memory', neuron, 'utf8_memory', neuron_a))
+                    runtime_data.prunning_candidates.add(('vision_memory', neuron, 'utf8_memory', neuron_b))
 
 
 # def neuron_update(presynaptic_current,
@@ -1535,8 +1537,7 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
 
     # Condition to prune a synapse if its postsynaptic_current is zero
     if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
-        pruner(cortical_area_src=src_cortical_area, src_neuron_id=src_neuron_id,
-               cortical_area_dst=dst_cortical_area , dst_neuron_id=dst_neuron_id)
+        runtime_data.prunning_candidates.add((src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id))
 
 
 def snooze_till(cortical_area, neuron_id, burst_id):
@@ -1661,14 +1662,13 @@ def trigger_pain():
         init_data.future_fcl['pain'].add(neuron)
 
 
-def pruner(cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id):
+def pruner(pruning_data):
     """
     Responsible for pruning unused connections between neurons
     """
-    # print(".....Pruning.....")
-    # print("pre pruning: ", cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
+    cortical_area_src, src_neuron_id, cortical_area_dst, dst_neuron_id = pruning_data
     runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors'].pop(dst_neuron_id, None)
-    # print("post pruning: ",  cortical_area_src, src_neuron_id, len(runtime_data.brain[cortical_area_src][src_neuron_id]['neighbors']))
+
     runtime_data.upstream_neurons[cortical_area_dst][dst_neuron_id][cortical_area_src].remove(src_neuron_id)
     if dst_neuron_id in runtime_data.temp_neuron_list:
         runtime_data.temp_neuron_list.remove(dst_neuron_id)
@@ -1686,3 +1686,9 @@ def average_postsynaptic_current(cortical_area):
     else:
         avg_postsynaptic_current = 0
     return avg_postsynaptic_current
+
+
+def prune_all_candidates():
+    while runtime_data.prunning_candidates:
+        prune_candidate = runtime_data.prunning_candidates.pop()
+        pruner(prune_candidate)

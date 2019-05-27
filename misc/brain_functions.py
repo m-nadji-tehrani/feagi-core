@@ -45,9 +45,10 @@ class Brain:
         kernel = IPU_vision.Kernel()
 
         polarized_image = mnist.mnist_img_fetcher3(num=num, seq=seq, mnist_type=mnist_type, random_num=random_num)
+        # print("polarized_image", polarized_image)
 
         for cortical_area in vision_group:
-            neuron_list[cortical_area] = {}
+            neuron_list[cortical_area] = set()
             cortical_direction_sensitivity = runtime_data.genome['blueprint'][cortical_area][
                 'direction_sensitivity']
 
@@ -70,13 +71,13 @@ class Brain:
 
                         neuron_id_list = IPU_vision.Image.convert_image_locations_to_neuron_ids(ipu_vision_array,
                                                                                                 cortical_area)
+                        # print("Neuron id list: ", neuron_id_list)
 
                         if runtime_data.parameters['Logs']['print_activation_counters']:
                             print("Neuron id count activated in layer %s is %i\n\n" %
                                   (cortical_area, len(neuron_id_list)))
 
-                        for item in neuron_id_list:
-                            neuron_list[cortical_area].add(item)
+                        neuron_list[cortical_area].update(set(neuron_id_list))
                     except:
                         print("Error on direction selectivity")
 

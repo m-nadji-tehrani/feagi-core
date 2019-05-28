@@ -21,4 +21,28 @@ mnist_testing = {}
 top_10_utf_memory_neurons = {}
 v1_members = []
 prunning_candidates = set()
+genome_id = ""
+event_id = '_'
+blueprint = ""
+# rules = ""
+brain_is_running = False
+# live_mode_status can have modes of idle, learning, testing, tbd
+live_mode_status = 'idle'
+fcl_history = {}
+brain_run_id = ""
+burst_detection_list = {}
+burst_count = 0
+fire_candidate_list = {}
+previous_fcl = {}
+future_fcl = {}
+labeled_image = []
+training_neuron_list_utf = {}
+training_neuron_list_img = {}
+empty_fcl_counter = 0
+neuron_mp_list = []
+pain_flag = False
+cumulative_neighbor_count = 0
+time_neuron_update = ''
+time_apply_plasticity_ext = ''
+
 

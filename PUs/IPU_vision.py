@@ -175,30 +175,30 @@ class MNIST:
     #             print("The image for number %s has been fetched." % str(num))
     #         return img_data, img_lbl
 
-    def mnist_img_fetcher2(self, num, seq, mnist_type):
-        """
-        returns the nth digit within MNIST that equals the desirable number
-        """
-        img_lbl = ''
-        img_data_ = ''
-        seq_counter = 0
-        mnist_counter = 1
-        while not (img_lbl == int(num) and seq_counter == seq):
-            if mnist_type == 'training':
-                img_lbl, img_data_ = self.mnist_training_array[mnist_counter]
-                # print("img_lbl=", img_lbl)
-                # print("mnist_counter=", mnist_counter)
-                # print("seq_counter=", seq_counter)
-            elif mnist_type == 'test':
-                img_lbl, img_data_ = self.mnist_test_array[mnist_counter]
-                # print("%%%:", img_lbl, img_data_)
-            else:
-                print("ERROR: Invalid data type selected for MNIST")
-            if img_lbl == int(num):
-                seq_counter += 1
-                # print("$->>-->>", counter, "$->>-->>", seq)
-            mnist_counter += 1
-        return img_data_, img_lbl
+    # def mnist_img_fetcher2(self, num, seq, mnist_type):
+    #     """
+    #     returns the nth digit within MNIST that equals the desirable number
+    #     """
+    #     img_lbl = ''
+    #     img_data_ = ''
+    #     seq_counter = 0
+    #     mnist_counter = 1
+    #     while not (img_lbl == int(num) and seq_counter == seq):
+    #         if mnist_type == 'training':
+    #             img_lbl, img_data_ = self.mnist_training_array[mnist_counter]
+    #             # print("img_lbl=", img_lbl)
+    #             # print("mnist_counter=", mnist_counter)
+    #             # print("seq_counter=", seq_counter)
+    #         elif mnist_type == 'test':
+    #             img_lbl, img_data_ = self.mnist_test_array[mnist_counter]
+    #             # print("%%%:", img_lbl, img_data_)
+    #         else:
+    #             print("ERROR: Invalid data type selected for MNIST")
+    #         if img_lbl == int(num):
+    #             seq_counter += 1
+    #             # print("$->>-->>", counter, "$->>-->>", seq)
+    #         mnist_counter += 1
+    #     return img_data_, img_lbl
 
     @staticmethod
     def mnist_img_fetcher3(num, seq, mnist_type, random_num=False):

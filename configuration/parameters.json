@@ -95,8 +95,8 @@
     "print_burst_stats": false,
     "print_brain_gen_activities": true,
     "print_comprehension_queue": false,
-    "print_upstream_neuron_stats": false,
-    "print_common_neuron_report": false
+    "print_upstream_neuron_stats": true,
+    "print_common_neuron_report": true
   },
   "Verbose":{
     "neuron_functions-neuron_update": false,

@@ -84,6 +84,7 @@ def burst():
         runtime_data.fire_candidate_list[cortical_area] = set()
         runtime_data.future_fcl[cortical_area] = set()
         runtime_data.previous_fcl[cortical_area] = set()
+        runtime_data.upstream_neurons[cortical_area] = {}
 
     runtime_data.cortical_list = cortical_list
     runtime_data.memory_list = cortical_group_members('Memory')
@@ -115,7 +116,6 @@ def burst():
         burst_start_time = datetime.now()
         runtime_data.pain_flag = False
         now = datetime.now()
-        runtime_data.time_apply_plasticity_ext = datetime.now() - now
 
         # print(datetime.now(), "Burst count = ", runtime_data.burst_count, file=open("./logs/burst.log", "a"))
 
@@ -172,6 +172,8 @@ def burst():
             time_actual_firing_activities = datetime.now()
             now = datetime.now()
             runtime_data.time_neuron_update = datetime.now() - now
+            runtime_data.plasticity_time_total = datetime.now() - datetime.now()
+            runtime_data.plasticity_time_total_p1 = datetime.now() - datetime.now()
 
             # Firing all neurons in the fire_candidate_list
             for cortical_area in runtime_data.fire_candidate_list:
@@ -197,15 +199,18 @@ def burst():
             #                   % (cortical_area, cortical_neuron_count)
             #                   + settings.Bcolors.ENDC)
 
-            print("Timing : - Actual firing activities:", datetime.now() - time_actual_firing_activities)
-            print("Timing : |___________Neuron updates:", runtime_data.time_neuron_update)
+            print("Timing : .__________ Firing ops...........:",
+                  datetime.now() - time_actual_firing_activities - runtime_data.time_neuron_update)
+            print("Timing : |___________Neuron updates.......:", runtime_data.time_neuron_update)
+            print("Timing :             |__Ext plasticity....:", runtime_data.plasticity_time_total)
+            print("Timing :                |___Ext plast. P1.:", runtime_data.plasticity_time_total_p1)
 
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % runtime_data.fire_candidate_list + settings.Bcolors.ENDC)
 
             # print_cortical_neuron_mappings('vision_memory', 'utf8_memory')
-        print("Timing : Overall firing activities:", datetime.now() - time_firing_activities)
+        print("\nTiming : Overall firing activities........:", datetime.now() - time_firing_activities)
 
         # todo: need to break down the training function into pieces with one feeding a stream of data
         # Auto-inject if applicable
@@ -367,8 +372,6 @@ def burst():
                                    runtime_data.brain[cortical_area][neuron]["membrane_potential"])
                     new_data.append(new_content)
                     mongo.inset_membrane_potentials(new_content)
-
-        print("Timing : Apply plasticity ext:", runtime_data.time_apply_plasticity_ext)
 
         # Prune all prune candidate synapses
         pruning_start_time = datetime.now()
@@ -598,7 +601,8 @@ class Injector:
             if not self.injector_burst_skip_flag:
                 runtime_data.exposure_counter_actual -= 1
 
-            print('### ', runtime_data.variation_counter_actual, self.injector_utf_counter_actual,
+            print('  ----------------------------------------------------------------------------------------    ### ',
+                  runtime_data.variation_counter_actual, self.injector_utf_counter_actual,
                   runtime_data.exposure_counter_actual, ' ###')
 
             # Check if exit condition has been met
@@ -1087,8 +1091,8 @@ def fire_candidate_locations(fire_cnd_list):
 
 
 def update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id):
-    if dst_cortical_area not in runtime_data.upstream_neurons:
-        runtime_data.upstream_neurons[dst_cortical_area] = {}
+    # if dst_cortical_area not in runtime_data.upstream_neurons:
+    #     runtime_data.upstream_neurons[dst_cortical_area] = {}
     if dst_neuron_id not in runtime_data.upstream_neurons[dst_cortical_area]:
         runtime_data.upstream_neurons[dst_cortical_area][dst_neuron_id] = {}
     if src_cortical_area not in runtime_data.upstream_neurons[dst_cortical_area][dst_neuron_id]:
@@ -1148,14 +1152,15 @@ def neuron_fire(cortical_area, neuron_id):
     # if cortical_area == 'vision_memory':
     #     runtime_data.cumulative_neighbor_count += neighbor_count
     neighbor_count = len(neighbor_list)
+
     # Updating downstream neurons
-    # todo: neighbor_list could be a set
     for dst_neuron_id in neighbor_list:
 
         # Timing the update function
         update_start_time = datetime.now()
 
-        dst_cortical_area = runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
+        dst_cortical_area = \
+            runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
         postsynaptic_current = \
             runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"]
         # if cortical_area == 'vision_memory':
@@ -1450,33 +1455,111 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
 def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
                          dst_neuron_id, long_term_depression=False, impact_multiplier=1):
 
-    plasticity_constant = runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"]
+    # plasticity_start_time = datetime.now()
+
+    # plasticity_constant = runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
     if long_term_depression:
         # When long term depression flag is set, there will be negative synaptic influence caused
-        plasticity_constant = plasticity_constant * (-1) * impact_multiplier
+        runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"] = \
+            runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"] * (-1) * impact_multiplier
 
     # Check if source and destination have an existing synapse if not create one here
     if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
-        synapse(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id, max(plasticity_constant, 0))
+        synapse(src_cortical_area,
+                src_neuron_id,
+                dst_cortical_area,
+                dst_neuron_id,
+                max(runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"], 0))
         update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
 
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
-        plasticity_constant
+        runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"]
+
+    # plasticity_start_time_p1 = datetime.now()
 
     # Condition to cap the postsynaptic_current and provide prohibitory reaction
-    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
-        min(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
-            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"])
+    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] > \
+            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]:
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]
 
     # Condition to prevent postsynaptic current to become negative
     # todo: consider setting a postsynaptic_min in genome to be used instead of 0
-    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
-        max(runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"], 0)
+    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] < 0:
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = 0
+
+    # runtime_data.plasticity_time_total_p1 = \
+    #     (datetime.now() - plasticity_start_time_p1) + runtime_data.plasticity_time_total_p1
 
     # Condition to prune a synapse if its postsynaptic_current is zero
     if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
         runtime_data.prunning_candidates.add((src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id))
+
+    # runtime_data.plasticity_time_total = (datetime.now() - plasticity_start_time) + runtime_data.plasticity_time_total
+
+
+def apply_plasticity_ext_new(src_cortical_area, src_neuron_id, dst_cortical_area,
+                         dst_neuron_id, long_term_depression=False, impact_multiplier=1):
+    plasticity_start_time = datetime.now()
+
+    if not long_term_depression:
+        ltd_factor = 1
+    else:
+        ltd_factor = -1
+
+    # Check if source and destination have an existing synapse if not create one here
+    if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
+        # todo: evaluate what happens if plasticity constant is less than zero
+        synapse(src_cortical_area,
+                src_neuron_id,
+                dst_cortical_area,
+                dst_neuron_id,
+                runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"])
+        update_upstream_db(src_cortical_area,
+                           src_neuron_id,
+                           dst_cortical_area,
+                           dst_neuron_id)
+
+    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+        apply_plasticity_math(plasticity_const=
+                              runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"],
+                              postsynaptic_current=
+                              runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id][
+                                  "postsynaptic_current"],
+                              postsynaptic_current_max =
+                              runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"],
+                              ltd_factor=
+                              ltd_factor,
+                              impact_multiplier=
+                              impact_multiplier)
+
+    # Condition to prune a synapse if its postsynaptic_current is zero
+    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
+        runtime_data.prunning_candidates.add((src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id))
+
+    runtime_data.plasticity_time_total = (datetime.now() - plasticity_start_time) + runtime_data.plasticity_time_total
+
+
+def apply_plasticity_math(plasticity_const,
+                          postsynaptic_current,
+                          postsynaptic_current_max,
+                          ltd_factor=1,
+                          impact_multiplier=1):
+
+    # Condition to cap the postsynaptic_current and provide prohibitory reaction
+    if postsynaptic_current > postsynaptic_current_max:
+        postsynaptic_current = postsynaptic_current_max
+
+    # todo: consider setting a postsynaptic_min in genome to be used instead of 0
+    # When long term depression flag is set, there will be negative synaptic influence caused
+    postsynaptic_current = postsynaptic_current + (plasticity_const * ltd_factor * impact_multiplier)
+
+    # Condition to prevent postsynaptic current to become negative
+    if postsynaptic_current < 0:
+        postsynaptic_current = 0
+
+    return postsynaptic_current
 
 
 def snooze_till(cortical_area, neuron_id, burst_id):

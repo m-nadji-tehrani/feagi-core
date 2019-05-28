@@ -11,25 +11,30 @@ b = 3
 c = max(a,b)
 '''
 mycode2 = ''' 
-a = (3, 5)
-c = max(a)
+a = 5
+b = 3
+if a > 3:
+    a = 3
 '''
 
-mycode3 = ''' 
-a = np.array([3,5])
-c = a.max()
+mycode3 = '''
+a = 5
+b = 8
+if a > 3:
+    a = 3
 '''
+
 
 # timeit statement
 print(timeit.timeit(setup=mysetup,
               stmt=mycode,
-              number=1000000))
-
+              number=10000000))
 
 print(timeit.timeit(setup=mysetup,
               stmt=mycode2,
-              number=1000000))
+              number=10000000))
 
 print(timeit.timeit(setup=mysetup,
               stmt=mycode3,
-              number=1000000))
+              number=10000000))
+

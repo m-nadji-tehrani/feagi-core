@@ -115,7 +115,7 @@ def neuro_genesis(cortical_area, loc_blk):
 def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_current):
     """
     Function responsible for creating a synapse between a neuron and another one. In reality a single neuron can have
-    many synapses with another individual neuron. Here we use synaptic strength to simulate the same
+    many synapses with another individual neuron. Here we use synaptic strength to simulate the same.
     Note: Synapse association is captured on the Source Neuron side within Connectome
     
     # Input: The id for source and destination Neuron plus the parameter defining connection strength
@@ -123,10 +123,10 @@ def synapse(src_cortical_area, src_id, dst_cortical_area, dst_id, postsynaptic_c
     # postsynaptic_current is intended to provide the level of synaptic strength
     """
 
-    # Check to see if the source and destination ids are valid if not exit the function
-    if src_id not in runtime_data.brain[src_cortical_area]:
-        print("Source or Destination neuron not found")
-        return
+    # # Check to see if the source and destination ids are valid if not exit the function
+    # if src_id not in runtime_data.brain[src_cortical_area]:
+    #     print("Source or Destination neuron not found")
+    #     return
 
     runtime_data.brain[src_cortical_area][src_id]["neighbors"][dst_id] = \
         {"cortical_area": dst_cortical_area, "postsynaptic_current": postsynaptic_current}

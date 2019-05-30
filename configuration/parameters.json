@@ -42,6 +42,8 @@
     "influx_stat_logger": false,
     "influx_keep_stats": false,
     "influx_brain_gen_stats": false,
+    "global_logger": true,
+    "global_timer": true,
     "MNIST_set_option": 2
 
   },
@@ -75,7 +77,7 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 20,
+    "variation_default": 10,
     "exposure_default":30,
     "utf_default": 9,
     "burst_skip": 0,
@@ -87,7 +89,7 @@
     "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
-    "print_activation_counters": true,
+    "print_activation_counters": false,
     "print_cortical_activity_counters": true,
     "print_mnist_img_info": false,
     "print_plasticity_info": false,
@@ -95,8 +97,8 @@
     "print_burst_stats": false,
     "print_brain_gen_activities": true,
     "print_comprehension_queue": false,
-    "print_upstream_neuron_stats": true,
-    "print_common_neuron_report": true
+    "print_upstream_neuron_stats": false,
+    "print_common_neuron_report": false
   },
   "Verbose":{
     "neuron_functions-neuron_update": false,

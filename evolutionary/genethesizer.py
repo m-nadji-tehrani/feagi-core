@@ -234,15 +234,16 @@ def mutate(genome):
     print("#@#@#@# $$$ Mutation is about to take place on the following cortical regions:\n", cortical_list)
 
     for cortical_area in cortical_list:
-        genome = GeneModifier.change_consecutive_fire_cnt_max(genome, cortical_area, factor_1)
+        # Anatomical changes
+        genome = GeneModifier.change_cortical_dimensions(genome, cortical_area, factor_6)
         genome = GeneModifier.change_cortical_neuron_count(genome, cortical_area, factor_2)
+        genome = GeneModifier.change_growth_rule_4_param_2(genome, factor_7)
+        # Physiological changes
+        genome = GeneModifier.change_consecutive_fire_cnt_max(genome, cortical_area, factor_1)
         genome = GeneModifier.change_depolarization_timer_threshold(genome, cortical_area, factor_3)
         genome = GeneModifier.change_firing_threshold(genome, cortical_area, factor_4)
         genome = GeneModifier.change_snooze_length(genome, cortical_area, factor_5)
-        genome = GeneModifier.change_cortical_dimensions(genome, cortical_area, factor_6)
-        genome = GeneModifier.change_growth_rule_4_param_2(genome, factor_7)
         genome = GeneModifier.change_vision_plasticity_constant(genome, factor_8)
-
     return genome
 
 

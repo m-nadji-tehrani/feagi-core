@@ -159,10 +159,19 @@ def burst():
                                                        cortical_area=cortical_area,
                                                        neuron_count=cortical_neuron_count)
 
-                    if runtime_data.parameters["Logs"]["print_cortical_activity_counters"]:
+                    if runtime_data.parameters["Switches"]["global_logger"] and \
+                            runtime_data.parameters["Logs"]["print_cortical_activity_counters"] and \
+                            runtime_data.parameters["Auto_injector"]["injector_status"]:
                         print(settings.Bcolors.YELLOW + '    %s : %i  '
                               % (cortical_area, cortical_neuron_count)
                               + settings.Bcolors.ENDC)
+                    if runtime_data.parameters["Switches"]["global_logger"] and \
+                            runtime_data.parameters["Logs"]["print_cortical_activity_counters"] and \
+                            runtime_data.parameters["Auto_tester"]["tester_status"]:
+                        print(settings.Bcolors.OKGREEN + '    %s : %i  '
+                              % (cortical_area, cortical_neuron_count)
+                              + settings.Bcolors.ENDC)
+
                 else:
                     runtime_data.activity_stats[cortical_area] = len(runtime_data.fire_candidate_list[cortical_area])
 
@@ -181,8 +190,11 @@ def burst():
                     neuron_to_fire = runtime_data.fire_candidate_list[cortical_area].pop()
                     neuron_fire(cortical_area, neuron_to_fire)
 
-            print("PFCL:", candidate_list_counter(runtime_data.previous_fcl),
-                  "\nCFCL:", candidate_list_counter(runtime_data.fire_candidate_list),
+            pfcl_total_neuron_count = candidate_list_counter(runtime_data.previous_fcl)
+            cfcl_total_neuron_count = candidate_list_counter(runtime_data.fire_candidate_list)
+
+            print("PFCL:", pfcl_total_neuron_count,
+                  "\nCFCL:", cfcl_total_neuron_count,
                   "\nFFCL:", candidate_list_counter(runtime_data.future_fcl))
 
             # Transferring future_fcl to current one and resetting the future one in process
@@ -199,18 +211,30 @@ def burst():
             #                   % (cortical_area, cortical_neuron_count)
             #                   + settings.Bcolors.ENDC)
 
-            print("Timing : .__________ Firing ops...........:",
-                  datetime.now() - time_actual_firing_activities - runtime_data.time_neuron_update)
-            print("Timing : |___________Neuron updates.......:", runtime_data.time_neuron_update)
-            print("Timing :             |__Ext plasticity....:", runtime_data.plasticity_time_total)
-            print("Timing :                |___Ext plast. P1.:", runtime_data.plasticity_time_total_p1)
+            try:
+                print("Timing : .__________ Firing ops...........:",
+                      (datetime.now() - time_actual_firing_activities - runtime_data.time_neuron_update) /
+                      pfcl_total_neuron_count)
+                print("Timing : |___________Neuron updates.......:",
+                      runtime_data.time_neuron_update / pfcl_total_neuron_count)
+                print("Timing :             |__Ext plasticity....:",
+                      runtime_data.plasticity_time_total / pfcl_total_neuron_count)
+                print("Timing :                |___Ext plast. P1.:",
+                      runtime_data.plasticity_time_total_p1 / pfcl_total_neuron_count)
+
+                print("\nTiming : Average time per fire ....................:",
+                      (datetime.now() - time_firing_activities) /
+                      pfcl_total_neuron_count)
+                print("\nTiming : Total firing time per FCL.................:", datetime.now() - time_firing_activities)
+
+            except ZeroDivisionError:
+                pass
 
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
                       % runtime_data.fire_candidate_list + settings.Bcolors.ENDC)
 
             # print_cortical_neuron_mappings('vision_memory', 'utf8_memory')
-        print("\nTiming : Overall firing activities........:", datetime.now() - time_firing_activities)
 
         # todo: need to break down the training function into pieces with one feeding a stream of data
         # Auto-inject if applicable

@@ -774,7 +774,6 @@ class Injector:
 
         finally:
             toggle_test_mode()
-            disk_ops.load_mnist_data_in_memory('test', 5)
             self.tester_test_id = test_id_gen()
             self.tester_test_stats["genome_id"] = runtime_data.genome_id
             print('Genome_id = ', runtime_data.genome_id)

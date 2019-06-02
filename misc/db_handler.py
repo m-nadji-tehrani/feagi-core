@@ -33,13 +33,12 @@ class MongoManagement:
     def insert_mnist_entry(self, mnist_data):
         self.collection_mnist.insert_one(mnist_data)
 
-
     # def read_genome(self, genome_id):
     #
     #     return genome
 
     def latest_genome(self):
-        db_output = self.collection_mnist.find({}).sort("generation_date", DESCENDING).limit(1)
+        db_output = self.collection_genome.find({}).sort("generation_date", DESCENDING).limit(1)
         return db_output[0]
 
     def mnist_(self, seq):

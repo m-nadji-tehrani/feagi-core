@@ -212,7 +212,6 @@ def mutate(genome):
     selector = [0,0,0,0,0,0,0,0]
     selector[dice] = 1
 
-
     factor_1 = selector[0] * random.randrange(-20, 20, 1) / 100
     factor_2 = selector[1] * random.randrange(-20, 20, 1) / 100
     factor_3 = selector[2] * random.randrange(-20, 20, 1) / 100
@@ -303,8 +302,13 @@ def random_genome():
 def latest_genome():
     db = db_handler.MongoManagement()
     genome = db.latest_genome()
+    for key in genome:
+        print(">.> ", key)
     original_genome_id = []
-    original_genome_id.append(genome['genome_id'])
+    try:
+        original_genome_id.append(genome['genome_id'])
+    except KeyError:
+        print("\n\n\nERROR: KeyError while appending genome_id to original_genome_id\n\n\n")
     return genome['properties'], original_genome_id
 
 

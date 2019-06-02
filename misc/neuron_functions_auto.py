@@ -815,10 +815,9 @@ class Injector:
             # Exposure counter
             runtime_data.exposure_counter_actual -= 1
 
-            print("Exposure counter actual: ", runtime_data.exposure_counter_actual)
-            print("Variation counter actual: ", runtime_data.variation_counter_actual,
-                  self.tester_variation_handler)
-            print("UTF counter actual: ", self.tester_utf_counter_actual, self.tester_utf_handler)
+            print('  ----------------------------------------------------------------------------------------    ### ',
+                  runtime_data.variation_counter_actual, self.tester_utf_counter_actual,
+                  runtime_data.exposure_counter_actual, ' ###')
 
             if runtime_data.exposure_counter_actual < 1:
                 # Turning on the skip flag to allow FCL to clear

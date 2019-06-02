@@ -10,6 +10,7 @@ from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
 from datetime import datetime
+from misc.db_handler import MongoManagement
 
 # from disk_ops import save_processed_mnist_to_disk
 # from cython_libs import ipu_vision_cy as ipu_cy
@@ -46,7 +47,7 @@ class MNIST:
             self.mnist_array['training'].append(_)
         for __ in self.mnist_test_iterator:
             self.mnist_array['test'].append(__)
-
+        self.mongo = MongoManagement()
         print(">><<>><<>><<>><< **  **  **  **   **  **  **  ****  >><<>><<>><<>><<>><<")
         # print(len(mnist_array))
 
@@ -174,91 +175,17 @@ class MNIST:
         for i in range(len(lbl)):
             yield get_img(i)
 
-    # def read_training_img_from_mnist():
-    #     image_num = random.randrange(10, 500, 1)
-    #     training_image = read_image(image_num)
-    #     return training_image
-
-    # def mnist_img_fetcher(self, num):
-    #     # Returns a random image from the entire MNIST matching the requested number
-    #     # global mnist_array
-    #     img_lbl = ''
-    #     # print("An image is being fetched from MNIST")
-    #     if runtime_data.parameters["Switches"]["ipu_vision_dynamic_img_fetch"]:
-    #         while img_lbl != int(num):
-    #             img_index = random.randrange(10, len(self.mnist_array), 1)
-    #             img_lbl, img_data = self.mnist_array[img_index]
-    #         print('>>> MNIST img id >>>', img_index)
-    #         if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
-    #             print("The image for number %s has been fetched." %str(num))
-    #         return img_data, img_lbl
-    #     else:
-    #
-    #         if runtime_data.parameters["Switches"]["MNIST_set_option"] == 1:
-    #                     hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002]
-    #
-    #         elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 2:
-    #                     hand_picked_list = [33485, 37518, 55170, 30273, 58049, 40258, 45668, 20162, 28940, 35002,
-    #                                         18896, 46916, 9054, 37745, 21653, 21883, 27934, 7446, 35120, 11015]
-    #
-    #         elif runtime_data.parameters["Switches"]["MNIST_set_option"] == 3:
-    #                     hand_picked_list = range(100, 200)
-    #
-    #         while img_lbl != int(num):
-    #             selected_img = hand_picked_list[random.randrange(len(hand_picked_list))]
-    #             img_lbl, img_data = self.mnist_array[selected_img]
-    #         if runtime_data.parameters["Logs"]["print_mnist_img_info"]:
-    #             print("The image for number %s has been fetched." % str(num))
-    #         return img_data, img_lbl
-
-    # def mnist_img_fetcher2(self, num, seq, mnist_type):
-    #     """
-    #     returns the nth digit within MNIST that equals the desirable number
-    #     """
-    #     img_lbl = ''
-    #     img_data_ = ''
-    #     seq_counter = 0
-    #     mnist_counter = 1
-    #     while not (img_lbl == int(num) and seq_counter == seq):
-    #         if mnist_type == 'training':
-    #             img_lbl, img_data_ = self.mnist_training_array[mnist_counter]
-    #             # print("img_lbl=", img_lbl)
-    #             # print("mnist_counter=", mnist_counter)
-    #             # print("seq_counter=", seq_counter)
-    #         elif mnist_type == 'test':
-    #             img_lbl, img_data_ = self.mnist_test_array[mnist_counter]
-    #             # print("%%%:", img_lbl, img_data_)
-    #         else:
-    #             print("ERROR: Invalid data type selected for MNIST")
-    #         if img_lbl == int(num):
-    #             seq_counter += 1
-    #             # print("$->>-->>", counter, "$->>-->>", seq)
-    #         mnist_counter += 1
-    #     return img_data_, img_lbl
-
-    @staticmethod
-    def mnist_img_fetcher3(num, seq, mnist_type, random_num=False):
+    def mnist_img_fetcher3(self, num, kernel_size, seq, mnist_type, random_num=False):
         """
         Reads a number from pre-processed dataset and returns direction matrix data
         """
 
-        if mnist_type == 'training':
-            data_set = runtime_data.mnist_training
-
-        elif mnist_type == 'test':
-            data_set = runtime_data.mnist_testing
-        else:
-            print("ERROR: Invalid mnist_type")
-            return
-
-        kernel_size = runtime_data.genome["blueprint"]['vision_v1-1']["kernel_size"]
-
         if random_num:
-            available_number_count = len(data_set[str(num)])
-            return data_set[random.randrange(0, available_number_count)]
+            # todo: Need to create and call a MongoDb function to pull a random number
+            return
         else:
-            # todo: kernel size in the following statement is hardcoded; fix it!
-            return data_set["5"][str(num)][seq]
+            return self.mongo.mnist_read_nth_digit(mnist_type=mnist_type, n=seq, kernel_size=kernel_size, digit=num)
+            # return self.mongo.mnist_read_single_digit(mnist_type=mnist_type, seq=seq, kernel=kernel_size)
 
     def read_image(self, index):
         # Reads an image from MNIST matching the index number requested in the function
@@ -647,7 +574,7 @@ if __name__ == '__main__':
 
     mnist = MNIST()
 
-    mnist.mnist_direction_matrix_builder_in_mongodb()
+    # mnist.mnist_direction_matrix_builder_in_mongodb()
 
     # mnist_data = {
     #     "mnist_type": "training",

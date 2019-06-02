@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     from configuration import runtime_data, settings
 
-    disk_ops.load_mnist_data_in_memory('training', 5)
+    # disk_ops.load_mnist_data_in_memory('training', 5)
     # print("\n\n MNIST training data:\n", runtime_data.mnist_training)
 
     try:

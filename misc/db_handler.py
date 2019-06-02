@@ -145,6 +145,25 @@ class MongoManagement:
     def mnist_read_single_digit(self, mnist_type, seq, kernel):
         return self.collection_mnist.find({"mnist_type": mnist_type, 'mnist_seq': seq, 'kernel_size': kernel})[0]
 
+    def mnist_read_nth_digit(self, mnist_type, n, kernel_size, digit):
+        """
+        // Requires official MongoShell 3.6+
+        use metis;
+        db.getCollection("mnist").find(
+            {
+                "digit" : "5",
+                "kernel_size" : NumberInt(7),
+                "mnist_type" : "training"
+            }
+        ).sort(
+            {
+                "mnist_seq" : 1.0
+            }
+        ).skip(1000).limit(1);
+        """
+        return self.collection_mnist.find({"mnist_type": mnist_type, 'digit': str(digit), 'kernel_size': kernel_size}).sort(
+            "mnist_seq", 1).skip(n).limit(1)[0]
+
 
 class InfluxManagement:
     def __init__(self):
@@ -303,13 +322,15 @@ if __name__ == "__main__":
 
     mongo = MongoManagement()
 
-    results = mongo.mnist_read_single_digit(mnist_type='training', seq=2, kernel=3)
+    for i in range(10):
+        # results = mongo.mnist_read_single_digit(mnist_type='training', seq=60, kernel=3)
+        results = mongo.mnist_read_nth_digit(mnist_type='test', n=i, kernel_size=3, digit=4)
 
-    image = results['original_image']
-    npimage = np.array(image)
+        image = results['original_image']
+        npimage = np.array(image)
 
-    for _ in npimage:
-        print(_)
+        for _ in npimage:
+            print(_)
 
 
 

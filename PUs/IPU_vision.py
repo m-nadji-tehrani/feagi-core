@@ -10,6 +10,7 @@ from scipy.misc import imresize
 from evolutionary import architect
 from configuration import runtime_data
 from datetime import datetime
+
 # from disk_ops import save_processed_mnist_to_disk
 # from cython_libs import ipu_vision_cy as ipu_cy
 np.set_printoptions(threshold=np.nan)
@@ -37,14 +38,49 @@ class MNIST:
         # global mnist_array, mnist_iterator
         self.mnist_training_iterator = self.read_mnist_raw(dataset="training")
         self.mnist_test_iterator = self.read_mnist_raw(dataset="testing")
-        self.mnist_training_array = []
-        self.mnist_test_array = []
+
+        self.mnist_array = dict()
+        self.mnist_array['training'] = []
+        self.mnist_array['test'] = []
         for _ in self.mnist_training_iterator:
-            self.mnist_training_array.append(_)
+            self.mnist_array['training'].append(_)
         for __ in self.mnist_test_iterator:
-            self.mnist_test_array.append(__)
+            self.mnist_array['test'].append(__)
+
         print(">><<>><<>><<>><< **  **  **  **   **  **  **  ****  >><<>><<>><<>><<>><<")
         # print(len(mnist_array))
+
+    def mnist_direction_matrix_builder_in_mongodb(self):
+
+        import db_handler
+        mongo = db_handler.MongoManagement()
+
+        mnist_type_options = ['training', 'test']
+        kernel_size_options = [3, 5, 7]
+
+        for mnist_type in mnist_type_options:
+            mnist_instance_seq = 0
+            for entry in self.mnist_array[mnist_type]:
+                mnist_instance_label, mnist_instance_data = entry
+
+                for kernel_size in kernel_size_options:
+                    direction_matrix_ = (kernel.create_direction_matrix2(image=mnist_instance_data,
+                                                                         kernel_size=int(kernel_size)))
+
+                    mnist_data = {
+                        "mnist_type": mnist_type,
+                        "mnist_seq": mnist_instance_seq,
+                        "kernel_size": kernel_size,
+                        "digit": str(mnist_instance_label),
+                        "original_image": mnist_instance_data.tolist()
+                    }
+
+                    for direction in direction_matrix_:
+                        mnist_data[direction] = direction_matrix_[direction]
+
+                    mongo.insert_mnist_entry(mnist_data=mnist_data)
+                    print("Added to MongoDb: Type=%s  Seq=%s  Kernel_size=%s  Digit=%s" % (mnist_type, mnist_instance_seq, kernel_size, mnist_instance_label))
+                mnist_instance_seq += 1
 
     def mnist_direction_matrix_builder(self):
         template = {
@@ -62,7 +98,7 @@ class MNIST:
         counter = 0
         for kernel_size in all_of_mnist_training:
             for digit in all_of_mnist_training[kernel_size]:
-                for entry in self.mnist_training_array:
+                for entry in self.mnist_array['training']:
                     counter += 1
                     print("Kernel size:", kernel_size, "Digit:", digit, "Training counter: ", counter)
                     # if counter == 100:
@@ -85,7 +121,7 @@ class MNIST:
 
         for kernel_size in all_of_mnist_test:
             for digit in all_of_mnist_test[kernel_size]:
-                for entry in self.mnist_test_array:
+                for entry in self.mnist_array['test']:
                     counter += 1
                     print("Kernel size:", kernel_size, "Digit:", digit, "Test counter: ", counter)
                     # if counter == 100:
@@ -609,6 +645,25 @@ if __name__ == '__main__':
     kernel = Kernel()
     image = Image()
 
+    mnist = MNIST()
+
+    mnist.mnist_direction_matrix_builder_in_mongodb()
+
+    # mnist_data = {
+    #     "mnist_type": "training",
+    #     "mnist_seq": 5,
+    #     "kernel_size": 3,
+    #     "digit": 9,
+    #     "original_image": [],
+    #     "/": [[3, 16], [3, 17], [3, 18], [4, 10], [4, 11], [4, 12], [4, 13], [4, 14], [4, 15]],
+    #     "-": [[19, 16], [20, 7], [20, 8], [20, 14], [20, 15], [20, 16], [21, 6], [21, 7], [21, 8], [21, 14]],
+    #     "|": [],
+    #     "o": [],
+    #     "\\": []
+    # }
+    #
+    # mongo.insert_mnist_entry(mnist_data=mnist_data)
+
     a = [
       [ .1,  .1,  .1]
      ,[ .1,  .1,  .1]
@@ -711,7 +766,6 @@ if __name__ == '__main__':
     #     print("\nKernel direction is: ", kernel.kernel_direction(matrix))
     #     print("** ** ** ** ** ")
 
-    mnist = MNIST()
 
     # img = mnist.mnist_img_fetcher2(4, 2, "training")
 
@@ -763,8 +817,8 @@ if __name__ == '__main__':
 
     # mnist.mnist_direction_matrix_builder()
 
-    runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training', kernel_size=5)
-    print("+++++ >> ", mnist.mnist_img_fetcher3(num=9, seq=1, mnist_type='training', random_num=False))
+    # runtime_data.mnist_training = disk_ops.load_processed_mnist_from_disk('training', kernel_size=5)
+    # print("+++++ >> ", mnist.mnist_img_fetcher3(num=9, seq=1, mnist_type='training', random_num=False))
 
     # processed_data = disk_ops.load_processed_mnist_from_disk('training')
 
@@ -784,3 +838,4 @@ if __name__ == '__main__':
     #
     # with open("mnist_processed_training_k7.pkl", 'wb') as output:
     #     pickle.dump(processed_data["7"], output)
+

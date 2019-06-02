@@ -12,6 +12,7 @@ class MongoManagement:
         self.client = MongoClient('localhost', 27017)
         self.db = self.client['metis']
         self.collection_genome = self.db['genomes']
+        self.collection_mnist = self.db['mnist']
         self.collection_test_stats = self.db['test_stats']
         self.collection_membrane_potentials = self.db['membrane_potentials']
         self.collection_neuron_activities = self.db['neuron_activities']
@@ -29,13 +30,31 @@ class MongoManagement:
     def insert_genome(self, genome_data):
         self.collection_genome.insert_one(genome_data)
 
+    def insert_mnist_entry(self, mnist_data):
+        self.collection_mnist.insert_one(mnist_data)
+
+
     # def read_genome(self, genome_id):
     #
     #     return genome
 
     def latest_genome(self):
-        db_output = self.collection_genome.find({}).sort("generation_date", DESCENDING).limit(1)
+        db_output = self.collection_mnist.find({}).sort("generation_date", DESCENDING).limit(1)
         return db_output[0]
+
+    def mnist_(self, seq):
+        pipeline = [
+            {"$match": {"mnist_seq": seq}}
+        ]
+        mnist_seq_data = self.collection_mnist.aggregate(pipeline=pipeline)
+        return mnist_seq_data
+
+    def mnist_seq(self, mnist_type, seq):
+        if mnist_type not in ['training', 'test']:
+            print("ERROR: Invalid MNIST type!")
+        else:
+            mnist_seq_data = self.collection_mnist.find({"mnist_type": mnist_type, "mnist_seq": seq})
+            return mnist_seq_data[0]
 
     def highest_fitness_genome(self):
         db_output = self.collection_genome.find({}).sort("fitness", DESCENDING).limit(1)
@@ -270,11 +289,33 @@ class InfluxManagement:
 
 if __name__ == "__main__":
 
+    # from PUs import IPU_vision
+    # from misc import disk_ops
+    # disk_ops.load_parameters_in_memory()
+    # from configuration import runtime_data
+    # disk_ops.genome_handler("/Users/mntehrani/PycharmProjects/Metis/connectome/")
+
+    # mnist = IPU_vision.MNIST()
+
     mongo = MongoManagement()
 
-    # print(type(genome_data))
+    results = mongo.mnist_seq(mnist_type='training', seq=5)
 
-    # Mongo.insert_genome(genome_data=genome_data)
+    print(results)
+
+
+
+
+
+    # print(mnist.read_image(1))
+
+
+
+
+
+
+
+
     # #
     # for _ in mongo.fitness_array():
     #     print(_)
@@ -287,8 +328,8 @@ if __name__ == "__main__":
     #
     # random_genome = mongo.random_genome(1)
 
-    for _ in mongo.fcl_data('2018-07-28_11:16:12_938349_ZDW0VQ_G'):
-        print(">>>", _)
+    # for _ in mongo.fcl_data('2018-07-28_11:16:12_938349_ZDW0VQ_G'):
+    #     print(">>>", _)
 
     # print(mongo.random_genome())
 

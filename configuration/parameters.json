@@ -85,8 +85,8 @@
     "tester_burst_skip_counter": 10
   },
   "Logs":{
-    "print_mnist_img": false,
-    "print_polarized_img": false,
+    "print_mnist_img": true,
+    "print_polarized_img": true,
     "print_seen_img": false,
     "print_filtered_img": false,
     "print_activation_counters": false,
@@ -97,7 +97,7 @@
     "print_burst_stats": false,
     "print_brain_gen_activities": true,
     "print_comprehension_queue": false,
-    "print_upstream_neuron_stats": false,
+    "print_upstream_neuron_stats": true,
     "print_common_neuron_report": false
   },
   "Verbose":{

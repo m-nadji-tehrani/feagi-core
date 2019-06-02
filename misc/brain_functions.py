@@ -45,7 +45,8 @@ class Brain:
         kernel = IPU_vision.Kernel()
 
         polarized_image = mnist.mnist_img_fetcher3(num=num, seq=seq, mnist_type=mnist_type, random_num=random_num)
-        # print("polarized_image", polarized_image)
+        # if runtime_data.parameters['Logs']['print_polarized_img']:
+        #     print("polarized_image", polarized_image)
 
         for cortical_area in vision_group:
             neuron_list[cortical_area] = set()

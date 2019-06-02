@@ -453,6 +453,7 @@ class Injector:
         self.injector_utf_handler = True
         self.injector_variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
         self.injector_exposure_default = runtime_data.parameters["Auto_injector"]["exposure_default"]
+        runtime_data.exposure_counter_actual = self.injector_exposure_default
         self.injector_utf_default = runtime_data.parameters["Auto_injector"]["utf_default"]
         self.injector_utf_counter_actual = self.injector_utf_default
         self.injector_injection_start_time = datetime.now()
@@ -544,6 +545,7 @@ class Injector:
                 self.injector_burst_skip_flag = False
                 self.injector_utf_handler = True
                 self.injector_variation_handler = True
+                # self.injector_exposure_counter_actual = runtime_data.parameters["Auto_injector"]["exposure_default"]
                 self.injector_variation_counter = runtime_data.parameters["Auto_injector"]["variation_default"]
                 runtime_data.variation_counter_actual = runtime_data.parameters["Auto_injector"]["variation_default"]
                 self.injector_utf_default = runtime_data.parameters["Auto_injector"]["utf_default"]

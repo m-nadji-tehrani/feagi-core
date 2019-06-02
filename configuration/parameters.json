@@ -85,8 +85,8 @@
     "tester_burst_skip_counter": 10
   },
   "Logs":{
-    "print_mnist_img": true,
-    "print_polarized_img": true,
+    "print_mnist_img": false,
+    "print_polarized_img": false,
     "print_seen_img": false,
     "print_filtered_img": false,
     "print_activation_counters": false,

@@ -142,6 +142,9 @@ class MongoManagement:
             genome_list.append(self.genome_id_2_properties(_["genome_id"]))
         return genome_list
 
+    def mnist_read_single_digit(self, mnist_type, seq, kernel):
+        return self.collection_mnist.find({"mnist_type": mnist_type, 'mnist_seq': seq, 'kernel_size': kernel})[0]
+
 
 class InfluxManagement:
     def __init__(self):
@@ -296,12 +299,17 @@ if __name__ == "__main__":
     # disk_ops.genome_handler("/Users/mntehrani/PycharmProjects/Metis/connectome/")
 
     # mnist = IPU_vision.MNIST()
+    import numpy as np
 
     mongo = MongoManagement()
 
-    results = mongo.mnist_seq(mnist_type='training', seq=5)
+    results = mongo.mnist_read_single_digit(mnist_type='training', seq=2, kernel=3)
 
-    print(results)
+    image = results['original_image']
+    npimage = np.array(image)
+
+    for _ in npimage:
+        print(_)
 
 
 

@@ -816,7 +816,8 @@ class Injector:
             runtime_data.exposure_counter_actual -= 1
 
             print('  ----------------------------------------------------------------------------------------    ### ',
-                  runtime_data.variation_counter_actual, self.tester_utf_counter_actual,
+                  runtime_data.variation_counter_actual,
+                  self.tester_utf_counter_actual,
                   runtime_data.exposure_counter_actual, ' ###')
 
             if runtime_data.exposure_counter_actual < 1:
@@ -835,54 +836,57 @@ class Injector:
                 self.tester_test_attempt_counter += 1
 
                 print("Number to inject:", self.tester_num_to_inject)
-                print(self.tester_utf_default,
-                      self.tester_variation_counter,
+                print(self.tester_variation_counter,
+                      self.tester_utf_default,
                       self.tester_exposure_default)
 
-                print(self.tester_utf_counter_actual,
-                      runtime_data.variation_counter_actual,
+                print(runtime_data.variation_counter_actual,
+                      self.tester_utf_counter_actual,
                       runtime_data.exposure_counter_actual)
 
                 # Test stats
                 self.update_test_stats()
                 print("stats just got updated")
 
-                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-                print(".... .. .. .. ... New Variation... ... ... .. .. ")
-                print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
+                # Resetting exposure counter
                 runtime_data.exposure_counter_actual = self.tester_exposure_default
 
-                # Variation counter
-                runtime_data.variation_counter_actual -= 1
-                print('#-#-# Current test variation counter is ', runtime_data.variation_counter_actual)
-                print("#-#-# Current number to inject is :", self.tester_num_to_inject)
+                # UTF counter
+                self.tester_utf_counter_actual -= 1
 
-                # print("Test stats:\n", self.tester_test_stats)
+                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
+                print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
+                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
 
-                # Counter logic
-                if runtime_data.variation_counter_actual < 1:
-                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-                    print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
-                    print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
-                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-                    # Resetting all test counters
-                    runtime_data.exposure_counter_actual = self.tester_exposure_default
-                    runtime_data.variation_counter_actual = self.tester_variation_counter
-                    self.tester_test_attempt_counter = 0
-                    self.tester_comprehension_counter = 0
-                    self.tester_no_response_counter = 0
-                    # UTF counter
-                    self.tester_utf_counter_actual -= 1
-                    if self.tester_utf_counter_actual < 0:
+                if self.tester_utf_flag:
+                    self.tester_num_to_inject -= 1
+                    print('#-#-# Current test UTF counter is ', self.tester_utf_counter_actual)
+                    print("#-#-# Current number to inject is :", self.tester_num_to_inject)
+
+                if self.tester_utf_counter_actual < 0:
+                    runtime_data.variation_counter_actual -= 1
+
+                    # Variation logic
+                    if runtime_data.variation_counter_actual < 0:
                         print(">> Test exit condition has been met <<")
                         self.tester_exit_flag = True
                         self.test_exit_process()
 
-                    if self.tester_utf_flag:
-                        self.tester_num_to_inject -= 1
+                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                    print(".... .. .. .. ... New Variation... ... ... .. .. ")
+                    print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
 
-                if self.tester_img_flag and not self.tester_exit_flag:
+                    # Resetting counters
+                    runtime_data.exposure_counter_actual = self.tester_exposure_default
+                    self.tester_utf_counter_actual = self.tester_utf_default
+                    self.tester_num_to_inject = self.tester_utf_default
+                    self.tester_test_attempt_counter = 0
+                    self.tester_comprehension_counter = 0
+                    self.tester_no_response_counter = 0
+
+                elif self.tester_img_flag and not self.tester_exit_flag:
                     print('#-#-# Current number that is about to be tested is ', self.tester_num_to_inject)
                     self.image_feeder2(num=self.tester_num_to_inject,
                                        seq=runtime_data.variation_counter_actual,
@@ -1079,6 +1083,7 @@ def burst_exit_process():
     
     runtime_data.burst_count = 0
     runtime_data.parameters["Switches"]["ready_to_exit_burst"] = True
+    runtime_data.parameters["Auto_injector"]["injector_status"] = False
     if runtime_data.parameters["Switches"]["capture_brain_activities"]:
         save_fcl_to_disk()
 

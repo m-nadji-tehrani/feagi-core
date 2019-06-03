@@ -100,6 +100,10 @@ def burst():
             neuron_mp_writer = csv.writer(neuron_mp_file, delimiter=',')
             neuron_mp_writer.writerow(('burst_number', 'cortical_layer', 'neuron_id', 'membrane_potential'))
 
+    print("** ** ** Live mode, live mode status: ",
+          runtime_data.parameters["Switches"]["live_mode"],
+          runtime_data.live_mode_status)
+
     # Live mode condition
     if runtime_data.parameters["Switches"]["live_mode"] and runtime_data.live_mode_status == 'idle':
         runtime_data.live_mode_status = 'learning'
@@ -512,10 +516,12 @@ class Injector:
         # inject neuron activity to FCL
         for cortical_area in runtime_data.v1_members:
             if runtime_data.training_neuron_list_img[cortical_area]:
-                # print("Before FCL injection:", candidate_list_counter(runtime_data.fire_candidate_list), len(runtime_data.training_neuron_list_img[cortical_area]))
+                # print("Before FCL injection:", candidate_list_counter(runtime_data.fire_candidate_list),
+                # len(runtime_data.training_neuron_list_img[cortical_area]))
                 runtime_data.fire_candidate_list[cortical_area].\
                     update(runtime_data.training_neuron_list_img[cortical_area])
                 # print("After FCL injection:", candidate_list_counter(runtime_data.fire_candidate_list))
+
     @staticmethod
     def image_feeder2(num, seq, mnist_type):
         
@@ -982,11 +988,10 @@ class Injector:
         # logging stats into Genome
         runtime_data.genome_test_stats.append(self.tester_test_stats.copy())
         self.tester_test_stats = {}
-        if runtime_data.parameters["Switches"]["live_mode"] and runtime_data.live_mode_status == 'testing':
-            runtime_data.live_mode_status = 'idle'
-            print(settings.Bcolors.RED + "Burst exit triggered by the automated workflow >< >< >< >< >< " +
-                  settings.Bcolors.ENDC)
-            burst_exit_process()
+        runtime_data.live_mode_status = 'idle'
+        print(settings.Bcolors.RED + "Burst exit triggered by the automated workflow >< >< >< >< >< " +
+              settings.Bcolors.ENDC)
+        burst_exit_process()
 
     def user_input_processing(self, user_input, user_input_param):
         while not user_input.empty():
@@ -1080,7 +1085,7 @@ def form_memories(cfcl, pain_flag):
 
 def burst_exit_process():
     print(settings.Bcolors.YELLOW + '>>>Burst Exit criteria has been met!   <<<' + settings.Bcolors.ENDC)
-    
+    runtime_data.live_mode_status = 'idle'
     runtime_data.burst_count = 0
     runtime_data.parameters["Switches"]["ready_to_exit_burst"] = True
     runtime_data.parameters["Auto_injector"]["injector_status"] = False

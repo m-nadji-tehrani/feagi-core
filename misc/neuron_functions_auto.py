@@ -56,7 +56,8 @@ def burst():
 
     runtime_data.parameters["Auto_injector"]["injector_status"] = False
     runtime_data.termination_flag = False
-    runtime_data.top_10_utf_memory_neurons = list_top_n_utf_memory_neurons(10)
+    runtime_data.top_10_utf_memory_neurons = list_top_n_utf_memory_neurons("utf8_memory", 10)
+    runtime_data.top_10_utf_neurons = list_top_n_utf_memory_neurons("utf8", 10)
 
     runtime_data.v1_members = []
     for item in runtime_data.cortical_list:
@@ -187,13 +188,13 @@ def burst():
             runtime_data.time_neuron_update = datetime.now() - now
             runtime_data.plasticity_time_total = datetime.now() - datetime.now()
             runtime_data.plasticity_time_total_p1 = datetime.now() - datetime.now()
-
+            # stats_utf_memory_membrane_potentials()
             # Firing all neurons in the fire_candidate_list
             for cortical_area in runtime_data.fire_candidate_list:
                 while runtime_data.fire_candidate_list[cortical_area]:
                     neuron_to_fire = runtime_data.fire_candidate_list[cortical_area].pop()
                     neuron_fire(cortical_area, neuron_to_fire)
-
+            # stats_utf_memory_membrane_potentials()
             pfcl_total_neuron_count = candidate_list_counter(runtime_data.previous_fcl)
             cfcl_total_neuron_count = candidate_list_counter(runtime_data.fire_candidate_list)
 
@@ -308,6 +309,7 @@ def burst():
         # Comprehension check
         time_comprehension_check = datetime.now()
         counter_list = {}
+        print("~~~~~~..... Burst detection list: ", runtime_data.burst_detection_list)
         if runtime_data.parameters["Logs"]["print_comprehension_queue"]:
             if runtime_data.burst_detection_list != {}:
                 print(settings.Bcolors.RED + "<><><><><><><><><><><><><><>"
@@ -358,6 +360,7 @@ def burst():
                 list_upstream_neuron_count_for_digits(mode=1)
             print("list_upstream_neuron_count_for_digits:", upstream_general_stats)
             print("list_upstream___FCL__count_for_digits:", upstream_fcl_stats)
+
             print("Timing : Upstream + common neuron report:", datetime.now() - upstream_report_time)
 
         if runtime_data.parameters["Logs"]["print_common_neuron_report"]:
@@ -1149,6 +1152,9 @@ def neuron_fire(cortical_area, neuron_id):
     #     print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
     neighbor_list = list()
 
+    if cortical_area == 'utf8_memory':
+        print(">>> *** ... Firing...", neuron_id)
+
     # Setting Destination to the list of Neurons connected to the firing Neuron
     try:
         neighbor_list = runtime_data.brain[cortical_area][neuron_id]["neighbors"]
@@ -1203,6 +1209,10 @@ def neuron_fire(cortical_area, neuron_id):
         #    print("< %i >" %postsynaptic_current)
         neuron_output = activation_function(postsynaptic_current)
 
+        # if dst_cortical_area == 'utf8_memory':
+        #     print("B........UTF memory membrane potential is: ",
+        #           runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"], dst_neuron_id)
+
         # Update function
         # todo: (neuron_output/neighbor_count) needs to be moved outside the loop for efficiency
         dst_neuron_obj = runtime_data.brain[dst_cortical_area][dst_neuron_id]
@@ -1213,6 +1223,9 @@ def neuron_fire(cortical_area, neuron_id):
                              dst_neuron_obj["last_burst_num"]),
                              runtime_data.genome["blueprint"][dst_cortical_area]["neuron_params"]["leak_coefficient"],
                              dst_neuron_obj["membrane_potential"])
+
+        # if dst_cortical_area == 'utf8_memory':
+        #     print("A........UTF memory membrane potential is: ", dst_neuron_obj["membrane_potential"])
 
         # todo: Need to figure how to deal with activation function and firing threshold (belongs to fire func)
         # After destination neurons are updated, the following checks are performed to assess if the neuron should fire
@@ -1281,6 +1294,7 @@ def neuron_fire(cortical_area, neuron_id):
     # Condition to translate activity in utf8_out region as a character comprehension
     if cortical_area == 'utf8_memory':
         detected_item, activity_rank = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
+        # todo: burst detection list could be a set instead
         if detected_item not in runtime_data.burst_detection_list:
             runtime_data.burst_detection_list[detected_item] = {}
             runtime_data.burst_detection_list[detected_item]['count'] = 1
@@ -1303,13 +1317,13 @@ def list_upstream_neurons(cortical_area, neuron_id):
     return {}
 
 
-def list_top_n_utf_memory_neurons(n):
+def list_top_n_utf_memory_neurons(cortical_area, n):
     neuron_list = []
     counter = ord('0')
     the_other_counter = 0
-    for neuron_id in runtime_data.brain['utf8_memory']:
-        if int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) == counter:
-            neuron_list.append([int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2])-48, neuron_id])
+    for neuron_id in runtime_data.brain[cortical_area]:
+        if int(runtime_data.brain[cortical_area][neuron_id]["location"][2]) == counter:
+            neuron_list.append([int(runtime_data.brain[cortical_area][neuron_id]["location"][2])-48, neuron_id])
             counter += 1
             the_other_counter += 1
             if the_other_counter == n:
@@ -1471,9 +1485,10 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
             genome["blueprint"][cortical_area]["plasticity_constant"]
 
         # Condition to cap the postsynaptic_current and provide prohibitory reaction
-        runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] = \
-            min(runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"],
-                genome["blueprint"][cortical_area]["postsynaptic_current_max"])
+        if runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] > \
+                genome["blueprint"][cortical_area]["postsynaptic_current_max"]:
+            runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"] = \
+                genome["blueprint"][cortical_area]["postsynaptic_current_max"]
 
         # print('<*> ', cortical_area, src_neuron[27:], dst_neuron[27:], 'PSC=',
         #       runtime_data.brain[cortical_area][src_neuron]["neighbors"][dst_neuron]["postsynaptic_current"])
@@ -1507,6 +1522,12 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
                 max(runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"], 0))
         update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
 
+    # # todo: comment out
+    # if dst_cortical_area == 'utf8_memory':
+    #     print('PSC constant Before:',
+    #           runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+    #           src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
+
     runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
         runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
@@ -1525,6 +1546,12 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
 
     runtime_data.plasticity_time_total_p1 = \
         (datetime.now() - plasticity_start_time_p1) + runtime_data.plasticity_time_total_p1
+
+    # # todo: comment out
+    # if dst_cortical_area == 'utf8_memory':
+    #     print('PSC constant after:',
+    #           runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"],
+    #           src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
 
     # Condition to prune a synapse if its postsynaptic_current is zero
     if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
@@ -1747,3 +1774,27 @@ def prune_all_candidates():
     while runtime_data.prunning_candidates:
         prune_candidate = runtime_data.prunning_candidates.pop()
         pruner(prune_candidate)
+
+
+def stats_utf_memory_membrane_potentials():
+    if runtime_data.top_10_utf_memory_neurons and runtime_data.top_10_utf_neurons:
+        utf_neurons = []
+        for neuron in runtime_data.top_10_utf_neurons:
+            utf_neurons.append((neuron[0], neuron[1]))
+        print('\n')
+        for neuron in runtime_data.top_10_utf_memory_neurons:
+            if runtime_data.brain['utf8_memory'][neuron[1]]['membrane_potential'] > \
+                    runtime_data.genome['blueprint']['utf8_memory']['neuron_params']['firing_threshold']:
+                print(settings.Bcolors.RED + '>>> ', neuron[0], '   >>> ',
+                      str(runtime_data.brain['utf8'][utf_neurons[int(neuron[0])][1]]['membrane_potential']), '   >>> ',
+                      str(runtime_data.brain['utf8_memory'][neuron[1]]['membrane_potential']),
+                      '   >>>',
+                      str(runtime_data.genome['blueprint']['utf8_memory']['neuron_params']['firing_threshold']) +
+                      settings.Bcolors.ENDC)
+            else:
+                print('>>> ', neuron[0], '   >>> ',
+                      str(runtime_data.brain['utf8'][utf_neurons[int(neuron[0])][1]]['membrane_potential']), '   >>> ',
+                      runtime_data.brain['utf8_memory'][neuron[1]]['membrane_potential'],
+                      '   >>>',
+                      runtime_data.genome['blueprint']['utf8_memory']['neuron_params']['firing_threshold'])
+        print('\n')

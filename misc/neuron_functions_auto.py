@@ -1064,7 +1064,7 @@ def form_memories(cfcl, pain_flag):
                 if pain_flag:
                     apply_plasticity_ext(src_cortical_area='vision_memory', src_neuron_id=source_neuron,
                                          dst_cortical_area='utf8_memory', dst_neuron_id=destination_neuron,
-                                         long_term_depression=True, impact_multiplier=10)
+                                         long_term_depression=True, impact_multiplier=4)
                     # print("un-wiring visual to utf:", source_neuron, destination_neuron)
 
             # Reducing synaptic connectivity when a single memory neuron is associated with more than one utf_memory one
@@ -1209,9 +1209,9 @@ def neuron_fire(cortical_area, neuron_id):
         #    print("< %i >" %postsynaptic_current)
         neuron_output = activation_function(postsynaptic_current)
 
-        # if dst_cortical_area == 'utf8_memory':
-        #     print("B........UTF memory membrane potential is: ",
-        #           runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"], dst_neuron_id)
+        if dst_cortical_area == 'utf8_memory':
+            print("B........UTF memory membrane potential is: ",
+                  runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"], dst_neuron_id)
 
         # Update function
         # todo: (neuron_output/neighbor_count) needs to be moved outside the loop for efficiency
@@ -1224,8 +1224,9 @@ def neuron_fire(cortical_area, neuron_id):
                              runtime_data.genome["blueprint"][dst_cortical_area]["neuron_params"]["leak_coefficient"],
                              dst_neuron_obj["membrane_potential"])
 
-        # if dst_cortical_area == 'utf8_memory':
-        #     print("A........UTF memory membrane potential is: ", dst_neuron_obj["membrane_potential"])
+        if dst_cortical_area == 'utf8_memory':
+            print("A........UTF memory membrane potential is: ", dst_neuron_obj["membrane_potential"])
+            print("A........UTF memory membrane potential is: ", runtime_data.brain[dst_cortical_area][dst_neuron_id]["membrane_potential"])
 
         # todo: Need to figure how to deal with activation function and firing threshold (belongs to fire func)
         # After destination neurons are updated, the following checks are performed to assess if the neuron should fire

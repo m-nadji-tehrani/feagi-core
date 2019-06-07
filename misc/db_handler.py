@@ -2,21 +2,28 @@ import sys
 sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 from pymongo import MongoClient, DESCENDING, ASCENDING
 from influxdb import InfluxDBClient
-from configuration import runtime_data
+from configuration import runtime_data, settings
 import random
 
 
 class MongoManagement:
     def __init__(self):
         # print("*** Conncting to database ***")
-        self.client = MongoClient('localhost', 27017)
-        self.db = self.client['metis']
-        self.collection_genome = self.db['genomes']
-        self.collection_mnist = self.db['mnist']
-        self.collection_test_stats = self.db['test_stats']
-        self.collection_membrane_potentials = self.db['membrane_potentials']
-        self.collection_neuron_activities = self.db['neuron_activities']
-        # print(">> Connected successfully to database.")
+
+        self.client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=1)
+        try:
+            self.client.server_info()
+            self.db = self.client['metis']
+            self.collection_genome = self.db['genomes']
+            self.collection_mnist = self.db['mnist']
+            self.collection_test_stats = self.db['test_stats']
+            self.collection_membrane_potentials = self.db['membrane_potentials']
+            self.collection_neuron_activities = self.db['neuron_activities']
+            print(
+                settings.Bcolors.OKGREEN + "Success: Connection to << MongoDb >> has been established." + settings.Bcolors.ENDC)
+        except:
+            print(settings.Bcolors.RED + "ERROR: Cannot connect to << MongoDb >> Database" + settings.Bcolors.ENDC)
+
 
     def insert_test_stats(self, stats_data):
         self.collection_test_stats.insert_one(stats_data)
@@ -167,23 +174,29 @@ class MongoManagement:
 class InfluxManagement:
     def __init__(self):
         self.client = InfluxDBClient(host='localhost', port=8086)
-        self.stats_database = runtime_data.parameters["InitData"]["influxdb_stat_db"]
-        self.evolutionary_database = runtime_data.parameters["InitData"]["influxdb_evolutionary_db"]
+        try:
+            self.client.ping()
+            print(
+                settings.Bcolors.OKGREEN + "Success: Connection to << InfluxDb >> has been established." + settings.Bcolors.ENDC)
+            self.stats_database = runtime_data.parameters["InitData"]["influxdb_stat_db"]
+            self.evolutionary_database = runtime_data.parameters["InitData"]["influxdb_evolutionary_db"]
 
-        if not runtime_data.parameters["Switches"]["influx_keep_stats"]:
-            self.client.drop_database(self.stats_database)
+            if not runtime_data.parameters["Switches"]["influx_keep_stats"]:
+                self.client.drop_database(self.stats_database)
 
-        def db_existence_check(db_name):
-            """Checks the existence of a database and creates it if it doesnt exist."""
-            self.db_list = self.client.get_list_database()
-            if db_name not in [db['name'] for db in self.db_list]:
-                print("Creating database named ", db_name)
-                self.client.create_database(db_name)
-            else:
-                print("Database was in there somewhere ;-)")
+            def db_existence_check(db_name):
+                """Checks the existence of a database and creates it if it doesnt exist."""
+                self.db_list = self.client.get_list_database()
+                if db_name not in [db['name'] for db in self.db_list]:
+                    print("Creating database named ", db_name)
+                    self.client.create_database(db_name)
+                else:
+                    print("Database was in there somewhere ;-)")
 
-        db_existence_check(self.stats_database)
-        db_existence_check(self.evolutionary_database)
+            db_existence_check(self.stats_database)
+            db_existence_check(self.evolutionary_database)
+        except:
+            print(settings.Bcolors.RED + "ERROR: Cannot connect to << InfluxDb >> Database" + settings.Bcolors.ENDC)
 
     def get_db_list(self):
         print(self.client.get_list_database())

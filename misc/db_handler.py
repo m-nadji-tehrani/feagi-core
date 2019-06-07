@@ -8,9 +8,9 @@ import random
 
 class MongoManagement:
     def __init__(self):
-        # print("*** Conncting to database ***")
+        # print("*** Connecting to database ***")
 
-        self.client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=1)
+        self.client = MongoClient('127.0.0.1', 27017, serverSelectionTimeoutMS=1)
         try:
             self.client.server_info()
             self.db = self.client['metis']
@@ -23,7 +23,6 @@ class MongoManagement:
                 settings.Bcolors.OKGREEN + "Success: Connection to << MongoDb >> has been established." + settings.Bcolors.ENDC)
         except:
             print(settings.Bcolors.RED + "ERROR: Cannot connect to << MongoDb >> Database" + settings.Bcolors.ENDC)
-
 
     def insert_test_stats(self, stats_data):
         self.collection_test_stats.insert_one(stats_data)
@@ -173,7 +172,7 @@ class MongoManagement:
 
 class InfluxManagement:
     def __init__(self):
-        self.client = InfluxDBClient(host='localhost', port=8086)
+        self.client = InfluxDBClient(host='127.0.0.1', port=8086)
         try:
             self.client.ping()
             print(

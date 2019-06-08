@@ -1,6 +1,7 @@
 from misc import db_handler
 from configuration import settings
 
+print(settings.Bcolors.YELLOW + "Module loaded: health_check" + settings.Bcolors.ENDC)
 
 def mongo_healthcheck():
     mongo = db_handler.MongoManagement()

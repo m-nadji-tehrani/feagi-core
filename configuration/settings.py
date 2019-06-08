@@ -13,3 +13,5 @@ class Bcolors:
     UNDERLINE = '\033[4m'
     HEADER = '\033[95m'
     OKGREEN = '\033[92m'
+
+print(Bcolors.YELLOW + "Module loaded: settings" + Bcolors.ENDC)

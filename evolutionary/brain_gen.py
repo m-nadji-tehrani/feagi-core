@@ -9,15 +9,17 @@ import errno
 import datetime
 from functools import partial
 from multiprocessing import Pool
-
 from evolutionary import architect
 from configuration import settings
 from configuration import runtime_data
 from misc.db_handler import InfluxManagement
+from misc import disk_ops
 
-from misc import stats, disk_ops
+
+print(settings.Bcolors.YELLOW + "Module loaded: brain_gen" + settings.Bcolors.ENDC)
 
 influxdb = InfluxManagement()
+
 
 def brain_gen():
 

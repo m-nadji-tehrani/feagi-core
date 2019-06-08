@@ -5,6 +5,18 @@ import random
 import string
 from misc import db_handler
 from math import floor
+from configuration import settings
+
+
+print(settings.Bcolors.YELLOW + "Module loaded: genethesizer" + settings.Bcolors.ENDC)
+
+
+def gene_anomoly_detector():
+    verdict = False
+
+    #todo: implement the logic for anomoly detection here.
+
+    return verdict
 
 
 def select_a_genome():

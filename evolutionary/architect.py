@@ -15,7 +15,10 @@ import collections
 # from numba import jit
 
 from math import sqrt, ceil, floor
-from configuration import runtime_data
+from configuration import runtime_data, settings
+
+
+print(settings.Bcolors.YELLOW + "Module loaded: architect" + settings.Bcolors.ENDC)
 
 
 def neuron_id_gen(size=6, chars=string.ascii_uppercase + string.digits):

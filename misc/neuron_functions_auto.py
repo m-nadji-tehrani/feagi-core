@@ -128,7 +128,6 @@ def burst():
 
         # print(datetime.now(), "Burst count = ", runtime_data.burst_count, file=open("./logs/burst.log", "a"))
 
-        # List of Fire candidates are placed in global variable fire_candidate_list to be passed for next Burst
         for cortical_area in runtime_data.fire_candidate_list:
             runtime_data.previous_fcl[cortical_area] = \
                 set([item for item in runtime_data.fire_candidate_list[cortical_area]])
@@ -147,7 +146,7 @@ def burst():
                                                     runtime_data.brain[cortical_area][neuron]["membrane_potential"]/1)
 
         # Fire all neurons within fire_candidate_list (FCL) or add a delay if FCL is empty
-        time_firing_activities = datetime.now()
+        # time_firing_activities = datetime.now()
         # todo: replace the hardcoded vision memory statement
         if candidate_list_counter(runtime_data.fire_candidate_list) == \
                 0 and not runtime_data.parameters["Auto_injector"]["injector_status"]:
@@ -188,10 +187,10 @@ def burst():
             # Firing all neurons in the Fire Candidate List
             # Fire all neurons in FCL
             time_actual_firing_activities = datetime.now()
-            now = datetime.now()
-            runtime_data.time_neuron_update = datetime.now() - now
-            runtime_data.plasticity_time_total = datetime.now() - datetime.now()
-            runtime_data.plasticity_time_total_p1 = datetime.now() - datetime.now()
+            # now = datetime.now()
+            # runtime_data.time_neuron_update = datetime.now() - now
+            # runtime_data.plasticity_time_total = datetime.now() - datetime.now()
+            # runtime_data.plasticity_time_total_p1 = datetime.now() - datetime.now()
             # stats_utf_memory_membrane_potentials()
             # Firing all neurons in the fire_candidate_list
             for cortical_area in runtime_data.fire_candidate_list:
@@ -199,12 +198,12 @@ def burst():
                     neuron_to_fire = runtime_data.fire_candidate_list[cortical_area].pop()
                     neuron_fire(cortical_area, neuron_to_fire)
             # stats_utf_memory_membrane_potentials()
-            pfcl_total_neuron_count = candidate_list_counter(runtime_data.previous_fcl)
-            cfcl_total_neuron_count = candidate_list_counter(runtime_data.fire_candidate_list)
+            # pfcl_total_neuron_count = candidate_list_counter(runtime_data.previous_fcl)
+            # cfcl_total_neuron_count = candidate_list_counter(runtime_data.fire_candidate_list)
 
-            print("PFCL:", pfcl_total_neuron_count,
-                  "\nCFCL:", cfcl_total_neuron_count,
-                  "\nFFCL:", candidate_list_counter(runtime_data.future_fcl))
+            # print("PFCL:", pfcl_total_neuron_count,
+            #       "\nCFCL:", cfcl_total_neuron_count,
+            #       "\nFFCL:", candidate_list_counter(runtime_data.future_fcl))
 
             # Transferring future_fcl to current one and resetting the future one in process
             for cortical_area in runtime_data.future_fcl:
@@ -212,32 +211,24 @@ def burst():
                     set([item for item in runtime_data.future_fcl[cortical_area]])
                 runtime_data.future_fcl[cortical_area] = set()
 
-            # for cortical_area in runtime_data.previous_fcl:
-            #     if cortical_area in runtime_data.activity_stats:
-            #         cortical_neuron_count = len(runtime_data.previous_fcl[cortical_area])
-            #         if runtime_data.parameters["Logs"]["print_cortical_activity_counters"]:
-            #             print(settings.Bcolors.OKGREEN + '    %s : %i  '
-            #                   % (cortical_area, cortical_neuron_count)
-            #                   + settings.Bcolors.ENDC)
-
-            try:
-                print("Timing : .__________ Firing ops...........:",
-                      (datetime.now() - time_actual_firing_activities - runtime_data.time_neuron_update) /
-                      pfcl_total_neuron_count)
-                print("Timing : |___________Neuron updates.......:",
-                      runtime_data.time_neuron_update / pfcl_total_neuron_count)
-                print("Timing :             |__Ext plasticity....:",
-                      runtime_data.plasticity_time_total / pfcl_total_neuron_count)
-                print("Timing :                |___Ext plast. P1.:",
-                      runtime_data.plasticity_time_total_p1 / pfcl_total_neuron_count)
-
-                print("\nTiming : Average time per fire ....................:",
-                      (datetime.now() - time_firing_activities) /
-                      pfcl_total_neuron_count)
-                print("\nTiming : Total firing time per FCL.................:", datetime.now() - time_firing_activities)
-
-            except ZeroDivisionError:
-                pass
+            # try:
+            #     print("Timing : .__________ Firing ops...........:",
+            #           (datetime.now() - time_actual_firing_activities - runtime_data.time_neuron_update) /
+            #           pfcl_total_neuron_count)
+            #     print("Timing : |___________Neuron updates.......:",
+            #           runtime_data.time_neuron_update / pfcl_total_neuron_count)
+            #     print("Timing :             |__Ext plasticity....:",
+            #           runtime_data.plasticity_time_total / pfcl_total_neuron_count)
+            #     print("Timing :                |___Ext plast. P1.:",
+            #           runtime_data.plasticity_time_total_p1 / pfcl_total_neuron_count)
+            #
+            #     print("\nTiming : Average time per fire ....................:",
+            #           (datetime.now() - time_firing_activities) /
+            #           pfcl_total_neuron_count)
+            #     print("\nTiming : Total firing time per FCL.................:", datetime.now() - time_firing_activities)
+            #
+            # except ZeroDivisionError:
+            #     pass
 
             if verbose:
                 print(settings.Bcolors.YELLOW + 'Current fire_candidate_list is %s'
@@ -248,16 +239,16 @@ def burst():
         # todo: need to break down the training function into pieces with one feeding a stream of data
         # Auto-inject if applicable
         if runtime_data.parameters["Auto_injector"]["injector_status"]:
-            injection_time = datetime.now()
+            # injection_time = datetime.now()
             # print("-------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ auto_injector")
             injector.auto_injector()
-            print("Timing : Injection:", datetime.now() - injection_time)
+            # print("Timing : Injection:", datetime.now() - injection_time)
 
         # Auto-test if applicable
         if runtime_data.parameters["Auto_tester"]["tester_status"]:
-            test_time = datetime.now()
+            # test_time = datetime.now()
             injector.auto_tester()
-            print("Timing : Test:", datetime.now() - test_time)
+            # print("Timing : Test:", datetime.now() - test_time)
 
         # todo: The following is to have a check point to assess the perf of the in-use genome and make on the fly adj.
         if runtime_data.burst_count % runtime_data.genome['evolution_burst_count'] == 0:
@@ -289,7 +280,7 @@ def burst():
                     return False
 
         # Monitor cortical activity levels and terminate brain if not meeting expectations
-        time_monitoring_cortical_activity = datetime.now()
+        # time_monitoring_cortical_activity = datetime.now()
         if runtime_data.parameters["Switches"]["evaluation_based_termination"]:
             if runtime_data.parameters["Auto_injector"]["injector_status"] and \
                     runtime_data.burst_count > runtime_data.parameters["InitData"]["kill_trigger_burst_count"]:
@@ -304,14 +295,14 @@ def burst():
                     runtime_data.termination_flag = True
                     burst_exit_process()
 
-        print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
+        # print("Timing : Monitoring cortical activity:", datetime.now()-time_monitoring_cortical_activity)
 
         # Pain check
         if runtime_data.pain_flag:
             exhibit_pain()
 
         # Comprehension check
-        time_comprehension_check = datetime.now()
+        # time_comprehension_check = datetime.now()
         counter_list = {}
         print("~~~~~~..... Burst detection list: ", runtime_data.burst_detection_list)
         if runtime_data.parameters["Logs"]["print_comprehension_queue"]:
@@ -349,7 +340,7 @@ def burst():
             # todo: instead of passing a pain flag simply detect of pain neuron is activated
             form_memories(runtime_data.fire_candidate_list, runtime_data.pain_flag)
             # print("    Memory formation took--",datetime.now()-memory_formation_start_time)
-        print("Timing : Comprehension check:", datetime.now() - time_comprehension_check)
+        # print("Timing : Comprehension check:", datetime.now() - time_comprehension_check)
 
         # Burst stats
         if runtime_data.parameters["Logs"]["print_burst_stats"]:
@@ -1156,8 +1147,8 @@ def neuron_fire(cortical_area, neuron_id):
     #     print(datetime.now(), " Firing...", cortical_area, neuron_id, file=open("./logs/fire.log", "a"))
     neighbor_list = list()
 
-    if cortical_area == 'utf8_memory':
-        print(">>> *** ... Firing...", neuron_id)
+    # if cortical_area == 'utf8_memory':
+    #     print(">>> *** ... Firing...", neuron_id)
 
     # Setting Destination to the list of Neurons connected to the firing Neuron
     try:
@@ -1203,7 +1194,7 @@ def neuron_fire(cortical_area, neuron_id):
     for dst_neuron_id in neighbor_list:
 
         # Timing the update function
-        update_start_time = datetime.now()
+        # update_start_time = datetime.now()
 
         dst_cortical_area = \
             runtime_data.brain[cortical_area][neuron_id]["neighbors"][dst_neuron_id]["cortical_area"]
@@ -1273,8 +1264,8 @@ def neuron_fire(cortical_area, neuron_id):
                           + settings.Bcolors.ENDC)
 
         # Adding up all update times within a burst span
-        total_update_time = datetime.now() - update_start_time
-        runtime_data.time_neuron_update = total_update_time + runtime_data.time_neuron_update
+        # total_update_time = datetime.now() - update_start_time
+        # runtime_data.time_neuron_update = total_update_time + runtime_data.time_neuron_update
 
     # Condition to snooze the neuron if consecutive fire count reaches threshold
     if runtime_data.brain[cortical_area][neuron_id]["consecutive_fire_cnt"] > \
@@ -1330,7 +1321,7 @@ def list_top_n_utf_memory_neurons(cortical_area, n):
 
 
 def list_upstream_neuron_count_for_digits(digit='all', mode=0):
-    function_start_time = datetime.now()
+    # function_start_time = datetime.now()
     results = []
     fcl_results = []
 
@@ -1374,7 +1365,7 @@ def list_upstream_neuron_count_for_digits(digit='all', mode=0):
                 results.append([digit, 0])
         else:
             results.append([digit, 0])
-    print("Timing : list_upstream_neuron_count_for_digits:", datetime.now()-function_start_time)
+    # print("Timing : list_upstream_neuron_count_for_digits:", datetime.now()-function_start_time)
 
     if mode == 0:
         print("&& && & &&& && && & : The mode is == 0")
@@ -1504,16 +1495,29 @@ def apply_plasticity(cortical_area, src_neuron, dst_neuron):
 def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
                          dst_neuron_id, long_term_depression=False, impact_multiplier=1):
 
-    plasticity_start_time = datetime.now()
-
     plasticity_constant = runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"]
 
     if long_term_depression:
         # When long term depression flag is set, there will be negative synaptic influence caused
         plasticity_constant = runtime_data.genome["blueprint"][src_cortical_area]["plasticity_constant"] * (-1) * impact_multiplier
 
-    # Check if source and destination have an existing synapse if not create one here
-    if dst_neuron_id not in runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"]:
+    try:
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
+            plasticity_constant
+
+        # Condition to cap the postsynaptic_current and provide prohibitory reaction
+        if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] > \
+                runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]:
+            runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+                runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]
+
+        # Condition to prevent postsynaptic current to become negative
+        # todo: consider setting a postsynaptic_min in genome to be used instead of 0
+        # Condition to prune a synapse if its postsynaptic_current is zero
+        if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] < 0:
+            runtime_data.prunning_candidates.add((src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id))
+
+    except KeyError:
         synapse(src_cortical_area,
                 src_neuron_id,
                 dst_cortical_area,
@@ -1521,30 +1525,20 @@ def apply_plasticity_ext(src_cortical_area, src_neuron_id, dst_cortical_area,
                 max(plasticity_constant, 0))
         update_upstream_db(src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id)
 
-    runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
-        plasticity_constant
+        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] += \
+            plasticity_constant
 
-    plasticity_start_time_p1 = datetime.now()
+        # Condition to cap the postsynaptic_current and provide prohibitory reaction
+        if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] > \
+                runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]:
+            runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
+                runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]
 
-    # Condition to cap the postsynaptic_current and provide prohibitory reaction
-    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] > \
-            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]:
-        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = \
-            runtime_data.genome["blueprint"][src_cortical_area]["postsynaptic_current_max"]
-
-    # Condition to prevent postsynaptic current to become negative
-    # todo: consider setting a postsynaptic_min in genome to be used instead of 0
-    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] < 0:
-        runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] = 0
-
-    runtime_data.plasticity_time_total_p1 = \
-        (datetime.now() - plasticity_start_time_p1) + runtime_data.plasticity_time_total_p1
-
-    # Condition to prune a synapse if its postsynaptic_current is zero
-    if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] == 0:
-        runtime_data.prunning_candidates.add((src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id))
-
-    runtime_data.plasticity_time_total = (datetime.now() - plasticity_start_time) + runtime_data.plasticity_time_total
+        # Condition to prevent postsynaptic current to become negative
+        # todo: consider setting a postsynaptic_min in genome to be used instead of 0
+        # Condition to prune a synapse if its postsynaptic_current is zero
+        if runtime_data.brain[src_cortical_area][src_neuron_id]["neighbors"][dst_neuron_id]["postsynaptic_current"] < 0:
+            runtime_data.prunning_candidates.add((src_cortical_area, src_neuron_id, dst_cortical_area, dst_neuron_id))
 
 
 def snooze_till(cortical_area, neuron_id, burst_id):

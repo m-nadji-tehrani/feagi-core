@@ -871,7 +871,7 @@ class Injector:
                 self.tester_utf_counter_actual -= 1
                 self.test_stat_counter_incrementer(digit=self.tester_num_to_inject, stat_type='exposed')
 
-                self.test_stats_report()
+                # self.test_stats_report()
 
                 print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
                 print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
@@ -962,7 +962,7 @@ class Injector:
 
     @staticmethod
     def test_stats_report():
-        print(runtime_data.tester_test_stats)
+        # print(runtime_data.tester_test_stats)
         print("\n-----------------------------------------------------------------------------------------------")
         print("Test statistics:")
         print("-----------------------------------------------------------------------------------------------")

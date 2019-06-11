@@ -379,14 +379,12 @@ def calculate_brain_cognitive_fitness(test_stats):
 
 
 def genome_stats_analytics(test_stats):
+    print("Test stats:", test_stats)
     exposure_total = 0
     comprehended_total = 0
-    for test in test_stats:
-        for key in test:
-            if "exposed" in key:
-                exposure_total += test[key]
-            if "comprehended" in key:
-                comprehended_total += test[key]
+    for _ in range(10):
+        exposure_total += test_stats[0][_]['exposed']
+        comprehended_total += test_stats[0][_]['comprehended']
 
     return exposure_total, comprehended_total
 

@@ -47,3 +47,5 @@ time_neuron_update = ''
 time_apply_plasticity_ext = ''
 plasticity_time_total = None
 plasticity_time_total_p1 = None
+
+tester_test_stats = {}

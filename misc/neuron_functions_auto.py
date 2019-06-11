@@ -483,7 +483,6 @@ class Injector:
         self.tester_test_attempt_counter = 0
         self.tester_no_response_counter = 0
         # self.tester_temp_stats = []
-        self.tester_test_stats = {}
         self.tester_test_id = ""
         self.tester_exit_flag = False
         self.tester_burst_skip_flag = False
@@ -781,10 +780,26 @@ class Injector:
         finally:
             toggle_test_mode()
             self.tester_test_id = test_id_gen()
-            self.tester_test_stats["genome_id"] = runtime_data.genome_id
+            runtime_data.tester_test_stats["genome_id"] = runtime_data.genome_id
             print('Genome_id = ', runtime_data.genome_id)
-            self.tester_test_stats["test_id"] = self.tester_test_id
+            runtime_data.tester_test_stats["test_id"] = self.tester_test_id
             self.tester_testing_has_begun = True
+
+
+    @staticmethod
+    def create_test_stat_template():
+        template = {}
+        for i in range(10):
+            template[i] = {
+                "exposed": 0,
+                "no_response": 0,
+                "comprehended": 0
+            }
+        return template
+
+    @staticmethod
+    def test_stat_counter_incrementer(digit, stat_type):
+        runtime_data.tester_test_stats[digit][stat_type] += 1
 
     def auto_tester(self):
         """
@@ -800,6 +815,7 @@ class Injector:
             # Beginning of a injection process
             print("----------------------------------------Testing has begun------------------------------------")
             self.tester_testing_has_begun = False
+            runtime_data.tester_test_stats = self.create_test_stat_template()
             self.tester_test_start_time = datetime.now()
             if self.tester_img_flag:
                 self.image_feeder2(num=self.tester_num_to_inject,
@@ -848,15 +864,14 @@ class Injector:
                       self.tester_utf_counter_actual,
                       runtime_data.exposure_counter_actual)
 
-                # Test stats
-                self.update_test_stats()
-                print("stats just got updated")
-
                 # Resetting exposure counter
                 runtime_data.exposure_counter_actual = self.tester_exposure_default
 
                 # UTF counter
                 self.tester_utf_counter_actual -= 1
+                self.test_stat_counter_incrementer(digit=self.tester_num_to_inject, stat_type='exposed')
+
+                self.test_stats_report()
 
                 print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
                 print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
@@ -896,25 +911,25 @@ class Injector:
                                        seq=runtime_data.variation_counter_actual,
                                        mnist_type='test')
 
-    def update_test_stats(self):
-        # Initialize parameters
-        utf_exposed = str(self.tester_num_to_inject) + '_exposed'
-        utf_comprehended = str(self.tester_num_to_inject) + '_comprehended'
-        utf_no_response = str(self.tester_num_to_inject) + '_no_response'
-        if utf_exposed not in self.tester_test_stats:
-            self.tester_test_stats[utf_exposed] = runtime_data.parameters["Auto_tester"]["utf_default"]
-        if utf_comprehended not in self.tester_test_stats:
-            self.tester_test_stats[utf_comprehended] = 0
-        if utf_no_response not in self.tester_test_stats:
-            self.tester_test_stats[utf_no_response] = 0
-
-        # Add current stats to the list
-        self.tester_test_stats[utf_exposed] = self.tester_test_attempt_counter
-        self.tester_test_stats[utf_comprehended] = self.tester_comprehension_counter
-        self.tester_test_stats[utf_no_response] = self.tester_no_response_counter
-        print('no_response_counter: ', self.tester_no_response_counter)
-        print('comprehension_counter: ', self.tester_comprehension_counter)
-        print('attempted_counter: ', self.tester_test_attempt_counter)
+    # def update_test_stats(self):
+    #     # Initialize parameters
+    #     utf_exposed = str(self.tester_num_to_inject) + '_exposed'
+    #     utf_comprehended = str(self.tester_num_to_inject) + '_comprehended'
+    #     utf_no_response = str(self.tester_num_to_inject) + '_no_response'
+    #     if utf_exposed not in self.tester_test_stats:
+    #         self.tester_test_stats[utf_exposed] = runtime_data.parameters["Auto_tester"]["utf_default"]
+    #     if utf_comprehended not in self.tester_test_stats:
+    #         self.tester_test_stats[utf_comprehended] = 0
+    #     if utf_no_response not in self.tester_test_stats:
+    #         self.tester_test_stats[utf_no_response] = 0
+    #
+    #     # Add current stats to the list
+    #     self.tester_test_stats[utf_exposed] = self.tester_test_attempt_counter
+    #     self.tester_test_stats[utf_comprehended] = self.tester_comprehension_counter
+    #     self.tester_test_stats[utf_no_response] = self.tester_no_response_counter
+    #     print('no_response_counter: ', self.tester_no_response_counter)
+    #     print('comprehension_counter: ', self.tester_comprehension_counter)
+    #     print('attempted_counter: ', self.tester_test_attempt_counter)
 
     def test_comprehension_logic(self):
         # Comprehension logic
@@ -924,7 +939,9 @@ class Injector:
         print("****************************************\n")
         if runtime_data.parameters["Input"]["comprehended_char"] == '':
             self.tester_no_response_counter += 1
+            self.test_stat_counter_incrementer(digit=self.tester_num_to_inject, stat_type='no_response')
         elif runtime_data.parameters["Input"]["comprehended_char"] == str(self.tester_num_to_inject):
+            self.test_stat_counter_incrementer(digit=self.tester_num_to_inject, stat_type='comprehended')
             print(settings.Bcolors.HEADER +
                   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
                   + settings.Bcolors.ENDC)
@@ -943,6 +960,32 @@ class Injector:
             self.tester_comprehension_counter += 1
             runtime_data.parameters["Input"]["comprehended_char"] = ''
 
+    @staticmethod
+    def test_stats_report():
+        print(runtime_data.tester_test_stats)
+        print("\n-----------------------------------------------------------------------------------------------")
+        print("Test statistics:")
+        print("-----------------------------------------------------------------------------------------------")
+
+        print(settings.Bcolors.OKGREEN + '               ', end='')
+        for _ in range(1 + runtime_data.parameters["Auto_tester"]["utf_default"]):
+            print(_, '    ', end='')
+
+        print(settings.Bcolors.ENDC + '\nExposed:       ', end='')
+        for _ in range(10):
+            print(runtime_data.tester_test_stats[_]['exposed'], '    ', end='')
+
+        print('\nNo Response:   ', end='')
+        for _ in range(10):
+            print(runtime_data.tester_test_stats[_]['no_response'], '    ', end='')
+
+        print('\nComprehended:  ', end='')
+        for _ in range(10):
+            print(runtime_data.tester_test_stats[_]['comprehended'], '    ', end='')
+
+        print("\n-----------------------------------------------------------------------------------------------")
+        print("-----------------------------------------------------------------------------------------------")
+
     def test_exit_process(self):
         runtime_data.parameters["Auto_tester"]["tester_status"] = False
         # runtime_data.exposure_counter_actual = runtime_data.parameters["Auto_tester"]["exposure_default"]
@@ -952,40 +995,17 @@ class Injector:
         print("----------------------------All testing rounds has been completed-----------------------------")
         print("Total test duration was: ", test_duration)
         print("-----------------------------------------------------------------------------------------------")
-        print("Test statistics are as follows:\n")
-        # for test in self.tester_test_stats:
-        #     print(test, "\n", self.tester_test_stats[test])
-        print("-----------------------------------------------------------------------------------------------")
-        print("-----------------------------------------------------------------------------------------------")
 
-        print('               ', end='')
-        for _ in reversed(range(1 + runtime_data.parameters["Auto_tester"]["utf_default"])):
-            print(_, '    ', end='')
+        self.test_stats_report()
 
-        print('\nExposed:       ', end='')
-        for test in self.tester_test_stats:
-            if 'exposed' in test:
-                print(self.tester_test_stats[test], '    ', end='')
-        print('\nno_response :  ', end='')
-        for test in self.tester_test_stats:
-            if 'no_response' in test:
-                print(self.tester_test_stats[test], '    ', end='')
-        print('\ncomprehended : ', end='')
-        for test in self.tester_test_stats:
-            if 'comprehended' in test:
-                print(self.tester_test_stats[test], '    ', end='')
-
-        print("\n-----------------------------------------------------------------------------------------------")
-        print("-----------------------------------------------------------------------------------------------")
-
-        print("test_stats:\n", self.tester_test_stats)
+        print("test_stats:\n", runtime_data.tester_test_stats)
 
         self.tester_test_attempt_counter = 0
         self.tester_comprehension_counter = 0
         self.tester_no_response_counter = 0
         # logging stats into Genome
-        runtime_data.genome_test_stats.append(self.tester_test_stats.copy())
-        self.tester_test_stats = {}
+        runtime_data.genome_test_stats.append(runtime_data.tester_test_stats.copy())
+        runtime_data.tester_test_stats = self.create_test_stat_template()
         runtime_data.live_mode_status = 'idle'
         print(settings.Bcolors.RED + "Burst exit triggered by the automated workflow >< >< >< >< >< " +
               settings.Bcolors.ENDC)
@@ -1230,19 +1250,21 @@ def neuron_fire(cortical_area, neuron_id):
                     # Adding neuron to fire candidate list for firing in the next round
                     runtime_data.future_fcl[dst_cortical_area].add(dst_neuron_id)
 
+                    # todo: not sure what's being done here. Why this is too generic on all cortical layers? !!
+                    # todo: Why this needs to happen on each synapse update?? !! VERY EXPENSIVE OPERATION!!!!
                     # This is an alternative approach to plasticity with hopefully less overhead
                     # LTP or Long Term Potentiation occurs here
-                    upstream_data = list_upstream_neurons(dst_cortical_area, dst_neuron_id)
-
-                    if upstream_data:
-                        for src_cortital_area in upstream_data:
-                            for src_neuron in upstream_data[src_cortital_area]:
-                                if src_cortital_area != dst_cortical_area and \
-                                        src_neuron in runtime_data.previous_fcl[src_cortital_area]:
-                                    apply_plasticity_ext(src_cortical_area=src_cortital_area,
-                                                         src_neuron_id=src_neuron,
-                                                         dst_cortical_area=dst_cortical_area,
-                                                         dst_neuron_id=dst_neuron_id)
+                    # upstream_data = list_upstream_neurons(dst_cortical_area, dst_neuron_id)
+                    #
+                    # if upstream_data:
+                    #     for src_cortital_area in upstream_data:
+                    #         for src_neuron in upstream_data[src_cortital_area]:
+                    #             if src_cortital_area != dst_cortical_area and \
+                    #                     src_neuron in runtime_data.previous_fcl[src_cortital_area]:
+                    #                 apply_plasticity_ext(src_cortical_area=src_cortital_area,
+                    #                                      src_neuron_id=src_neuron,
+                    #                                      dst_cortical_area=dst_cortical_area,
+                    #                                      dst_neuron_id=dst_neuron_id)
 
         # Resetting last time neuron was updated to the current burst id
         runtime_data.brain[dst_cortical_area][dst_neuron_id]["last_burst_num"] = runtime_data.burst_count

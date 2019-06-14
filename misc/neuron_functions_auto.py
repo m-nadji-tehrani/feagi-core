@@ -313,7 +313,7 @@ def burst():
             print(">>comprehension_queue  ", comprehension_queue, "  <<")
 
         for item in comprehension_queue:
-            if item in counter_list:32
+            if item in counter_list:
                 counter_list[item] += 1
             else:
                 counter_list[item] = 1

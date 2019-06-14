@@ -75,8 +75,13 @@ def save_genome_to_disk():
         print(" ********** ********")
         print(" **********")
         print("\n\n\n")
-        influxdb.insert_evolutionary_fitness_stats(connectome_path=runtime_data.parameters["InitData"]["connectome_path"],
-                                                   fitness_score=brain_fitness/1)
+        influxdb.insert_evolutionary_fitness_stats(connectome_path=runtime_data.parameters["InitData"]
+        ["connectome_path"],
+                                                   fitness_score=brain_fitness/1,
+                                                   training_sets=runtime_data.parameters["Auto_injector"]
+                                                   ["variation_default"],
+                                                   test_sets=runtime_data.parameters["Auto_tester"]
+                                                   ["variation_default"])
     else:
         brain_fitness = ''
         print("\n\n\n")

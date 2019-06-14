@@ -285,7 +285,7 @@ class InfluxManagement:
         self.client.switch_database(self.stats_database)
         self.client.write_points(raw_data)
 
-    def insert_evolutionary_fitness_stats(self, connectome_path, fitness_score):
+    def insert_evolutionary_fitness_stats(self, connectome_path, fitness_score, training_sets, test_sets):
         raw_data = [
             {
                 "measurement": "fitness",
@@ -293,7 +293,9 @@ class InfluxManagement:
                     "connectome": connectome_path
                 },
                 "fields": {
-                    "brain_fitness": fitness_score
+                    "brain_fitness": fitness_score,
+                    "training_sets": training_sets,
+                    "test_sets": test_sets
                 }
             }
         ]

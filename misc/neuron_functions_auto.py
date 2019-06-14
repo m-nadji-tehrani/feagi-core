@@ -313,7 +313,7 @@ def burst():
             print(">>comprehension_queue  ", comprehension_queue, "  <<")
 
         for item in comprehension_queue:
-            if item in counter_list:
+            if item in counter_list:32
                 counter_list[item] += 1
             else:
                 counter_list[item] = 1
@@ -1254,6 +1254,8 @@ def neuron_fire(cortical_area, neuron_id):
                     # todo: Why this needs to happen on each synapse update?? !! VERY EXPENSIVE OPERATION!!!!
                     # todo: Based on the initial test results, removing the following section can make the code run
                     # todo: 10 times faster but result in 1/2 fitness
+                    # todo: add a condition to only LTP when cortical area source is upstream of cortical area dest.
+                    # todo: adding an impact multiplier here could be beneficial
                     # This is an alternative approach to plasticity with hopefully less overhead
                     # LTP or Long Term Potentiation occurs here
                     upstream_data = list_upstream_neurons(dst_cortical_area, dst_neuron_id)
@@ -1266,7 +1268,7 @@ def neuron_fire(cortical_area, neuron_id):
                                     apply_plasticity_ext(src_cortical_area=src_cortical_area,
                                                          src_neuron_id=src_neuron,
                                                          dst_cortical_area=dst_cortical_area,
-                                                         dst_neuron_id=dst_neuron_id)
+                                                         dst_neuron_id=dst_neuron_id, impact_multiplier=1.5)
 
         # Resetting last time neuron was updated to the current burst id
         runtime_data.brain[dst_cortical_area][dst_neuron_id]["last_burst_num"] = runtime_data.burst_count

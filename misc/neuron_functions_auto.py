@@ -818,9 +818,10 @@ class Injector:
             runtime_data.tester_test_stats = self.create_test_stat_template()
             self.tester_test_start_time = datetime.now()
             if self.tester_img_flag:
+                # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                 self.image_feeder2(num=self.tester_num_to_inject,
                                    seq=runtime_data.variation_counter_actual,
-                                   mnist_type='test')
+                                   mnist_type='training')
 
         # Mechanism to skip a number of bursts between each injections to clean-up FCL
         if not self.tester_burst_skip_flag:
@@ -907,9 +908,10 @@ class Injector:
 
                 elif self.tester_img_flag and not self.tester_exit_flag:
                     print('#-#-# Current number that is about to be tested is ', self.tester_num_to_inject)
+                    # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                     self.image_feeder2(num=self.tester_num_to_inject,
                                        seq=runtime_data.variation_counter_actual,
-                                       mnist_type='test')
+                                       mnist_type='training')
 
     # def update_test_stats(self):
     #     # Initialize parameters
@@ -1268,7 +1270,7 @@ def neuron_fire(cortical_area, neuron_id):
                                     apply_plasticity_ext(src_cortical_area=src_cortical_area,
                                                          src_neuron_id=src_neuron,
                                                          dst_cortical_area=dst_cortical_area,
-                                                         dst_neuron_id=dst_neuron_id, impact_multiplier=1.5)
+                                                         dst_neuron_id=dst_neuron_id, impact_multiplier=1)
 
         # Resetting last time neuron was updated to the current burst id
         runtime_data.brain[dst_cortical_area][dst_neuron_id]["last_burst_num"] = runtime_data.burst_count

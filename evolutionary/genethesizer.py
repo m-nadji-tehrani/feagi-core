@@ -61,6 +61,18 @@ def select_a_genome():
     return genome, original_genome_id
 
 
+class GeneModifier2:
+    def __init__(self):
+        pass
+
+    def mutate(self, genome):
+        # 1. index all the genome leaves
+        # 2. modify the value of that selected leave
+        # 3. return: new genome, what gene changed, initial value, new value
+
+        return
+
+
 class GeneModifier:
     @staticmethod
     def change_cortical_neuron_count(genome, cortical_area, change_percentage):

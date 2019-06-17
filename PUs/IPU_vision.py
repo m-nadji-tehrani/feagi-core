@@ -140,12 +140,14 @@ class MNIST:
         print(">> Processing of MNIST Test data set took: ", datetime.now() - test_processing_start_time)
 
     @staticmethod
-    def read_mnist_raw(dataset, database=runtime_data.parameters["InitData"]["image_database"]):
+    def read_mnist_raw(dataset, database="MNIST"):
         """
         Python function for importing the MNIST data set.  It returns an iterator
         of 2-tuples with the first element being the label and the second element
         being a numpy.uint8 2D array of pixel data for the given image.
         """
+
+        # database = runtime_data.parameters["InitData"]["image_database"]
 
         path = "../" + database + "/"
         absolute_path = "/Users/mntehrani/PycharmProjects/" + database + "/"
@@ -187,11 +189,16 @@ class MNIST:
             return self.mongo.mnist_read_nth_digit(mnist_type=mnist_type, n=seq, kernel_size=kernel_size, digit=num)
             # return self.mongo.mnist_read_single_digit(mnist_type=mnist_type, seq=seq, kernel=kernel_size)
 
-    def read_image(self, index):
+    def read_image(self, index, type):
         # Reads an image from MNIST matching the index number requested in the function
         # global mnist_iterator
         tmp = 1
-        image_db = self.mnist_iterator
+        if type == "training":
+            image_db = self.mnist_training_iterator
+        elif type == "test":
+            image_db = self.mnist_test_iterator
+        else:
+            print("ERROR: Invalid MNIST type")
         for labeledImage in image_db:
             tmp += 1
             if tmp == index:

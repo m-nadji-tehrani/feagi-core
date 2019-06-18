@@ -61,16 +61,30 @@ def select_a_genome():
     return genome, original_genome_id
 
 
-class GeneModifier2:
-    def __init__(self):
-        pass
-
-    def mutate(self, genome):
-        # 1. index all the genome leaves
-        # 2. modify the value of that selected leave
-        # 3. return: new genome, what gene changed, initial value, new value
-
-        return
+# class GeneModifier2:
+#     def __init__(self):
+#         pass
+#
+#     def gene_crawler(self, genome_segment):
+#         genes = dict
+#         try:
+#             for key in genome_segment:
+#                 if type(genome_segment[key]) in (int, float, bool):
+#                     genes[key] =
+#
+#
+#
+#         return genes
+#
+#     def mutate(self, genome):
+#         # 1. index all the genome leaves
+#         # 2. modify the value of that selected leave
+#         # 3. return: new genome, what gene changed, initial value, new value
+#
+#         mutation_keys = ('blueprint', 'location_tolerance', 'image_color_intensity_tolerance')
+#
+#
+#         return mutated_genome, mutated_gene, old_value, new_value
 
 
 class GeneModifier:

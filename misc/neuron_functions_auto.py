@@ -1252,7 +1252,25 @@ def neuron_fire(cortical_area, neuron_id):
                     # Adding neuron to fire candidate list for firing in the next round
                     runtime_data.future_fcl[dst_cortical_area].add(dst_neuron_id)
 
+                    # todo: not sure what's being done here. Why this is too generic on all cortical layers? !!
+                    # todo: Why this needs to happen on each synapse update?? !! VERY EXPENSIVE OPERATION!!!!
+                    # todo: Based on the initial test results, removing the following section can make the code run
+                    # todo: 10 times faster but result in 1/2 fitness
+                    # todo: add a condition to only LTP when cortical area source is upstream of cortical area dest.
+                    # todo: adding an impact multiplier here could be beneficial
+                    # This is an alternative approach to plasticity with hopefully less overhead
+                    # LTP or Long Term Potentiation occurs here
+                    upstream_data = list_upstream_neurons(dst_cortical_area, dst_neuron_id)
 
+                    if upstream_data:
+                        for src_cortical_area in upstream_data:
+                            for src_neuron in upstream_data[src_cortical_area]:
+                                if src_cortical_area != dst_cortical_area and \
+                                        src_neuron in runtime_data.previous_fcl[src_cortical_area]:
+                                    apply_plasticity_ext(src_cortical_area=src_cortical_area,
+                                                         src_neuron_id=src_neuron,
+                                                         dst_cortical_area=dst_cortical_area,
+                                                         dst_neuron_id=dst_neuron_id, impact_multiplier=1)
 
         # Resetting last time neuron was updated to the current burst id
         runtime_data.brain[dst_cortical_area][dst_neuron_id]["last_burst_num"] = runtime_data.burst_count

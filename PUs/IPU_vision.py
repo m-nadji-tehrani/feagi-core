@@ -189,6 +189,14 @@ class MNIST:
             return self.mongo.mnist_read_nth_digit(mnist_type=mnist_type, n=seq, kernel_size=kernel_size, digit=num)
             # return self.mongo.mnist_read_single_digit(mnist_type=mnist_type, seq=seq, kernel=kernel_size)
 
+    def read_nth_mnist_digit(self, seq, digit, type):
+        counter = 0
+        for item in self.mnist_array[type]:
+            if item[0] == digit:
+                counter += 1
+                if counter == seq:
+                    return item[1]
+
     def read_image(self, index, type):
         # Reads an image from MNIST matching the index number requested in the function
         # global mnist_iterator

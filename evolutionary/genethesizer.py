@@ -61,7 +61,11 @@ def select_a_genome():
     return genome, original_genome_id
 
 
+
 # class GeneModifier2:
+
+
+# class GeneModifier3:
 #     def __init__(self):
 #         pass
 #

@@ -81,7 +81,12 @@ def save_genome_to_disk():
                                                    training_sets=runtime_data.parameters["Auto_injector"]
                                                    ["variation_default"],
                                                    test_sets=runtime_data.parameters["Auto_tester"]
-                                                   ["variation_default"])
+                                                   ["variation_default"],
+                                                   training_exposure=runtime_data.parameters["Auto_injector"]
+                                                   ["exposure_default"],
+                                                   test_exposure=runtime_data.parameters["Auto_tester"]
+                                                   ["exposure_default"]
+                                                   )
     else:
         brain_fitness = ''
         print("\n\n\n")

@@ -35,6 +35,22 @@ class Brain:
         mnist = IPU_vision.MNIST()
 
         print("Retina has been exposed to a version of :", num)
+
+        if runtime_data.parameters['Logs']['print_mnist_img']:
+            mnist_img = mnist.read_nth_mnist_digit(seq=seq, type=mnist_type, digit=num)
+            try:
+                mnist_img = mnist_img.tolist()
+                for row in mnist_img:
+                    for item in row:
+                        if item > 50:
+                            print("O", end='  ')
+                        else:
+                            print('   ', end='')
+                    print('\n')
+            except AttributeError:
+                print("ERROR: Attribute error while printing image.", mnist_img)
+
+
         neuron_list = {}
 
         vision_group = self.cortical_sub_group_members('vision_v1')

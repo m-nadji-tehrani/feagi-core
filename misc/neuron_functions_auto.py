@@ -412,6 +412,7 @@ def burst():
 
 
 def utf_detection_logic(detection_list):
+    # todo: Add a logic to account for cases were two top ranked items are too close
     # Identifies the detected UTF character with highest activity
     highest_ranked_item = '-'
     for item in detection_list:
@@ -728,7 +729,10 @@ class Injector:
         print("-----------------------------------------------------------------------------------------------")
         if runtime_data.parameters["Switches"]["live_mode"] and runtime_data.live_mode_status == 'learning':
             runtime_data.live_mode_status = 'testing'
-            print(settings.Bcolors.RED + "Starting automated testing process XXX XXX XXX XXX XXX" +
+            print(settings.Bcolors.RED + "\n\n\n\n\n"
+                                         "Starting automated testing process \n\n\n\n\nXXX XXX XXX XXX XXX\n\n\n\n"
+                                         "-----------------------------------------------------------------\n"
+                                         "-----------------------------------------------------------------" +
                   settings.Bcolors.ENDC)
             self.test_manager(test_mode="t1", test_param="")
 
@@ -821,17 +825,17 @@ class Injector:
                 # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                 self.image_feeder2(num=self.tester_num_to_inject,
                                    seq=runtime_data.variation_counter_actual,
-                                   mnist_type='test')
+                                   mnist_type='training')
 
         # Mechanism to skip a number of bursts between each injections to clean-up FCL
         if not self.tester_burst_skip_flag:
 
-            print(".... .. .. .. ... New Exposure ... ... ... .. .. ")
+            print("                                              .... .. .. .. ... New Exposure ... ... ... .. .. ")
 
             # Injecting test image to the FCL
             if self.tester_img_flag:
                 self.img_neuron_list_feeder()
-                print("Test image data just got injected into FCL")
+                # print("Test image data just got injected into FCL")
 
             # Exposure counter
             runtime_data.exposure_counter_actual -= 1
@@ -857,11 +861,11 @@ class Injector:
                 self.tester_test_attempt_counter += 1
 
                 print("Number to inject:", self.tester_num_to_inject)
-                print(self.tester_variation_counter,
+                print("Default counters:", self.tester_variation_counter,
                       self.tester_utf_default,
                       self.tester_exposure_default)
 
-                print(runtime_data.variation_counter_actual,
+                print("Current Counters:", runtime_data.variation_counter_actual,
                       self.tester_utf_counter_actual,
                       runtime_data.exposure_counter_actual)
 
@@ -874,22 +878,22 @@ class Injector:
 
                 # self.test_stats_report()
 
-                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-                print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
-                print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
-                print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
-
                 if self.tester_utf_flag:
                     self.tester_num_to_inject -= 1
                     print('#-#-# Current test UTF counter is ', self.tester_utf_counter_actual)
                     print("#-#-# Current number to inject is :", self.tester_num_to_inject)
 
+                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+                    print(".... .. .. .. ... New UTF .. . ... ... ... .. .. ")
+                    print(".... .. .. .. ... ... .. .. .  ... ... ... .. .. ")
+                    print(".... .. .. .. ... .... .. .. . ... ... ... .. .. ")
+
                 if self.tester_utf_counter_actual < 0:
                     runtime_data.variation_counter_actual -= 1
 
                     # Variation logic
-                    if runtime_data.variation_counter_actual < 0:
+                    if runtime_data.variation_counter_actual < 1:
                         print(">> Test exit condition has been met <<")
                         self.tester_exit_flag = True
                         self.test_exit_process()
@@ -906,12 +910,12 @@ class Injector:
                     self.tester_comprehension_counter = 0
                     self.tester_no_response_counter = 0
 
-                elif self.tester_img_flag and not self.tester_exit_flag:
+                if self.tester_img_flag and not self.tester_exit_flag:
                     print('#-#-# Current number that is about to be tested is ', self.tester_num_to_inject)
                     # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                     self.image_feeder2(num=self.tester_num_to_inject,
                                        seq=runtime_data.variation_counter_actual,
-                                       mnist_type='test')
+                                       mnist_type='training')
 
     # def update_test_stats(self):
     #     # Initialize parameters

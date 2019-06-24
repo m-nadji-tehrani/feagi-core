@@ -825,7 +825,7 @@ class Injector:
                 # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                 self.image_feeder2(num=self.tester_num_to_inject,
                                    seq=runtime_data.variation_counter_actual,
-                                   mnist_type='test')
+                                   mnist_type='training')
 
         # Mechanism to skip a number of bursts between each injections to clean-up FCL
         if not self.tester_burst_skip_flag:
@@ -915,7 +915,7 @@ class Injector:
                     # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                     self.image_feeder2(num=self.tester_num_to_inject,
                                        seq=runtime_data.variation_counter_actual,
-                                       mnist_type='test')
+                                       mnist_type='training')
 
     # def update_test_stats(self):
     #     # Initialize parameters

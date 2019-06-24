@@ -7,7 +7,7 @@ event.
 """
 
 
-def convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id):
+def convert_neuron_activity_to_utf8_char(cortical_area, neuron_id):
 
     char = int(runtime_data.brain[cortical_area][neuron_id]["location"][2])
     activity_history = list(runtime_data.brain[cortical_area][neuron_id]['activity_history'])

@@ -67,7 +67,7 @@
     "influxdb_evolutionary_db": "feagi_evolutionary"
   },
   "Auto_injector":{
-    "variation_default": 200,
+    "variation_default": 20,
     "exposure_default": 6,
     "utf_default": 9,
     "burst_skip": 0,
@@ -75,7 +75,7 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 10,
+    "variation_default": 20,
     "exposure_default": 6,
     "utf_default": 9,
     "burst_skip": 0,

@@ -24,6 +24,7 @@ from configuration import settings, runtime_data
 from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
 from cython_libs import neuron_functions_cy as cy
+from art import text2art
 
 
 print(settings.Bcolors.YELLOW + "Module loaded: neuron_functions_auto" + settings.Bcolors.ENDC)
@@ -727,14 +728,20 @@ class Injector:
         print("----------------------------All injection rounds has been completed-----------------------------")
         print("Total injection duration was: ", injection_duration)
         print("-----------------------------------------------------------------------------------------------")
-        if runtime_data.parameters["Switches"]["live_mode"] and runtime_data.live_mode_status == 'learning':
-            runtime_data.live_mode_status = 'testing'
-            print(settings.Bcolors.RED + "\n\n\n\n\n"
-                                         "Starting automated testing process \n\n\n\n\nXXX XXX XXX XXX XXX\n\n\n\n"
-                                         "-----------------------------------------------------------------\n"
-                                         "-----------------------------------------------------------------" +
-                  settings.Bcolors.ENDC)
-            self.test_manager(test_mode="t1", test_param="")
+        if runtime_data.parameters["Auto_injector"]["epochs"] == 0:
+            if runtime_data.parameters["Switches"]["live_mode"] and \
+                    runtime_data.live_mode_status == 'learning':
+                runtime_data.live_mode_status = 'testing'
+                print(settings.Bcolors.RED + "\n\n\n\n\n"
+                                             "Starting automated testing process \n\n\n\n\nXXX XXX XXX XXX XXX\n\n\n\n"
+                                             "-----------------------------------------------------------------\n"
+                                             "-----------------------------------------------------------------" +
+                      settings.Bcolors.ENDC)
+                self.test_manager(test_mode="t1", test_param="")
+        else:
+            runtime_data.parameters["Auto_injector"]["epochs"] -= 1
+            self.injection_manager(injection_mode="l1", injection_param="")
+            print(text2art("EPOCH_" + str(runtime_data.parameters["Auto_injector"]["epochs"]), font='block'))
 
     def test_manager(self, test_mode, test_param):
         """
@@ -825,7 +832,7 @@ class Injector:
                 # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                 self.image_feeder2(num=self.tester_num_to_inject,
                                    seq=runtime_data.variation_counter_actual,
-                                   mnist_type='training')
+                                   mnist_type='test')
 
         # Mechanism to skip a number of bursts between each injections to clean-up FCL
         if not self.tester_burst_skip_flag:
@@ -915,7 +922,7 @@ class Injector:
                     # todo: temporarily changing test data set to training instead <<< CHANGE IT BACK!!! >>>
                     self.image_feeder2(num=self.tester_num_to_inject,
                                        seq=runtime_data.variation_counter_actual,
-                                       mnist_type='training')
+                                       mnist_type='test')
 
     # def update_test_stats(self):
     #     # Initialize parameters
@@ -1266,7 +1273,9 @@ def neuron_fire(cortical_area, neuron_id):
                     # LTP or Long Term Potentiation occurs here
                     upstream_data = list_upstream_neurons(dst_cortical_area, dst_neuron_id)
 
-                    if upstream_data:
+                    ltp_targets = ['vision_memory', 'utf8_memory']
+
+                    if upstream_data and dst_cortical_area in ltp_targets:
                         for src_cortical_area in upstream_data:
                             for src_neuron in upstream_data[src_cortical_area]:
                                 if src_cortical_area != dst_cortical_area and \
@@ -1334,7 +1343,7 @@ def neuron_fire(cortical_area, neuron_id):
 
     # Condition to translate activity in utf8_out region as a character comprehension
     if cortical_area == 'utf8_memory':
-        detected_item, activity_rank = OPU_utf8.convert_neuron_acticity_to_utf8_char(cortical_area, neuron_id)
+        detected_item, activity_rank = OPU_utf8.convert_neuron_activity_to_utf8_char(cortical_area, neuron_id)
         # todo: burst detection list could be a set instead
         if detected_item not in runtime_data.burst_detection_list:
             runtime_data.burst_detection_list[detected_item] = {}

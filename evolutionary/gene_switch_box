@@ -1,0 +1,17 @@
+{
+  "key": {
+    "enabled": true,
+    "default": false,
+    "options": []
+  },
+  "postsynaptic_current_max": {
+    "enabled": true,
+    "default": 1,
+    "options": [0.2, 0.4, 0.6, 0.8, 1, 2, 4, 8]
+  },
+  "postsynaptic_current": {
+    "enabled": true,
+    "default": 5,
+    "options": [1, 5, 10, 15, 20]
+  }
+}

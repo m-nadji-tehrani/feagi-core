@@ -9,9 +9,11 @@ __author__ = 'Mohammad Nadji-Tehrani'
 
 if __name__ == '__main__':
     from datetime import datetime
-
+    from art import text2art
     import sys
     # sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
+
+    print(text2art("FEAGI", font='block'))
 
     from misc import disk_ops
     disk_ops.load_parameters_in_memory()

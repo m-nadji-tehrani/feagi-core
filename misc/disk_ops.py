@@ -146,7 +146,7 @@ def stage_genome(connectome_path, dynamic_selection_mode=True):
         staged_genome.seek(0)  # rewind
         staged_genome.write(json.dumps(genome_data, indent=3))
         staged_genome.truncate()
-        print("\n*\n**\n***\ngenome_tmp.json was just staged...vvv ^^^ vvv\n***\n**\n*")
+        print("\n*\n**\n***\ngenome_tmp.json was just staged...vvv ^^^ vvv\n***\n**\n*", connectome_path)
 
     print("<< << Genome has been staged in runtime repo >> >>")
 

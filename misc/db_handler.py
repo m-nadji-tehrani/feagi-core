@@ -17,7 +17,7 @@ class MongoManagement:
             self.client.server_info()
             self.db = self.client['metis']
             self.collection_genome = self.db['genomes']
-            self.collection_mnist = self.db['mnist']
+            self.collection_mnist = self.db['mnist2']
             self.collection_test_stats = self.db['test_stats']
             self.collection_membrane_potentials = self.db['membrane_potentials']
             self.collection_neuron_activities = self.db['neuron_activities']

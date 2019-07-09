@@ -32,7 +32,7 @@
     "save_fcl_to_db": false,
     "save_connectome_to_disk": false,
     "live_mode": true,
-    "use_static_genome": false,
+    "use_static_genome": true,
     "one_round": false,
     "ipu_vision_dynamic_img_fetch": false,
     "capture_neuron_mp": false,
@@ -67,7 +67,7 @@
     "influxdb_evolutionary_db": "feagi_evolutionary"
   },
   "Auto_injector":{
-    "epochs": 3,
+    "epochs": 10,
     "variation_default": 20,
     "exposure_default": 6,
     "utf_default": 9,

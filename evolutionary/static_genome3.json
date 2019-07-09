@@ -1631,6 +1631,606 @@
               }
           }
       },
+      "vision_v1-8" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "a",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-9" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "b",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-10" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "c",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-11" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "d",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-12" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "e",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-13" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "f",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-14" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "g",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-15" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "h",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-16" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "i",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
+      "vision_v1-17" : {
+          "growth_path" : "",
+          "group_id" : "vision",
+          "sub_group_id" : "vision_v1",
+          "plot_index" : 19,
+          "layer_index" : 7,
+          "total_layer_count" : 7,
+          "direction_sensitivity" : "j",
+          "orientation_selectivity_pattern" : "",
+          "location" : "",
+          "kernel_size" : 5,
+          "cortical_neuron_count" : 1403,
+          "location_generation_type" : "random",
+          "synapse_attractivity" : 100,
+          "init_synapse_needed" : false,
+          "postsynaptic_current" : 20,
+          "plasticity_constant" : 0,
+          "postsynaptic_current_max" : 1000,
+          "neighbor_locator_rule_id" : "rule_1",
+          "neighbor_locator_rule_param_id" : "param_1",
+          "cortical_mapping_dst" : {
+              "vision_v2" : {
+                  "neighbor_locator_rule_id" : "rule_5",
+                  "neighbor_locator_rule_param_id" : "param_7"
+              }
+          },
+          "neuron_params" : {
+              "activation_function_id" : "",
+              "depolarization_threshold" : 1.574682375,
+              "orientation_selectivity_id" : "",
+              "firing_threshold" : 3.4898094,
+              "firing_pattern_id" : "",
+              "refractory_period" : 0,
+              "axon_avg_length" : "",
+              "leak_coefficient" : 10,
+              "axon_avg_connections" : "",
+              "axon_orientation function" : "",
+              "consecutive_fire_cnt_max" : 0,
+              "snooze_length" : 1.83787266,
+              "block_boundaries" : [
+                  28,
+                  28,
+                  1
+              ],
+              "geometric_boundaries" : {
+                  "x" : [
+                      0,
+                      29
+                  ],
+                  "y" : [
+                      0,
+                      29
+                  ],
+                  "z" : [
+                      0,
+                      10
+                  ]
+              }
+          }
+      },
       "vision_v2" : {
           "growth_path" : "",
           "group_id" : "vision",
@@ -1639,7 +2239,7 @@
           "orientation_selectivity_pattern" : "",
           "location" : "",
           "kernel_size" : 3,
-          "cortical_neuron_count" : 14321,
+          "cortical_neuron_count" : 50000,
           "location_generation_type" : "random",
           "synapse_attractivity" : 100,
           "init_synapse_needed" : false,
@@ -1670,20 +2270,20 @@
               "block_boundaries" : [
                   28,
                   28,
-                  7
+                  17
               ],
               "geometric_boundaries"  : {
                   "x" : [
                       0,
-                      74
+                      170
                   ],
                   "y" : [
                       0,
-                      74
+                      170
                   ],
                   "z" : [
                       0,
-                      74
+                      170
                   ]
               }
           }
@@ -1696,7 +2296,7 @@
           "orientation_selectivity_pattern" : "",
           "location" : "",
           "kernel_size" : 7,
-          "cortical_neuron_count" : 16836,
+          "cortical_neuron_count" : 50000,
           "location_generation_type" : "random",
           "synapse_attractivity" : 80,
           "init_synapse_needed" : false,
@@ -1732,15 +2332,15 @@
               "geometric_boundaries" : {
                   "x" : [
                       0,
-                      74
+                      170
                   ],
                   "y" : [
                       0,
-                      74
+                      170
                   ],
                   "z" : [
                       0,
-                      74
+                      170
                   ]
               }
           }

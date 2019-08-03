@@ -95,8 +95,8 @@ def neuro_genesis(cortical_area, loc_blk):
     runtime_data.brain[cortical_area][neuron_id]["snooze_till_burst_num"] = 0
     runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] = 0
     runtime_data.brain[cortical_area][neuron_id]["activity_history"] = []
-    runtime_data.brain[cortical_area][neuron_id]["location"] = loc_blk[0]
-    runtime_data.brain[cortical_area][neuron_id]["block"] = loc_blk[1]
+    # loc_blk is a two element list where first element being the location of the neuron and second being the block
+    runtime_data.brain[cortical_area][neuron_id]["locations"] = [loc_blk]
     runtime_data.brain[cortical_area][neuron_id]["status"] = "Passive"
     runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
     runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_burst"] = 0
@@ -146,6 +146,27 @@ def random_location_generator(x1, y1, z1, x2, y2, z2):
     # todo: Would it be better to use relative locations in each cortical region instead?
     neuron_location = [random.randrange(x1, x2, 1), random.randrange(y1, y2, 1), random.randrange(z1, z2, 1)]
     return neuron_location
+
+
+def dendrite_location_generator(cortical_area, neuron_location):
+    """
+    generates location and block information of the neuron dendrites
+    """
+    locations = list()
+
+    dendrite_growth_rule = runtime_data.genome["blueprint"][cortical_area]["dendrite_growth_rule"]
+
+    # todo: build the function to generate dendrite locations based on dendrite_growth_rule
+    dendrite_location = neuron_location
+
+    dendrite_location_block = block_id_gen(cortical_area=cortical_area, coordinate=dendrite_location)
+    locations.append([dendrite_location], [dendrite_location_block])
+
+
+
+    locations = neuron_location
+
+    return locations
 
 
 def location_collector(cortical_area):
@@ -240,19 +261,19 @@ def three_dim_growth(cortical_area):
     neuron_blk_list = []
     cortical_area_dim = []
 
-    # # todo: Come up with a permament solution for the following line
+    # # todo: Come up with a permanent solution for the following line
     # if cortical_area == 'vision_memory':
     #     runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries'] = \
     #         {'x': [0, 200], 'y': [0, 200], 'z': [0, 200]}
 
-    geometric_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
-    print(cortical_area, geometric_boundaries)
-    for coordinate in geometric_boundaries:
-        cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
-    block_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['block_boundaries']
+    # geometric_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
+    # print(cortical_area, geometric_boundaries)
+    # for coordinate in geometric_boundaries:
+    #     cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
+    # block_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['block_boundaries']
+
     for _ in neuron_loc_list:
-        # neuron_blk_list.append(block_id_gen(_[0], _[1], _[2]))
-        neuron_block = block_id_gen2(_, space_dimensions=cortical_area_dim, total_block_count=block_boundaries)
+        neuron_block = block_id_gen(coordinate=_, cortical_area=cortical_area)
         if neuron_block[0] >= 500:
             print("Block with value >50 was detected!", cortical_area, _, neuron_block, cortical_area_dim, block_boundaries)
         neuron_blk_list.append(neuron_block)
@@ -385,7 +406,7 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
                             src_neuron_id=src_neuron_id):
                 neighbor_candidates.append(dst_neuron_id)
     else:
-        neuron_block_src = runtime_data.brain[cortical_area_src][src_neuron_id]['block']
+        neuron_block_src = runtime_data.brain[cortical_area_src][src_neuron_id]['locations'][0][1]
         if 'layer_index' in runtime_data.genome['blueprint'][cortical_area_src]:
             block_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index'] - 1
         else:
@@ -402,28 +423,13 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
         if z_block_boundary > 1:
             if block_reference in runtime_data.block_dic[cortical_area_dst]:
                 for neighbor in runtime_data.block_dic[cortical_area_dst][block_reference]:
-                    if runtime_data.brain[cortical_area_dst][neighbor]['block'][2] == block_index:
+                    # todo: block index to be updated and made generic
+                    if runtime_data.brain[cortical_area_dst][neighbor]['locations'][0][1][2] == block_index:
                         neighbor_candidates.append(neighbor)
-
 
         elif block_reference in runtime_data.block_dic[cortical_area_dst]:
             for neighbor in runtime_data.block_dic[cortical_area_dst][block_reference]:
                 neighbor_candidates.append(neighbor)
-
-        # # todo: Need to bring here concept of the projection center and find neurons around the block there
-        # projection_coord = dst_projection_center(cortical_area_src, src_neuron_id, cortical_area_dst)
-        #
-        # # todo: move the block size and kernel size below to settings
-        # proj_block_id = block_id_gen(projection_coord[0], projection_coord[1], projection_coord[2], block_size=10)
-        # neuron_list = neurons_in_block_neighborhood_2(cortical_area_dst, proj_block_id, kernel_size=3)
-        # for dst_neuron_id in neuron_list:
-        #     if rule_matcher(rule_id=rule, rule_param=rule_param, cortical_area_src=cortical_area_src,
-        #                     cortical_area_dst=cortical_area_dst, dst_neuron_id=dst_neuron_id, src_neuron_id=src_neuron_id):
-        #         neighbor_candidates.append(dst_neuron_id)
-
-
-    # if cortical_area_dst == 'vision_memory':
-    #     print('*%i*' %len(neighbor_candidates))
 
     return neighbor_candidates
 
@@ -508,9 +514,7 @@ def neuron_finder(cortical_area, location, radius):
 
 def neuron_finder2(cortical_area, location, radius):
 
-    cortical_area_dims = cortical_area_lengths(cortical_area)
-    block_boundaries = runtime_data.genome[cortical_area]['neuron_params']['block_boundaries']
-    block_id = block_id_gen2(location, cortical_area_dims, total_block_count=block_boundaries)
+    block_id = block_id_gen(coordinate=location, cortical_area=cortical_area)
 
     neuron_list = neurons_in_the_block(cortical_area, block_id)
 
@@ -539,12 +543,12 @@ def neuron_eliminator():
 
 
 def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_neuron_id, src_neuron_id):
-    
-    src_coord = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]["location"])
-    dst_coord = np.array(runtime_data.brain[cortical_area_dst][dst_neuron_id]["location"])
+    # todo: locations to be updated and made generic allowing multiple locations
+    src_coord = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]["locations"][0][0])
+    dst_coord = np.array(runtime_data.brain[cortical_area_dst][dst_neuron_id]["locations"][0][0])
 
-    src_blk = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]["block"])
-    dst_blk = np.array(runtime_data.brain[cortical_area_dst][dst_neuron_id]["block"])
+    src_blk = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]["locations"][0][1])
+    dst_blk = np.array(runtime_data.brain[cortical_area_dst][dst_neuron_id]["locations"][0][1])
 
     # Find relative coordinates on the source and destination side
     src_lengths = cortical_area_lengths(cortical_area_src)
@@ -644,24 +648,22 @@ def cortical_area_lengths(cortical_area):
     return length
 
 
-# def block_id_gen(x, y, z, block_size=28):
-#     """
-#     Generating a block id so it can be used for faster neighbor detection
-#     """
-#     bx = ceil(x / block_size)
-#     by = ceil(y / block_size)
-#     bz = ceil(z / block_size)
-#     return [bx, by, bz]
-
-
-def block_id_gen2(coordinate, space_dimensions, total_block_count):
+def block_id_gen(cortical_area, coordinate):
     """
     Generating a block id so it can be used for faster neighbor detection
     """
+
+    cortical_area_dim = []
+    geometric_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
+    print(cortical_area, geometric_boundaries)
+    for coordinate in geometric_boundaries:
+        cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
+    block_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['block_boundaries']
+
     block_id = []
     index = 0
     for location in coordinate:
-        block_number = floor(location / ((space_dimensions[index] / (total_block_count[index] + 0.00001)) + 0.00001))
+        block_number = floor(location / ((cortical_area_dim[index] / (block_boundaries[index] + 0.00001)) + 0.00001))
         block_id.append(block_number)
         index += 1
     if block_id[0] > 100:

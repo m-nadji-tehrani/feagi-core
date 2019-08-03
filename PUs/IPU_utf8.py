@@ -7,6 +7,7 @@ def convert_char_to_fire_list(char):
     utf_value = ord(char)
     fire_set = set()
     for key in runtime_data.brain["utf8"]:
-        if utf_value == runtime_data.brain["utf8"][key]["location"][2]:
+        # todo: location to be made generic
+        if utf_value == runtime_data.brain["utf8"][key]["locations"][0][0][2]:
             fire_set.add(key)
     return fire_set

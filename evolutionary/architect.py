@@ -162,8 +162,6 @@ def dendrite_location_generator(cortical_area, neuron_location):
     dendrite_location_block = block_id_gen(cortical_area=cortical_area, coordinate=dendrite_location)
     locations.append([dendrite_location], [dendrite_location_block])
 
-
-
     locations = neuron_location
 
     return locations
@@ -655,9 +653,8 @@ def block_id_gen(cortical_area, coordinate):
 
     cortical_area_dim = []
     geometric_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['geometric_boundaries']
-    print(cortical_area, geometric_boundaries)
-    for coordinate in geometric_boundaries:
-        cortical_area_dim.append(geometric_boundaries[coordinate][1]-geometric_boundaries[coordinate][0])
+    for axis in geometric_boundaries:
+        cortical_area_dim.append(geometric_boundaries[axis][1]-geometric_boundaries[axis][0])
     block_boundaries = runtime_data.genome['blueprint'][cortical_area]['neuron_params']['block_boundaries']
 
     block_id = []

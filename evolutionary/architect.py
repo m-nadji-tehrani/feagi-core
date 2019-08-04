@@ -95,9 +95,9 @@ def neuro_genesis(cortical_area, soma_location, dendrite_locations):
     runtime_data.brain[cortical_area][neuron_id]["snooze_till_burst_num"] = 0
     runtime_data.brain[cortical_area][neuron_id]["last_burst_num"] = 0
     runtime_data.brain[cortical_area][neuron_id]["activity_history"] = []
+    runtime_data.brain[cortical_area][neuron_id]["soma_location"] = soma_location
     # loc_blk is a two element list where first element being the location of the neuron and second being the block
     runtime_data.brain[cortical_area][neuron_id]["dendrite_locations"] = dendrite_locations
-    runtime_data.brain[cortical_area][neuron_id]["soma_location"] = soma_location
     runtime_data.brain[cortical_area][neuron_id]["status"] = "Passive"
     runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_time"] = str(datetime.datetime.now())
     runtime_data.brain[cortical_area][neuron_id]["last_membrane_potential_reset_burst"] = 0
@@ -165,8 +165,6 @@ def dendrite_location_generator(cortical_area, neuron_location):
     for dendrite_location in dendrite_locations:
         dendrite_location_block = block_id_gen(cortical_area=cortical_area, coordinate=dendrite_location)
         locations.append([dendrite_location, dendrite_location_block])
-
-    # locations = dendrite_locations
 
     return locations
 
@@ -264,8 +262,6 @@ def three_dim_growth(cortical_area):
     """
     # This code segment creates a new Neuron per every location in neuron_loc_list
     neuron_loc_list = location_collector(cortical_area)
-    neuron_blk_list = []
-    cortical_area_dim = []
     neuron_count = 0
 
     for candidate_neuron_location in neuron_loc_list:
@@ -287,27 +283,6 @@ def three_dim_growth(cortical_area):
             if block_reference not in runtime_data.block_dic[cortical_area]:
                 runtime_data.block_dic[cortical_area][block_reference] = []
             runtime_data.block_dic[cortical_area][block_reference].append(neuron_id)
-
-    # print("\n Block dic:", runtime_data.block_dic)
-
-    # for _ in neuron_loc_list:
-    #     neuron_block = block_id_gen(coordinate=_, cortical_area=cortical_area)
-    #     if neuron_block[0] >= 500:
-    #         print("Block with value >50 was detected!", cortical_area, _, neuron_block, cortical_area_dim)
-    #     neuron_blk_list.append(neuron_block)
-    # neuron_loc_blk = zip(neuron_loc_list, neuron_blk_list)
-    #
-    #
-    # for __ in neuron_loc_blk:
-    #     neuron_id = neuro_genesis(cortical_area, __)        # Create a new Neuron in target destination
-    #     neuron_count += 1
-    #     # Adding neuron id to the block dictionary
-    #     block_reference = str(__[1][0]) + '-' + str(__[1][1]) + '-' + str(__[1][2])
-    #     if cortical_area not in runtime_data.block_dic:
-    #         runtime_data.block_dic[cortical_area] = {}
-    #     if block_reference not in runtime_data.block_dic[cortical_area]:
-    #         runtime_data.block_dic[cortical_area][block_reference] = []
-    #     runtime_data.block_dic[cortical_area][block_reference].append(neuron_id)
 
     return neuron_count
 
@@ -426,7 +401,8 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
                             src_neuron_id=src_neuron_id):
                 neighbor_candidates.append(dst_neuron_id)
     else:
-        neuron_block_src = runtime_data.brain[cortical_area_src][src_neuron_id]['dendrite_locations'][0][1]
+        # todo: rules are currently not being used for synapse creation. Would there be value? Assess!!
+        neuron_block_src = runtime_data.brain[cortical_area_src][src_neuron_id]['soma_location'][1]
         if 'layer_index' in runtime_data.genome['blueprint'][cortical_area_src]:
             block_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index'] - 1
         else:
@@ -442,10 +418,9 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
 
         if z_block_boundary > 1:
             if block_reference in runtime_data.block_dic[cortical_area_dst]:
-                for neighbor in runtime_data.block_dic[cortical_area_dst][block_reference]:
-                    # todo: block index to be updated and made generic
-                    if runtime_data.brain[cortical_area_dst][neighbor]['dendrite_locations'][0][1][2] == block_index:
-                        neighbor_candidates.append(neighbor)
+                for dst_neuron in runtime_data.block_dic[cortical_area_dst][block_reference]:
+                    if runtime_data.brain[cortical_area_dst][dst_neuron]['soma_location'][1][2] == block_index:
+                        neighbor_candidates.append(dst_neuron)
 
         elif block_reference in runtime_data.block_dic[cortical_area_dst]:
             for neighbor in runtime_data.block_dic[cortical_area_dst][block_reference]:
@@ -559,15 +534,16 @@ def neuron_eliminator():
     """
     Responsible for programmed neuron's death
     """
+    # todo: implement the function
     return
 
 
 def rule_matcher(rule_id, rule_param, cortical_area_src, cortical_area_dst, dst_neuron_id, src_neuron_id):
     # todo: locations to be updated and made generic allowing multiple locations
-    src_coord = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]['dendrite_locations'][0][0])
+    src_coord = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]['soma_location'][0])
     dst_coord = np.array(runtime_data.brain[cortical_area_dst][dst_neuron_id]['dendrite_locations'][0][0])
 
-    src_blk = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]['dendrite_locations'][0][1])
+    src_blk = np.array(runtime_data.brain[cortical_area_src][src_neuron_id]['soma_location'][1])
     dst_blk = np.array(runtime_data.brain[cortical_area_dst][dst_neuron_id]['dendrite_locations'][0][1])
 
     # Find relative coordinates on the source and destination side

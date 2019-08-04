@@ -1372,8 +1372,8 @@ def list_top_n_utf_memory_neurons(cortical_area, n):
     counter = ord('0')
     the_other_counter = 0
     for neuron_id in runtime_data.brain[cortical_area]:
-        if int(runtime_data.brain[cortical_area][neuron_id]["locations"][0][0][2]) == counter:
-            neuron_list.append([int(runtime_data.brain[cortical_area][neuron_id]["locations"][0][0][2])-48, neuron_id])
+        if int(runtime_data.brain[cortical_area][neuron_id]['dendrite_locations'][0][0][2]) == counter:
+            neuron_list.append([int(runtime_data.brain[cortical_area][neuron_id]['dendrite_locations'][0][0][2])-48, neuron_id])
             counter += 1
             the_other_counter += 1
             if the_other_counter == n:

@@ -9,7 +9,7 @@ event.
 
 def convert_neuron_activity_to_utf8_char(cortical_area, neuron_id):
     # todo: location to be made generic
-    char = int(runtime_data.brain[cortical_area][neuron_id]["locations"][0][0][2])
+    char = int(runtime_data.brain[cortical_area][neuron_id]['dendrite_locations'][0][0][2])
     activity_history = list(runtime_data.brain[cortical_area][neuron_id]['activity_history'])
     # todo: move collection span to parameters
     collection_span_counter = len(activity_history) - 1

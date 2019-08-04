@@ -149,45 +149,45 @@ def random_location_generator(x1, y1, z1, x2, y2, z2):
     return neuron_location
 
 
-def dendrite_templates(direction):
-    # todo: use a mathmatical model instead of manual templates
+def dendrite_template(direction):
+    # todo: use a mathematical model instead of manual templates
     # todo: move templates to genome
 
     if direction == '/':
-        template = [
+        template = np.array([
             [0, 0, 0],
             [1, 1, 0],
             [2, 2, 0],
             [-1, -1, 0],
             [-2, -2, 0]
-        ]
+        ])
 
     elif direction == '\\':
-        template = [
+        template = np.array([
             [0, 0, 0],
             [-1, 1, 0],
             [-2, 2, 0],
             [1, -1, 0],
             [2, -2, 0]
-        ]
+        ])
 
     elif direction == '-':
-        template = [
+        template = np.array([
             [0, 0, 0],
             [-1, 0, 0],
             [-2, 0, 0],
             [1, 0, 0],
             [2, 0, 0]
-        ]
+        ])
 
     elif direction == '|':
-        template = [
+        template = np.array([
             [0, 0, 0],
             [0, 1, 0],
             [0, 2, 0],
             [0, -1, 0],
             [0, -2, 0]
-        ]
+        ])
 
     return template
 
@@ -196,20 +196,20 @@ def dendrite_location_generator(cortical_area, neuron_location):
     """
     generates location and block information of the neuron dendrites
     """
-    locations = list()
+    dendrite_location_blocks = list()
+
+    neuron_location = np.array(neuron_location)
 
     # dendrite_growth_rule = runtime_data.genome["blueprint"][cortical_area]["dendrite_growth_rule"]
 
     # todo: build the function to generate dendrite locations based on dendrite_growth_rule
-    dendrite_locations = list()
-    dendrite_locations.append(neuron_location)
-    dendrite_locations.append(neuron_location)
+    dendrite_locations = dendrite_template('-') + neuron_location
 
-    for dendrite_location in dendrite_locations:
+    for dendrite_location in dendrite_locations.tolist():
         dendrite_location_block = block_id_gen(cortical_area=cortical_area, coordinate=dendrite_location)
-        locations.append([dendrite_location, dendrite_location_block])
+        dendrite_location_blocks.append([dendrite_location, dendrite_location_block])
 
-    return locations
+    return dendrite_location_blocks
 
 
 def location_collector(cortical_area):

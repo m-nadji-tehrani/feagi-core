@@ -149,6 +149,49 @@ def random_location_generator(x1, y1, z1, x2, y2, z2):
     return neuron_location
 
 
+def dendrite_templates(direction):
+    # todo: use a mathmatical model instead of manual templates
+    # todo: move templates to genome
+
+    if direction == '/':
+        template = [
+            [0, 0, 0],
+            [1, 1, 0],
+            [2, 2, 0],
+            [-1, -1, 0],
+            [-2, -2, 0]
+        ]
+
+    elif direction == '\\':
+        template = [
+            [0, 0, 0],
+            [-1, 1, 0],
+            [-2, 2, 0],
+            [1, -1, 0],
+            [2, -2, 0]
+        ]
+
+    elif direction == '-':
+        template = [
+            [0, 0, 0],
+            [-1, 0, 0],
+            [-2, 0, 0],
+            [1, 0, 0],
+            [2, 0, 0]
+        ]
+
+    elif direction == '|':
+        template = [
+            [0, 0, 0],
+            [0, 1, 0],
+            [0, 2, 0],
+            [0, -1, 0],
+            [0, -2, 0]
+        ]
+
+    return template
+
+
 def dendrite_location_generator(cortical_area, neuron_location):
     """
     generates location and block information of the neuron dendrites
@@ -407,7 +450,7 @@ def neighbor_finder_ext(cortical_area_src, cortical_area_dst, src_neuron_id, rul
             block_index = runtime_data.genome['blueprint'][cortical_area_src]['layer_index'] - 1
         else:
             block_index = 0
-        # todo: make the next line generic
+        # todo: make the next line generic. It would become important when complex cortical areas are introduced
         if cortical_area_dst == 'vision_v2':
             block_reference = str(neuron_block_src[0]) + '-' + str(neuron_block_src[1]) + '-' + str(block_index)
             # print("block_reference:", block_reference)

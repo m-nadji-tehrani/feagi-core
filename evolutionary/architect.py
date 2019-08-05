@@ -188,6 +188,10 @@ def dendrite_template(direction):
             [0, -1, 0],
             [0, -2, 0]
         ])
+    else:
+        template = np.array([
+            [0, 0, 0]
+        ])
 
     return template
 
@@ -203,7 +207,11 @@ def dendrite_location_generator(cortical_area, neuron_location):
     # dendrite_growth_rule = runtime_data.genome["blueprint"][cortical_area]["dendrite_growth_rule"]
 
     # todo: build the function to generate dendrite locations based on dendrite_growth_rule
-    dendrite_locations = dendrite_template('-') + neuron_location
+    try:
+        direction_sensitivity = runtime_data.genome['blueprint'][cortical_area]['direction_sensitivity']
+    except KeyError:
+        direction_sensitivity = ''
+    dendrite_locations = dendrite_template(direction_sensitivity) + neuron_location
 
     for dendrite_location in dendrite_locations.tolist():
         dendrite_location_block = block_id_gen(cortical_area=cortical_area, coordinate=dendrite_location)

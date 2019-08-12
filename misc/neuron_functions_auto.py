@@ -23,7 +23,7 @@ from misc import db_handler, stats
 from configuration import settings, runtime_data
 from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
-from cython_libs import neuron_functions_cy as cy
+from metiscython import neuron_functions_cy as cy
 from art import text2art
 
 

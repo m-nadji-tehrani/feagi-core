@@ -2,11 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="298dd799-1267-4884-bfce-7b832db1990c" name="Default" comment="Dendrite growth (Partial)">
+      <change beforePath="$PROJECT_DIR$/.idea/My_Brian.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/My_Brian.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configuration/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/configuration/parameters.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connectome/vision_IT.json" beforeDir="false" afterPath="$PROJECT_DIR$/connectome/vision_IT.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connectome/vision_v2.json" beforeDir="false" afterPath="$PROJECT_DIR$/connectome/vision_v2.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/cython_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/metiscython/cython_setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/mycython_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/metiscython/mycython_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/mycython_test.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/metiscython/mycython_test.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/metiscython/neuron_functions_cy.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cython_libs/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/metiscython/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/evolutionary/static_genome3.json" beforeDir="false" afterPath="$PROJECT_DIR$/evolutionary/static_genome3.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/misc/neuron_functions_auto.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/neuron_functions_auto.py" afterDir="false" />
     </list>
     <ignored path="My_Brian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -80,14 +86,14 @@
     <favorites_list name="My_Brian" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.51703703">
+    <splitter split-orientation="horizontal" split-proportion="0.4716981">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="23256">
-                  <caret line="1385" column="16" selection-start-line="1385" selection-start-column="16" selection-end-line="1385" selection-end-column="16" />
+                <state relative-caret-position="409">
+                  <caret line="1268" selection-start-line="1268" selection-end-line="1269" />
                   <folding>
                     <element signature="e#363#372#0" expanded="true" />
                   </folding>
@@ -95,7 +101,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/evolutionary/architect.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="7521">
@@ -133,7 +139,7 @@
             <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="437">
-                  <caret line="580" lean-forward="true" selection-start-line="580" selection-end-line="580" />
+                  <caret line="580" selection-start-line="580" selection-end-line="580" />
                   <folding>
                     <element signature="e#365#416#0" />
                     <element signature="e#506#839#1" />
@@ -147,7 +153,7 @@
             <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="386">
-                  <caret line="76" column="45" lean-forward="true" selection-start-line="76" selection-start-column="45" selection-end-line="77" selection-end-column="40" />
+                  <caret line="76" column="45" selection-start-line="76" selection-start-column="45" selection-end-line="77" selection-end-column="40" />
                   <folding>
                     <element signature="e#2#30#0" expanded="true" />
                   </folding>
@@ -156,7 +162,7 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cython_libs/test.py">
+            <entry file="file://$PROJECT_DIR$/metiscython/test.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="102">
                   <caret line="65" column="4" selection-start-line="65" selection-start-column="4" selection-end-line="1713" selection-end-column="1" />
@@ -436,8 +442,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="305">
-                  <caret line="26" column="29" lean-forward="true" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
+                <state relative-caret-position="158">
+                  <caret line="56" column="10" lean-forward="true" selection-start-line="56" selection-start-column="10" selection-end-line="56" selection-end-column="10" />
                 </state>
               </provider>
             </entry>
@@ -463,8 +469,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-150">
-                  <caret line="2595" column="27" lean-forward="true" selection-start-line="2595" selection-start-column="27" selection-end-line="2595" selection-end-column="27" />
+                <state relative-caret-position="368">
+                  <caret line="2682" column="29" lean-forward="true" selection-start-line="2682" selection-start-column="29" selection-end-line="2682" selection-end-column="29" />
                   <folding>
                     <element signature="n#!!block;n#3#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
                     <element signature="n#!!block;n#7#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
@@ -493,9 +499,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>training_counter_default</find>
-      <find>comprehension_queue</find>
-      <find>plasticity</find>
       <find>neuron_fire</find>
       <find>init_data</find>
       <find>activity_history</find>
@@ -523,6 +526,9 @@
       <find>'dendrite_locations'</find>
       <find>direction</find>
       <find>direction_sensitivity</find>
+      <find>pain</find>
+      <find>cy</find>
+      <find>timing</find>
     </findStrings>
     <replaceStrings>
       <replace>projection_center</replace>
@@ -618,11 +624,11 @@
         <option value="$PROJECT_DIR$/misc/disk_ops.py" />
         <option value="$PROJECT_DIR$/PUs/IPU_vision.py" />
         <option value="$PROJECT_DIR$/documentation/temp.json" />
-        <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
         <option value="$PROJECT_DIR$/PUs/IPU_utf8.py" />
         <option value="$PROJECT_DIR$/PUs/OPU_utf8.py" />
         <option value="$PROJECT_DIR$/evolutionary/architect.py" />
         <option value="$PROJECT_DIR$/configuration/parameters.json" />
+        <option value="$PROJECT_DIR$/misc/neuron_functions_auto.py" />
         <option value="$PROJECT_DIR$/evolutionary/static_genome3.json" />
       </list>
     </option>
@@ -631,8 +637,8 @@
     <scope name="Main" pattern="file[My_Brian]:*/&amp;&amp;!file[My_Brian]:connectome_1//*&amp;&amp;!file[My_Brian]:connectome_2//*&amp;&amp;!file[My_Brian]:connectome_3//*&amp;&amp;!file[My_Brian]:connectome_4//*&amp;&amp;!file[My_Brian]:connectome_5//*&amp;&amp;!file[My_Brian]:.idea//*&amp;&amp;!file[My_Brian]:build//*" />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1920" />
-    <option name="height" value="1200" />
+    <option name="width" value="1050" />
+    <option name="height" value="1680" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -652,12 +658,12 @@
             <path>
               <item name="My_Brian" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="~/PycharmProjects/Metis" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="connectome" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="evolutionary" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="My_Brian" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="~/PycharmProjects/Metis" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="evolutionary" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="metiscython" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="My_Brian" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -698,7 +704,7 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="recentsLimit" value="5" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/documentation/genome_34.json" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -971,14 +977,7 @@
       <workItem from="1560566032308" duration="41610000" />
       <workItem from="1561466859046" duration="32673000" />
       <workItem from="1564801964937" duration="31093000" />
-      <workItem from="1564950015549" duration="12610000" />
-    </task>
-    <task id="LOCAL-00255" summary="Perf. imp.">
-      <created>1558410933434</created>
-      <option name="number" value="00255" />
-      <option name="presentableId" value="LOCAL-00255" />
-      <option name="project" value="LOCAL" />
-      <updated>1558410933434</updated>
+      <workItem from="1564950015549" duration="18731000" />
     </task>
     <task id="LOCAL-00256" summary="Perf. imp.">
       <created>1558573822154</created>
@@ -1316,11 +1315,18 @@
       <option name="project" value="LOCAL" />
       <updated>1564965958724</updated>
     </task>
-    <option name="localTasksCounter" value="304" />
+    <task id="LOCAL-00304" summary="Dendrite growth (Partial)">
+      <created>1565466666783</created>
+      <option name="number" value="00304" />
+      <option name="presentableId" value="LOCAL-00304" />
+      <option name="project" value="LOCAL" />
+      <updated>1565466666783</updated>
+    </task>
+    <option name="localTasksCounter" value="305" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="476859000" />
+    <option name="totallyTimeSpent" value="482980000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1333,15 +1339,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49235475" visible="true" weight="0.12193823" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49235475" weight="0.1544196" />
       <window_info id="Structure" order="1" weight="0.1753203" />
       <window_info id="Favorites" order="2" sideWeight="0.5243978" side_tool="true" weight="0.2818611" />
-      <window_info id="Run" order="3" sideWeight="0.5737204" weight="0.5101172" />
+      <window_info active="true" id="Run" order="3" sideWeight="0.5737204" visible="true" weight="0.43077743" />
       <window_info id="Debug" order="4" sideWeight="0.4756022" weight="0.36783546" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.21208385" />
+      <window_info anchor="bottom" id="Find" order="2" visible="true" weight="0.21150443" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" sideWeight="0.4978903" weight="0.2479883" />
@@ -1354,14 +1361,14 @@
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.4124872" />
       <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.48583484" weight="0.270037" />
       <window_info anchor="bottom" id="Database Changes" order="14" />
-      <window_info anchor="right" id="SciView" order="0" sideWeight="0.4982301" visible="true" weight="0.08945687" />
+      <window_info anchor="right" id="SciView" order="0" sideWeight="0.4983165" visible="true" weight="0.08945687" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="right" id="Coverage" order="4" side_tool="true" />
       <window_info anchor="right" id="Data View" order="5" />
       <window_info anchor="right" id="Database" order="6" weight="0.32939985" />
-      <window_info anchor="right" x="0" y="0" width="430" height="1000" id="Documentation" order="7" sideWeight="0.5017699" side_tool="true" visible="true" weight="0.08945687" />
+      <window_info anchor="right" x="0" y="0" width="430" height="1000" id="Documentation" order="7" sideWeight="0.5016835" side_tool="true" visible="true" weight="0.08945687" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49235475" weight="0.1641942" />
@@ -1528,7 +1535,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/My_Brian$genethesizer.coverage" NAME="genethesizer Coverage Results" MODIFIED="1561932620587" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/evolutionary" />
-    <SUITE FILE_PATH="coverage/My_Brian$main_auto.coverage" NAME="main-auto Coverage Results" MODIFIED="1565464136331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Brian$main_auto.coverage" NAME="main-auto Coverage Results" MODIFIED="1565578423205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$main.coverage" NAME="main Coverage Results" MODIFIED="1557195612424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Brian$db_handler.coverage" NAME="db_handler Coverage Results" MODIFIED="1559498176965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/misc" />
     <SUITE FILE_PATH="coverage/My_Brian$IPU_vision.coverage" NAME="IPU_vision Coverage Results" MODIFIED="1562639843198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PUs" />
@@ -1566,7 +1573,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cython_libs/ipu_vision_cy.cyx" />
-    <entry file="file://$PROJECT_DIR$/cython_libs/cython_setup.py">
+    <entry file="file://$PROJECT_DIR$/metiscython/cython_setup.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="43" />
@@ -1626,7 +1633,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cython_libs/ipu_vision_cy.pyx">
+    <entry file="file://$PROJECT_DIR$/metiscython/ipu_vision_cy.pyx">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/configuration/settings.py">
@@ -1660,13 +1667,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="867">
           <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cython_libs/neuron_functions_cy.pyx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
@@ -1764,16 +1764,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23256">
-          <caret line="1385" column="16" selection-start-line="1385" selection-start-column="16" selection-end-line="1385" selection-end-column="16" />
-          <folding>
-            <element signature="e#363#372#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/gene_switch_box">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -1781,7 +1771,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cython_libs/test.py">
+    <entry file="file://$PROJECT_DIR$/metiscython/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="65" column="4" selection-start-line="65" selection-start-column="4" selection-end-line="1713" selection-end-column="1" />
@@ -2070,7 +2060,7 @@
     <entry file="file://$PROJECT_DIR$/PUs/IPU_vision.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
-          <caret line="580" lean-forward="true" selection-start-line="580" selection-end-line="580" />
+          <caret line="580" selection-start-line="580" selection-end-line="580" />
           <folding>
             <element signature="e#365#416#0" />
             <element signature="e#506#839#1" />
@@ -2082,7 +2072,7 @@
     <entry file="file://$PROJECT_DIR$/misc/brain_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
-          <caret line="76" column="45" lean-forward="true" selection-start-line="76" selection-start-column="45" selection-end-line="77" selection-end-column="40" />
+          <caret line="76" column="45" selection-start-line="76" selection-start-column="45" selection-end-line="77" selection-end-column="40" />
           <folding>
             <element signature="e#2#30#0" expanded="true" />
           </folding>
@@ -2107,13 +2097,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" selection-start-line="20" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="26" column="29" lean-forward="true" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -2143,10 +2126,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/metiscython/neuron_functions_cy.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/misc/neuron_functions_auto.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="1268" selection-start-line="1268" selection-end-line="1269" />
+          <folding>
+            <element signature="e#363#372#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/configuration/parameters.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="56" column="10" lean-forward="true" selection-start-line="56" selection-start-column="10" selection-end-line="56" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/evolutionary/static_genome3.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-150">
-          <caret line="2595" column="27" lean-forward="true" selection-start-line="2595" selection-start-column="27" selection-end-line="2595" selection-end-column="27" />
+        <state relative-caret-position="368">
+          <caret line="2682" column="29" lean-forward="true" selection-start-line="2682" selection-start-column="29" selection-end-line="2682" selection-end-column="29" />
           <folding>
             <element signature="n#!!block;n#3#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />
             <element signature="n#!!block;n#7#0;n#!!block;n#IPU_vision_filters#0;n#!!top" />

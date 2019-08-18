@@ -295,7 +295,7 @@ def location_collector(cortical_area):
         for i in range(xn):
             for ii in range(yn):
                 for iii in range(zn):
-                    neuron_loc_list.append([x_coordinate, y_coordinate, z_coordinate])
+                    neuron_loc_list.append([int(x_coordinate), int(y_coordinate), int(z_coordinate)])
                     z_coordinate += neuron_gap
                 y_coordinate += neuron_gap
             x_coordinate += neuron_gap

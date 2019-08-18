@@ -23,7 +23,7 @@ from misc import db_handler, stats
 from configuration import settings, runtime_data
 from PUs.IPU_vision import MNIST
 from evolutionary.architect import test_id_gen, run_id_gen, synapse
-from metiscython import neuron_functions_cy as cy
+from cython_libs import neuron_functions_cy as cy
 from art import text2art
 
 
@@ -674,10 +674,8 @@ class Injector:
                         runtime_data.variation_counter_actual -= 1
 
                     self.injector_num_to_inject = max(self.injector_utf_counter_actual, 0)
-                    print("self.num_to_inject: ", self.injector_num_to_inject)
-                    self.image_feeder2(num=self.injector_num_to_inject,
-                                       seq=runtime_data.variation_counter_actual,
-                                       mnist_type='training')
+                    runtime_data.flag_ready_to_inject_image = True
+
                     # Saving brain to disk
                     # todo: assess the impact of the following disk operation
                     if runtime_data.parameters["Switches"]["save_connectome_to_disk"]:
@@ -698,6 +696,13 @@ class Injector:
                 self.injector_burst_skip_counter = runtime_data.parameters["Auto_injector"][
                     "injector_burst_skip_counter"]
                 self.injector_burst_skip_flag = False
+
+        if runtime_data.flag_ready_to_inject_image and not self.injector_burst_skip_flag:
+            print("self.num_to_inject: ", self.injector_num_to_inject)
+            self.image_feeder2(num=self.injector_num_to_inject,
+                               seq=runtime_data.variation_counter_actual,
+                               mnist_type='training')
+            runtime_data.flag_ready_to_inject_image = False
 
     def injection_exit_condition(self):
         if (self.injector_utf_handler and
@@ -1454,12 +1459,12 @@ def list_common_upstream_neurons(neuron_a, neuron_b):
 def utf_neuron_id(n):
     # Returns the neuron id associated with a particular digit
     for neuron_id in runtime_data.brain['utf8_memory']:
-        if int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) == n+ord('0'):
+        if int(runtime_data.brain['utf8_memory'][neuron_id]["soma_location"][0][2]) == n+ord('0'):
             return neuron_id
 
 
 def utf_neuron_position(neuron_id):
-    return int(runtime_data.brain['utf8_memory'][neuron_id]["location"][2]) - ord('0')
+    return int(runtime_data.brain['utf8_memory'][neuron_id]["soma_location"][0][2]) - ord('0')
 
 
 def common_neuron_report():
@@ -1735,6 +1740,7 @@ def pruner(pruning_data):
         runtime_data.temp_neuron_list.remove(dst_neuron_id)
 
 
+# todo: performance bottleneck; cythonize
 def average_postsynaptic_current(cortical_area):
     count = 0
     total = 0

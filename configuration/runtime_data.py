@@ -4,7 +4,6 @@ genome_stats = {}
 genome_test_stats = []
 brain = {}
 cortical_list = []
-genome_id = ""
 block_dic = {}
 upstream_neurons = {}
 memory_list = {}
@@ -12,7 +11,6 @@ activity_stats = {}
 temp_neuron_list = []
 original_genome_id = []
 fire_list = []
-event_id = ""
 termination_flag = False
 variation_counter_actual = 0
 exposure_counter_actual = 0
@@ -25,8 +23,10 @@ prunning_candidates = set()
 genome_id = ""
 event_id = '_'
 blueprint = ""
+
 # rules = ""
 brain_is_running = False
+
 # live_mode_status can have modes of idle, learning, testing, tbd
 live_mode_status = 'idle'
 fcl_history = {}
@@ -49,3 +49,6 @@ plasticity_time_total = None
 plasticity_time_total_p1 = None
 
 tester_test_stats = {}
+
+# Flags
+flag_ready_to_inject_image = False

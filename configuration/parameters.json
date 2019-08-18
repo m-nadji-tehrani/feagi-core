@@ -32,7 +32,7 @@
     "save_fcl_to_db": false,
     "save_connectome_to_disk": false,
     "live_mode": true,
-    "use_static_genome": true,
+    "use_static_genome": false,
     "one_round": false,
     "ipu_vision_dynamic_img_fetch": false,
     "capture_neuron_mp": false,
@@ -67,19 +67,19 @@
     "influxdb_evolutionary_db": "feagi_evolutionary"
   },
   "Auto_injector":{
-    "epochs": 1,
-    "variation_default": 20,
+    "epochs": 0,
+    "variation_default": 30,
     "exposure_default": 6,
-    "utf_default": 9,
-    "burst_skip": 0,
+    "utf_default": 1,
+    "burst_skip": 15,
     "injector_status": false,
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
     "variation_default": 10,
     "exposure_default": 6,
-    "utf_default": 9,
-    "burst_skip": 0,
+    "utf_default": 1,
+    "burst_skip": 15,
     "tester_status": false,
     "tester_burst_skip_counter": 10
   },
@@ -95,9 +95,9 @@
     "print_burst_info": true,
     "print_burst_stats": false,
     "print_brain_gen_activities": true,
-    "print_comprehension_queue": false,
+    "print_comprehension_queue": true,
     "print_upstream_neuron_stats": true,
-    "print_common_neuron_report": false
+    "print_common_neuron_report": true
   },
   "Verbose":{
     "neuron_functions-neuron_update": false,

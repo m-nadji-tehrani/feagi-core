@@ -18,7 +18,7 @@ def convert_neuron_activity_to_utf8_char(cortical_area, neuron_id):
         collection_span_counter -= 1
 
     activity_rank = membrane_potential_total / len(activity_history)
-    return chr(char), activity_rank
+    return chr(char), int(activity_rank)
 
 
 if __name__ == '__main__':

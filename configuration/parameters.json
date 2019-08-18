@@ -68,8 +68,8 @@
   },
   "Auto_injector":{
     "epochs": 0,
-    "variation_default": 30,
-    "exposure_default": 6,
+    "variation_default": 20,
+    "exposure_default": 15,
     "utf_default": 1,
     "burst_skip": 15,
     "injector_status": false,
@@ -77,7 +77,7 @@
   },
   "Auto_tester":{
     "variation_default": 10,
-    "exposure_default": 6,
+    "exposure_default": 15,
     "utf_default": 1,
     "burst_skip": 15,
     "tester_status": false,

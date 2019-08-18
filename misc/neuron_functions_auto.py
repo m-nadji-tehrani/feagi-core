@@ -325,7 +325,7 @@ def burst():
         for item in counter_list:
             if list_length == 1 and item != '-':
                 runtime_data.parameters["Input"]["comprehended_char"] = item[0]
-                print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character: <<< %s  >>>"
+                print(settings.Bcolors.HEADER + "UTF8 out was stimulated with the following character: <<< %s >>>"
                       % runtime_data.parameters["Input"]["comprehended_char"] + settings.Bcolors.ENDC)
                 # In the event that the comprehended UTF character is not matching the injected one pain is triggered
                 if runtime_data.parameters["Input"]["comprehended_char"] != str(runtime_data.labeled_image[1]):
@@ -416,13 +416,28 @@ def utf_detection_logic(detection_list):
     # todo: Add a logic to account for cases were two top ranked items are too close
     # Identifies the detected UTF character with highest activity
     highest_ranked_item = '-'
+    second_highest_ranked_item = '-'
     for item in detection_list:
         if highest_ranked_item == '-':
             highest_ranked_item = item
         else:
             if detection_list[item]['rank'] > detection_list[highest_ranked_item]['rank']:
+                second_highest_ranked_item = highest_ranked_item
                 highest_ranked_item = item
-    return highest_ranked_item
+
+    # todo: export detection factor to genome not parameters
+    detection_tolerance = 1.5
+    if highest_ranked_item != '-' and second_highest_ranked_item == '-':
+        return highest_ranked_item
+    elif highest_ranked_item != '-' and second_highest_ranked_item != '-':
+        if detection_list[highest_ranked_item]['rank'] / detection_list[second_highest_ranked_item]['rank'] > \
+                detection_tolerance:
+            return highest_ranked_item
+        else:
+            print(">>>> >>> >> >> >> >> > > Tolerance factor was not met!! !! !!")
+            return '-'
+    else:
+        return '-'
 
     # list_length = len(detection_list)
     # if list_length == 1:
@@ -955,7 +970,7 @@ class Injector:
         print("Comprehended char> ", runtime_data.parameters["Input"]["comprehended_char"], "  Injected char> ",
               self.tester_num_to_inject)
         print("****************************************\n")
-        if runtime_data.parameters["Input"]["comprehended_char"] == '':
+        if runtime_data.parameters["Input"]["comprehended_char"] in ['', '-']:
             self.tester_no_response_counter += 1
             self.test_stat_counter_incrementer(digit=self.tester_num_to_inject, stat_type='no_response')
         elif runtime_data.parameters["Input"]["comprehended_char"] == str(self.tester_num_to_inject):

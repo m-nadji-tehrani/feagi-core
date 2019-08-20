@@ -434,13 +434,13 @@ def utf_detection_logic(detection_list):
     detection_tolerance = 1.5
     if highest_ranked_item != '-' and second_highest_ranked_item == '-':
         print("Highest ranking number was chosen.")
-        print("Highest and 2nd highest ranked numbers are: ", highest_ranked_item, second_highest_ranked_item)
+        print("1st and 2nd highest ranked numbers are: ", highest_ranked_item, second_highest_ranked_item)
         return highest_ranked_item
     elif highest_ranked_item != '-' and second_highest_ranked_item != '-':
         if detection_list[highest_ranked_item]['rank'] / detection_list[second_highest_ranked_item]['rank'] > \
                 detection_tolerance:
             print("Highest ranking number was chosen.")
-            print("Highest and 2nd highest ranked numbers are: ", highest_ranked_item, second_highest_ranked_item)
+            print("1st and 2nd highest ranked numbers are: ", highest_ranked_item, second_highest_ranked_item)
             return highest_ranked_item
         else:
             print(">>>> >>> >> >> >> >> > > Tolerance factor was not met!! !! !!")

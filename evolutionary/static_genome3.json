@@ -2715,7 +2715,7 @@
           "orientation_selectivity_pattern" : "",
           "location" : "",
           "kernel_size" : 7,
-          "cortical_neuron_count" : 50001,
+          "cortical_neuron_count" : 100001,
           "location_generation_type" : "random",
           "synapse_attractivity" : 10,
           "init_synapse_needed" : false,
@@ -2739,22 +2739,22 @@
               "consecutive_fire_cnt_max" : 2,
               "snooze_length" : 8,
               "block_boundaries" : [
-                  28,
-                  28,
+                  50,
+                  50,
                   1
               ],
               "geometric_boundaries" : {
                   "x" : [
                       0,
-                      201
+                      500
                   ],
                   "y" : [
                       0,
-                      201
+                      500
                   ],
                   "z" : [
                       0,
-                      201
+                      50
                   ]
               }
           }

@@ -25,7 +25,7 @@
     "logging_fire": false,
     "folder_backup": false,
     "memory_formation": true,
-    "plasticity": false,
+    "obsolete__plasticity": false,
     "capture_brain_activities": false,
     "visualize_latest_file": false,
     "save_fcl_to_disk": false,
@@ -68,9 +68,9 @@
   },
   "Auto_injector":{
     "epochs": 0,
-    "variation_default": 20,
+    "variation_default": 30,
     "exposure_default": 15,
-    "utf_default": 1,
+    "utf_default": 3,
     "burst_skip": 15,
     "injector_status": false,
     "injector_burst_skip_counter": 10
@@ -78,7 +78,7 @@
   "Auto_tester":{
     "variation_default": 10,
     "exposure_default": 15,
-    "utf_default": 1,
+    "utf_default": 3,
     "burst_skip": 15,
     "tester_status": false,
     "tester_burst_skip_counter": 10

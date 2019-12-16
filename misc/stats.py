@@ -1,4 +1,4 @@
-
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 """
 Provides functions performing statistical analysis on the Connectome and Cortical behavior
 """

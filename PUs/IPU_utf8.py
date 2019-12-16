@@ -1,3 +1,4 @@
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 # library to read a character from keyboard and have it converted to neuron firing
 
 from configuration import runtime_data

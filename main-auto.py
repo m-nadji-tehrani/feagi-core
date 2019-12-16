@@ -1,4 +1,4 @@
-
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 
 """
 This file contains the main Brain control code

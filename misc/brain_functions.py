@@ -1,4 +1,4 @@
-
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 
 import multiprocessing as mp
 from misc import stats

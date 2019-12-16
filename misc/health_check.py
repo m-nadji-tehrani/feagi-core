@@ -1,3 +1,4 @@
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 from misc import db_handler
 from configuration import settings
 

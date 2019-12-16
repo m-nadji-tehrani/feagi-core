@@ -1,4 +1,4 @@
-
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 def neuron_update(float presynaptic_current,
                   int burst_count,
                   int last_membrane_potential_update,

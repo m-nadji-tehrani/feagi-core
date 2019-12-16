@@ -1,3 +1,4 @@
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 import matplotlib.pyplot as plt
 import numpy as np
 import time

@@ -1,3 +1,4 @@
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 #!/usr/bin/python -tt
 
 from email.mime.text import MIMEText
@@ -10,9 +11,9 @@ with open('../code.txt', 'r') as the_code:
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USERNAME = "MNT.FEAGI@gmail.com"
-SMTP_PASSWORD = code
+SMTP_PASSWORD = ""
 
-EMAIL_TO = ["mntehrani80@gmail.com"]
+EMAIL_TO = ["MNT.FEAGI@gmail.com"]
 EMAIL_FROM = "MNT.FEAGI@gmail.com"
 EMAIL_SUBJECT = "FEAGI report"
 

@@ -1,4 +1,4 @@
-
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 
 import os
 import struct
@@ -7,7 +7,7 @@ import numpy as np
 
 def read_mnist_labels(dataset="training", path="../../Fashion-MNIST/"):
     """
-    Python function for importing the MNIST data set.  It returns an iterator
+    For importing the MNIST data set.  It returns an iterator
     of 2-tuples with the first element being the label and the second element
     being a numpy.uint8 2D array of pixel data for the given image.
     """

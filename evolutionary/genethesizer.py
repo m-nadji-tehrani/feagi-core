@@ -1,3 +1,4 @@
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 """ This module contains functions capable of modifying and shaping the Genome"""
 
 import datetime

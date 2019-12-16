@@ -1,3 +1,4 @@
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 # -*- coding: utf-8 -*-
 """
 This standalone module is intended to launch independent of the main brain application with the purpose of reading the

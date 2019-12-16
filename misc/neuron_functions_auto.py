@@ -1,4 +1,4 @@
-
+# Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
 """
 This Library contains various functions simulating human cortical behaviors
 Function list:

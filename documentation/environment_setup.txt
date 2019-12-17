@@ -1,0 +1,26 @@
+
+
+
+###### Influxdb
+
+brew services start cronograf
+chronograf
+
+
+
+
+
+###### Grafana
+
+brew services start grafana
+/usr/local/etc/grafana/bin/grafana-server start
+
+
+
+
+
+###### Mongodb
+
+
+
+

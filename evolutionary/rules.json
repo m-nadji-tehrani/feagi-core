@@ -1,0 +1,16 @@
+{
+   "1": {
+      "operator": "=",
+      "first_value": "price",
+      "second_value": "duration"
+   },
+   "2": {
+      "operator": "!=",
+      "first_value": {
+        "operator": "&",
+        "first_value": "abc",
+        "second_value": "def"
+      },
+      "second_value": "duration"
+   }
+}

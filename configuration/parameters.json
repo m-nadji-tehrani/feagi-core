@@ -32,7 +32,7 @@
     "save_fcl_to_db": false,
     "save_connectome_to_disk": false,
     "live_mode": true,
-    "use_static_genome": false,
+    "use_static_genome": true,
     "one_round": false,
     "ipu_vision_dynamic_img_fetch": false,
     "capture_neuron_mp": false,
@@ -52,7 +52,7 @@
     "regenerate_brain": true,
     "connectome_path": "./connectome/",
     "rules_path": "./evolutionary/rules.json",
-    "static_genome_path": "/Users/mntehrani/PycharmProjects/Metis/evolutionary/static_genome3.json",
+    "static_genome_path": "./evolutionary/static_genome3.json",
     "fcl_to_visualize": "./fcl_repo/fcl-2018-06-18_14:44:04.243315_A1566B_R.json" ,
     "image_database": "MNIST",
     "activity_history_span": 4,
@@ -68,7 +68,7 @@
   },
   "Auto_injector":{
     "epochs": 0,
-    "variation_default": 60,
+    "variation_default": 1,
     "exposure_default": 15,
     "utf_default": 3,
     "burst_skip": 15,
@@ -76,7 +76,7 @@
     "injector_burst_skip_counter": 10
   },
   "Auto_tester":{
-    "variation_default": 10,
+    "variation_default": 1,
     "exposure_default": 15,
     "utf_default": 3,
     "burst_skip": 15,

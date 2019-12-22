@@ -2,6 +2,8 @@
 /connectome*
 /future
 /.idea
+/feagi_env*
+*.c
 
 # Everything below is taken from https://github.com/github/gitignore/blob/master/Python.gitignore
 # Byte-compiled / optimized / DLL files

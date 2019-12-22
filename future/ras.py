@@ -1,1 +1,0 @@
-# Representing Reticular Activating System

@@ -20,7 +20,7 @@ def cortical_list():
 
 
 def load_parameters_in_memory():
-    with open("/Users/mntehrani/PycharmProjects/Metis/configuration/parameters.json", "r") as data_file:
+    with open("./configuration/parameters.json", "r") as data_file:
         runtime_data.parameters = json.load(data_file)
         # print("Parameters has been read from file")
 

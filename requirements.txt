@@ -8,3 +8,5 @@ termcolor==1.1.0
 text2art==0.2.0
 pymongo==3.10.0
 influxdb==5.2.3
+numpy==1.15.4
+pytest==5.1.1

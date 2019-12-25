@@ -6,7 +6,7 @@ import struct
 import numpy as np
 import random
 from math import floor
-from scipy.misc import imresize
+from PIL import Image
 from evolutionary import architect
 from configuration import runtime_data
 from datetime import datetime
@@ -431,9 +431,12 @@ class Kernel:
 
 class Image:
     @staticmethod
-    def resize_image(img):
-        img = imresize(img, size=runtime_data.parameters["InitData"]["image_magnification_factor"], interp='bicubic')
-        return img
+    def resize_image(image):
+        img = Image.image_read_by_block(image=image)
+        new_image_dimension = runtime_data.parameters["InitData"]["image_magnification_factor"]
+        new_size = (new_image_dimension, new_image_dimension)
+        image = img.Image.resize_image(new_size)
+        return image
 
     @staticmethod
     def convert_image_to_coordinates(image):   # Image is currently assumed to be a 28 x 28 numpy array

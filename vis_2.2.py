@@ -2,8 +2,6 @@
 """
     Animated 3D sinc function
 """
-import sys
-sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 
 from pyqtgraph.Qt import QtCore, QtGui
 # from PyQt5 import QtCore, QtGui, QtWidgets

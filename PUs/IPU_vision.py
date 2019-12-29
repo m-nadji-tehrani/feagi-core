@@ -1,6 +1,4 @@
 # Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
-import sys
-sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 import os
 import struct
 import numpy as np
@@ -31,7 +29,7 @@ if __name__ == '__main__':
     disk_ops.load_parameters_in_memory()
     from configuration import runtime_data
 
-    disk_ops.genome_handler("/Users/mntehrani/PycharmProjects/Metis/connectome/")
+    disk_ops.genome_handler("./connectome/")
 
 
 class MNIST:
@@ -150,8 +148,7 @@ class MNIST:
 
         # database = runtime_data.parameters["InitData"]["image_database"]
 
-        path = "../" + database + "/"
-        absolute_path = "/Users/mntehrani/PycharmProjects/" + database + "/"
+        path = "../../" + database + "/"
 
         if dataset is "training":
             fname_img = os.path.join(path, 'train-images.idx3-ubyte')
@@ -164,11 +161,11 @@ class MNIST:
             raise Exception(ValueError, "data set must be 'testing' or 'training'")
 
         # Load everything in some numpy arrays
-        with open(absolute_path + fname_lbl, 'rb') as flbl:
+        with open(fname_lbl, 'rb') as flbl:
             magic, num = struct.unpack(">II", flbl.read(8))
             lbl = np.fromfile(flbl, dtype=np.int8)
 
-        with open(absolute_path + fname_img, 'rb') as fimg:
+        with open(fname_img, 'rb') as fimg:
             magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
             img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
 

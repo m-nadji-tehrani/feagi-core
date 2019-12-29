@@ -4,9 +4,6 @@ This file contains all of the Visualization functions
 """
 
 import ast
-import os.path
-os.chdir("/Users/mntehrani/PycharmProjects/Metis/")
-
 from time import sleep
 import json
 

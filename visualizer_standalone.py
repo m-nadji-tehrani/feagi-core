@@ -4,9 +4,6 @@ This standalone module is intended to launch independent of the main brain appli
 contents of connectome and visualizing various aspects.
 """
 
-import sys
-sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
-
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
 from matplotlib import style

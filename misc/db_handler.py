@@ -1,6 +1,4 @@
 # Copyright (c) 2019 Mohammad Nadji-Tehrani <m.nadji.tehrani@gmail.com>
-import sys
-sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
 from pymongo import MongoClient, DESCENDING, ASCENDING
 from influxdb import InfluxDBClient
 from configuration import runtime_data, settings
@@ -334,7 +332,7 @@ if __name__ == "__main__":
     # from misc import disk_ops
     # disk_ops.load_parameters_in_memory()
     # from configuration import runtime_data
-    # disk_ops.genome_handler("/Users/mntehrani/PycharmProjects/Metis/connectome/")
+    # disk_ops.genome_handler("./connectome/")
 
     # mnist = IPU_vision.MNIST()
     import numpy as np

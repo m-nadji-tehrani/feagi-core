@@ -1,6 +1,3 @@
-import sys
-sys.path.append('/Users/mntehrani/PycharmProjects/Metis/venv/lib/python3.7/site-packages/')
-
 from pandas import Series
 from pandas import DataFrame
 import pandas as pd

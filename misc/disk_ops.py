@@ -270,7 +270,7 @@ def save_brain_to_disk(cortical_area='all', brain=runtime_data.brain, parameters
 
 
 def load_processed_mnist_from_disk(mnist_type, kernel_size):
-    with open("/Users/mntehrani/PycharmProjects/Metis/PUs/mnist_processed_" +
+    with open("./PUs/mnist_processed_" +
               mnist_type + "_k" + str(kernel_size) + ".pkl", 'rb') as pickled_data:
         data = pickle.load(pickled_data)
     return data

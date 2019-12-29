@@ -75,7 +75,7 @@ def brain_gen():
 
     # Build Synapses within all Cortical areas
     func1 = partial(build_synapse, runtime_data.genome, runtime_data.brain, runtime_data.parameters)
-    pool1 = Pool(processes=8)
+    pool1 = Pool(processes=1)
 
     synapse_creation_candidates = []
     for key in blueprint:
@@ -95,7 +95,7 @@ def brain_gen():
     # Build Synapses across various Cortical areas
     func2 = partial(build_synapse_ext, runtime_data.genome, runtime_data.brain,
                     runtime_data.parameters, runtime_data.block_dic)
-    pool2 = Pool(processes=7)
+    pool2 = Pool(processes=1)
 
     pool2.map(func2, blueprint)
     pool2.close()

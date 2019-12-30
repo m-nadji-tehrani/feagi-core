@@ -149,7 +149,7 @@ class MNIST:
         # database = runtime_data.parameters["InitData"]["image_database"]
 
         path = "../../" + database + "/"
-        path2 = "../../../" + database + "/"
+        path2 = "../" + database + "/"
 
         if dataset is "training":
                 fname_img = os.path.join(path, 'train-images.idx3-ubyte')

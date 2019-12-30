@@ -149,10 +149,15 @@ class MNIST:
         # database = runtime_data.parameters["InitData"]["image_database"]
 
         path = "../../" + database + "/"
+        path2 = "../../../" + database + "/"
 
         if dataset is "training":
-            fname_img = os.path.join(path, 'train-images.idx3-ubyte')
-            fname_lbl = os.path.join(path, 'train-labels.idx1-ubyte')
+            try:
+                fname_img = os.path.join(path, 'train-images.idx3-ubyte')
+                fname_lbl = os.path.join(path, 'train-labels.idx1-ubyte')
+            except FileNotFoundError:
+                fname_img = os.path.join(path2, 'train-images.idx3-ubyte')
+                fname_lbl = os.path.join(path2, 'train-labels.idx1-ubyte')
 
         elif dataset is "testing":
             fname_img = os.path.join(path, 't10k-images.idx3-ubyte')

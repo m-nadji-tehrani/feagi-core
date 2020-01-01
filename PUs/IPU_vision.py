@@ -148,7 +148,7 @@ class MNIST:
 
         # database = runtime_data.parameters["InitData"]["image_database"]
         current_path = os.path.dirname(os.path.abspath(__file__))
-        print(">> >> >> Current folder is:", current_path)
+        print(">> >> **** >> Current folder is:", current_path)
         path = current_path + "/../raw/" + database + "/"
         # path2 = "../" + database + "/"
 
@@ -167,23 +167,13 @@ class MNIST:
             raise Exception(ValueError, "data set must be 'testing' or 'training'")
 
         # Load everything in some numpy arrays
-        try:
-            with open(fname_lbl, 'rb') as flbl:
-                magic, num = struct.unpack(">II", flbl.read(8))
-                lbl = np.fromfile(flbl, dtype=np.int8)
+        with open(fname_lbl, 'rb') as flbl:
+            magic, num = struct.unpack(">II", flbl.read(8))
+            lbl = np.fromfile(flbl, dtype=np.int8)
 
-            with open(fname_img, 'rb') as fimg:
-                magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
-                img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
-        except FileNotFoundError:
-            print("Error: Could not find raw resources!")
-            # with open(fname_lbl2, 'rb') as flbl:
-            #     magic, num = struct.unpack(">II", flbl.read(8))
-            #     lbl = np.fromfile(flbl, dtype=np.int8)
-            #
-            # with open(fname_img2, 'rb') as fimg:
-            #     magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
-            #     img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
+        with open(fname_img, 'rb') as fimg:
+            magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
+            img = np.fromfile(fimg, dtype=np.uint8).reshape(len(lbl), rows, cols)
 
         get_img = lambda idx: (lbl[idx], img[idx])
 

@@ -149,7 +149,8 @@ class MNIST:
         # database = runtime_data.parameters["InitData"]["image_database"]
         current_path = os.path.dirname(os.path.abspath(__file__))
         print(">> >> **** >> Current folder is:", current_path)
-        path = current_path + "/../raw/" + database + "/"
+        # path = current_path + "/../raw/" + database + "/"
+        path = "/opt/source-code/feagi-core/raw/MNIST/"
         # path2 = "../" + database + "/"
 
         if dataset is "training":

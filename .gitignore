@@ -1,7 +1,8 @@
 # FEAGI
 /connectome*
 /raw
-/future
+/tmp
+/feagi/future
 /.idea
 /feagi_env*
 *.c
@@ -118,6 +119,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.DS_Store
 
 # Spyder project settings
 .spyderproject

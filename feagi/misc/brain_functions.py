@@ -30,7 +30,7 @@ class Brain:
         # from datetime import datetime
         # from architect import event_id_gen
 
-        print("Retina has been exposed to a version of :", mnist_labled_image[1])
+        print("Retina has been exposed to a version of :", mnist_labled_image[1], '\n', mnist_labled_image[0])
         neuron_list = []
 
         # IPU_vision_array = IPU_vision.Image.convert_image_to_coordinates(mnist.read_image(image_number)[0])   # todo  ?????
@@ -169,11 +169,12 @@ class Brain:
 
         kernel = IPU_vision.Kernel()
 
-        polarized_image = mnist.mnist_img_fetcher3(num=num,
-                                                   kernel_size=kernel_size,
-                                                   seq=seq,
-                                                   mnist_type=mnist_type,
-                                                   random_num=random_num)
+        polarized_image = mnist.read_nth_mnist_digit(seq=seq, digit=num, type=mnist_type)
+        # polarized_image = mnist.mnist_img_fetcher_mongo(num=num,
+        #                                                 kernel_size=kernel_size,
+        #                                                 seq=seq,
+        #                                                 mnist_type=mnist_type,
+        #                                                 random_num=random_num)
 
         if runtime_data.parameters['Logs']['print_polarized_img']:
             image = polarized_image['original_image']

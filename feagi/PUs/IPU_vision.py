@@ -184,7 +184,7 @@ class MNIST:
         for i in range(len(lbl)):
             yield get_img(i)
 
-    def mnist_img_fetcher3(self, num, kernel_size, seq, mnist_type, random_num=False):
+    def mnist_img_fetcher_mongo(self, num, kernel_size, seq, mnist_type, random_num=False):
         """
         Reads a number from pre-processed dataset and returns direction matrix data
         """
@@ -592,7 +592,7 @@ class Image:
 
 
 if __name__ == '__main__':
-    from disk_ops import save_processed_mnist_to_disk
+    from misc.disk_ops import save_processed_mnist_to_disk
     filter = Filter()
     kernel = Kernel()
     image = Image()

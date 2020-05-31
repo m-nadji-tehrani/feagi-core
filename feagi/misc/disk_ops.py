@@ -42,7 +42,7 @@ def load_genome_in_memory(connectome_path, static=False):
 
 
 def save_genome_to_disk():
-    from ..evolutionary.genethesizer import calculate_brain_cognitive_fitness
+    from evolutionary.genethesizer import calculate_brain_cognitive_fitness
     mongo = db_handler.MongoManagement()
     influxdb = db_handler.InfluxManagement()
     genome = runtime_data.genome

@@ -10,6 +10,7 @@ __author__ = 'Mohammad Nadji-Tehrani'
 if __name__ == '__main__':
     from datetime import datetime
     from art import text2art
+    from shutil import copyfile
     import sys
     import os
 
@@ -31,6 +32,13 @@ if __name__ == '__main__':
     global connectome_path
     connectome_path = runtime_data.parameters["InitData"]["connectome_path"]
 
+    def initialize_connectome():
+        if not os.path.exists(connectome_path):
+            os.makedirs(connectome_path)
+            copyfile(runtime_data.parameters["InitData"]["static_genome_path"], connectome_path)
+
+    initialize_connectome()
+
     # The following stages the genome in the proper connectome path and loads it into the memory
     disk_ops.genome_handler(connectome_path)
 
@@ -45,11 +53,6 @@ if __name__ == '__main__':
     from evolutionary.architect import event_id_gen
 
     b = brain_functions.Brain()
-
-    def initialize_connectome():
-        if not os.path.exists(connectome_path):
-            os.makedirs(connectome_path)
-
 
     def initialize_the_brain():
         # # Initialize Fire Candidate List (FCL)
@@ -67,7 +70,6 @@ if __name__ == '__main__':
         genome_stats = {}
         genome_stats["test_stats"] = []
         genome_test_stats = []
-
 
     if runtime_data.parameters["InitData"]["regenerate_brain"]:
         structural_fitness = 0

@@ -551,11 +551,11 @@ class Injector:
         brain = brain_functions.Brain()
         runtime_data.labeled_image = ['', num]
 
-        runtime_data.training_neuron_list_img = brain.retina(runtime_data.labeled_image)
-        # runtime_data.training_neuron_list_img = brain.retina2(num=num,
-        #                                                       seq=seq,
-        #                                                       mnist_type=mnist_type,
-        #                                                       random_num=False)
+        # runtime_data.training_neuron_list_img = brain.retina(runtime_data.labeled_image)
+        runtime_data.training_neuron_list_img = brain.retina2(num=num,
+                                                              seq=seq,
+                                                              mnist_type=mnist_type,
+                                                              random_num=False)
 
     def injection_manager(self, injection_mode, injection_param):
         """

@@ -1,4 +1,4 @@
-![FEAGI Logo](https://github.com/feagi/feagi-core/docs/source/_static/img/feagi.png)
+![FEAGI Logo](https://github.com/m-nadji-tehrani/feagi-core/blob/dev/docs/_static/img/FEAGI.png)
 
 --------------------------------------------------------------------------------
 
